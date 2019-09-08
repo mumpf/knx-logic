@@ -17,6 +17,7 @@ void appLoop();
 void setup() {
     SerialDBG.begin(115200);
     SerialDBG.println("Startup called...");
+    ArduinoPlatform::SerialDebug = SerialDBG;
 
 #ifdef ARDUINO_ARCH_ESP8266
     WiFiManager wifiManager;
