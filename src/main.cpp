@@ -18,7 +18,7 @@ void appLoop();
 void setup() {
     Serial.begin(115200);
     Serial.println("Startup called...");
-    ArduinoPlatform::SerialDebug = Serial;
+    ArduinoPlatform::SerialDebug = &Serial;
 
     pinMode(BUZZER_PIN, OUTPUT);
     digitalWrite(BUZZER_PIN, HIGH);
