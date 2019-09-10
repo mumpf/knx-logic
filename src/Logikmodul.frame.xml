@@ -6,7 +6,7 @@
     <Manufacturer RefId="M-00FA">
       <Catalog>
         <CatalogSection Id="M-00FA_CS-1" Name="Geräte" Number="1" DefaultLanguage="de">
-          <CatalogItem Id="M-00FA_H-19748-1_HP-0001-01-0000_CI-SELFLOGIC-1" Name="Logikmodul" Number="1" ProductRefId="M-00FA_H-19748-1_P-SELFLOGIC" Hardware2ProgramRefId="M-00FA_H-19748-1_HP-0001-01-0000" DefaultLanguage="de" />
+          <CatalogItem Id="M-00FA_H-WPKNX102-1_HP-0001-01-0000_CI-SELFLOGIC-1" Name="Logikmodul" Number="1" ProductRefId="M-00FA_H-WPKNX102-1_P-SELFLOGIC" Hardware2ProgramRefId="M-00FA_H-WPKNX102-1_HP-0001-01-0000" DefaultLanguage="de" />
         </CatalogSection>
       </Catalog>
       <ApplicationPrograms>
@@ -340,14 +340,14 @@
         </ApplicationProgram>
       </ApplicationPrograms>
       <Hardware>
-        <Hardware Id="M-00FA_H-19748-1" Name="WPLogikmodul" SerialNumber="19748" VersionNumber="1" BusCurrent="10" HasIndividualAddress="true" HasApplicationProgram="true">
+        <Hardware Id="M-00FA_H-WPKNX102-1" Name="WP-Logikmodul" SerialNumber="WPKNX102" VersionNumber="1" BusCurrent="10" HasIndividualAddress="true" HasApplicationProgram="true">
           <Products>
-            <Product Id="M-00FA_H-19748-1_P-SELFLOGIC" Text="Logikmodul" OrderNumber="SELFLOGIC" IsRailMounted="false" DefaultLanguage="de">
+            <Product Id="M-00FA_H-WPKNX102-1_P-SELFLOGIC" Text="Logikmodul" OrderNumber="SELFLOGIC" IsRailMounted="false" DefaultLanguage="de">
               <RegistrationInfo RegistrationStatus="Registered" />
             </Product>
           </Products>
           <Hardware2Programs>
-            <Hardware2Program Id="M-00FA_H-19748-1_HP-0001-01-0000" MediumTypes="MT-0 MT-5">
+            <Hardware2Program Id="M-00FA_H-WPKNX102-1_HP-0001-01-0000" MediumTypes="MT-0 MT-5">
               <ApplicationProgramRef RefId="M-00FA_A-0001-01-0000" />
               <RegistrationInfo RegistrationStatus="Registered" RegistrationNumber="0001/%HardwareVersion%%ApplicationVersion%" />
             </Hardware2Program>

@@ -8,6 +8,7 @@
 #include "Logikmodul.h"
 #endif
 
+// Buzzer
 #define BUZZER_PIN 9
 
 // enum input defaults
@@ -608,7 +609,9 @@ void ProcessOutput(sChannelInfo *cData, uint8_t iChannel, bool iValue) {
                 knxResetDevice(PAR_CH_OOnDpt1, iChannel);
                 break;
             case VAL_Out_Buzzer:
+#ifndef __linux__            
                 digitalWrite(BUZZER_PIN, HIGH);
+#endif                
                 break;
             default:
                 // there is no output parametrized
@@ -633,7 +636,9 @@ void ProcessOutput(sChannelInfo *cData, uint8_t iChannel, bool iValue) {
                 knxResetDevice(PAR_CH_OOffDpt1, iChannel);
                 break;
             case VAL_Out_Buzzer:
+#ifndef __linux__            
                 digitalWrite(BUZZER_PIN, LOW);
+#endif
                 break;
             default:
                 // there is no output parametrized
@@ -1366,6 +1371,10 @@ void logikSetup() {
     if (NUM_Channels < gNumChannels)
         knx.platform().fatalError();
     if (knx.configured()) {
+        // setup buzzer
+#ifndef __linux__        
+        pinMode(BUZZER_PIN, OUTPUT);
+#endif
         for (uint8_t lChannel = 0; lChannel < gNumChannels; lChannel++) {
             // we initialize DPT for output ko
             GroupObject *lKo = getKoForChannel(IO_Output, lChannel);

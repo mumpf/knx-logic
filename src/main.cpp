@@ -10,7 +10,7 @@
 #define PROG_LED_PIN 13
 #define PROG_BUTTON_PIN 11
 #define LED_YELLOW 38
-#define BUZZER_PIN 9 // has to be defined also in LogikmodulCore.h
+#define BUZZER_PIN 9 // definition comes from LogikmodulCore.h, thats the origin
 
 void appSetup();
 void appLoop();
