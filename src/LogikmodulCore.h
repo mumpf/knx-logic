@@ -8,6 +8,8 @@
 #include "Logikmodul.h"
 #endif
 
+#define BUZZER_PIN 9
+
 // enum input defaults
 #define VAL_InputDefault_Undefined 0
 #define VAL_InputDefault_Read 1
@@ -55,6 +57,7 @@
 #define VAL_Out_ValE2 3
 #define VAL_Out_ReadRequest 4
 #define VAL_Out_ResetDevice 5
+#define VAL_Out_Buzzer 6
 
 // enum output filter
 #define VAL_AllowRepeat_All 0
@@ -604,6 +607,9 @@ void ProcessOutput(sChannelInfo *cData, uint8_t iChannel, bool iValue) {
             case VAL_Out_ResetDevice:
                 knxResetDevice(PAR_CH_OOnDpt1, iChannel);
                 break;
+            case VAL_Out_Buzzer:
+                digitalWrite(BUZZER_PIN, HIGH);
+                break;
             default:
                 // there is no output parametrized
                 break;
@@ -625,6 +631,9 @@ void ProcessOutput(sChannelInfo *cData, uint8_t iChannel, bool iValue) {
                 break;
             case VAL_Out_ResetDevice:
                 knxResetDevice(PAR_CH_OOffDpt1, iChannel);
+                break;
+            case VAL_Out_Buzzer:
+                digitalWrite(BUZZER_PIN, LOW);
                 break;
             default:
                 // there is no output parametrized

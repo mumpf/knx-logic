@@ -1,6 +1,4 @@
 #pragma once
-
-#pragma once
 #include <knx.h>
 
 // global setup parameters, edit them manually
@@ -148,7 +146,5 @@
 #define NUM_paramBlockSize 110
 
 // static function stubs
-
-void logikSetup();
-void logikLoop();
-void logikDebug();
+void appSetup();
+void appLoop();

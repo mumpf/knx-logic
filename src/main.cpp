@@ -10,14 +10,18 @@
 #define PROG_LED_PIN 13
 #define PROG_BUTTON_PIN 11
 #define LED_YELLOW 38
+#define BUZZER_PIN 9 // has to be defined also in LogikmodulCore.h
 
 void appSetup();
 void appLoop();
 
 void setup() {
-    SerialDBG.begin(115200);
-    SerialDBG.println("Startup called...");
-    ArduinoPlatform::SerialDebug = SerialDBG;
+    Serial.begin(115200);
+    Serial.println("Startup called...");
+    ArduinoPlatform::SerialDebug = Serial;
+
+    pinMode(BUZZER_PIN, OUTPUT);
+    digitalWrite(BUZZER_PIN, HIGH);
 
 #ifdef ARDUINO_ARCH_ESP8266
     WiFiManager wifiManager;
@@ -27,23 +31,26 @@ void setup() {
     // read adress table, association table, groupobject table and parameters from eeprom
     knx.readMemory();
 
-    // // pin or GPIO the programming led is connected to. Default is LED_BUILDIN
-    // knx.ledPin(26);
-    // // is the led active on HIGH or low? Default is LOW
-    // // knx.ledPinActiveOn(HIGH);
-    // // pin or GPIO programming button is connected to. Default is 0
-    // knx.buttonPin(10);
-    // // Is the interrup created in RISING or FALLING signal? Default is RISING
-    // // knx.buttonPinInterruptOn(FALLING);
-
+    
+    // use this section for upload to Testboard
     // pin or GPIO the programming led is connected to. Default is LED_BUILDIN
-    knx.ledPin(PROG_LED_PIN);
+    knx.ledPin(26);
     // is the led active on HIGH or low? Default is LOW
-    knx.ledPinActiveOn(HIGH);
+    // knx.ledPinActiveOn(HIGH);
     // pin or GPIO programming button is connected to. Default is 0
-    knx.buttonPin(PROG_BUTTON_PIN);
+    knx.buttonPin(10);
     // Is the interrup created in RISING or FALLING signal? Default is RISING
-    knx.buttonPinInterruptOn(FALLING);
+    // knx.buttonPinInterruptOn(FALLING);
+
+    // use this section for upload to Sensormodul
+    // // pin or GPIO the programming led is connected to. Default is LED_BUILDIN
+    // knx.ledPin(PROG_LED_PIN);
+    // // is the led active on HIGH or low? Default is LOW
+    // knx.ledPinActiveOn(HIGH);
+    // // pin or GPIO programming button is connected to. Default is 0
+    // knx.buttonPin(PROG_BUTTON_PIN);
+    // // Is the interrup created in RISING or FALLING signal? Default is RISING
+    // knx.buttonPinInterruptOn(FALLING);
 
     // print values of parameters if device is already configured
     if (knx.configured()) {
@@ -52,6 +59,8 @@ void setup() {
 
     // start the framework.
     knx.start();
+
+    digitalWrite(BUZZER_PIN, LOW);
 }
 
 void loop() {
