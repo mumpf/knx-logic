@@ -1,7 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<KNX xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-  xmlns:xsd="http://www.w3.org/2001/XMLSchema" CreatedBy="KNX MT" ToolVersion="5.1.255.16695" 
-  xmlns="http://knx.org/xml/project/11">
+<KNX xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" CreatedBy="KNX MT" ToolVersion="5.1.255.16695" oldxmlns="http://knx.org/xml/project/11">
   <Parameters>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%001" Name="f%C%Name" ParameterType="M-00FA_A-0001-01-0000_PT-Text40Byte" Text="Beschreibung des Kanals" Value="Logik %C%" />
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%002" Name="f%C%ChannelDelay" ParameterType="M-00FA_A-0001-01-0000_PT-DelaySeconds" Text="Zeit bis der Kanal nach einem Neustart aktiv wird" SuffixText="Sekunden" Value="1">
@@ -456,13 +454,13 @@
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%044_R-%C%0441" RefId="M-00FA_A-0001-01-0000_P-%C%044" Text="Von-Wert" Value="8388608" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%044_R-%C%0442" RefId="M-00FA_A-0001-01-0000_P-%C%044" Text="Ausschalt-Wert" Value="5000000" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%045_R-%C%0451" RefId="M-00FA_A-0001-01-0000_P-%C%045" Text="Bis-Wert" Value="16777216" />
-    <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%045_R-%C%0452" RefId="M-00FA_A-0001-01-0000_P-%C%045" Text="Einschalt-Wert" Value="10000000"/>
+    <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%045_R-%C%0452" RefId="M-00FA_A-0001-01-0000_P-%C%045" Text="Einschalt-Wert" Value="10000000" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%046_R-%C%0461" RefId="M-00FA_A-0001-01-0000_P-%C%046" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%047_R-%C%0471" RefId="M-00FA_A-0001-01-0000_P-%C%047" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%048_R-%C%0481" RefId="M-00FA_A-0001-01-0000_P-%C%048" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%049_R-%C%0491" RefId="M-00FA_A-0001-01-0000_P-%C%049" Value="%C%" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%050_R-%C%0501" RefId="M-00FA_A-0001-01-0000_P-%C%050" />
-    <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%051_R-%C%0511" RefId="M-00FA_A-0001-01-0000_P-%C%051" Value="%C%"/>
+    <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%051_R-%C%0511" RefId="M-00FA_A-0001-01-0000_P-%C%051" Value="%C%" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%052_R-%C%0521" RefId="M-00FA_A-0001-01-0000_P-%C%052" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%053_R-%C%0531" RefId="M-00FA_A-0001-01-0000_P-%C%053" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%054_R-%C%0541" RefId="M-00FA_A-0001-01-0000_P-%C%054" Value="50" SuffixText="/10 Sekunden" />
@@ -1281,14 +1279,14 @@
               <when test="!=0">
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%059_R-%C%0591" />
                 <choose ParamRefId="M-00FA_A-0001-01-0000_P-%C%059_R-%C%0591">
-                  <when test=">0">
+                  <when test="&gt;0">
                     <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%117_R-%C%1171" />
                     <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%118_R-%C%1181" />
                   </when>
                 </choose>
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%060_R-%C%0601" />
                 <choose ParamRefId="M-00FA_A-0001-01-0000_P-%C%060_R-%C%0601">
-                  <when test=">0">
+                  <when test="&gt;0">
                     <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%119_R-%C%1191" />
                     <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%120_R-%C%1201" />
                   </when>
