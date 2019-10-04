@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#ifndef NUM_Channels
+#ifndef LOG_Channels
 #include "Logikmodul.h"
 #endif
 
@@ -122,7 +122,7 @@ struct sChannelInfo
 };
 
 uint8_t gNumChannels;
-sChannelInfo gChannelData[NUM_Channels];
+sChannelInfo gChannelData[LOG_Channels];
 
 // forward declaratins
 void StartLogic(sChannelInfo *cData, uint8_t iChannel, uint8_t iIOIndex, bool iValue);
@@ -140,7 +140,7 @@ void DbgWrite(const char *format, ...)
 
 uint32_t calcParamIndex(uint16_t iParamIndex, int8_t iChannel)
 {
-    uint32_t lResult = iParamIndex + ((iChannel < 0) ? 0 : iChannel * NUM_paramBlockSize + NUM_paramOffset);
+    uint32_t lResult = iParamIndex + ((iChannel < 0) ? 0 : iChannel * LOG_ParamBlockSize + LOG_ParamBlockOffset);
     return lResult;
 }
 
@@ -203,7 +203,8 @@ int32_t getSIntParam(uint16_t iParamIndex, int8_t iChannel = -1)
 float getFloat(uint8_t *data)
 {
 
-    union Float {
+    union Float
+    {
         float lFloat;
         uint8_t lBytes[sizeof(float)];
     };
@@ -244,7 +245,7 @@ uint16_t calcKoNumber(uint8_t iIOIndex, uint8_t iChannel)
 {
     // int lIndex = (iIOIndex == 0) ? 3 : iIOIndex;
     // return KO_ChannelOffset - 1 + lIndex + iChannel * 3;
-    uint16_t lIndex = (iIOIndex) ? KO_Offset - 1 + iIOIndex + iChannel * 3 : iChannel;
+    uint16_t lIndex = (iIOIndex) ? LOG_KoOffset - 1 + iIOIndex + iChannel * LOG_KoBlockSize : iChannel;
     return lIndex;
 }
 
@@ -355,33 +356,33 @@ int32_t getParamByDpt(int8_t iDpt, uint8_t iParam, uint8_t iChannel)
     int32_t lValue = 0;
     switch (iDpt)
     {
-    case VAL_DPT_1:
-        lValue = getByteParam(iParam, iChannel) != 0;
-        break;
-    case VAL_DPT_2:
-    case VAL_DPT_5:
-    case VAL_DPT_17:
-    case VAL_DPT_5001:
-        lValue = getByteParam(iParam, iChannel);
-        break;
-    case VAL_DPT_6:
-        lValue = getSByteParam(iParam, iChannel);
-        break;
-    case VAL_DPT_7:
-        lValue = getWordParam(iParam, iChannel);
-        break;
-    case VAL_DPT_8:
-        lValue = getSWordParam(iParam, iChannel);
-        break;
-    case VAL_DPT_232:
-        lValue = getIntParam(iParam, iChannel);
-        break;
-    case VAL_DPT_9:
-        lValue = (getFloatParam(iParam, iChannel) * 100.0);
-        break;
-    default:
-        lValue = getIntParam(iParam, iChannel);
-        break;
+        case VAL_DPT_1:
+            lValue = getByteParam(iParam, iChannel) != 0;
+            break;
+        case VAL_DPT_2:
+        case VAL_DPT_5:
+        case VAL_DPT_17:
+        case VAL_DPT_5001:
+            lValue = getByteParam(iParam, iChannel);
+            break;
+        case VAL_DPT_6:
+            lValue = getSByteParam(iParam, iChannel);
+            break;
+        case VAL_DPT_7:
+            lValue = getWordParam(iParam, iChannel);
+            break;
+        case VAL_DPT_8:
+            lValue = getSWordParam(iParam, iChannel);
+            break;
+        case VAL_DPT_232:
+            lValue = getIntParam(iParam, iChannel);
+            break;
+        case VAL_DPT_9:
+            lValue = (getFloatParam(iParam, iChannel) * 100.0);
+            break;
+        default:
+            lValue = getIntParam(iParam, iChannel);
+            break;
     }
     return lValue;
 }
@@ -396,34 +397,34 @@ int32_t getParamByDpt(int8_t iDpt, uint8_t iParam, uint8_t iChannel)
 int getInputValueTest(uint8_t iIOIndex, uint8_t iChannel)
 {
     int lValue = 0;
-    int lParamIndex = (iIOIndex == 1) ? PAR_CH_E1Dpt : PAR_CH_E2Dpt;
+    int lParamIndex = (iIOIndex == 1) ? LOG_fE1Dpt : LOG_fE2Dpt;
     int lIndex = calcKoNumber(iIOIndex, iChannel) - 1;
     // based on dpt, we read the correct c type.
     switch (getByteParam(lParamIndex, iChannel))
     {
-    case VAL_DPT_1:
-        lValue = sKoData.data[lIndex];
-        break;
-    case VAL_DPT_5:
-        lValue = ((int)sKoData.data[lIndex] * 100 / 255);
-        break;
-    case VAL_DPT_2:
-    case VAL_DPT_6:
-    case VAL_DPT_17:
-        lValue = sKoData.data[lIndex];
-        break;
-    case VAL_DPT_7:
-    case VAL_DPT_8:
-        lValue = sKoData.data[lIndex];
-        break;
-    case VAL_DPT_232:
-        lValue = sKoData.data[lIndex];
-        break;
-    case VAL_DPT_9:
-        lValue = ((double)sKoData.data[lIndex] * 100.0);
-        break;
-    default:
-        break;
+        case VAL_DPT_1:
+            lValue = sKoData.data[lIndex];
+            break;
+        case VAL_DPT_5:
+            lValue = ((int)sKoData.data[lIndex] * 100 / 255);
+            break;
+        case VAL_DPT_2:
+        case VAL_DPT_6:
+        case VAL_DPT_17:
+            lValue = sKoData.data[lIndex];
+            break;
+        case VAL_DPT_7:
+        case VAL_DPT_8:
+            lValue = sKoData.data[lIndex];
+            break;
+        case VAL_DPT_232:
+            lValue = sKoData.data[lIndex];
+            break;
+        case VAL_DPT_9:
+            lValue = ((double)sKoData.data[lIndex] * 100.0);
+            break;
+        default:
+            break;
     }
     return lValue;
 }
@@ -433,35 +434,35 @@ int32_t getInputValueKnx(uint8_t iIOIndex, uint8_t iChannel)
 {
 
     int32_t lValue = 0;
-    uint16_t lParamIndex = (iIOIndex == 1) ? PAR_CH_E1Dpt : PAR_CH_E2Dpt;
+    uint16_t lParamIndex = (iIOIndex == 1) ? LOG_fE1Dpt : LOG_fE2Dpt;
     GroupObject *lKo = getKoForChannel(iIOIndex, iChannel);
     // based on dpt, we read the correct c type.
     switch (getByteParam(lParamIndex, iChannel))
     {
-    case VAL_DPT_2:
-        lValue = lKo->valueRef()[0];
-        break;
-    case VAL_DPT_6:
-        lValue = (int8_t)lKo->value();
-        break;
-    case VAL_DPT_8:
-        lValue = (int16_t)lKo->value();
-        break;
+        case VAL_DPT_2:
+            lValue = lKo->valueRef()[0];
+            break;
+        case VAL_DPT_6:
+            lValue = (int8_t)lKo->value();
+            break;
+        case VAL_DPT_8:
+            lValue = (int16_t)lKo->value();
+            break;
 
-    // case VAL_DPT_7:
-    //     lValue = lKo->valueRef()[0] + 256 * lKo->valueRef()[1];
-    //     break;
-    // case VAL_DPT_232:
-    //     lValue =
-    //         lKo->valueRef()[0] + 256 * lKo->valueRef()[1] + 65536 * lKo->valueRef()[2];
-    //     break;
-    case VAL_DPT_9:
-        lValue = ((double)lKo->value() * 100.0);
-        break;
-    // case VAL_DPT_17:
-    default:
-        lValue = (int32_t)lKo->value();
-        break;
+        // case VAL_DPT_7:
+        //     lValue = lKo->valueRef()[0] + 256 * lKo->valueRef()[1];
+        //     break;
+        // case VAL_DPT_232:
+        //     lValue =
+        //         lKo->valueRef()[0] + 256 * lKo->valueRef()[1] + 65536 * lKo->valueRef()[2];
+        //     break;
+        case VAL_DPT_9:
+            lValue = ((double)lKo->value() * 100.0);
+            break;
+        // case VAL_DPT_17:
+        default:
+            lValue = (int32_t)lKo->value();
+            break;
     }
     return lValue;
 }
@@ -481,60 +482,60 @@ int32_t getInputValue(uint8_t iIOIndex, uint8_t iChannel)
 
 void writeConstantValue(sChannelInfo *cData, uint16_t iParam, uint8_t iChannel)
 {
-    uint8_t lDpt = getByteParam(PAR_CH_ODpt, iChannel);
+    uint8_t lDpt = getByteParam(LOG_fODpt, iChannel);
     switch (lDpt)
     {
         uint8_t lValueByte;
-    case VAL_DPT_1:
-        bool lValueBool;
-        lValueBool = getByteParam(iParam, iChannel) != 0;
-        knxWriteBool(IO_Output, iChannel, lValueBool);
-        break;
-    case VAL_DPT_2:
-        lValueByte = getByteParam(iParam, iChannel);
-        knxWriteRawInt(IO_Output, iChannel, lValueByte);
-        break;
-    case VAL_DPT_5:
-    case VAL_DPT_5001: // correct value is calculated by dpt handling
-        lValueByte = getByteParam(iParam, iChannel);
-        knxWriteInt(IO_Output, iChannel, lValueByte);
-        break;
-    case VAL_DPT_17:
-        lValueByte = getByteParam(iParam, iChannel) - 1;
-        knxWriteInt(IO_Output, iChannel, lValueByte);
-        break;
-    case VAL_DPT_6:
-        int8_t lValueInt;
-        lValueInt = getSByteParam(iParam, iChannel);
-        knxWriteRawInt(IO_Output, iChannel, lValueInt);
-        break;
-    case VAL_DPT_7:
-        uint16_t lValueUWord;
-        lValueUWord = getWordParam(iParam, iChannel);
-        knxWriteInt(IO_Output, iChannel, lValueUWord);
-        break;
-    case VAL_DPT_8:
-        int16_t lValueSWord;
-        lValueSWord = getSWordParam(iParam, iChannel);
-        knxWriteInt(IO_Output, iChannel, lValueSWord);
-        break;
-    case VAL_DPT_9:
-        float lValueFloat;
-        lValueFloat = getFloatParam(iParam, iChannel);
-        knxWriteFloat(IO_Output, iChannel, lValueFloat);
-        break;
-    case VAL_DPT_16:
-        uint8_t *lValueStr;
-        lValueStr = getStringParam(iParam, iChannel);
-        knxWriteString(IO_Output, iChannel, (char *)lValueStr);
-        break;
-    case VAL_DPT_232:
-        int32_t lValueRGB;
-        lValueRGB = getIntParam(iParam, iChannel);
-        knxWriteInt(IO_Output, iChannel, lValueRGB);
-        break;
-    default:
-        break;
+        case VAL_DPT_1:
+            bool lValueBool;
+            lValueBool = getByteParam(iParam, iChannel) != 0;
+            knxWriteBool(IO_Output, iChannel, lValueBool);
+            break;
+        case VAL_DPT_2:
+            lValueByte = getByteParam(iParam, iChannel);
+            knxWriteRawInt(IO_Output, iChannel, lValueByte);
+            break;
+        case VAL_DPT_5:
+        case VAL_DPT_5001: // correct value is calculated by dpt handling
+            lValueByte = getByteParam(iParam, iChannel);
+            knxWriteInt(IO_Output, iChannel, lValueByte);
+            break;
+        case VAL_DPT_17:
+            lValueByte = getByteParam(iParam, iChannel) - 1;
+            knxWriteInt(IO_Output, iChannel, lValueByte);
+            break;
+        case VAL_DPT_6:
+            int8_t lValueInt;
+            lValueInt = getSByteParam(iParam, iChannel);
+            knxWriteRawInt(IO_Output, iChannel, lValueInt);
+            break;
+        case VAL_DPT_7:
+            uint16_t lValueUWord;
+            lValueUWord = getWordParam(iParam, iChannel);
+            knxWriteInt(IO_Output, iChannel, lValueUWord);
+            break;
+        case VAL_DPT_8:
+            int16_t lValueSWord;
+            lValueSWord = getSWordParam(iParam, iChannel);
+            knxWriteInt(IO_Output, iChannel, lValueSWord);
+            break;
+        case VAL_DPT_9:
+            float lValueFloat;
+            lValueFloat = getFloatParam(iParam, iChannel);
+            knxWriteFloat(IO_Output, iChannel, lValueFloat);
+            break;
+        case VAL_DPT_16:
+            uint8_t *lValueStr;
+            lValueStr = getStringParam(iParam, iChannel);
+            knxWriteString(IO_Output, iChannel, (char *)lValueStr);
+            break;
+        case VAL_DPT_232:
+            int32_t lValueRGB;
+            lValueRGB = getIntParam(iParam, iChannel);
+            knxWriteInt(IO_Output, iChannel, lValueRGB);
+            break;
+        default:
+            break;
     }
 }
 
@@ -542,63 +543,63 @@ void writeParameterValue(sChannelInfo *cData, uint8_t iIOIndex, uint8_t iChannel
 {
 
     int32_t lValueOrig = getInputValue(iIOIndex, iChannel);
-    uint16_t lParamDpt = (iIOIndex == 1) ? PAR_CH_E1Dpt : PAR_CH_E2Dpt;
+    uint16_t lParamDpt = (iIOIndex == 1) ? LOG_fE1Dpt : LOG_fE2Dpt;
     uint8_t lInputDpt = getByteParam(lParamDpt, iChannel);
-    uint8_t lDpt = getByteParam(PAR_CH_ODpt, iChannel);
+    uint8_t lDpt = getByteParam(LOG_fODpt, iChannel);
     int32_t lValue = (lInputDpt == VAL_DPT_9) ? lValueOrig / 10 : lValueOrig;
     switch (lDpt)
     {
         uint8_t lValueByte;
-    case VAL_DPT_1:
-        bool lValueBool;
-        lValueBool = lValue != 0;
-        knxWriteBool(IO_Output, iChannel, lValueBool);
-        break;
-    case VAL_DPT_2:
-        lValueByte = lValue;
-        knxWriteRawInt(IO_Output, iChannel, lValueByte);
-        break;
-    case VAL_DPT_5:
-    case VAL_DPT_5001:
-    case VAL_DPT_6:
-    case VAL_DPT_17:
-        lValueByte = lValue;
-        knxWriteInt(IO_Output, iChannel, lValueByte);
-        break;
-        // lValueByte = lValue;
-        // // DPT5 means, that input value range is [0..100], output value range is
-        // // [0..255]
-        // lValueByte = (lValueByte / 100.0) * 255.0;
-        // knxWrite(0, iChannel, lValueByte);
-        // break;
-    case VAL_DPT_7:
-    case VAL_DPT_8:
-        uint16_t lValueWord;
-        lValueWord = lValue;
-        knxWriteInt(IO_Output, iChannel, lValueWord);
-        break;
-    case VAL_DPT_9:
-        float lValueFloat;
-        if (lInputDpt == VAL_DPT_9)
-        {
-            lValueFloat = lValueOrig / 100.0;
-        }
-        else
-        {
-            lValueFloat = lValue;
-        }
-        knxWriteFloat(IO_Output, iChannel, lValueFloat);
-        break;
-    case VAL_DPT_16:
-        char lValueStr[15];
-        sprintf(lValueStr, "%ld", lValue);
-        knxWriteString(IO_Output, iChannel, lValueStr);
-        break;
-    case VAL_DPT_232:
-        knxWriteInt(IO_Output, iChannel, lValue);
-        break;
-    default:
-        break;
+        case VAL_DPT_1:
+            bool lValueBool;
+            lValueBool = lValue != 0;
+            knxWriteBool(IO_Output, iChannel, lValueBool);
+            break;
+        case VAL_DPT_2:
+            lValueByte = lValue;
+            knxWriteRawInt(IO_Output, iChannel, lValueByte);
+            break;
+        case VAL_DPT_5:
+        case VAL_DPT_5001:
+        case VAL_DPT_6:
+        case VAL_DPT_17:
+            lValueByte = lValue;
+            knxWriteInt(IO_Output, iChannel, lValueByte);
+            break;
+            // lValueByte = lValue;
+            // // DPT5 means, that input value range is [0..100], output value range is
+            // // [0..255]
+            // lValueByte = (lValueByte / 100.0) * 255.0;
+            // knxWrite(0, iChannel, lValueByte);
+            // break;
+        case VAL_DPT_7:
+        case VAL_DPT_8:
+            uint16_t lValueWord;
+            lValueWord = lValue;
+            knxWriteInt(IO_Output, iChannel, lValueWord);
+            break;
+        case VAL_DPT_9:
+            float lValueFloat;
+            if (lInputDpt == VAL_DPT_9)
+            {
+                lValueFloat = lValueOrig / 100.0;
+            }
+            else
+            {
+                lValueFloat = lValue;
+            }
+            knxWriteFloat(IO_Output, iChannel, lValueFloat);
+            break;
+        case VAL_DPT_16:
+            char lValueStr[15];
+            sprintf(lValueStr, "%ld", lValue);
+            knxWriteString(IO_Output, iChannel, lValueStr);
+            break;
+        case VAL_DPT_232:
+            knxWriteInt(IO_Output, iChannel, lValue);
+            break;
+        default:
+            break;
     }
 }
 
@@ -609,20 +610,20 @@ void ProcessInternalInputs(sChannelInfo *cData, uint8_t iChannel, bool iValue)
     // search for any internal input associated to this channel
     for (uint8_t lChannel = 0; lChannel < gNumChannels; lChannel++)
     {
-        uint8_t lInput1 = getByteParam(PAR_CH_I1, lChannel);
+        uint8_t lInput1 = getByteParam(LOG_fI1, lChannel);
         if (lInput1 > 0)
         {
-            uint32_t lFunction1 = getIntParam(PAR_CH_I1Function, lChannel);
+            uint32_t lFunction1 = getIntParam(LOG_fI1Function, lChannel);
             if (lFunction1 == (uint32_t)(iChannel + 1))
             {
                 sChannelInfo *lData = &gChannelData[lChannel];
                 StartLogic(lData, lChannel, BIT_INT_INPUT_1, iValue);
             }
         }
-        uint8_t lInput2 = getByteParam(PAR_CH_I2, lChannel);
+        uint8_t lInput2 = getByteParam(LOG_fI2, lChannel);
         if (lInput2 > 0)
         {
-            uint32_t lFunction2 = getIntParam(PAR_CH_I2Function, lChannel);
+            uint32_t lFunction2 = getIntParam(LOG_fI2Function, lChannel);
             if (lFunction2 == (uint32_t)(iChannel + 1))
             {
                 sChannelInfo *lData = &gChannelData[lChannel];
@@ -638,62 +639,62 @@ void ProcessOutput(sChannelInfo *cData, uint8_t iChannel, bool iValue)
     ProcessInternalInputs(cData, iChannel, iValue);
     if (iValue)
     {
-        uint8_t lOn = getByteParam(PAR_CH_OOn, iChannel);
+        uint8_t lOn = getByteParam(LOG_fOOn, iChannel);
         switch (lOn)
         {
-        case VAL_Out_Constant:
-            writeConstantValue(cData, PAR_CH_OOnDpt1, iChannel);
-            break;
-        case VAL_Out_ValE1:
-            writeParameterValue(cData, IO_Input1, iChannel);
-            break;
-        case VAL_Out_ValE2:
-            writeParameterValue(cData, IO_Input2, iChannel);
-            break;
-        case VAL_Out_ReadRequest:
-            knxRead(IO_Output, iChannel);
-            break;
-        case VAL_Out_ResetDevice:
-            knxResetDevice(PAR_CH_OOnDpt1, iChannel);
-            break;
-        case VAL_Out_Buzzer:
+            case VAL_Out_Constant:
+                writeConstantValue(cData, LOG_fOOnDpt1, iChannel);
+                break;
+            case VAL_Out_ValE1:
+                writeParameterValue(cData, IO_Input1, iChannel);
+                break;
+            case VAL_Out_ValE2:
+                writeParameterValue(cData, IO_Input2, iChannel);
+                break;
+            case VAL_Out_ReadRequest:
+                knxRead(IO_Output, iChannel);
+                break;
+            case VAL_Out_ResetDevice:
+                knxResetDevice(LOG_fOOnDpt1, iChannel);
+                break;
+            case VAL_Out_Buzzer:
 #ifndef __linux__
-            digitalWrite(BUZZER_PIN, HIGH);
+                digitalWrite(BUZZER_PIN, HIGH);
 #endif
-            break;
-        default:
-            // there is no output parametrized
-            break;
+                break;
+            default:
+                // there is no output parametrized
+                break;
         }
     }
     else
     {
-        uint8_t lOff = getByteParam(PAR_CH_OOff, iChannel);
+        uint8_t lOff = getByteParam(LOG_fOOff, iChannel);
         switch (lOff)
         {
-        case VAL_Out_Constant:
-            writeConstantValue(cData, PAR_CH_OOffDpt1, iChannel);
-            break;
-        case VAL_Out_ValE1:
-            writeParameterValue(cData, IO_Input1, iChannel);
-            break;
-        case VAL_Out_ValE2:
-            writeParameterValue(cData, IO_Input2, iChannel);
-            break;
-        case VAL_Out_ReadRequest:
-            knxRead(IO_Output, iChannel);
-            break;
-        case VAL_Out_ResetDevice:
-            knxResetDevice(PAR_CH_OOffDpt1, iChannel);
-            break;
-        case VAL_Out_Buzzer:
+            case VAL_Out_Constant:
+                writeConstantValue(cData, LOG_fOOffDpt1, iChannel);
+                break;
+            case VAL_Out_ValE1:
+                writeParameterValue(cData, IO_Input1, iChannel);
+                break;
+            case VAL_Out_ValE2:
+                writeParameterValue(cData, IO_Input2, iChannel);
+                break;
+            case VAL_Out_ReadRequest:
+                knxRead(IO_Output, iChannel);
+                break;
+            case VAL_Out_ResetDevice:
+                knxResetDevice(LOG_fOOffDpt1, iChannel);
+                break;
+            case VAL_Out_Buzzer:
 #ifndef __linux__
-            digitalWrite(BUZZER_PIN, LOW);
+                digitalWrite(BUZZER_PIN, LOW);
 #endif
-            break;
-        default:
-            // there is no output parametrized
-            break;
+                break;
+            default:
+                // there is no output parametrized
+                break;
         }
     }
     // any valid output removes all input trigger
@@ -709,7 +710,7 @@ void StartStartup(sChannelInfo *cData, uint8_t iChannel)
 // channel startup delay
 void ProcessStartup(sChannelInfo *cData, uint8_t iChannel)
 {
-    if (millis() - cData->onDelay > getIntParam(PAR_CH_ChannelDelay, iChannel) * 1000)
+    if (millis() - cData->onDelay > getIntParam(LOG_fChannelDelay, iChannel) * 1000)
     {
         // we waited enough, remove pipeline marker
         cData->currentPipeline &= ~PIP_STARTUP;
@@ -720,7 +721,7 @@ void ProcessStartup(sChannelInfo *cData, uint8_t iChannel)
 // we send an ReadRequest if reading from input 1 should be repeated
 void ProcessRepeatInput1(sChannelInfo *cData, uint8_t iChannel)
 {
-    uint16_t lRepeatTime = getIntParam(PAR_CH_E1Repeat, iChannel) * 1000;
+    uint16_t lRepeatTime = getIntParam(LOG_fE1Repeat, iChannel) * 1000;
 
     if (millis() - cData->repeatInput1Delay > lRepeatTime)
     {
@@ -735,7 +736,7 @@ void ProcessRepeatInput1(sChannelInfo *cData, uint8_t iChannel)
 void ProcessRepeatInput2(sChannelInfo *cData, uint8_t iChannel)
 {
 
-    uint16_t lRepeatTime = getIntParam(PAR_CH_E2Repeat, iChannel) * 1000;
+    uint16_t lRepeatTime = getIntParam(LOG_fE2Repeat, iChannel) * 1000;
 
     if (millis() - cData->repeatInput2Delay > lRepeatTime)
     {
@@ -755,7 +756,7 @@ void StartConvert(sChannelInfo *cData, uint8_t iChannel, uint8_t iIOIndex)
 void ProcessConvertInput(sChannelInfo *cData, uint8_t iChannel, uint8_t iIOIndex)
 {
 
-    uint16_t lParamBase = (iIOIndex == 1) ? PAR_CH_E1 : PAR_CH_E2;
+    uint16_t lParamBase = (iIOIndex == 1) ? LOG_fE1 : LOG_fE2;
     uint8_t lConvert = getByteParam(lParamBase, iChannel) >> 4;
     bool lValueOut = 0;
     // get input value
@@ -771,59 +772,59 @@ void ProcessConvertInput(sChannelInfo *cData, uint8_t iChannel, uint8_t iIOIndex
     bool lDoDefault = false;
     switch (lDpt)
     {
-    case VAL_DPT_1:
-        lValueOut = lValue1In;
-        break;
-    case VAL_DPT_17:
-        // there might be 8 possible scenes to check
-        lUpperBound = 9; // we start with 2
-        lValue1In += 1;
-    case VAL_DPT_2:
-        // there might be 4 possible zwangsführung values to check
-        if (lUpperBound == 0)
-            lUpperBound = 5; // we start with 2
-        // scenes or zwngsführung have no intervals, but multiple single values
-        for (size_t lScene = 2; lScene <= lUpperBound && lValueOut == 0; lScene++)
-        {
-            uint8_t lValue = getByteParam(lParamBase + lScene, iChannel);
-            lValueOut = ((uint8_t)lValue1In == lValue);
-        }
-        break;
-    default:
-        lDoDefault = true;
-        break;
+        case VAL_DPT_1:
+            lValueOut = lValue1In;
+            break;
+        case VAL_DPT_17:
+            // there might be 8 possible scenes to check
+            lUpperBound = 9; // we start with 2
+            lValue1In += 1;
+        case VAL_DPT_2:
+            // there might be 4 possible zwangsführung values to check
+            if (lUpperBound == 0)
+                lUpperBound = 5; // we start with 2
+            // scenes or zwngsführung have no intervals, but multiple single values
+            for (size_t lScene = 2; lScene <= lUpperBound && lValueOut == 0; lScene++)
+            {
+                uint8_t lValue = getByteParam(lParamBase + lScene, iChannel);
+                lValueOut = ((uint8_t)lValue1In == lValue);
+            }
+            break;
+        default:
+            lDoDefault = true;
+            break;
     }
     if (lDoDefault)
     {
         // for all remaining DPT we determine the input value by an converter module
         switch (lConvert)
         {
-        case VAL_InputConvert_Interval:
-            lValueOut = (lValue1In >= getParamByDpt(lDpt, lParamBase + 2, iChannel)) &&
-                        (lValue1In <= getParamByDpt(lDpt, lParamBase + 6, iChannel));
-            break;
-        case VAL_InputConvert_DeltaInterval:
-            lValueOut = (lValue1In - lValue2In >= getParamForDelta(lDpt, lParamBase + 2, iChannel)) &&
-                        (lValue1In - lValue2In <= getParamForDelta(lDpt, lParamBase + 6, iChannel));
-            break;
-        case VAL_InputConvert_Hysterese:
-            lValueOut = cData->currentIO & iIOIndex; // retrieve old result, will be send if current value is in hysterese inbervall
-            if (lValue1In <= getParamByDpt(lDpt, lParamBase + 2, iChannel))
-                lValueOut = false;
-            if (lValue1In >= getParamByDpt(lDpt, lParamBase + 6, iChannel))
-                lValueOut = true;
-            break;
-        case VAL_InputConvert_DeltaHysterese:
-            lValueOut = cData->currentIO & iIOIndex; // retrieve old result, will be send if current value is in hysterese inbervall
-            if (lValue1In - lValue2In <= getParamForDelta(lDpt, lParamBase + 2, iChannel))
-                lValueOut = false;
-            if (lValue1In - lValue2In >= getParamForDelta(lDpt, lParamBase + 6, iChannel))
-                lValueOut = true;
-            break;
+            case VAL_InputConvert_Interval:
+                lValueOut = (lValue1In >= getParamByDpt(lDpt, lParamBase + 2, iChannel)) &&
+                            (lValue1In <= getParamByDpt(lDpt, lParamBase + 6, iChannel));
+                break;
+            case VAL_InputConvert_DeltaInterval:
+                lValueOut = (lValue1In - lValue2In >= getParamForDelta(lDpt, lParamBase + 2, iChannel)) &&
+                            (lValue1In - lValue2In <= getParamForDelta(lDpt, lParamBase + 6, iChannel));
+                break;
+            case VAL_InputConvert_Hysterese:
+                lValueOut = cData->currentIO & iIOIndex; // retrieve old result, will be send if current value is in hysterese inbervall
+                if (lValue1In <= getParamByDpt(lDpt, lParamBase + 2, iChannel))
+                    lValueOut = false;
+                if (lValue1In >= getParamByDpt(lDpt, lParamBase + 6, iChannel))
+                    lValueOut = true;
+                break;
+            case VAL_InputConvert_DeltaHysterese:
+                lValueOut = cData->currentIO & iIOIndex; // retrieve old result, will be send if current value is in hysterese inbervall
+                if (lValue1In - lValue2In <= getParamForDelta(lDpt, lParamBase + 2, iChannel))
+                    lValueOut = false;
+                if (lValue1In - lValue2In >= getParamForDelta(lDpt, lParamBase + 6, iChannel))
+                    lValueOut = true;
+                break;
 
-        default:
-            // do nothing, wrong converter id
-            break;
+            default:
+                // do nothing, wrong converter id
+                break;
         }
     }
     // start logic processing for this input
@@ -842,7 +843,7 @@ void StartOnOffRepeat(sChannelInfo *cData, uint8_t iChannel, bool iOutput)
             cData->repeatOnOffDelay = millis();
             cData->currentPipeline &= ~PIP_OFF_REPEAT;
             ProcessOutput(cData, iChannel, iOutput);
-            if (getIntParam(PAR_CH_ORepeatOn, iChannel) > 0)
+            if (getIntParam(LOG_fORepeatOn, iChannel) > 0)
                 cData->currentPipeline |= PIP_ON_REPEAT;
         }
     }
@@ -853,7 +854,7 @@ void StartOnOffRepeat(sChannelInfo *cData, uint8_t iChannel, bool iOutput)
             cData->repeatOnOffDelay = millis();
             cData->currentPipeline &= ~PIP_ON_REPEAT;
             ProcessOutput(cData, iChannel, iOutput);
-            if (getIntParam(PAR_CH_ORepeatOff, iChannel) > 0)
+            if (getIntParam(LOG_fORepeatOff, iChannel) > 0)
                 cData->currentPipeline |= PIP_OFF_REPEAT;
         }
     }
@@ -867,12 +868,12 @@ void ProcessOnOffRepeat(sChannelInfo *cData, uint8_t iChannel)
 
     if (cData->currentPipeline & PIP_ON_REPEAT)
     {
-        lRepeat = getIntParam(PAR_CH_ORepeatOn, iChannel) * 100;
+        lRepeat = getIntParam(LOG_fORepeatOn, iChannel) * 100;
         lValue = true;
     }
     if (cData->currentPipeline & PIP_OFF_REPEAT)
     {
-        lRepeat = getIntParam(PAR_CH_ORepeatOff, iChannel) * 100;
+        lRepeat = getIntParam(LOG_fORepeatOff, iChannel) * 100;
         lValue = false;
     }
 
@@ -888,23 +889,23 @@ void ProcessOnOffRepeat(sChannelInfo *cData, uint8_t iChannel)
 // starts Output filter
 void StartOutputFilter(sChannelInfo *cData, uint8_t iChannel, bool iOutput)
 {
-    uint8_t lAllow = (getByteParam(PAR_CH_OOutputFilter, iChannel) & 96) >> 5;
+    uint8_t lAllow = (getByteParam(LOG_fOOutputFilter, iChannel) & 96) >> 5;
     bool lLastOutput = (cData->currentIO & BIT_LAST_OUTPUT) > 0;
     bool lContinue = false;
     switch (lAllow)
     {
-    case VAL_AllowRepeat_All:
-        lContinue = true;
-        break;
-    case VAL_AllowRepeat_On:
-        lContinue = (iOutput || iOutput != lLastOutput);
-        break;
-    case VAL_AllowRepeat_Off:
-        lContinue = (!iOutput || iOutput != lLastOutput);
-        break;
-    default: // VAL_AlloRepeat_None
-        lContinue = (iOutput != lLastOutput);
-        break;
+        case VAL_AllowRepeat_All:
+            lContinue = true;
+            break;
+        case VAL_AllowRepeat_On:
+            lContinue = (iOutput || iOutput != lLastOutput);
+            break;
+        case VAL_AllowRepeat_Off:
+            lContinue = (!iOutput || iOutput != lLastOutput);
+            break;
+        default: // VAL_AlloRepeat_None
+            lContinue = (iOutput != lLastOutput);
+            break;
     }
     if (lContinue)
     {
@@ -941,7 +942,7 @@ void StartOnDelay(sChannelInfo *cData, uint8_t iChannel)
     //    1. second on switches immediately on
     //    2. second on restarts delay time
     //    3. an off stops on delay
-    uint8_t lOnDelay = getByteParam(PAR_CH_ODelay, iChannel);
+    uint8_t lOnDelay = getByteParam(LOG_fODelay, iChannel);
     uint8_t lOnDelayRepeat = (lOnDelay & 96) >> 5;
     if ((cData->currentPipeline & PIP_ON_DELAY) == 0)
     {
@@ -953,17 +954,17 @@ void StartOnDelay(sChannelInfo *cData, uint8_t iChannel)
         // we have a new on value, we look how to process in case of repetition
         switch (lOnDelayRepeat)
         {
-        case VAL_Delay_Immediate:
-            // end pipeline and switch immediately
-            // cData->currentPipeline &= ~PIP_ON_DELAY;
-            // StartOnOffRepeat(cData, iChannel, true);
-            cData->onDelay = 0;
-            break;
-        case VAL_Delay_Extend:
-            cData->onDelay = millis();
-            break;
-        default:
-            break;
+            case VAL_Delay_Immediate:
+                // end pipeline and switch immediately
+                // cData->currentPipeline &= ~PIP_ON_DELAY;
+                // StartOnOffRepeat(cData, iChannel, true);
+                cData->onDelay = 0;
+                break;
+            case VAL_Delay_Extend:
+                cData->onDelay = millis();
+                break;
+            default:
+                break;
         }
     }
     uint8_t lOnDelayReset = (lOnDelay & 16) >> 4;
@@ -976,7 +977,7 @@ void StartOnDelay(sChannelInfo *cData, uint8_t iChannel)
 
 void ProcessOnDelay(sChannelInfo *cData, uint8_t iChannel)
 {
-    uint32_t lOnDelay = getIntParam(PAR_CH_ODelayOn, iChannel) * 100;
+    uint32_t lOnDelay = getIntParam(LOG_fODelayOn, iChannel) * 100;
     if (millis() - cData->onDelay > lOnDelay)
     {
         // delay time is over, we turn off pipeline
@@ -993,7 +994,7 @@ void StartOffDelay(sChannelInfo *cData, uint8_t iChannel)
     //    1. second off switches immediately off
     //    2. second off restarts delay time
     //    3. an on stops off delay
-    uint8_t lOffDelay = getByteParam(PAR_CH_ODelay, iChannel);
+    uint8_t lOffDelay = getByteParam(LOG_fODelay, iChannel);
     uint8_t lOffDelayRepeat = (lOffDelay & 12) >> 2;
     if ((cData->currentPipeline & PIP_OFF_DELAY) == 0)
     {
@@ -1005,17 +1006,17 @@ void StartOffDelay(sChannelInfo *cData, uint8_t iChannel)
         // we have a new on value, we look how to process in case of repetition
         switch (lOffDelayRepeat)
         {
-        case VAL_Delay_Immediate:
-            // end pipeline and switch immediately
-            // cData->currentPipeline &= ~PIP_OFF_DELAY;
-            // StartOnOffRepeat(cData, iChannel, false);
-            cData->offDelay = 0;
-            break;
-        case VAL_Delay_Extend:
-            cData->offDelay = millis();
-            break;
-        default:
-            break;
+            case VAL_Delay_Immediate:
+                // end pipeline and switch immediately
+                // cData->currentPipeline &= ~PIP_OFF_DELAY;
+                // StartOnOffRepeat(cData, iChannel, false);
+                cData->offDelay = 0;
+                break;
+            case VAL_Delay_Extend:
+                cData->offDelay = millis();
+                break;
+            default:
+                break;
         }
     }
     uint8_t lOffDelayReset = (lOffDelay & 2) >> 1;
@@ -1028,7 +1029,7 @@ void StartOffDelay(sChannelInfo *cData, uint8_t iChannel)
 
 void ProcessOffDelay(sChannelInfo *cData, uint8_t iChannel)
 {
-    uint32_t lOffDelay = getIntParam(PAR_CH_ODelayOff, iChannel) * 100;
+    uint32_t lOffDelay = getIntParam(LOG_fODelayOff, iChannel) * 100;
     if (millis() - cData->offDelay > lOffDelay)
     {
         // delay time is over, we turn off pipeline
@@ -1042,7 +1043,7 @@ void StartLogic(sChannelInfo *cData, uint8_t iChannel, uint8_t iIOIndex, bool iV
 {
     // invert input
     bool lValue = iValue;
-    uint16_t lParamBase = (iIOIndex == 1) ? PAR_CH_E1 : (iIOIndex == 2) ? PAR_CH_E2 : (iIOIndex == 4) ? PAR_CH_I1 : PAR_CH_I2;
+    uint16_t lParamBase = (iIOIndex == 1) ? LOG_fE1 : (iIOIndex == 2) ? LOG_fE2 : (iIOIndex == 4) ? LOG_fI1 : LOG_fI2;
     if ((getByteParam(lParamBase, iChannel) & BIT_INPUT_MASK) == 2)
         lValue = !iValue;
     // set according input bit
@@ -1058,7 +1059,7 @@ void StartLogic(sChannelInfo *cData, uint8_t iChannel, uint8_t iIOIndex, bool iV
 
 void ProcessBlink(sChannelInfo *cData, uint8_t iChannel)
 {
-    uint32_t lBlinkTime = getIntParam(PAR_CH_OBlink, iChannel) * 100;
+    uint32_t lBlinkTime = getIntParam(LOG_fOBlink, iChannel) * 100;
     if (millis() - cData->blinkDelay > lBlinkTime)
     {
         bool lOn = !(cData->currentIO & BIT_OUTPUT);
@@ -1078,7 +1079,7 @@ void ProcessBlink(sChannelInfo *cData, uint8_t iChannel)
 
 void StartBlink(sChannelInfo *cData, uint8_t iChannel)
 {
-    uint32_t lBlinkTime = getIntParam(PAR_CH_OBlink, iChannel);
+    uint32_t lBlinkTime = getIntParam(LOG_fOBlink, iChannel);
     if (lBlinkTime > 0)
     {
         cData->blinkDelay = millis();
@@ -1090,8 +1091,8 @@ void StartBlink(sChannelInfo *cData, uint8_t iChannel)
 void ProcessStairlight(sChannelInfo *cData, uint8_t iChannel)
 {
 
-    uint8_t lStairTimeBase = getByteParam(PAR_CH_OTimeBase, iChannel);
-    uint32_t lStairTime = getIntParam(PAR_CH_OTime, iChannel);
+    uint8_t lStairTimeBase = getByteParam(LOG_fOTimeBase, iChannel);
+    uint32_t lStairTime = getIntParam(LOG_fOTime, iChannel);
     uint32_t lTime = lStairTime * sTimeFactors[lStairTimeBase];
 
     if (millis() - cData->stairlightDelay > lTime)
@@ -1108,7 +1109,7 @@ void ProcessStairlight(sChannelInfo *cData, uint8_t iChannel)
 void StartStairlight(sChannelInfo *cData, uint8_t iChannel, bool iOutput)
 {
 
-    if (getByteParam(PAR_CH_OStair, iChannel))
+    if (getByteParam(LOG_fOStair, iChannel))
     {
         if (iOutput)
         {
@@ -1116,7 +1117,7 @@ void StartStairlight(sChannelInfo *cData, uint8_t iChannel, bool iOutput)
             if ((cData->currentPipeline & PIP_STAIRLIGHT) == 0)
                 StartOnDelay(cData, iChannel);
             // stairlight should also be switched on
-            uint8_t lRetrigger = getByteParam(PAR_CH_ORetrigger, iChannel);
+            uint8_t lRetrigger = getByteParam(LOG_fORetrigger, iChannel);
             if ((cData->currentPipeline & PIP_STAIRLIGHT) == 0 || lRetrigger == 1)
             {
                 // stairlight is not running or may be retriggered
@@ -1132,7 +1133,7 @@ void StartStairlight(sChannelInfo *cData, uint8_t iChannel, bool iOutput)
             if ((cData->currentPipeline & PIP_STAIRLIGHT) == 0)
                 StartOffDelay(cData, iChannel);
             // stairlight should be switched off
-            uint8_t lOff = getByteParam(PAR_CH_OStairOff, iChannel);
+            uint8_t lOff = getByteParam(LOG_fOStairOff, iChannel);
             if (lOff == 1)
             {
                 // stairlight might be switched off,
@@ -1167,68 +1168,68 @@ void ProcessLogic(sChannelInfo *cData, uint8_t iChannel)
     cData->currentPipeline &= ~PIP_LOGIC_EXECUTE;
     // we have to delete all trigger if output pipeline is not started
     bool lOutputSent = false;
-    if (getByteParam(PAR_CH_Calculate, iChannel) == 0 || lValidInputs == lActiveInputs)
+    if (getByteParam(LOG_fCalculate, iChannel) == 0 || lValidInputs == lActiveInputs)
     {
         // we process only if all inputs are valid or the user requested invalid evaluation
-        uint8_t lLogic = getByteParam(PAR_CH_Logic, iChannel);
+        uint8_t lLogic = getByteParam(LOG_fLogic, iChannel);
         uint8_t lOnes = 0;
         switch (lLogic)
         {
 
-        case VAL_Logic_And:
-            // AND handles invalid inputs as 1
-            //			lCurrentInputs |= ~lValidInputs &
-            //BIT_INPUT_MASK; //Add invalid bits to current input 			lNewOutput =
-            //(lValidInputs == 15);				  //Check if all bits
-            //are set -> logical AND of all input bits
-            lNewOutput = (lCurrentInputs == lActiveInputs);
-            lValidOutput = true;
-            break;
+            case VAL_Logic_And:
+                // AND handles invalid inputs as 1
+                //			lCurrentInputs |= ~lValidInputs &
+                //BIT_INPUT_MASK; //Add invalid bits to current input 			lNewOutput =
+                //(lValidInputs == 15);				  //Check if all bits
+                //are set -> logical AND of all input bits
+                lNewOutput = (lCurrentInputs == lActiveInputs);
+                lValidOutput = true;
+                break;
 
-        case VAL_Logic_Or:
-            // OR handles invalid inputs as 0
-            //			lCurrentInputs &= lValidInputs;  //Add invalid
-            //bits to current input
-            lNewOutput = (lCurrentInputs > 0); // Check if any bit is set -> logical OR of all input bits
-            lValidOutput = true;
-            break;
+            case VAL_Logic_Or:
+                // OR handles invalid inputs as 0
+                //			lCurrentInputs &= lValidInputs;  //Add invalid
+                //bits to current input
+                lNewOutput = (lCurrentInputs > 0); // Check if any bit is set -> logical OR of all input bits
+                lValidOutput = true;
+                break;
 
-        case VAL_Logic_ExOr:
-            // EXOR handles invalid inputs as non existig
-            // count valid bits in input mask
-            for (size_t lBit = 1; lBit < BIT_INPUT_MASK; lBit <<= 1)
-            {
-                lOnes += (lCurrentInputs & lBit) > 0;
-            }
-            lNewOutput = (lOnes % 2 == 1); // Check if we have an odd number of bits
-                                           // -> logical EXOR of all input bits
-            lValidOutput = true;
-            break;
+            case VAL_Logic_ExOr:
+                // EXOR handles invalid inputs as non existig
+                // count valid bits in input mask
+                for (size_t lBit = 1; lBit < BIT_INPUT_MASK; lBit <<= 1)
+                {
+                    lOnes += (lCurrentInputs & lBit) > 0;
+                }
+                lNewOutput = (lOnes % 2 == 1); // Check if we have an odd number of bits
+                                               // -> logical EXOR of all input bits
+                lValidOutput = true;
+                break;
 
-        case VAL_Logic_Gate:
-            // GATE works a little bit more complex
-            // E1 OR I1 are the data inputs
-            // E2 OR I2 are the gate inputs
-            // Invalid data is handled as ???
-            // Invalid gate is an open gate (1)
-            uint8_t lGate;
-            lGate = ((lCurrentInputs & (BIT_EXT_INPUT_2 | BIT_INT_INPUT_2)) > 0);
-            uint8_t lValue;
-            lValue = ((lCurrentInputs & (BIT_EXT_INPUT_1 | BIT_INT_INPUT_1)) > 0);
-            if (lGate)
-                lNewOutput = lValue; // Check if any bit is set -> logical OR of all input bits
-            lValidOutput = lGate;
-            break;
+            case VAL_Logic_Gate:
+                // GATE works a little bit more complex
+                // E1 OR I1 are the data inputs
+                // E2 OR I2 are the gate inputs
+                // Invalid data is handled as ???
+                // Invalid gate is an open gate (1)
+                uint8_t lGate;
+                lGate = ((lCurrentInputs & (BIT_EXT_INPUT_2 | BIT_INT_INPUT_2)) > 0);
+                uint8_t lValue;
+                lValue = ((lCurrentInputs & (BIT_EXT_INPUT_1 | BIT_INT_INPUT_1)) > 0);
+                if (lGate)
+                    lNewOutput = lValue; // Check if any bit is set -> logical OR of all input bits
+                lValidOutput = lGate;
+                break;
 
-        default:
-            break;
+            default:
+                break;
         }
         // now there is a new Output value and we know, if it is valid
         // lets check, if we send this value through the pipeline
         // and if not, we have to delete all trigger
         if (lValidOutput)
         {
-            uint8_t lTrigger = getByteParam(PAR_CH_Trigger, iChannel);
+            uint8_t lTrigger = getByteParam(LOG_fTrigger, iChannel);
             if ((lTrigger == 0 && lNewOutput != lCurrentOuput) ||
                 (lTrigger & cData->triggerIO) > 0)
             {
@@ -1260,85 +1261,85 @@ void prepareChannels()
         lData->triggerIO = 0;
         lData->currentIO = 0;
 
-        if (getByteParam(PAR_CH_Logic, lChannel) > 0)
+        if (getByteParam(LOG_fLogic, lChannel) > 0)
         {
             // function is active, we process input presets
             // external input 1
             // first check, if input is active
-            uint8_t lIsActive = getByteParam(PAR_CH_E1, lChannel) & BIT_INPUT_MASK;
+            uint8_t lIsActive = getByteParam(LOG_fE1, lChannel) & BIT_INPUT_MASK;
             if (lIsActive == 0)
             {
                 //input 1 might be also activated by a delta input converter
-                lIsActive = (getByteParam(PAR_CH_E2Convert, lChannel) >> 4) & 1;
+                lIsActive = (getByteParam(LOG_fE2Convert, lChannel) >> 4) & 1;
             }
             if (lIsActive > 0)
             {
                 // input is active, we set according flag
                 lData->validActiveIO |= BIT_EXT_INPUT_1 << 4;
                 // now set input default value
-                uint8_t lParInput = getByteParam(PAR_CH_E1Default, lChannel);
+                uint8_t lParInput = getByteParam(LOG_fE1Default, lChannel);
                 switch (lParInput)
                 {
-                case VAL_InputDefault_Read:
-                    /* to read immediately we activate repeated read pipeline with 0 delay */
-                    lData->repeatInput1Delay = 0;
-                    lData->currentPipeline |= PIP_REPEAT_INPUT1;
-                    break;
+                    case VAL_InputDefault_Read:
+                        /* to read immediately we activate repeated read pipeline with 0 delay */
+                        lData->repeatInput1Delay = 0;
+                        lData->currentPipeline |= PIP_REPEAT_INPUT1;
+                        break;
 
-                case VAL_InputDefault_False:
-                    /* we clear bit for E1 and mark this value as valid */
-                    StartLogic(lData, lChannel, BIT_EXT_INPUT_1, false);
-                    break;
+                    case VAL_InputDefault_False:
+                        /* we clear bit for E1 and mark this value as valid */
+                        StartLogic(lData, lChannel, BIT_EXT_INPUT_1, false);
+                        break;
 
-                case VAL_InputDefault_True:
-                    /* we set bit for E1 and mark this value as valid */
-                    StartLogic(lData, lChannel, BIT_EXT_INPUT_1, true);
-                    break;
+                    case VAL_InputDefault_True:
+                        /* we set bit for E1 and mark this value as valid */
+                        StartLogic(lData, lChannel, BIT_EXT_INPUT_1, true);
+                        break;
 
-                default:
-                    /* do nothing, value is invalid */
-                    break;
+                    default:
+                        /* do nothing, value is invalid */
+                        break;
                 }
             }
             // external input 2
             // first check, if input is active
-            lIsActive = getByteParam(PAR_CH_E2, lChannel);
+            lIsActive = getByteParam(LOG_fE2, lChannel);
             if (lIsActive == 0)
             {
                 //input 2 might be also activated by a delta input converter
-                lIsActive = (getByteParam(PAR_CH_E1Convert, lChannel) >> 4) & 1;
+                lIsActive = (getByteParam(LOG_fE1Convert, lChannel) >> 4) & 1;
             }
             if (lIsActive > 0)
             {
                 // input is active, we set according flag
                 lData->validActiveIO |= BIT_EXT_INPUT_2 << 4;
-                uint8_t lParInput = getByteParam(PAR_CH_E2Default, lChannel);
+                uint8_t lParInput = getByteParam(LOG_fE2Default, lChannel);
                 switch (lParInput)
                 {
-                case VAL_InputDefault_Read:
-                    /* to read immediately we activate repeated read pipeline with 0 delay */
-                    lData->repeatInput2Delay = 0;
-                    lData->currentPipeline |= PIP_REPEAT_INPUT2;
-                    break;
+                    case VAL_InputDefault_Read:
+                        /* to read immediately we activate repeated read pipeline with 0 delay */
+                        lData->repeatInput2Delay = 0;
+                        lData->currentPipeline |= PIP_REPEAT_INPUT2;
+                        break;
 
-                case VAL_InputDefault_False:
-                    /* we clear bit for E2 and mark this value as valid */
-                    StartLogic(lData, lChannel, BIT_EXT_INPUT_2, false);
-                    break;
+                    case VAL_InputDefault_False:
+                        /* we clear bit for E2 and mark this value as valid */
+                        StartLogic(lData, lChannel, BIT_EXT_INPUT_2, false);
+                        break;
 
-                case VAL_InputDefault_True:
-                    /* we set bit for E2 and mark this value as valid */
-                    StartLogic(lData, lChannel, BIT_EXT_INPUT_2, true);
-                    break;
+                    case VAL_InputDefault_True:
+                        /* we set bit for E2 and mark this value as valid */
+                        StartLogic(lData, lChannel, BIT_EXT_INPUT_2, true);
+                        break;
 
-                default:
-                    /* do nothing, value is invalid */
-                    break;
+                    default:
+                        /* do nothing, value is invalid */
+                        break;
                 }
             }
             // internal input 1
             // first check, if input is active
-            lIsActive = getByteParam(PAR_CH_I1, lChannel);
+            lIsActive = getByteParam(LOG_fI1, lChannel);
             if (lIsActive > 0)
             {
                 // input is active, we set according flag
@@ -1346,7 +1347,7 @@ void prepareChannels()
             }
             // internal input 2
             // first check, if input is active
-            lIsActive = getByteParam(PAR_CH_I2, lChannel);
+            lIsActive = getByteParam(LOG_fI2, lChannel);
             if (lIsActive > 0)
             {
                 // input is active, we set according flag
@@ -1437,14 +1438,14 @@ void processInput(uint8_t iIOIndex, uint8_t iChannel)
     if (iIOIndex == 0)
         return;
     sChannelInfo *lData = &gChannelData[iChannel];
-    uint16_t lParamBase = (iIOIndex == 1) ? PAR_CH_E1 : PAR_CH_E2;
+    uint16_t lParamBase = (iIOIndex == 1) ? LOG_fE1 : LOG_fE2;
     // we have now an event for an input, first we check, if this input is active
     uint8_t lActive = getByteParam(lParamBase, iChannel) & BIT_INPUT_MASK;
     if (lActive > 0)
         // this input is we start convert for this input
         StartConvert(lData, iChannel, iIOIndex);
     // this input might also be used for delta conversion in the other input
-    uint16_t lOtherParamBase = (iIOIndex == 2) ? PAR_CH_E1 : PAR_CH_E2;
+    uint16_t lOtherParamBase = (iIOIndex == 2) ? LOG_fE1 : LOG_fE2;
     uint8_t lConverter = getByteParam(lOtherParamBase, iChannel) >> 4;
     if (lConverter & 1)
     {
@@ -1456,9 +1457,9 @@ void processInput(uint8_t iIOIndex, uint8_t iChannel)
 // on input level, all dpt>1 values are converted to bool by the according converter
 void processInputKo(GroupObject &iKo)
 {
-    uint16_t lKoNumber = iKo.asap() - KO_Offset;
-    uint8_t lChannel = lKoNumber / 3;
-    uint8_t lIOIndex = lKoNumber % 3 + 1;
+    uint16_t lKoNumber = iKo.asap() - LOG_KoOffset;
+    uint8_t lChannel = lKoNumber / LOG_KoBlockSize;
+    uint8_t lIOIndex = lKoNumber % LOG_KoBlockSize + 1;
     processInput(lIOIndex, lChannel);
 }
 
@@ -1481,54 +1482,54 @@ void setDPT(GroupObject *iKo, uint8_t iChannel, uint8_t iParamDpt)
     uint8_t lDpt = getByteParam(iParamDpt, iChannel);
     switch (lDpt)
     {
-    case VAL_DPT_1:
-        iKo->dataPointType(Dpt(1, 1));
-        break;
-    case VAL_DPT_2:
-        iKo->dataPointType(Dpt(2, 1));
-        break;
-    case VAL_DPT_5:
-        iKo->dataPointType(Dpt(5, 10));
-        break;
-    case VAL_DPT_5001:
-        iKo->dataPointType(Dpt(5, 1));
-        break;
-    case VAL_DPT_6:
-        iKo->dataPointType(Dpt(6, 1));
-        break;
-    case VAL_DPT_7:
-        iKo->dataPointType(Dpt(7, 1));
-        break;
-    case VAL_DPT_8:
-        iKo->dataPointType(Dpt(8, 1));
-        break;
-    case VAL_DPT_9:
-        iKo->dataPointType(Dpt(9, 2));
-        break;
-    case VAL_DPT_16:
-        iKo->dataPointType(Dpt(16, 1));
-        break;
-    case VAL_DPT_17:
-        iKo->dataPointType(Dpt(17, 1));
-        break;
-    case VAL_DPT_232:
-        iKo->dataPointType(Dpt(232, 600));
-        break;
-    default:
-        break;
+        case VAL_DPT_1:
+            iKo->dataPointType(Dpt(1, 1));
+            break;
+        case VAL_DPT_2:
+            iKo->dataPointType(Dpt(2, 1));
+            break;
+        case VAL_DPT_5:
+            iKo->dataPointType(Dpt(5, 10));
+            break;
+        case VAL_DPT_5001:
+            iKo->dataPointType(Dpt(5, 1));
+            break;
+        case VAL_DPT_6:
+            iKo->dataPointType(Dpt(6, 1));
+            break;
+        case VAL_DPT_7:
+            iKo->dataPointType(Dpt(7, 1));
+            break;
+        case VAL_DPT_8:
+            iKo->dataPointType(Dpt(8, 1));
+            break;
+        case VAL_DPT_9:
+            iKo->dataPointType(Dpt(9, 2));
+            break;
+        case VAL_DPT_16:
+            iKo->dataPointType(Dpt(16, 1));
+            break;
+        case VAL_DPT_17:
+            iKo->dataPointType(Dpt(17, 1));
+            break;
+        case VAL_DPT_232:
+            iKo->dataPointType(Dpt(232, 600));
+            break;
+        default:
+            break;
     }
 }
 
 void logikDebug()
 {
-    DbgWrite("Logik-NUM_Channels: %d", NUM_Channels);
+    DbgWrite("Logik-LOG_Channels: %d", LOG_Channels);
     DbgWrite("Logik-gNumChannels: %d", gNumChannels);
 }
 
 void logikSetup()
 {
-    gNumChannels = getIntParam(PAR_NumChannels);
-    if (NUM_Channels < gNumChannels)
+    gNumChannels = getIntParam(LOG_NumChannels);
+    if (LOG_Channels < gNumChannels)
         knx.platform().fatalError();
     if (knx.configured())
     {
@@ -1540,14 +1541,14 @@ void logikSetup()
         {
             // we initialize DPT for output ko
             GroupObject *lKo = getKoForChannel(IO_Output, lChannel);
-            setDPT(lKo, lChannel, PAR_CH_ODpt);
+            setDPT(lKo, lChannel, LOG_fODpt);
             // we initialize DPT and callback for input1 ko
             lKo = getKoForChannel(IO_Input1, lChannel);
-            setDPT(lKo, lChannel, PAR_CH_E1Dpt);
+            setDPT(lKo, lChannel, LOG_fE1Dpt);
             lKo->callback(processInputKo);
             // we initialize DPT and callback for input2 ko
             lKo = getKoForChannel(IO_Input2, lChannel);
-            setDPT(lKo, lChannel, PAR_CH_E2Dpt);
+            setDPT(lKo, lChannel, LOG_fE2Dpt);
             lKo->callback(processInputKo);
         }
         prepareChannels();
