@@ -10,6 +10,7 @@
 
 // Buzzer
 #define BUZZER_PIN 9
+#define BUZZER_FREQ 2400
 
 // enum input defaults
 #define VAL_InputDefault_Undefined 0
@@ -659,7 +660,8 @@ void ProcessOutput(sChannelInfo *cData, uint8_t iChannel, bool iValue)
                 break;
             case VAL_Out_Buzzer:
 #ifndef __linux__
-                digitalWrite(BUZZER_PIN, HIGH);
+                //digitalWrite(BUZZER_PIN, HIGH);
+                tone(BUZZER_PIN, BUZZER_FREQ);
 #endif
                 break;
             default:
@@ -689,7 +691,8 @@ void ProcessOutput(sChannelInfo *cData, uint8_t iChannel, bool iValue)
                 break;
             case VAL_Out_Buzzer:
 #ifndef __linux__
-                digitalWrite(BUZZER_PIN, LOW);
+                //digitalWrite(BUZZER_PIN, LOW);
+                noTone(BUZZER_PIN);
 #endif
                 break;
             default:
