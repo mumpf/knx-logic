@@ -1181,19 +1181,14 @@ void ProcessLogic(sChannelInfo *cData, uint8_t iChannel)
 
             case VAL_Logic_And:
                 // AND handles invalid inputs as 1
-                //			lCurrentInputs |= ~lValidInputs &
-                //BIT_INPUT_MASK; //Add invalid bits to current input 			lNewOutput =
-                //(lValidInputs == 15);				  //Check if all bits
-                //are set -> logical AND of all input bits
+                //Check if all bits are set -> logical AND of all input bits
                 lNewOutput = (lCurrentInputs == lActiveInputs);
                 lValidOutput = true;
                 break;
 
             case VAL_Logic_Or:
-                // OR handles invalid inputs as 0
-                //			lCurrentInputs &= lValidInputs;  //Add invalid
-                //bits to current input
-                lNewOutput = (lCurrentInputs > 0); // Check if any bit is set -> logical OR of all input bits
+                // Check if any bit is set -> logical OR of all input bits
+                lNewOutput = (lCurrentInputs > 0); 
                 lValidOutput = true;
                 break;
 
@@ -1204,8 +1199,8 @@ void ProcessLogic(sChannelInfo *cData, uint8_t iChannel)
                 {
                     lOnes += (lCurrentInputs & lBit) > 0;
                 }
-                lNewOutput = (lOnes % 2 == 1); // Check if we have an odd number of bits
-                                               // -> logical EXOR of all input bits
+                // Check if we have an odd number of bits -> logical EXOR of all input bits
+                lNewOutput = (lOnes % 2 == 1); 
                 lValidOutput = true;
                 break;
 
@@ -1220,7 +1215,7 @@ void ProcessLogic(sChannelInfo *cData, uint8_t iChannel)
                 uint8_t lValue;
                 lValue = ((lCurrentInputs & (BIT_EXT_INPUT_1 | BIT_INT_INPUT_1)) > 0);
                 if (lGate)
-                    lNewOutput = lValue; // Check if any bit is set -> logical OR of all input bits
+                    lNewOutput = lValue; 
                 lValidOutput = lGate;
                 break;
 

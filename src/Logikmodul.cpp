@@ -25,7 +25,7 @@ void ProcessHeartbeat()
         knx.getGroupObject(LOG_KoHeartbeat).value(true);
         gRuntimeData.heartbeatDelay = millis();
         // debug-helber for logic module, just a test
-        // logikDebug();
+        logikDebug();
     }
 }
 

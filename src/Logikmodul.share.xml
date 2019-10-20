@@ -239,7 +239,7 @@
               <Parameter Id="M-00FA_A-0001-01-0000_P-1" Name="NumChannels" ParameterType="M-00FA_A-0001-01-0000_PT-DelaySeconds" Text="Anzahl verfügbarer Kanäle" Value="%N%" Access="None">
                 <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="0" BitOffset="0" />
               </Parameter>
-              <Parameter Id="M-00FA_A-0001-01-0000_P-2" Name="StartupDelay" ParameterType="M-00FA_A-0001-01-0000_PT-DelaySeconds" Text="Zeit bis das Sensormodul nach einem Neustart aktiv wird" SuffixText="Sekunden" Value="10">
+              <Parameter Id="M-00FA_A-0001-01-0000_P-2" Name="StartupDelay" ParameterType="M-00FA_A-0001-01-0000_PT-DelaySeconds" Text="Zeit bis das Gerät nach einem Neustart aktiv wird" SuffixText="Sekunden" Value="10">
                 <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="4" BitOffset="0" />
               </Parameter>
               <Parameter Id="M-00FA_A-0001-01-0000_P-3" Name="Heartbeat" ParameterType="M-00FA_A-0001-01-0000_PT-DelaySeconds" Text="In Betrieb senden alle" SuffixText="Sekunden" Value="300">

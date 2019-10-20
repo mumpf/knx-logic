@@ -139,7 +139,7 @@
 #define LOG_fOOffPADevice             97      // uint8_t
 
 // Communication objects per channel (multiple occurance)
-#define LOG_KoOffset 50
+#define LOG_KoOffset 30
 #define LOG_KoBlockSize 3
 #define LOG_KoKOfE1 0
 #define LOG_KoKOfE2 1
