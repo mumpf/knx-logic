@@ -324,7 +324,7 @@
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-31" Text="Ein/Ausschaltverzögerung: Für ein/aus einzeln einstellbar" />
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-32" Text="Zyklisch senden: Für ein/aus einzeln einstellbar" />
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-33" Text="Ausgangs-Konverter: Kann in DPT 1,2,5,6,7,8,9,16,17,232 konvertieren, für an und aus in unterschiedliche Werte oder auch nichts tun (Wert unterdrücken)." />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-34" Text=" " />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-34" Text="" UIHint="HorizontalRuler" />
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-35" Text="Als Eingangs-Konverter kann man einen der folgenden Funktionsblöcke (FB) nutzen:" />
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-36" Text="Werteintervall: FB wird wahr, wenn der Eingangswert zwischen einem Von- und einem Bis-Wert liegt, sonst falsch" />
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-37" Text="Differenzintervall: FB wird wahr, wenn die Differenz von 2 Eingangswerten zwischen einem Von- und einem Bis-Wert liegt, sonst falsch" />
