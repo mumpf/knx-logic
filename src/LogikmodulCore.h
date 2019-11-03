@@ -147,58 +147,34 @@ uint32_t calcParamIndex(uint16_t iParamIndex, int8_t iChannel)
 
 uint8_t getByteParam(uint16_t iParamIndex, int8_t iChannel = -1)
 {
-#ifdef LOGIKTEST
-    return sParamData.data[iParamIndex];
-#else
     return knx.paramByte(calcParamIndex(iParamIndex, iChannel));
-#endif
 }
 
 int8_t getSByteParam(uint16_t iParamIndex, int8_t iChannel = -1)
 {
-#ifdef LOGIKTEST
-    return sParamData.data[iParamIndex];
-#else
     uint8_t *lRef = knx.paramData(calcParamIndex(iParamIndex, iChannel));
     return lRef[0];
-#endif
 }
 
 uint16_t getWordParam(uint16_t iParamIndex, int8_t iChannel = -1)
 {
-#ifdef LOGIKTEST
-    return sParamData.data[iParamIndex] + 256 * sParamData.data[iParamIndex + 1];
-#else
     return knx.paramWord(calcParamIndex(iParamIndex, iChannel));
-#endif
 }
 
 int16_t getSWordParam(uint16_t iParamIndex, int8_t iChannel = -1)
 {
-#ifdef LOGIKTEST
-    return sParamData.data[iParamIndex] + 256 * sParamData.data[iParamIndex + 1];
-#else
     uint8_t *lRef = knx.paramData(calcParamIndex(iParamIndex, iChannel));
     return lRef[0] * 256 + lRef[1];
-#endif
 }
 
 uint32_t getIntParam(uint16_t iParamIndex, int8_t iChannel = -1)
 {
-#ifdef LOGIKTEST
-    return sParamData.data[iParamIndex] + 256 * sParamData.data[iParamIndex + 1] + 256 * 256 * sParamData.data[iParamIndex + 2] + 256 * 256 * 256 * sParamData.data[iParamIndex + 3];
-#else
     return knx.paramInt(calcParamIndex(iParamIndex, iChannel));
-#endif
 }
 
 int32_t getSIntParam(uint16_t iParamIndex, int8_t iChannel = -1)
 {
-#ifdef LOGIKTEST
-    return sParamData.data[iParamIndex] + 256 * sParamData.data[iParamIndex + 1] + 256 * 256 * sParamData.data[iParamIndex + 2] + 256 * 256 * 256 * sParamData.data[iParamIndex + 3];
-#else
     return knx.paramInt(calcParamIndex(iParamIndex, iChannel));
-#endif
 }
 
 float getFloat(uint8_t *data)
@@ -222,22 +198,14 @@ float getFloat(uint8_t *data)
 float getFloatParam(uint16_t iParamIndex, int8_t iChannel = -1)
 {
     uint16_t lIndex = calcParamIndex(iParamIndex, iChannel);
-#ifdef LOGIKTEST
-    float lFloat = getFloat(&sParamData.data[lIndex]);
-#else
     float lFloat = getFloat(knx.paramData(lIndex));
-#endif
     return lFloat;
 }
 
 uint8_t *getStringParam(uint16_t iParamIndex, int8_t iChannel = -1)
 {
     uint16_t lIndex = calcParamIndex(iParamIndex, iChannel);
-#ifdef LOGIKTEST
-    return &sParamData.data[lIndex];
-#else
     return knx.paramData(lIndex);
-#endif
 }
 
 // if IOIndex = 0, iChannel is the absolute KO number 8starting with 1)
@@ -258,57 +226,74 @@ GroupObject *getKoForChannel(uint8_t iIOIndex, uint8_t iChannel)
     return &knx.getGroupObject(calcKoNumber(iIOIndex, iChannel));
 }
 
+static Dpt sDpt[] = {Dpt(1, 1), Dpt(2, 1), Dpt(5, 10), Dpt(5, 1), Dpt(6, 1), Dpt(7, 1), Dpt(8, 1), Dpt(9, 2), Dpt(16, 1), Dpt(17, 1), Dpt(232, 600)};
+
+Dpt &getDPT(uint8_t iDptIndex) {
+    return sDpt[iDptIndex];
+}
+
+Dpt &getDPT(uint8_t iIOIndex, uint8_t iChannel)
+{
+    uint16_t lParamDpt;
+    switch (iIOIndex)
+    {
+        case IO_Input1:
+            lParamDpt = LOG_fE1Dpt;
+            break;
+        case IO_Input2:
+            lParamDpt = LOG_fE2Dpt;
+            break;
+        case IO_Output:
+            lParamDpt = LOG_fODpt;
+            break;
+        default:
+            lParamDpt = iChannel;
+            iChannel = 0;
+            break;
+    }
+    uint8_t lDpt = getByteParam(lParamDpt, iChannel);
+    return sDpt[lDpt];
+}
+
 // write value to bus
 void knxWriteBool(uint8_t iIOIndex, uint8_t iChannel, bool iValue)
 {
     DbgWrite("knxWrite KO %d bool value %d", calcKoNumber(iIOIndex, iChannel), iValue);
-#ifndef LOGIKTEST
-    getKoForChannel(iIOIndex, iChannel)->value(iValue);
-#endif
+    getKoForChannel(iIOIndex, iChannel)->value(iValue, getDPT(iIOIndex, iChannel));
 }
 
 void knxWriteInt(uint8_t iIOIndex, uint8_t iChannel, int32_t iValue)
 {
     DbgWrite("knxWrite KO %d int value %d", calcKoNumber(iIOIndex, iChannel), iValue);
-#ifndef LOGIKTEST
-    getKoForChannel(iIOIndex, iChannel)->value((int32_t)iValue);
-#endif
+    getKoForChannel(iIOIndex, iChannel)->value((int32_t)iValue, getDPT(iIOIndex, iChannel));
 }
 
 void knxWriteRawInt(uint8_t iIOIndex, uint8_t iChannel, int32_t iValue)
 {
     DbgWrite("knxWrite KO %d int value %d", calcKoNumber(iIOIndex, iChannel), iValue);
-#ifndef LOGIKTEST
     GroupObject *lKo = getKoForChannel(iIOIndex, iChannel);
     uint8_t *lValueRef = lKo->valueRef();
     *lValueRef = iValue;
     lKo->objectWritten();
-#endif
 }
 
 void knxWriteFloat(uint8_t iIOIndex, uint8_t iChannel, float iValue)
 {
     DbgWrite("knxWrite KO %d float value %f", calcKoNumber(iIOIndex, iChannel), iValue);
-#ifndef LOGIKTEST
-    getKoForChannel(iIOIndex, iChannel)->value(iValue);
-#endif
+    getKoForChannel(iIOIndex, iChannel)->value(iValue, getDPT(iIOIndex, iChannel));
 }
 
 void knxWriteString(uint8_t iIOIndex, uint8_t iChannel, char *iValue)
 {
     DbgWrite("knxWrite KO %d string value %s", calcKoNumber(iIOIndex, iChannel), iValue);
-#ifndef LOGIKTEST
-    getKoForChannel(iIOIndex, iChannel)->value(iValue);
-#endif
+    getKoForChannel(iIOIndex, iChannel)->value(iValue, getDPT(iIOIndex, iChannel));
 }
 
 // send read request on bus
 void knxRead(uint8_t iIOIndex, uint8_t iChannel)
 {
     DbgWrite("knxReadRequest end from KO %d", calcKoNumber(iIOIndex, iChannel));
-#ifndef LOGIKTEST
     getKoForChannel(iIOIndex, iChannel)->requestObjectRead();
-#endif
 }
 
 // send reset device to bus
@@ -317,9 +302,7 @@ void knxResetDevice(uint16_t iParamIndex, uint8_t iChannel)
     uint16_t lAddress = getWordParam(iParamIndex, iChannel);
     uint8_t lHigh = lAddress / 256;
     DbgWrite("knxResetDevice with PA %d.%d.%d", lHigh / 16, lHigh % 16, lAddress % 256);
-#ifndef LOGIKTEST
     knx.restart(lAddress);
-#endif
 }
 
 /********************
@@ -394,43 +377,6 @@ int32_t getParamByDpt(int8_t iDpt, uint8_t iParam, uint8_t iChannel)
  *
  * ******************/
 
-#ifdef LOGIKTEST
-int getInputValueTest(uint8_t iIOIndex, uint8_t iChannel)
-{
-    int lValue = 0;
-    int lParamIndex = (iIOIndex == 1) ? LOG_fE1Dpt : LOG_fE2Dpt;
-    int lIndex = calcKoNumber(iIOIndex, iChannel) - 1;
-    // based on dpt, we read the correct c type.
-    switch (getByteParam(lParamIndex, iChannel))
-    {
-        case VAL_DPT_1:
-            lValue = sKoData.data[lIndex];
-            break;
-        case VAL_DPT_5:
-            lValue = ((int)sKoData.data[lIndex] * 100 / 255);
-            break;
-        case VAL_DPT_2:
-        case VAL_DPT_6:
-        case VAL_DPT_17:
-            lValue = sKoData.data[lIndex];
-            break;
-        case VAL_DPT_7:
-        case VAL_DPT_8:
-            lValue = sKoData.data[lIndex];
-            break;
-        case VAL_DPT_232:
-            lValue = sKoData.data[lIndex];
-            break;
-        case VAL_DPT_9:
-            lValue = ((double)sKoData.data[lIndex] * 100.0);
-            break;
-        default:
-            break;
-    }
-    return lValue;
-}
-#endif
-
 int32_t getInputValueKnx(uint8_t iIOIndex, uint8_t iChannel)
 {
 
@@ -438,16 +384,17 @@ int32_t getInputValueKnx(uint8_t iIOIndex, uint8_t iChannel)
     uint16_t lParamIndex = (iIOIndex == 1) ? LOG_fE1Dpt : LOG_fE2Dpt;
     GroupObject *lKo = getKoForChannel(iIOIndex, iChannel);
     // based on dpt, we read the correct c type.
-    switch (getByteParam(lParamIndex, iChannel))
+    uint8_t lDpt = getByteParam(lParamIndex, iChannel);
+    switch (lDpt)
     {
         case VAL_DPT_2:
             lValue = lKo->valueRef()[0];
             break;
         case VAL_DPT_6:
-            lValue = (int8_t)lKo->value();
+            lValue = (int8_t)lKo->value(getDPT(VAL_DPT_6));
             break;
         case VAL_DPT_8:
-            lValue = (int16_t)lKo->value();
+            lValue = (int16_t)lKo->value(getDPT(VAL_DPT_8));
             break;
 
         // case VAL_DPT_7:
@@ -458,11 +405,11 @@ int32_t getInputValueKnx(uint8_t iIOIndex, uint8_t iChannel)
         //         lKo->valueRef()[0] + 256 * lKo->valueRef()[1] + 65536 * lKo->valueRef()[2];
         //     break;
         case VAL_DPT_9:
-            lValue = ((double)lKo->value() * 100.0);
+            lValue = ((double)lKo->value(getDPT(VAL_DPT_9)) * 100.0);
             break;
         // case VAL_DPT_17:
         default:
-            lValue = (int32_t)lKo->value();
+            lValue = (int32_t)lKo->value(getDPT(lDpt));
             break;
     }
     return lValue;
@@ -474,11 +421,7 @@ int32_t getInputValueKnx(uint8_t iIOIndex, uint8_t iChannel)
 // DPT9 => transport as 1/100, means take int(float * 100)
 int32_t getInputValue(uint8_t iIOIndex, uint8_t iChannel)
 {
-#ifdef LOGIKTEST
-    return getInputValueTest(iIOIndex, iChannel);
-#else
     return getInputValueKnx(iIOIndex, iChannel);
-#endif
 }
 
 void writeConstantValue(sChannelInfo *cData, uint16_t iParam, uint8_t iChannel)
@@ -1165,7 +1108,7 @@ void ProcessLogic(sChannelInfo *cData, uint8_t iChannel)
     uint8_t lActiveInputs = (cData->validActiveIO >> 4) & BIT_INPUT_MASK;
     uint8_t lCurrentInputs = cData->currentIO & lValidInputs;
     bool lCurrentOuput = ((cData->currentIO & BIT_OUTPUT) == BIT_OUTPUT);
-    bool lNewOutput;
+    bool lNewOutput = false;
     bool lValidOutput = false;
     // first deactivate execution in pipeline
     cData->currentPipeline &= ~PIP_LOGIC_EXECUTE;
@@ -1461,62 +1404,53 @@ void processInputKo(GroupObject &iKo)
     processInput(lIOIndex, lChannel);
 }
 
-#ifdef LOGIKTEST
-void processInputTest(uint8_t iKoIndex)
-{
-    uint8_t lChannel = iKoIndex / 3;
-    uint8_t lIOIndex = iKoIndex % 3;
-    processInput(lIOIndex, lChannel);
-}
-#endif
-
 /********************
  *
  * Setup processing
  *
  *******************/
-void setDPT(GroupObject *iKo, uint8_t iChannel, uint8_t iParamDpt)
-{
-    uint8_t lDpt = getByteParam(iParamDpt, iChannel);
-    switch (lDpt)
-    {
-        case VAL_DPT_1:
-            iKo->dataPointType(Dpt(1, 1));
-            break;
-        case VAL_DPT_2:
-            iKo->dataPointType(Dpt(2, 1));
-            break;
-        case VAL_DPT_5:
-            iKo->dataPointType(Dpt(5, 10));
-            break;
-        case VAL_DPT_5001:
-            iKo->dataPointType(Dpt(5, 1));
-            break;
-        case VAL_DPT_6:
-            iKo->dataPointType(Dpt(6, 1));
-            break;
-        case VAL_DPT_7:
-            iKo->dataPointType(Dpt(7, 1));
-            break;
-        case VAL_DPT_8:
-            iKo->dataPointType(Dpt(8, 1));
-            break;
-        case VAL_DPT_9:
-            iKo->dataPointType(Dpt(9, 2));
-            break;
-        case VAL_DPT_16:
-            iKo->dataPointType(Dpt(16, 1));
-            break;
-        case VAL_DPT_17:
-            iKo->dataPointType(Dpt(17, 1));
-            break;
-        case VAL_DPT_232:
-            iKo->dataPointType(Dpt(232, 600));
-            break;
-        default:
-            break;
-    }
-}
+// void setDPT(GroupObject *iKo, uint8_t iChannel, uint8_t iParamDpt)
+// {
+//     uint8_t lDpt = getByteParam(iParamDpt, iChannel);
+//     switch (lDpt)
+//     {
+//         case VAL_DPT_1:
+//             iKo->dataPointType(Dpt(1, 1));
+//             break;
+//         case VAL_DPT_2:
+//             iKo->dataPointType(Dpt(2, 1));
+//             break;
+//         case VAL_DPT_5:
+//             iKo->dataPointType(Dpt(5, 10));
+//             break;
+//         case VAL_DPT_5001:
+//             iKo->dataPointType(Dpt(5, 1));
+//             break;
+//         case VAL_DPT_6:
+//             iKo->dataPointType(Dpt(6, 1));
+//             break;
+//         case VAL_DPT_7:
+//             iKo->dataPointType(Dpt(7, 1));
+//             break;
+//         case VAL_DPT_8:
+//             iKo->dataPointType(Dpt(8, 1));
+//             break;
+//         case VAL_DPT_9:
+//             iKo->dataPointType(Dpt(9, 2));
+//             break;
+//         case VAL_DPT_16:
+//             iKo->dataPointType(Dpt(16, 1));
+//             break;
+//         case VAL_DPT_17:
+//             iKo->dataPointType(Dpt(17, 1));
+//             break;
+//         case VAL_DPT_232:
+//             iKo->dataPointType(Dpt(232, 600));
+//             break;
+//         default:
+//             break;
+//     }
+// }
 
 void logikDebug()
 {
@@ -1538,15 +1472,15 @@ void logikSetup()
         for (uint8_t lChannel = 0; lChannel < gNumChannels; lChannel++)
         {
             // we initialize DPT for output ko
-            GroupObject *lKo = getKoForChannel(IO_Output, lChannel);
-            setDPT(lKo, lChannel, LOG_fODpt);
+            // GroupObject *lKo = getKoForChannel(IO_Output, lChannel);
+            // setDPT(lKo, lChannel, LOG_fODpt);
             // we initialize DPT and callback for input1 ko
-            lKo = getKoForChannel(IO_Input1, lChannel);
-            setDPT(lKo, lChannel, LOG_fE1Dpt);
+            GroupObject* lKo = getKoForChannel(IO_Input1, lChannel);
+            // setDPT(lKo, lChannel, LOG_fE1Dpt);
             lKo->callback(processInputKo);
             // we initialize DPT and callback for input2 ko
             lKo = getKoForChannel(IO_Input2, lChannel);
-            setDPT(lKo, lChannel, LOG_fE2Dpt);
+            // setDPT(lKo, lChannel, LOG_fE2Dpt);
             lKo->callback(processInputKo);
         }
         prepareChannels();
