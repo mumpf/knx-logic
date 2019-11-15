@@ -22,7 +22,7 @@ void ProcessHeartbeat()
     if (gRuntimeData.heartbeatDelay == 0 || millis() - gRuntimeData.heartbeatDelay > knx.paramInt(LOG_Heartbeat) * 1000)
     {
         // we waited enough, let's send a heartbeat signal
-        knx.getGroupObject(LOG_KoHeartbeat).value(true);
+        knx.getGroupObject(LOG_KoHeartbeat).value(true, getDPT(1));
         gRuntimeData.heartbeatDelay = millis();
         // debug-helber for logic module, just a test
         logikDebug();
@@ -45,16 +45,14 @@ void appLoop()
     logikLoop();
 }
 
-void appSetup()
+void appSetup(uint8_t iBuzzerPin, uint8_t iSavePin)
 {
 
-    logikSetup();
+    logikSetup(iBuzzerPin, iSavePin);
 
     if (knx.configured())
     {
         gRuntimeData.startupDelay = millis();
         gRuntimeData.heartbeatDelay = 0;
-        // init KO-DPTs
-        knx.getGroupObject(LOG_KoHeartbeat).dataPointType(Dpt(1, 2));
     }
 }

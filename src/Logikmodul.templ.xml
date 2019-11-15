@@ -125,8 +125,8 @@
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%025" Name="f%C%E1HighDptRGB" ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB" Text="Bis-Wert" Value="16777216">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="15" BitOffset="0" />
     </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%026" Name="f%C%E1Default" ParameterType="M-00FA_A-0001-01-0000_PT-InputDefault" Text="Eingang 1 ist nach einem Neustart vorbelegt mit" Value="0">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="19" BitOffset="0" />
+    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%026" Name="f%C%E1Default" ParameterType="M-00FA_A-0001-01-0000_PT-InputDefault" Text="Falls Vorbelegung aus dem Speicher nicht möglich oder nicht gewünscht, dann vorbelegen mit" Value="0">
+      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="19" BitOffset="6" />
     </Parameter>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%027" Name="f%C%E1Repeat" ParameterType="M-00FA_A-0001-01-0000_PT-DelaySeconds" Text="Eingang 1 wird alle n Sekunden gelesen (0 = nicht zyklisch lesen)" SuffixText="Sekunden" Value="0">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="20" BitOffset="0" />
@@ -218,8 +218,8 @@
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%045" Name="f%C%E2HighDptRGB" ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB" Text="Bis-Wert" Value="16777216">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="30" BitOffset="0" />
     </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%046" Name="f%C%E2Default" ParameterType="M-00FA_A-0001-01-0000_PT-InputDefault" Text="Eingang 2 ist nach einem Neustart vorbelegt mit" Value="0">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="34" BitOffset="0" />
+    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%046" Name="f%C%E2Default" ParameterType="M-00FA_A-0001-01-0000_PT-InputDefault" Text="Falls Vorbelegung aus dem Speicher nicht möglich oder nicht gewünscht, dann vorbelegen mit" Value="0">
+      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="34" BitOffset="6" />
     </Parameter>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%047" Name="f%C%E2Repeat" ParameterType="M-00FA_A-0001-01-0000_PT-DelaySeconds" Text="Eingang 2 wird alle n Sekunden gelesen (0 = nicht zyklisch lesen)" Value="0">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="35" BitOffset="0" />
@@ -382,6 +382,12 @@
     </Parameter>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%128" Name="f%C%NameInput1" ParameterType="M-00FA_A-0001-01-0000_PT-Text40Byte" Text="Beschreibung Eingang 1" Value="" />
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%129" Name="f%C%NameInput2" ParameterType="M-00FA_A-0001-01-0000_PT-Text40Byte" Text="Beschreibung Eingang 2" Value="" />
+    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%130" Name="f%C%E1DefaultEEPROM" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Eingangswert speichern und beim nächsten Neustart als Vorbelegung nutzen?" Value="0">
+      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="19" BitOffset="5" />
+    </Parameter>
+    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%131" Name="f%C%E2DefaultEEPROM" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Eingangswert speichern und beim nächsten Neustart als Vorbelegung nutzen" Value="0">
+      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="34" BitOffset="5" />
+    </Parameter>
   </Parameters>
   <ParameterRefs>
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%001_R-%C%0010" RefId="M-00FA_A-0001-01-0000_P-%C%001" />
@@ -546,6 +552,8 @@
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%127_R-%C%1271" RefId="M-00FA_A-0001-01-0000_P-%C%127" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" RefId="M-00FA_A-0001-01-0000_P-%C%128" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" RefId="M-00FA_A-0001-01-0000_P-%C%129" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%130_R-%C%1301" RefId="M-00FA_A-0001-01-0000_P-%C%130" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%131_R-%C%1311" RefId="M-00FA_A-0001-01-0000_P-%C%131" />
   </ParameterRefs>
   <ComObjectTable>
     <ComObject Id="M-00FA_A-0001-01-0000_O-%K0%" Name="KOf%C%E1" Number="%K0%" FunctionText="Eingang 1" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" />
@@ -632,12 +640,9 @@
                   </when>
                 </choose>
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%130_R-%C%1301" />
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%026_R-%C%0261" />
-                <choose ParamRefId="M-00FA_A-0001-01-0000_P-%C%026_R-%C%0261">
-                  <when test="!=0">
-                    <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%027_R-%C%0271" />
-                  </when>
-                </choose>
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%027_R-%C%0271" />
               </ParameterBlock>
             </when>
           </choose>
@@ -859,12 +864,9 @@
                   </when>
                 </choose>
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%130_R-%C%1301" />
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%026_R-%C%0261" />
-                <choose ParamRefId="M-00FA_A-0001-01-0000_P-%C%026_R-%C%0261">
-                  <when test="!=0">
-                    <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%027_R-%C%0271" />
-                  </when>
-                </choose>
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%027_R-%C%0271" />
               </when>
             </choose>
           </ParameterBlock>
@@ -915,12 +917,9 @@
                   </when>
                 </choose>
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%131_R-%C%1311" />
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%046_R-%C%0461" />
-                <choose ParamRefId="M-00FA_A-0001-01-0000_P-%C%046_R-%C%0461">
-                  <when test="!=0">
-                    <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%047_R-%C%0471" />
-                  </when>
-                </choose>
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%047_R-%C%0471" />
               </ParameterBlock>
             </when>
           </choose>
@@ -1142,12 +1141,9 @@
                   </when>
                 </choose>
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%131_R-%C%1311" />
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%046_R-%C%0461" />
-                <choose ParamRefId="M-00FA_A-0001-01-0000_P-%C%046_R-%C%0461">
-                  <when test="!=0">
-                    <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%047_R-%C%0471" />
-                  </when>
-                </choose>
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%047_R-%C%0471" />
               </when>
             </choose>
           </ParameterBlock>

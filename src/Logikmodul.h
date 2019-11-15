@@ -6,7 +6,9 @@
 #define LOG_StartupDelay               4      // int32_t
 #define LOG_Heartbeat                  8      // int32_t
 
+#ifndef LOG_Channels
 #define LOG_Channels 50
+#endif
 
 // Parameter per channel
 #define LOG_ParamBlockOffset 12

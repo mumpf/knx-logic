@@ -137,7 +137,7 @@
                 <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="100" />
               </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-InputDefault" Name="InputDefault">
-                <TypeRestriction Base="Value" SizeInBit="8">
+                <TypeRestriction Base="Value" SizeInBit="2">
                   <Enumeration Text="nichts (undefiniert)" Value="0" Id="M-00FA_A-0001-01-0000_PT-InputDefault_EN-0" />
                   <Enumeration Text="Wert vom Bus lesen" Value="1" Id="M-00FA_A-0001-01-0000_PT-InputDefault_EN-1" />
                   <Enumeration Text="AUS (0)" Value="2" Id="M-00FA_A-0001-01-0000_PT-InputDefault_EN-2" />
