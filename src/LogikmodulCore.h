@@ -1668,19 +1668,42 @@ bool readOneInputFromEEPROM(uint8_t iIOIndex, uint8_t iChannel) {
 }
 
 void writeAllInputsToEEPROMFacade(bool iIsInterrupt) {
-    bool lDebug = true;
-    if (lDebug) {
-        uint32_t lTime = millis();
-        writeAllInputsToEEPROM(iIsInterrupt); 
-        lTime = millis() - lTime;
-        print("WriteAllInputsToEEPROM took: ");
-        println(lTime);
-    }
+    uint32_t lTime = millis();
+    writeAllInputsToEEPROM(iIsInterrupt); 
+    lTime = millis() - lTime;
+    print("WriteAllInputsToEEPROM took: ");
+    println(lTime);
+}
+
+#define LED_YELLOW_PIN            38
+
+#define U_INT_REG_WR_REQ_WD       0x28
+#define U_INT_REG_WR_REQ_ACR0     0x29
+#define U_INT_REG_WR_REQ_ACR1     0x2A
+#define U_INT_REG_WR_REQ_ASR0     0x2B
+
+#define ACR0_FLAG_V20VEN          0x40
+#define ACR0_FLAG_DC2EN           0x20
+#define ACR0_FLAG_XCLKEN          0x10
+#define ACR0_FLAG_TRIGEN          0x08
+#define ACR0_FLAG_V20VCLIMIT      0x04
+
+void savePower() {
+    DbgWrite("savePower: Switching off all energy hungry devices...");
+    // turn off 5V rail (CO2-Sensor & Buzzer)
+    uint8_t lBuffer[] = {U_INT_REG_WR_REQ_ACR0, ACR0_FLAG_XCLKEN | ACR0_FLAG_V20VCLIMIT };
+    knx.platform().writeUart(lBuffer, 2);
+    // Turn off on board leds
+    digitalWrite(knx.ledPin(), HIGH - knx.ledPinActiveOn());
+    digitalWrite(LED_YELLOW_PIN, LOW);
+    // in future: Turn off i2c leds
+    // in future: Turn off i2c 1Wire if possible
 }
 
 // interrupt handler
 void writeAllInputsToEEPROMFromInterrupt() {
     DbgWrite("Handling SAVE-Interrupt...");
+    savePower();
     writeAllInputsToEEPROMFacade(true);
 }
 
@@ -1712,8 +1735,10 @@ void beforeTableUnloadHandler(TableObject& iTableObject, LoadState& iNewState) {
 void logikSetup(uint8_t iBuzzerPin, uint8_t iSavePin)
 {
     gNumChannels = getIntParam(LOG_NumChannels);
-    if (LOG_Channels < gNumChannels)
+    if (LOG_Channels < gNumChannels) {
+        DbgWrite("FATAL: Firmware compiled for %d channels, but knxprod needs %d channels!", LOG_Channels, gNumChannels);
         knx.platform().fatalError();
+    }
     if (knx.configured())
     {
         // setup buzzer
