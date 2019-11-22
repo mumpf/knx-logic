@@ -8,10 +8,7 @@
 #ifndef LOG_Channels
 #include "Logikmodul.h"
 #endif
-
-// Buzzer
-// #define BUZZER_PIN 9
-#define BUZZER_FREQ 2400
+#include "Board.h"
 
 // enum input defaults
 #define VAL_InputDefault_Undefined 0
@@ -1435,14 +1432,14 @@ void processInputKo(GroupObject &iKo)
     }
 }
 
-void printHexBlock(const char* iText, const uint8_t* iData, size_t iLen ) {
-    println(iText);
-    for (size_t i = 0; i < iLen; i+=32)
-    {
-        printHex("    ", iData + i, 32);
-    }
+// void printHexBlock(const char* iText, const uint8_t* iData, size_t iLen ) {
+//     println(iText);
+//     for (size_t i = 0; i < iLen; i+=32)
+//     {
+//         printHex("    ", iData + i, 32);
+//     }
     
-}
+// }
 
 // EEPROM handling
 // We assume at max 128 channels, each channel 2 inputs, each input max 4 bytes (value) and 1 byte (DPT) = 128 * 2 * (4 + 1) = 1280 bytes to write
@@ -1454,20 +1451,21 @@ void printHexBlock(const char* iText, const uint8_t* iData, size_t iLen ) {
 // Bytes of the first page (page 0) might be used differently in future
 // For inputs, which are not set as "store in memory", we write a dpt 0xFF
 //
-#define I2C_EEPROM_DEVICE_ADDRESSS 0x50 // Address of 24LC256 eeprom chip
-#define SAVE_BUFFER_START_PAGE 0        // All stored KO data begin at this page and takes 37 pages, 
-                                        // allow 3 pages boundary, so next store should start at page 40
-
-const uint8_t gMagicWord[] = {0xAE, 0x49, 0xD2, 0x9F};
-const uint8_t gFiller[] = {0, 0, 0, 0};
 bool gIsValidEEPROM = false;
 uint32_t gLastWriteEEPROM = 0;
 
-void delayEEPROMWrite(bool iIsInterrupt) {
-    if (iIsInterrupt) 
-        delayMicroseconds(5000); // in interrupt handler delay() does not work
-    else 
-        delay(5); // during debugging, delayMicroseconds does not work :-(
+void writeSingleDptToEEPROM(uint8_t iIOIndex, uint8_t iChannel) {
+    uint8_t lDpt = 0xFF;
+    if (isInputActive(iIOIndex, iChannel))
+    {
+        // now get input default value
+        uint8_t lParInput = getByteParam(iIOIndex == 1 ? LOG_fE1Default : LOG_fE2Default, iChannel);
+        if (lParInput & VAL_InputDefault_EEPROM) {
+            // if the default is EEPROM, we get correct dpt
+            lDpt = getByteParam(iIOIndex == 1 ? LOG_fE1Dpt : LOG_fE2Dpt, iChannel);
+        }
+    }
+    Wire.write(lDpt);
 }
 
 void writeAllDptToEEPROM()
@@ -1480,74 +1478,19 @@ void writeAllDptToEEPROM()
     gLastWriteEEPROM = millis();
 
     // prepare initialization
-    uint16_t lAddress = SAVE_BUFFER_START_PAGE * 32 + 12;
-    // first we delete magic word, it is rewritten at the end. This is the ack for the successful write.
-    // Wire.beginTransmission(I2C_EEPROM_DEVICE_ADDRESSS);
-    // Wire.write((uint8_t)((lAddress) >> 8)); // MSB
-    // Wire.write((uint8_t)((lAddress)&0xFF)); // LSB
-    // Wire.write(gFiller, 4);
-    // Wire.endTransmission();
-    // delayEEPROMWrite(false);
-    bool lIsTransmission = false;
-    uint8_t lBlock = 0;
-    lAddress = (SAVE_BUFFER_START_PAGE + 1) * 32; // begin of DPT memory
+    uint16_t lAddress = (SAVE_BUFFER_START_PAGE + 1) * 32; // begin of DPT memory
     // start writing all dpt. For inputs, which should not be saved, we write a dpt 0xFF
     for (uint8_t lChannel = 0; lChannel < gNumChannels; lChannel++)
     {
-        if (!lIsTransmission) {
-            Wire.beginTransmission(I2C_EEPROM_DEVICE_ADDRESSS);
-            Wire.write((uint8_t)((lAddress) >> 8)); // MSB
-            Wire.write((uint8_t)((lAddress)&0xFF)); // LSB
-            lIsTransmission = true;
-        }
-        uint8_t lDpt = 0xFF;
-        if (isInputActive(IO_Input1, lChannel))
-        {
-            // now get input default value
-            uint8_t lParInput = getByteParam(LOG_fE1Default, lChannel);
-            if (lParInput & VAL_InputDefault_EEPROM) {
-                // if the default is EEPROM, we get correct dpt
-                lDpt = getByteParam(LOG_fE1Dpt, lChannel);
-            }
-        }
-        Wire.write(lDpt);
+        beginPageEEPROM(lAddress);
+        writeSingleDptToEEPROM(IO_Input1, lChannel);
         lAddress++;
-        lBlock++;
-        lDpt = 0xFF;
-        if (isInputActive(IO_Input2, lChannel))
-        {
-            // now get input default value
-            uint8_t lParInput = getByteParam(LOG_fE2Default, lChannel);
-            if (lParInput & VAL_InputDefault_EEPROM) {
-                // if the default is EEPROM, we get correct dpt
-                lDpt = getByteParam(LOG_fE2Dpt, lChannel);
-            }
-        }
-        Wire.write(lDpt);
+        writeSingleDptToEEPROM(IO_Input2, lChannel);
         lAddress++;
-        lBlock++;
-        if (lBlock == 16)
-        {
-            Wire.endTransmission();
-            lBlock = 0;
-            lIsTransmission = false;
-            delayEEPROMWrite(false);
-        }
+        if (lAddress % 16 == 0)
+            endPageEEPROM(false);
     }
-    if (lIsTransmission) {
-        Wire.endTransmission();
-        delayEEPROMWrite(false);
-    }
-
-    // as a last step we write magic number back
-    // this is also the ACK, that writing was successfull
-    // lAddress = SAVE_BUFFER_START_PAGE * 32 + 12;
-    // Wire.beginTransmission(I2C_EEPROM_DEVICE_ADDRESSS);
-    // Wire.write((uint8_t)((lAddress) >> 8)); // MSB
-    // Wire.write((uint8_t)((lAddress)&0xFF)); // LSB
-    // Wire.write(gMagicWord, 4);
-    // Wire.endTransmission();
-    // delayEEPROMWrite(false);
+    endPageEEPROM(false);
 }
 
 void writeAllInputsToEEPROM(bool iIsInterrupt) {
@@ -1559,80 +1502,28 @@ void writeAllInputsToEEPROM(bool iIsInterrupt) {
     gLastWriteEEPROM = millis();
 
     // prepare initialization
-    uint16_t lAddress = SAVE_BUFFER_START_PAGE * 32 + 12;
-    // first we delete magic word, it is rewritten at the end. This is the ack for the successful write.
-    Wire.beginTransmission(I2C_EEPROM_DEVICE_ADDRESSS);
-    Wire.write((uint8_t)((lAddress) >> 8)); // MSB
-    Wire.write((uint8_t)((lAddress)&0xFF)); // LSB
-    Wire.write(gFiller, 4);
-    Wire.endTransmission();
-    delayEEPROMWrite(iIsInterrupt);
+    beginWriteKoEEPROM(iIsInterrupt);
 
-    bool lIsTransmission = false;
-    uint8_t lBlock = 0;
     //Begin write of KO values
-    lIsTransmission = false;
-    lBlock = 0;
-    lAddress = (SAVE_BUFFER_START_PAGE + 5) * 32; // begin of KO value memory
+    uint16_t lAddress = (SAVE_BUFFER_START_PAGE + 5) * 32; // begin of KO value memory
     // for (uint8_t i = 0; i < 10; i++)
         for (uint8_t lChannel = 0; lChannel < gNumChannels; lChannel++)
         {
-            if (!lIsTransmission)
-            {
-                Wire.beginTransmission(I2C_EEPROM_DEVICE_ADDRESSS);
-                Wire.write((uint8_t)((lAddress) >> 8)); // MSB
-                Wire.write((uint8_t)((lAddress)&0xFF)); // LSB
-                lIsTransmission = true;
-            }
+            beginPageEEPROM(lAddress);
             GroupObject *lKo = getKoForChannel(IO_Input1, lChannel);
-            Wire.write(lKo->valueRef(), lKo->valueSize());
-            if (lKo->valueSize() < 4)
-                Wire.write(gFiller, 4 - lKo->valueSize());
+            write4BytesEEPROM(lKo->valueRef(), lKo->valueSize());
             lAddress += 4;
-            lBlock++;
             lKo = getKoForChannel(IO_Input2, lChannel);
-            Wire.write(lKo->valueRef(), lKo->valueSize());
-            if (lKo->valueSize() < 4)
-                Wire.write(gFiller, 4 - lKo->valueSize());
+            write4BytesEEPROM(lKo->valueRef(), lKo->valueSize());
             lAddress += 4;
-            lBlock++;
-            if (lBlock == 4)
-            {
-                Wire.endTransmission();
-                lBlock = 0;
-                lIsTransmission = false;
-                delayEEPROMWrite(iIsInterrupt);
-            }
+            if (lAddress % 16 == 0)
+                endPageEEPROM(iIsInterrupt);
         }
-    if (lIsTransmission) {
-        Wire.endTransmission();
-        delayEEPROMWrite(iIsInterrupt);
-    }
+    endPageEEPROM(iIsInterrupt);
 
     // as a last step we write magic number back
     // this is also the ACK, that writing was successfull
-    lAddress = SAVE_BUFFER_START_PAGE * 32 + 12;
-    Wire.beginTransmission(I2C_EEPROM_DEVICE_ADDRESSS);
-    Wire.write((uint8_t)((lAddress) >> 8)); // MSB
-    Wire.write((uint8_t)((lAddress)&0xFF)); // LSB
-    Wire.write(gMagicWord, 4);
-    Wire.endTransmission();
-    delayEEPROMWrite(iIsInterrupt);
-}
-
-void checkDataValidEEPROM() {
-    uint16_t lAddress = SAVE_BUFFER_START_PAGE * 32 + 12;
-    Wire.beginTransmission(I2C_EEPROM_DEVICE_ADDRESSS);
-    Wire.write((uint8_t)((lAddress) >> 8)); // MSB
-    Wire.write((uint8_t)((lAddress)&0xFF)); // LSB
-    Wire.endTransmission();
-
-    Wire.requestFrom(I2C_EEPROM_DEVICE_ADDRESSS, 4);
-    int lIndex = 0;
-    gIsValidEEPROM = true;
-    while (gIsValidEEPROM && lIndex < 4) 
-        gIsValidEEPROM = Wire.available() && (gMagicWord[lIndex++] == Wire.read());
-    
+    endWriteKoEEPROM(iIsInterrupt);
 }
 
 bool readOneInputFromEEPROM(uint8_t iIOIndex, uint8_t iChannel) {
@@ -1642,12 +1533,7 @@ bool readOneInputFromEEPROM(uint8_t iIOIndex, uint8_t iChannel) {
     // Now check, if the DPT for requested KO is valid
     // DPT might have changed due to new programming after last save
     uint16_t lAddress = (SAVE_BUFFER_START_PAGE + 1) * 32 + iChannel * 2 + iIOIndex - 1;
-    Wire.beginTransmission(I2C_EEPROM_DEVICE_ADDRESSS);
-    Wire.write((uint8_t)((lAddress) >> 8)); // MSB
-    Wire.write((uint8_t)((lAddress)&0xFF)); // LSB
-    Wire.endTransmission();
-
-    Wire.requestFrom(I2C_EEPROM_DEVICE_ADDRESSS, 1);
+    prepareReadEEPROM(lAddress, 1);
     uint8_t lSavedDpt = Wire.read();
     uint8_t lNewDpt = getByteParam((iIOIndex == IO_Input1) ? LOG_fE1Dpt : LOG_fE2Dpt, iChannel);
     if (lNewDpt != lSavedDpt) return false;
@@ -1655,12 +1541,7 @@ bool readOneInputFromEEPROM(uint8_t iIOIndex, uint8_t iChannel) {
     // if the dpt is ok, we get the ko value
     lAddress = (SAVE_BUFFER_START_PAGE + 5) * 32 + iChannel * 8 + (iIOIndex - 1) * 4;
     GroupObject *lKo = getKoForChannel(iIOIndex, iChannel);
-    Wire.beginTransmission(I2C_EEPROM_DEVICE_ADDRESSS);
-    Wire.write((uint8_t)((lAddress) >> 8)); // MSB
-    Wire.write((uint8_t)((lAddress)&0xFF)); // LSB
-    Wire.endTransmission();
-
-    Wire.requestFrom(I2C_EEPROM_DEVICE_ADDRESSS, lKo->valueSize());
+    prepareReadEEPROM(lAddress, lKo->valueSize());
     int lIndex = 0;
     while (Wire.available() && lIndex < 4)
         lKo->valueRef()[lIndex++] = Wire.read();
@@ -1675,36 +1556,13 @@ void writeAllInputsToEEPROMFacade(bool iIsInterrupt) {
     println(lTime);
 }
 
-#define LED_YELLOW_PIN            38
-
-#define U_INT_REG_WR_REQ_WD       0x28
-#define U_INT_REG_WR_REQ_ACR0     0x29
-#define U_INT_REG_WR_REQ_ACR1     0x2A
-#define U_INT_REG_WR_REQ_ASR0     0x2B
-
-#define ACR0_FLAG_V20VEN          0x40
-#define ACR0_FLAG_DC2EN           0x20
-#define ACR0_FLAG_XCLKEN          0x10
-#define ACR0_FLAG_TRIGEN          0x08
-#define ACR0_FLAG_V20VCLIMIT      0x04
-
-void savePower() {
-    DbgWrite("savePower: Switching off all energy hungry devices...");
-    // turn off 5V rail (CO2-Sensor & Buzzer)
-    uint8_t lBuffer[] = {U_INT_REG_WR_REQ_ACR0, ACR0_FLAG_XCLKEN | ACR0_FLAG_V20VCLIMIT };
-    knx.platform().writeUart(lBuffer, 2);
-    // Turn off on board leds
-    digitalWrite(knx.ledPin(), HIGH - knx.ledPinActiveOn());
-    digitalWrite(LED_YELLOW_PIN, LOW);
-    // in future: Turn off i2c leds
-    // in future: Turn off i2c 1Wire if possible
-}
-
 // interrupt handler
-void writeAllInputsToEEPROMFromInterrupt() {
-    DbgWrite("Handling SAVE-Interrupt...");
-    savePower();
-    writeAllInputsToEEPROMFacade(true);
+void logicOnSafePinInterruptHandler() {
+    DbgWrite("Logic: Handling SAVE-Interrupt...");
+    // If Interrupt happens during i2c read we try to finish last read first
+    while (Wire.available()) Wire.read();
+    // now we write everything to EEPROM
+    writeAllInputsToEEPROM(true);
 }
 
 void logikDebug()
@@ -1714,7 +1572,7 @@ void logikDebug()
     // writeAllInputsToEEPROMFacade(false);
 }
 
-void beforRestartHandler() {
+void beforeRestartHandler() {
     DbgWrite("before Restart called)");
     writeAllInputsToEEPROMFacade(false);
 }
@@ -1748,19 +1606,20 @@ void logikSetup(uint8_t iBuzzerPin, uint8_t iSavePin)
             pinMode(gBuzzerPin, OUTPUT);
         }
 #endif
-        GroupObject::classCallback(processInputKo);
-        checkDataValidEEPROM();
+        // we set just a callback if it is not set from a potential caller
+        if (GroupObject::classCallback() == 0) GroupObject::classCallback(processInputKo);
+        gIsValidEEPROM = checkDataValidEEPROM();
         if (gIsValidEEPROM) {
             DbgWrite("EEPROM contains valid KO inputs");
         } else {
             DbgWrite("EEPROM does NOT contain valid data");
         }
         // we store some input values in case of restart or ets programming
-        knx.addBeforeRestartCallback(beforRestartHandler);
+        knx.addBeforeRestartCallback(beforeRestartHandler);
         TableObject::addBeforeTableUnloadCallback(beforeTableUnloadHandler);
         // set interrupt for poweroff handling
         if (iSavePin) {
-            attachInterrupt(digitalPinToInterrupt(iSavePin), writeAllInputsToEEPROMFromInterrupt, FALLING);
+            attachInterrupt(digitalPinToInterrupt(iSavePin), logicOnSafePinInterruptHandler, FALLING);
         }
         if (prepareChannels())
             writeAllDptToEEPROM();

@@ -49,7 +49,9 @@
           </Static>
           <Dynamic>
             <mc:include href="Logikmodul.share.xml" xpath="//Dynamic/*" prefix="LOG" />
-            <mc:include href="Logikmodul.templ.xml" xpath="//Dynamic/*" header="Logikmodul.h" prefix="LOG" />
+            <Channel Id="M-00FA_A-0001-01-0000_CH-4" Name="Logikkanaele" Number="4" Text="Logikkanäle">
+              <mc:include href="Logikmodul.templ.xml" xpath="//Dynamic/*" header="Logikmodul.h" prefix="LOG" />
+            </Channel>
           </Dynamic>
         </ApplicationProgram>
       </ApplicationPrograms>
