@@ -22,7 +22,7 @@ void ProcessHeartbeat()
     if (gRuntimeData.heartbeatDelay == 0 || millis() - gRuntimeData.heartbeatDelay > knx.paramInt(LOG_Heartbeat) * 1000)
     {
         // we waited enough, let's send a heartbeat signal
-        knx.getGroupObject(LOG_KoHeartbeat).value(true, getDPT(1));
+        knx.getGroupObject(LOG_KoHeartbeat).value(true, getDPT(VAL_DPT_1));
         gRuntimeData.heartbeatDelay = millis();
         // debug-helber for logic module, just a test
         logikDebug();
