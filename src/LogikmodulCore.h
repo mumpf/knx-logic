@@ -1551,7 +1551,12 @@ void logikDebug()
 {
     DbgWrite("Logik-LOG_Channels (in Firmware): %d", LOG_Channels);
     DbgWrite("Logik-gNumChannels (in knxprod):  %d", gNumChannels);
-    // writeAllInputsToEEPROMFacade(false);
+    // Test i2c failure
+    // we start an i2c read i.e. for EEPROM
+    // prepareReadEEPROM(4711, 20);
+    // digitalWrite(LED_YELLOW_PIN, HIGH);
+    // delay(10000);
+    // digitalWrite(LED_YELLOW_PIN, LOW);
 }
 
 void beforeRestartHandler() {
@@ -1574,6 +1579,8 @@ void beforeTableUnloadHandler(TableObject& iTableObject, LoadState& iNewState) {
 
 void logikSetup(uint8_t iBuzzerPin, uint8_t iSavePin)
 {
+    Wire.end(); // seems to end hangs on I2C bus
+    Wire.begin(); // we use I2C in logic, so we setut the bus. It is not critical to setup it more than once
     gNumChannels = getIntParam(LOG_NumChannels);
     if (LOG_Channels < gNumChannels) {
         DbgWrite("FATAL: Firmware compiled for %d channels, but knxprod needs %d channels!", LOG_Channels, gNumChannels);
