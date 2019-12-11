@@ -16,7 +16,7 @@ int printf(const char *format, ...)
 }
 
 void savePower() {
-    println("savePower: Switching off all energy hungry devices...");
+    println("savePower: Switching off 5V rail...");
     // turn off 5V rail (CO2-Sensor & Buzzer)
     uint8_t lBuffer[] = {U_INT_REG_WR_REQ_ACR0, ACR0_FLAG_XCLKEN | ACR0_FLAG_V20VCLIMIT };
     knx.platform().writeUart(lBuffer, 2);
@@ -25,6 +25,13 @@ void savePower() {
     digitalWrite(LED_YELLOW_PIN, LOW);
     // in future: Turn off i2c leds
     // in future: Turn off i2c 1Wire if possible
+}
+
+void restorePower(){
+    println("restorePower: Switching on 5V rail after save...");
+    // turn off 5V rail (CO2-Sensor & Buzzer)
+    uint8_t lBuffer[] = {U_INT_REG_WR_REQ_ACR0, ACR0_FLAG_DC2EN | ACR0_FLAG_XCLKEN | ACR0_FLAG_V20VCLIMIT};
+    knx.platform().writeUart(lBuffer, 2);
 }
 
 // During EEPROM Write we have to delay 5 ms
@@ -52,26 +59,35 @@ bool beginWriteKoEEPROM(bool iIsInterrupt) {
     return lResult;
 }
 
-void endWriteKoEEPROM(bool iIsInterrupt) {
-    // as a last step we write magic number back
-    // this is also the ACK, that writing was successfull
-    uint16_t lAddress = SAVE_BUFFER_START_PAGE * 32 + 12;
+void writeMagicWordToEEPROM(uint16_t iAddress, bool iIsInterrupt = false) {
     Wire.beginTransmission(I2C_EEPROM_DEVICE_ADDRESSS);
-    Wire.write((uint8_t)((lAddress) >> 8)); // MSB
-    Wire.write((uint8_t)((lAddress)&0xFF)); // LSB
+    Wire.write((uint8_t)((iAddress) >> 8)); // MSB
+    Wire.write((uint8_t)((iAddress)&0xFF)); // LSB
     Wire.write(gMagicWord, 4);
     Wire.endTransmission();
     delayEEPROMWrite(iIsInterrupt);
 }
 
-bool checkDataValidEEPROM() {
-    uint16_t lAddress = SAVE_BUFFER_START_PAGE * 32 + 12;
-    prepareReadEEPROM(lAddress, 4);
+bool checkMagicWordInEEPROM(uint16_t iAddress) {
+    prepareReadEEPROM(iAddress, 4);
     int lIndex = 0;
     bool lResult = true;
     while (lResult && lIndex < 4) 
         lResult = Wire.available() && (gMagicWord[lIndex++] == Wire.read());
     return lResult;
+   
+}
+
+void endWriteKoEEPROM(bool iIsInterrupt) {
+    // as a last step we write magic number back
+    // this is also the ACK, that writing was successfull
+    uint16_t lAddress = SAVE_BUFFER_START_PAGE * 32 + 12;
+    writeMagicWordToEEPROM(lAddress, iIsInterrupt);
+}
+
+bool checkDataValidEEPROM() {
+    uint16_t lAddress = SAVE_BUFFER_START_PAGE * 32 + 12;
+    return checkMagicWordInEEPROM(lAddress);
 }
 
 bool gIsTransmission = false;
@@ -107,4 +123,33 @@ void prepareReadEEPROM(uint16_t iAddress, uint8_t iLen) {
     Wire.write((uint8_t)((iAddress)&0xFF)); // LSB
     Wire.endTransmission();
     Wire.requestFrom(I2C_EEPROM_DEVICE_ADDRESSS, iLen);
+}
+
+void fatalError(uint8_t iErrorCode, const char* iErrorText) {
+    const uint16_t lDelay = 100;
+    pinMode(LED_BUILTIN, OUTPUT);
+    pinMode(LED_YELLOW_PIN, OUTPUT);
+    for (;;)
+    {
+        // we repeat the message on serial bus, so we can get it even 
+        // if we connect USB later
+        printf("FatalError %d: %s", iErrorCode, iErrorText);
+        digitalWrite(LED_YELLOW_PIN, HIGH);
+        delay(lDelay);
+        // number of red blinks during a yellow blink is the error code
+        for (uint8_t i = 0; i < iErrorCode; i++)
+        {
+            digitalWrite(LED_BUILTIN, HIGH);
+            delay(lDelay);
+            digitalWrite(LED_BUILTIN, LOW);
+            delay(lDelay);
+        }
+        digitalWrite(LED_YELLOW_PIN, LOW);
+        delay(lDelay * 5);
+    }
+}
+
+bool delayCheck(uint32_t iOldTimer, uint32_t iDuration)
+{
+    return millis() - iOldTimer >= iDuration;
 }
