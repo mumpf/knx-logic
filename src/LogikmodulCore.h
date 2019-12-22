@@ -1559,12 +1559,12 @@ void logikDebug()
     // digitalWrite(LED_YELLOW_PIN, LOW);
 }
 
-void beforeRestartHandler() {
-    DbgWrite("before Restart called)");
+void logicBeforeRestartHandler() {
+    DbgWrite("logic before Restart called");
     writeAllInputsToEEPROMFacade(false);
 }
 
-void beforeTableUnloadHandler(TableObject& iTableObject, LoadState& iNewState) {
+void logicBeforeTableUnloadHandler(TableObject& iTableObject, LoadState& iNewState) {
     static uint32_t sLastCalled = 0;
     DbgWrite("Table changed called with state %d", iNewState);
     
@@ -1604,8 +1604,8 @@ void logikSetup(uint8_t iBuzzerPin, uint8_t iSavePin)
             DbgWrite("EEPROM does NOT contain valid data");
         }
         // we store some input values in case of restart or ets programming
-        knx.addBeforeRestartCallback(beforeRestartHandler);
-        TableObject::addBeforeTableUnloadCallback(beforeTableUnloadHandler);
+        if (knx.getBeforeRestartCallback() == 0) knx.addBeforeRestartCallback(logicBeforeRestartHandler);
+        if (TableObject::getBeforeTableUnloadCallback() == 0) TableObject::addBeforeTableUnloadCallback(logicBeforeTableUnloadHandler);
         // set interrupt for poweroff handling
         if (iSavePin) {
             attachInterrupt(digitalPinToInterrupt(iSavePin), logicOnSafePinInterruptHandler, FALLING);
