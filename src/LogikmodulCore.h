@@ -11,6 +11,8 @@
 #include "Board.h"
 #include "LogikmodulCommon.h"
 
+#define LOG_ChannelsFirmware 50
+
 // enum input defaults
 #define VAL_InputDefault_Undefined 0
 #define VAL_InputDefault_Read 1
@@ -110,7 +112,7 @@ struct sChannelInfo
 };
 
 uint8_t gNumChannels;
-sChannelInfo gChannelData[LOG_Channels];
+sChannelInfo gChannelData[LOG_ChannelsFirmware];
 uint8_t gBuzzerPin = 0;
 
 // forward declaratins
@@ -127,6 +129,18 @@ void DbgWrite(const char *format, ...)
     //   perror (buffer);
     va_end(args);
     println(buffer);
+}
+
+voidFuncPtr gSaveInterruptCallback = 0;
+
+voidFuncPtr getSaveInterruptCallback() {
+    return gSaveInterruptCallback;
+}
+
+// encapsulate attachInterrupt to be able to retrieve interrupt callback
+void logicAttachSaveInterrupt(uint32_t iPin, voidFuncPtr iCallback, uint32_t iMode) {
+    gSaveInterruptCallback = iCallback;
+    attachInterrupt(iPin, iCallback, iMode);
 }
 
 uint32_t calcParamIndex(uint16_t iParamIndex, int8_t iChannel)
@@ -284,9 +298,12 @@ void knxRead(uint8_t iIOIndex, uint8_t iChannel)
 void knxResetDevice(uint16_t iParamIndex, uint8_t iChannel)
 {
     uint16_t lAddress = getWordParam(iParamIndex, iChannel);
-    uint8_t lHigh = lAddress / 256;
-    DbgWrite("knxResetDevice with PA %d.%d.%d", lHigh / 16, lHigh % 16, lAddress % 256);
+    uint8_t lHigh = lAddress >> 8;
+    DbgWrite("knxResetDevice with PA %d.%d.%d", lHigh >> 4, lHigh & 0xF, lAddress & 0xFF);
     knx.restart(lAddress);
+    // tmp: on restart we also call SAVE-Interrupt
+    if ((lHigh >= 32) && getSaveInterruptCallback() != 0) 
+        (getSaveInterruptCallback())();
 }
 
 /********************
@@ -1549,7 +1566,7 @@ void logicOnSafePinInterruptHandler() {
 
 void logikDebug()
 {
-    DbgWrite("Logik-LOG_Channels (in Firmware): %d", LOG_Channels);
+    DbgWrite("Logik-LOG_ChannelsFirmware (in Firmware): %d", LOG_ChannelsFirmware);
     DbgWrite("Logik-gNumChannels (in knxprod):  %d", gNumChannels);
     // Test i2c failure
     // we start an i2c read i.e. for EEPROM
@@ -1582,8 +1599,8 @@ void logikSetup(uint8_t iBuzzerPin, uint8_t iSavePin)
     Wire.end(); // seems to end hangs on I2C bus
     Wire.begin(); // we use I2C in logic, so we setut the bus. It is not critical to setup it more than once
     gNumChannels = getIntParam(LOG_NumChannels);
-    if (LOG_Channels < gNumChannels) {
-        DbgWrite("FATAL: Firmware compiled for %d channels, but knxprod needs %d channels!", LOG_Channels, gNumChannels);
+    if (LOG_ChannelsFirmware < gNumChannels) {
+        DbgWrite("FATAL: Firmware compiled for %d channels, but knxprod needs %d channels!", LOG_ChannelsFirmware, gNumChannels);
         knx.platform().fatalError();
     }
     if (knx.configured())
@@ -1608,7 +1625,7 @@ void logikSetup(uint8_t iBuzzerPin, uint8_t iSavePin)
         if (TableObject::getBeforeTableUnloadCallback() == 0) TableObject::addBeforeTableUnloadCallback(logicBeforeTableUnloadHandler);
         // set interrupt for poweroff handling
         if (iSavePin) {
-            attachInterrupt(digitalPinToInterrupt(iSavePin), logicOnSafePinInterruptHandler, FALLING);
+            logicAttachSaveInterrupt(digitalPinToInterrupt(iSavePin), logicOnSafePinInterruptHandler, FALLING);
         }
         if (prepareChannels())
             writeAllDptToEEPROM();
