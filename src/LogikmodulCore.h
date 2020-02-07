@@ -5,11 +5,21 @@
 #include <stdlib.h>
 #include <Wire.h>
 
-#ifndef LOG_Channels
+#ifdef LOGICMODULE
 #include "Logikmodul.h"
+#elif SENSORMODULE
+#include "../../knx-sensor/src/Sensormodul.h"
+#elif TEST
+#include "../../knx-test/src/Test.h"
+#define MODULE "TEST"
 #endif
+#include "Helper.h"
 #include "Board.h"
-#include "LogikmodulCommon.h"
+#include "EepromManager.h"
+#include "KnxHelper.h"
+
+#define SAVE_BUFFER_START_PAGE     0    // All stored KO data begin at this page and takes 37 pages,
+#define SAVE_BUFFER_NUM_PAGES     40    // allow 3 pages boundary, so next store should start at page 40
 
 #define LOG_ChannelsFirmware 50
 
@@ -92,6 +102,7 @@ extern KnxFacade<LinuxPlatform, Bau57B0> knx;
 #endif
 
 uint32_t sTimeFactors[] = {100, 1000, 60000, 3600000};
+uint8_t sMagicWord[] = {0xAE, 0x49, 0xD2, 0x9F};
 
 struct sChannelInfo
 {
@@ -114,6 +125,7 @@ struct sChannelInfo
 uint8_t gNumChannels;
 sChannelInfo gChannelData[LOG_ChannelsFirmware];
 uint8_t gBuzzerPin = 0;
+EepromManager EEPROM(SAVE_BUFFER_START_PAGE, SAVE_BUFFER_NUM_PAGES, sMagicWord);
 
 // forward declaratins
 void StartLogic(sChannelInfo *cData, uint8_t iChannel, uint8_t iIOIndex, bool iValue);
@@ -247,19 +259,19 @@ Dpt &getDPT(uint8_t iIOIndex, uint8_t iChannel)
 // write value to bus
 void knxWriteBool(uint8_t iIOIndex, uint8_t iChannel, bool iValue)
 {
-    printf("knxWrite KO %d bool value %d", calcKoNumber(iIOIndex, iChannel), iValue);
+    printDebug("knxWrite KO %d bool value %d\n", calcKoNumber(iIOIndex, iChannel), iValue);
     getKoForChannel(iIOIndex, iChannel)->value(iValue, getDPT(iIOIndex, iChannel));
 }
 
 void knxWriteInt(uint8_t iIOIndex, uint8_t iChannel, int32_t iValue)
 {
-    printf("knxWrite KO %d int value %li", calcKoNumber(iIOIndex, iChannel), iValue);
+    printDebug("knxWrite KO %d int value %li\n", calcKoNumber(iIOIndex, iChannel), iValue);
     getKoForChannel(iIOIndex, iChannel)->value((int32_t)iValue, getDPT(iIOIndex, iChannel));
 }
 
 void knxWriteRawInt(uint8_t iIOIndex, uint8_t iChannel, int32_t iValue)
 {
-    printf("knxWrite KO %d int value %li", calcKoNumber(iIOIndex, iChannel), iValue);
+    printDebug("knxWrite KO %d int value %li\n", calcKoNumber(iIOIndex, iChannel), iValue);
     GroupObject *lKo = getKoForChannel(iIOIndex, iChannel);
     uint8_t *lValueRef = lKo->valueRef();
     *lValueRef = iValue;
@@ -268,20 +280,20 @@ void knxWriteRawInt(uint8_t iIOIndex, uint8_t iChannel, int32_t iValue)
 
 void knxWriteFloat(uint8_t iIOIndex, uint8_t iChannel, float iValue)
 {
-    printf("knxWrite KO %d float value %f", calcKoNumber(iIOIndex, iChannel), iValue);
+    printDebug("knxWrite KO %d float value %f\n", calcKoNumber(iIOIndex, iChannel), iValue);
     getKoForChannel(iIOIndex, iChannel)->value(iValue, getDPT(iIOIndex, iChannel));
 }
 
 void knxWriteString(uint8_t iIOIndex, uint8_t iChannel, char *iValue)
 {
-    printf("knxWrite KO %d string value %s", calcKoNumber(iIOIndex, iChannel), iValue);
+    printDebug("knxWrite KO %d string value %s\n", calcKoNumber(iIOIndex, iChannel), iValue);
     getKoForChannel(iIOIndex, iChannel)->value(iValue, getDPT(iIOIndex, iChannel));
 }
 
 // send read request on bus
 void knxRead(uint8_t iIOIndex, uint8_t iChannel)
 {
-    printf("knxReadRequest end from KO %d", calcKoNumber(iIOIndex, iChannel));
+    printDebug("knxReadRequest end from KO %d\n", calcKoNumber(iIOIndex, iChannel));
     getKoForChannel(iIOIndex, iChannel)->requestObjectRead();
 }
 
@@ -290,7 +302,7 @@ void knxResetDevice(uint16_t iParamIndex, uint8_t iChannel)
 {
     uint16_t lAddress = getWordParam(iParamIndex, iChannel);
     uint8_t lHigh = lAddress >> 8;
-    printf("knxResetDevice with PA %d.%d.%d", lHigh >> 4, lHigh & 0xF, lAddress & 0xFF);
+    printDebug("knxResetDevice with PA %d.%d.%d\n", lHigh >> 4, lHigh & 0xF, lAddress & 0xFF);
     knx.restart(lAddress);
     // tmp: on restart we also call SAVE-Interrupt
     if ((lHigh >= 32) && getSaveInterruptCallback() != 0) 
@@ -1367,7 +1379,6 @@ void processInputKo(GroupObject &iKo)
 // Bytes of the first page (page 0) might be used differently in future
 // For inputs, which are not set as "store in memory", we write a dpt 0xFF
 //
-bool gIsValidEEPROM = false;
 uint32_t gLastWriteEEPROM = 0;
 
 void writeSingleDptToEEPROM(uint8_t iIOIndex, uint8_t iChannel) {
@@ -1398,15 +1409,15 @@ void writeAllDptToEEPROM()
     // start writing all dpt. For inputs, which should not be saved, we write a dpt 0xFF
     for (uint8_t lChannel = 0; lChannel < gNumChannels; lChannel++)
     {
-        beginPageEEPROM(lAddress);
+        EEPROM.beginPage(lAddress);
         writeSingleDptToEEPROM(IO_Input1, lChannel);
         lAddress++;
         writeSingleDptToEEPROM(IO_Input2, lChannel);
         lAddress++;
         if (lAddress % 16 == 0)
-            endPageEEPROM();
+            EEPROM.endPage();
     }
-    endPageEEPROM();
+    EEPROM.endPage();
 }
 
 void writeAllInputsToEEPROM() {
@@ -1418,38 +1429,38 @@ void writeAllInputsToEEPROM() {
     gLastWriteEEPROM = millis();
 
     // prepare initialization
-    beginWriteKoEEPROM();
+    EEPROM.beginWriteSession();
 
     //Begin write of KO values
     uint16_t lAddress = (SAVE_BUFFER_START_PAGE + 5) * 32; // begin of KO value memory
     // for (uint8_t i = 0; i < 10; i++)
     for (uint8_t lChannel = 0; lChannel < gNumChannels; lChannel++)
     {
-        beginPageEEPROM(lAddress);
+        EEPROM.beginPage(lAddress);
         GroupObject *lKo = getKoForChannel(IO_Input1, lChannel);
-        write4BytesEEPROM(lKo->valueRef(), lKo->valueSize());
+        EEPROM.write4Bytes(lKo->valueRef(), lKo->valueSize());
         lAddress += 4;
         lKo = getKoForChannel(IO_Input2, lChannel);
-        write4BytesEEPROM(lKo->valueRef(), lKo->valueSize());
+        EEPROM.write4Bytes(lKo->valueRef(), lKo->valueSize());
         lAddress += 4;
         if (lAddress % 16 == 0)
-            endPageEEPROM();
+            EEPROM.endPage();
     }
-    endPageEEPROM();
+    EEPROM.endPage();
 
     // as a last step we write magic number back
     // this is also the ACK, that writing was successfull
-    endWriteKoEEPROM();
+    EEPROM.endWriteSession();
 }
 
 bool readOneInputFromEEPROM(uint8_t iIOIndex, uint8_t iChannel) {
     // first check, if EEPROM contains valid values
-    if (!gIsValidEEPROM)
+    if (!EEPROM.isValid())
         return false;
     // Now check, if the DPT for requested KO is valid
     // DPT might have changed due to new programming after last save
     uint16_t lAddress = (SAVE_BUFFER_START_PAGE + 1) * 32 + iChannel * 2 + iIOIndex - 1;
-    prepareReadEEPROM(lAddress, 1);
+    EEPROM.prepareRead(lAddress, 1);
     uint8_t lSavedDpt = Wire.read();
     uint8_t lNewDpt = getByteParam((iIOIndex == IO_Input1) ? LOG_fE1Dpt : LOG_fE2Dpt, iChannel);
     if (lNewDpt != lSavedDpt) return false;
@@ -1457,7 +1468,7 @@ bool readOneInputFromEEPROM(uint8_t iIOIndex, uint8_t iChannel) {
     // if the dpt is ok, we get the ko value
     lAddress = (SAVE_BUFFER_START_PAGE + 5) * 32 + iChannel * 8 + (iIOIndex - 1) * 4;
     GroupObject *lKo = getKoForChannel(iIOIndex, iChannel);
-    prepareReadEEPROM(lAddress, lKo->valueSize());
+    EEPROM.prepareRead(lAddress, lKo->valueSize());
     int lIndex = 0;
     while (Wire.available() && lIndex < 4)
         lKo->valueRef()[lIndex++] = Wire.read();
@@ -1479,8 +1490,8 @@ void logicOnSafePinInterruptHandler()
 
 void logikDebug()
 {
-    printf("Logik-LOG_ChannelsFirmware (in Firmware): %d", LOG_ChannelsFirmware);
-    printf("Logik-gNumChannels (in knxprod):  %d", gNumChannels);
+    printDebug("Logik-LOG_ChannelsFirmware (in Firmware): %d\n", LOG_ChannelsFirmware);
+    printDebug("Logik-gNumChannels (in knxprod):  %d\n", gNumChannels);
     // Test i2c failure
     // we start an i2c read i.e. for EEPROM
     // prepareReadEEPROM(4711, 20);
@@ -1491,18 +1502,18 @@ void logikDebug()
 
 void logicBeforeRestartHandler()
 {
-    printf("logic before Restart called");
+    printDebug("logic before Restart called\n");
     writeAllInputsToEEPROMFacade();
 }
 
 void logicBeforeTableUnloadHandler(TableObject & iTableObject, LoadState & iNewState)
 {
     static uint32_t sLastCalled = 0;
-    printf("Table changed called with state %d", iNewState);
+    printDebug("Table changed called with state %d\n", iNewState);
 
     if (iNewState == 0)
     {
-        printf("Table unload called");
+        printDebug("Table unload called\n");
         if (sLastCalled == 0 || delayCheck(sLastCalled, 10000))
         {
             writeAllInputsToEEPROMFacade();
@@ -1518,7 +1529,7 @@ void logikSetup(uint8_t iBuzzerPin, uint8_t iSavePin)
     gNumChannels = getIntParam(LOG_NumChannels);
     if (LOG_ChannelsFirmware < gNumChannels)
     {
-        printf("FATAL: Firmware compiled for %d channels, but knxprod needs %d channels!", LOG_ChannelsFirmware, gNumChannels);
+        printDebug("FATAL: Firmware compiled for %d channels, but knxprod needs %d channels!\n", LOG_ChannelsFirmware, gNumChannels);
         knx.platform().fatalError();
     }
     if (knx.configured())
@@ -1532,11 +1543,10 @@ void logikSetup(uint8_t iBuzzerPin, uint8_t iSavePin)
 #endif
         // we set just a callback if it is not set from a potential caller
         if (GroupObject::classCallback() == 0) GroupObject::classCallback(processInputKo);
-        gIsValidEEPROM = checkDataValidEEPROM();
-        if (gIsValidEEPROM) {
-            printf("EEPROM contains valid KO inputs");
+        if (EEPROM.isValid()) {
+            printDebug("EEPROM contains valid KO inputs\n");
         } else {
-            printf("EEPROM does NOT contain valid data");
+            printDebug("EEPROM does NOT contain valid data\n");
         }
         // we store some input values in case of restart or ets programming
         if (knx.getBeforeRestartCallback() == 0) knx.addBeforeRestartCallback(logicBeforeRestartHandler);
@@ -1555,14 +1565,14 @@ void logicProcessInterrupt(bool iForce = false)
 {
     if (gSaveInterruptTimestamp > 0 || iForce)
     {
-        printf("Logic: SAVE-Interrupt processing started after %lu ms", millis() - gSaveInterruptTimestamp);
+        printDebug("Logic: SAVE-Interrupt processing started after %lu ms\n", millis() - gSaveInterruptTimestamp);
         gSaveInterruptTimestamp = millis();
         // If Interrupt happens during i2c read we try to finish last read first
         while (Wire.available())
             Wire.read();
         // now we write everything to EEPROM
         writeAllInputsToEEPROM();
-        printf("Logic: SAVE-Interrupt processing duration %lu ms", millis() - gSaveInterruptTimestamp);
+        printDebug("Logic: SAVE-Interrupt processing duration %lu ms\n", millis() - gSaveInterruptTimestamp);
         gSaveInterruptTimestamp = 0;
     }
 }
