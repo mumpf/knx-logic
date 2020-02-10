@@ -366,19 +366,21 @@ void LogicChannel::writeParameterValue(uint8_t iIOIndex)
     switch (lDpt)
     {
         uint8_t lValueByte;
+        uint16_t lValueWord;
         case VAL_DPT_1:
             bool lValueBool;
             lValueBool = lValue != 0;
             knxWriteBool(IO_Output, lValueBool);
             break;
         case VAL_DPT_2:
-            lValueByte = lValue;
+            lValueByte = abs(lValue);
+            lValueByte &= 3;
             knxWriteRawInt(IO_Output, lValueByte);
             break;
         case VAL_DPT_5:
         case VAL_DPT_5001:
+            lValue = abs(lValue);
         case VAL_DPT_6:
-        case VAL_DPT_17:
             lValueByte = lValue;
             knxWriteInt(IO_Output, lValueByte);
             break;
@@ -389,8 +391,8 @@ void LogicChannel::writeParameterValue(uint8_t iIOIndex)
             // knxWrite(0, lValueByte);
             // break;
         case VAL_DPT_7:
+            lValue = abs(lValue);
         case VAL_DPT_8:
-            uint16_t lValueWord;
             lValueWord = lValue;
             knxWriteInt(IO_Output, lValueWord);
             break;
@@ -410,6 +412,11 @@ void LogicChannel::writeParameterValue(uint8_t iIOIndex)
             char lValueStr[15];
             sprintf(lValueStr, "%ld", lValue);
             knxWriteString(IO_Output, lValueStr);
+            break;
+        case VAL_DPT_17:
+            lValueByte = abs(lValue);
+            lValueByte &= 0x3F;
+            knxWriteInt(IO_Output, lValueByte);
             break;
         case VAL_DPT_232:
             knxWriteInt(IO_Output, lValue);

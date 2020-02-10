@@ -165,7 +165,7 @@ void Logic::processInterrupt(bool iForce)
 {
     if (mSaveInterruptTimestamp > 0 || iForce)
     {
-        printDebug("Logic: SAVE-Interrupt processing started after %lu ms\n", millis() - mSaveInterruptTimestamp);
+        if (!iForce) printDebug("Logic: SAVE-Interrupt processing started after %lu ms\n", millis() - mSaveInterruptTimestamp);
         mSaveInterruptTimestamp = millis();
         // If Interrupt happens during i2c read we try to finish last read first
         while (Wire.available())

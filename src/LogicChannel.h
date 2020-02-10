@@ -21,11 +21,16 @@
 #include "KnxHelper.h"
 #include "EepromManager.h"
 
+// this processes a warning during compilation!
+// this warning is intended
+// the output tells you, for which module the logic is compiled
+// to be exact: which include with ets definitions is taken to compile the logic
 #pragma message "Building Logic for " MODULE
 
 #define SAVE_BUFFER_START_PAGE 0 // All stored KO data begin at this page and takes 37 pages,
 #define SAVE_BUFFER_NUM_PAGES 40 // allow 3 pages boundary, so next store should start at page 40
 
+// here we define, how many channels are compiled into firmware, has to be greater equal the number in knxprod
 #define LOG_ChannelsFirmware 50
 
 // enum input defaults

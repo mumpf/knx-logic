@@ -811,6 +811,56 @@ Hier wird ein konstanter Wert erwartet, der zu dem Ausgewählten DPT für den Au
 
 Man kann dies z.B. auch zur Invertierung nutzen, indem bei einem DPT 1 für ein AUS-Signal der Wert EIN gesendet wird und umgekehrt.
 
+## DPT Konverter
+
+Das Gerät hat ein Funktionsmodul DPT-Konverter eingebaut, dass parameterlos funktioniert (deswegen wird es auch generischer Konverter bezeichnet).
+
+Der DPT konverter konvertiert einen Von-DPT in einen Nach-DPT und wird implizt an Stellen aufgerufen, an den das notwendig ist, wenn also für Berechnungen oder Zuweisungen unterschiedliche DPT vorliegen.
+
+Derzeit passiert das
+
+* bei einem Differenzkonverter, wenn die beiden Eingänge unterschiedliche DPT haben. Hier ist der Nach-DPT immer der DPT, den der Eingang besitzt, der den Differenzkonverter nutzt. Der Von-DPT ist der DPT des "anderen" Eingangs.
+* Bei einem Ausgang, wenn dieser den Wert eines Eingangs senden soll und die unterschiedliche DPT haben. Hier ist der Von-DPT immer der Eingangs-DPT und der Nach-DPT der Ausgangs-DPT.
+
+Da die Konvertierung nicht parametrierbar ist, erfolgt sie nach einfachen (generischen) Regeln. Auch wenn prinzipiell von jedem Von-DPT zu jedem Nach-DPT konvertiert werden kann, müssen für einige Konvertierungen die Rahmenbedingungen bekannt sein, vor allem wie in Grenzfällen verfahren wird. Es ist z.B. offensichtlich, dass ein 2-Byte-Wert 365 nicht verlustfrei in einen 1-Byte-Wert (Wertebereich 0-255) konvertiert werden kann.
+
+Konvertierungen erfolgen nach folgender Tabelle, wobei der Von-DPT in den Zeilen, der Nach-DPT in den Spalten steht:
+
+DPT | 1 | 2 | 5 | 5.001 | 6 | 7 | 8 | 9 | 16 | 17 | 232
+:---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:
+1 | I | Z<sub>B</sub> | G<sub>B</sub> | G<sub>B</sub> | G<sub>B</sub> | G<sub>B</sub> | G<sub>B</sub> | G<sub>B</sub> | T<sub>B<sub> | S<sub>B</sub> | G<sub>B</sub>
+2 | B | I | G<sub>Z</sub> | G<sub>Z</sub> | G<sub>Z</sub> | G<sub>Z</sub> | G<sub>Z</sub> | G<sub>Z</sub> | T<sub>Z</sub> | S<sub>Z</sub> | G<sub>Z</sub>
+5 | B | Z | I | G<sub>W</sub> | G | G | G | G | T | S  | G
+5.001 | B | Z | G | I | G | G | G | G | T | S | G
+6 | B | Z | G<sub>V</sub> | G<sub>VW</sub> | I | G<sub>V</sub> | G | G | T | S  | G
+7 | B | Z | G<sub>W</sub> | G<sub>W</sub> | G<sub>W</sub> | I | G | G | T | S  | G
+8 | B | Z | G<sub>VW</sub> | G<sub>VW</sub> | G<sub>W</sub> | G<sub>V</sub> | I | G | T | S  | G
+9 | B | Z | G<sub>VW</sub> | G<sub>VW</sub> | G<sub>W</sub> | G<sub>VW</sub> | G<sub>W</sub> | I | T | S  | G
+17 | B | Z | G | G | G | G | G | G | T | I | G
+232 | B | Z | G<sub>VW</sub> | G<sub>VW</sub> | G<sub>W</sub> | G<sub>VW</sub> | G<sub>W</sub> | G<sub>W</sub> | T | S  | I
+
+Die Einträge an den Schnittpunkten haben folgende Bedeutung:
+
+Eintrag | Konverter | Bedeutung
+:---:|:---|:---
+I | Identität | keine Konvertierung notwendig, DPT sind gleich
+B | Binär | Wert wird in eine Ganzzahl gewandelt. Eine 0 wird in ein AUS-Signal konvertiert, alle anderen Werte in ein EIN-Signal.
+G | Generisch | Wert wird in eine Ganzzahl gewandelt und anschließend zugewiesen.
+G<sub>B</sub> | Generisch (von Binär) | AUS wird in eine 0 konvertiert, EIN in eine 1.
+G<sub>V</sub> | Generisch (mit geändertem Vorzeichen) | Wie G, nur hat der Von-DPT möglicherweise ein Vorzeichen. Falls der Wert negativ ist, wird vor der Zuweisung das Vorzeichen entfernt (mit -1 multipliziert).
+G<sub>W</sub> | Generisch (mit Werteinschränkung) | Wie G, nur hat der Von-DPT einen größeren Wertebereich als der Nach-DPT. Vor der Zuweisung wird noch modulo Wertebereich des Nach-DPT gerechnet.
+G<sub>VW</sub> | Generisch (mit geändertem Vorzeichen und Werteinschränkung) | Wie G<sub>V</sub> gefolgt von G<sub>W</sub>.
+G<sub>Z</sub> | Generisch (von Zwang) | "normal aus" (00) wird in eine 0 konvertiert, "normal ein" (01) in eine 1, "priorität aus" (10) in eine 2 und "priorität ein" (11) in eine 3.
+S | Szene | Wert wird in eine Ganzzahl gewandelt. Falls negativ, wird das Vorzeichen entfernt (mit -1 multipliziert). Anschließend werden die untersten 6 Bit (Bit0 bis Bit5) genommen. Resultat ist Szene 1-64.
+S<sub>B</sub> | Szene (von Binär) | AUS wird in die Szene 1 konvertiert, EIN in eine Szene 2.
+S<sub>Z</sub> | Szene (von Zwang) | Wie G<sub>Z</sub>, nur ist die resultierende Szene der konvertierte Wert + 1. Es kommen somit Szenen 1-4 raus.
+T | Text | Wert wird in eine Zahl gewandelt und anschließend als Text ausgegeben.
+T<sub>B</sub> | Text (von Binär) | AUS wird in einden Text "0" konvertiert, EIN in den Text "1".
+T<sub>Z</sub> | Text (von Zwang) | Wie G<sub>Z</sub>, nur werden die Zahlen als Text ausgegeben.
+Z |Zwang | Wert wird in eine Ganzzahl gewandelt. Falls negativ, wird das Vorzeichen entfernt (mit -1 multipliziert). Anschließend werden die letzten beiden Bit (Bit0 und Bit1) genommen. Resultat sind die Werte 0 bis 3.
+Z<sub>B</sub> |Zwang (von Binär) | Ein AUS wird nach "normal aus" (00) konvertiert, EIN nach "normal ein" (01). Die Werte "priorität aus" (10) und "priorität ein" sind nicht möglich.
+
+
 ----
 
 ## Beispiele
@@ -830,3 +880,12 @@ RGB-LED
 KO | Name | DPT | Bedeutung
 :---:|:---|---:|:--
 1 | in Betrieb | 1.002 | Meldet zyklisch auf den Bus, dass das Gerät noch funktioniert. Das KO steht nicht zur Verfügung, wenn kein Sendezyklus eingestellt wurde.
+n | Eingang 1 | *) | Eingang 1 für einen Logikkanal
+n+1 | Eingang 2 | *) | Eingang 2 für einen Logikkanal
+n+2 | Ausgang | **) | Ausgang eines Logikkanals
+
+Jeder Logikkanal hat genau 3 aufeinanderfolgende Kommunikationsobjekte. n für Kanal 1 ist von dem Gerät abhängig, auf dem die Applikation Logik läuft. Für das Sensormodul ist n=30. 
+
+*) Eingangs-DPT ist 1, 2, 5, 5.001, 6, 7, 8, 9, 17, 232
+
+**) Ausgangs-DPT ist Eingangs-DPT ergänzt um DPT 16.
