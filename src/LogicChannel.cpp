@@ -2,6 +2,7 @@
 #include "Logic.h"
 #include "Helper.h"
 #include "Board.h"
+#include "PCA9632.h"
 
 Logic *LogicChannel::sLogic = nullptr;
 
@@ -191,6 +192,16 @@ void LogicChannel::knxResetDevice(uint16_t iParamIndex)
     knx.restart(lAddress);
 }
 
+// turn on RGBLed
+void LogicChannel::setRGBColor(uint16_t iParamIndex)
+{
+    uint32_t lRGBColor = getIntParam(iParamIndex);
+    uint8_t lRed = lRGBColor >> 24;
+    uint8_t lGreen = lRGBColor >> 16;
+    uint8_t lBlue = lRGBColor >> 8;
+    PCA9632_SetColor(lRed, lGreen, lBlue);
+}
+
 /********************************
  * Logic helper functions
  * *****************************/
@@ -348,7 +359,7 @@ void LogicChannel::writeConstantValue(uint16_t iParamIndex)
             break;
         case VAL_DPT_232:
             int32_t lValueRGB;
-            lValueRGB = getIntParam(iParamIndex);
+            lValueRGB = getIntParam(iParamIndex) >> 8;
             knxWriteInt(IO_Output, lValueRGB);
             break;
         default:
@@ -572,12 +583,13 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex) {
                 if (lValue1In - lValue2In >= getParamForDelta(lDpt, lParamBase + 6))
                     lValueOut = true;
                 break;
-
             default:
                 // do nothing, wrong converter id
                 break;
         }
     }
+    // remove processing flag from pipeline
+    pCurrentPipeline &= (iIOIndex == IO_Input1) ? ~PIP_CONVERT_INPUT1 : ~PIP_CONVERT_INPUT2;
     // start logic processing for this input
     startLogic(iIOIndex, lValueOut);
 }
@@ -949,6 +961,8 @@ void LogicChannel::processOnOffRepeat() {
     uint32_t lRepeat = 0;
     bool lValue;
 
+    // we can handle On/Off repeat in one method, because they are alternative and never 
+    // set both in parallel
     if (pCurrentPipeline & PIP_ON_REPEAT)
     {
         lRepeat = getIntParam(LOG_fORepeatOn) * 100;
@@ -1021,6 +1035,9 @@ void LogicChannel::processOutput(bool iValue) {
                 tone(BUZZER_PIN, BUZZER_FREQ);
 #endif
                 break;
+            case VAL_Out_RGBLed:
+                setRGBColor(LOG_fOOnDpt1);
+                break;
             default:
                 // there is no output parametrized
                 break;
@@ -1051,6 +1068,9 @@ void LogicChannel::processOutput(bool iValue) {
                 //digitalWrite(BUZZER_PIN, LOW);
                 noTone(BUZZER_PIN);
 #endif
+                break;
+            case VAL_Out_RGBLed:
+                setRGBColor(LOG_fOOffDpt1);
                 break;
             default:
                 // there is no output parametrized
@@ -1230,49 +1250,40 @@ void LogicChannel::loop()
 {
     if (!knx.configured())
         return;
-
+    // we revert the processing order for pipeline events
+    // this reduces the chance to have a long running
+    // sequence of funtions because of according pipeline settings
+    // On/Off repeat pipeline
+    if (pCurrentPipeline & (PIP_ON_REPEAT | PIP_OFF_REPEAT))
+        processOnOffRepeat();
+    // Output Filter pipeline
+    if (pCurrentPipeline & (PIP_OUTPUT_FILTER_ON | PIP_OUTPUT_FILTER_OFF))
+        processOutputFilter();
+    // Off delay pipeline
+    if (pCurrentPipeline & PIP_OFF_DELAY)
+        processOffDelay();
+    // On delay pipeline
+    if (pCurrentPipeline & PIP_ON_DELAY)
+        processOnDelay();
+    // blink pipeline
+    if (pCurrentPipeline & PIP_BLINK)
+        processBlink();
+    // stairlight pipeline
+    if (pCurrentPipeline & PIP_STAIRLIGHT)
+        processStairlight();
+    // Logic execution pipeline
+    if (pCurrentPipeline & PIP_LOGIC_EXECUTE)
+        processLogic();
+    // convert input pipeline
+    if (pCurrentPipeline & PIP_CONVERT_INPUT1)
+        processConvertInput(IO_Input1);
+    if (pCurrentPipeline & PIP_CONVERT_INPUT2)
+        processConvertInput(IO_Input2);
+    // repeat input pipeline
+    if (pCurrentPipeline & PIP_REPEAT_INPUT1)
+        processRepeatInput1();
+    if (pCurrentPipeline & PIP_REPEAT_INPUT2)
+        processRepeatInput2();
     if (pCurrentPipeline & PIP_STARTUP)
-    {
         processStartup();
-    }
-    else if (pCurrentPipeline > 0)
-    {
-        // repeat input pipeline
-        if (pCurrentPipeline & PIP_REPEAT_INPUT1)
-            processRepeatInput1();
-        if (pCurrentPipeline & PIP_REPEAT_INPUT2)
-            processRepeatInput2();
-        // convert input pipeline
-        if (pCurrentPipeline & PIP_CONVERT_INPUT1)
-        {
-            pCurrentPipeline &= ~PIP_CONVERT_INPUT1;
-            processConvertInput(IO_Input1);
-        }
-        if (pCurrentPipeline & PIP_CONVERT_INPUT2)
-        {
-            pCurrentPipeline &= ~PIP_CONVERT_INPUT2;
-            processConvertInput(IO_Input2);
-        }
-        // Logic execution pipeline
-        if (pCurrentPipeline & PIP_LOGIC_EXECUTE)
-            processLogic();
-        // stairlight pipeline
-        if (pCurrentPipeline & PIP_STAIRLIGHT)
-            processStairlight();
-        // blink pipeline
-        if (pCurrentPipeline & PIP_BLINK)
-            processBlink();
-        // On delay pipeline
-        if (pCurrentPipeline & PIP_ON_DELAY)
-            processOnDelay();
-        // Off delay pipeline
-        if (pCurrentPipeline & PIP_OFF_DELAY)
-            processOffDelay();
-        // Output Filter pipeline
-        if (pCurrentPipeline & (PIP_OUTPUT_FILTER_ON | PIP_OUTPUT_FILTER_OFF))
-            processOutputFilter();
-        // On/Off repeat pipeline
-        if (pCurrentPipeline & (PIP_ON_REPEAT | PIP_OFF_REPEAT))
-            processOnOffRepeat();
-    }
 }

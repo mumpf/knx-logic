@@ -6,9 +6,7 @@
 #define LOG_StartupDelay               4      // int32_t
 #define LOG_Heartbeat                  8      // int32_t
 
-#ifndef LOG_Channels
 #define LOG_Channels 50
-#endif
 
 // Parameter per channel
 #define LOG_ParamBlockOffset 12
@@ -54,7 +52,7 @@
 #define LOG_fE1Low7Dpt17              18      // uint8_t
 #define LOG_fE1LowDptRGB              11      // int32_t
 #define LOG_fE1HighDptRGB             15      // int32_t
-#define LOG_fE1Default                19      // 8 Bits, Bit 7-0
+#define LOG_fE1Default                19      // 2 Bits, Bit 1-0
 #define LOG_fE1Repeat                 20      // int32_t
 #define LOG_fE2                       24      // 4 Bits, Bit 3-0
 #define LOG_fE2Dpt                    25      // 8 Bits, Bit 7-0
@@ -85,7 +83,7 @@
 #define LOG_fE2Low7Dpt17              33      // uint8_t
 #define LOG_fE2LowDptRGB              26      // int32_t
 #define LOG_fE2HighDptRGB             30      // int32_t
-#define LOG_fE2Default                34      // 8 Bits, Bit 7-0
+#define LOG_fE2Default                34      // 2 Bits, Bit 1-0
 #define LOG_fE2Repeat                 35      // int32_t
 #define LOG_fI1                       39      // 4 Bits, Bit 7-4
 #define LOG_fI1Function               40      // int32_t
@@ -120,7 +118,7 @@
 #define LOG_fOOnDpt9                  81      // float
 #define LOG_fOOnDpt16                 81      // char*, 14 Byte
 #define LOG_fOOnDpt17                 81      // uint8_t
-#define LOG_fOOnRGB                   81      // int32_t
+#define LOG_fOOnRGB                   81      // 0 Bits, Bit 7
 #define LOG_fOOnPAArea                81      // 4 Bits, Bit 7-4
 #define LOG_fOOnPALine                81      // 4 Bits, Bit 3-0
 #define LOG_fOOnPADevice              82      // uint8_t
@@ -135,10 +133,12 @@
 #define LOG_fOOffDpt9                 96      // float
 #define LOG_fOOffDpt16                96      // char*, 14 Byte
 #define LOG_fOOffDpt17                96      // uint8_t
-#define LOG_fOOffRGB                  96      // int32_t
+#define LOG_fOOffRGB                  96      // 0 Bits, Bit 7
 #define LOG_fOOffPAArea               96      // 4 Bits, Bit 7-4
 #define LOG_fOOffPALine               96      // 4 Bits, Bit 3-0
 #define LOG_fOOffPADevice             97      // uint8_t
+#define LOG_fE1DefaultEEPROM          19      // 1 Bit, Bit 2
+#define LOG_fE2DefaultEEPROM          34      // 1 Bit, Bit 2
 
 // Communication objects per channel (multiple occurance)
 #define LOG_KoOffset 30
@@ -149,4 +149,6 @@
 
 // Communication objects with single occurance
 #define LOG_KoHeartbeat 1
+#define LOG_KoTime 28
+#define LOG_KoDate 29
 

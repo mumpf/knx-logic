@@ -39,6 +39,11 @@ void Logic::onSafePinInterruptHandler()
 Logic::Logic()
 {
     LogicChannel::sLogic = this;
+    mDateTime.tm_year = 120;
+    mDateTime.tm_mon = 0;
+    mDateTime.tm_mday = 1;
+    mDateTime.tm_wday = 3;
+    mktime(&mDateTime);
 }
 
 Logic::~Logic()
@@ -152,7 +157,21 @@ void Logic::writeAllInputsToEEPROMFacade() {
 // on input level, all dpt>1 values are converted to bool by the according converter
 void Logic::processInputKo(GroupObject &iKo)
 {
-    if (iKo.asap() >= LOG_KoOffset && iKo.asap() < LOG_KoOffset + mNumChannels * LOG_KoBlockSize) {
+    if (iKo.asap() == LOG_KoTime) {
+        struct tm lTmp = iKo.value(getDPT(VAL_DPT_10));
+        mDateTime.tm_sec = lTmp.tm_sec;
+        mDateTime.tm_min = lTmp.tm_min;
+        mDateTime.tm_hour = lTmp.tm_hour;
+        mktime(&mDateTime);
+        mTimeDelay = millis();
+    } else if (iKo.asap() == LOG_KoDate) {
+        struct tm lTmp = iKo.value(getDPT(VAL_DPT_11));
+        mDateTime.tm_mday = lTmp.tm_mday;
+        mDateTime.tm_mon = lTmp.tm_mon - 1;
+        mDateTime.tm_year = lTmp.tm_year - 1900;
+        mktime(&mDateTime);
+        mTimeDelay = millis();
+    } else if (iKo.asap() >= LOG_KoOffset && iKo.asap() < LOG_KoOffset + mNumChannels * LOG_KoBlockSize) {
         uint16_t lKoNumber = iKo.asap() - LOG_KoOffset;
         uint8_t lChannelId = lKoNumber / LOG_KoBlockSize;
         uint8_t lIOIndex = lKoNumber % LOG_KoBlockSize + 1;
@@ -206,6 +225,7 @@ void Logic::beforeTableUnloadHandler(TableObject & iTableObject, LoadState & iNe
 void Logic::debug() {
     printDebug("Logik-LOG_ChannelsFirmware (in Firmware): %d\n", LOG_ChannelsFirmware);
     printDebug("Logik-gNumChannels (in knxprod):  %d\n", mNumChannels);
+    printDebug("Aktuelle Zeit: %s", asctime(&mDateTime));
     // Test i2c failure
     // we start an i2c read i.e. for EEPROM
     // prepareReadEEPROM(4711, 20);
@@ -256,18 +276,28 @@ void Logic::setup(uint8_t iSavePin) {
     }
 }
 
+void Logic::processTime() {
+    if (delayCheck(mTimeDelay, 1000)) {
+        mDateTime.tm_sec += 1;
+        mktime(&mDateTime);
+        mTimeDelay = millis();
+    }
+}
+
 void Logic::loop()
 {
     if (!knx.configured())
         return;
 
     processInterrupt();
+    processTime();
 
     // we loop on all channels an execute pipeline
     for (uint8_t lIndex = 0; lIndex < mNumChannels; lIndex++)
     {
         LogicChannel *lChannel = mChannel[lIndex];
         lChannel->loop();
+        knx.loop();
     }
 }
 

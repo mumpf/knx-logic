@@ -12,7 +12,7 @@ gegliedert, wobei die Logikkanäle wiederum in bis zu 60 Kanäle untergierdert s
 
 ## Allgemeine Parameter
 
-![Allgemeine Parameter](./AllgemeineParameter.png)
+![Allgemeine Parameter](AllgemeineParameter.png)
 Hier werden Einstellungen getroffen, die die generelle Arbeitsweise des Logikmoduls bestimmen.
 
 ### Zeit bis das Gerät nach einem Neustart aktiv wird
@@ -729,6 +729,8 @@ Je nach gewähltem DPT unterscheiden sich die folgenden Felder leicht. Es werden
 
 ### Wert für EIN senden?
 
+![WertEinDropdown](WertEinSenden.png)
+
 In dieser Auswahlbox wird festgelegt, ob und was für ein Wert bei einem EIN-Signal gesendet werden soll.
 
 #### Nein
@@ -761,13 +763,41 @@ Bei einem EIN-Signal wird kein Wert gesendet, sondern der interne Buzzer zur Ton
 
 Diese Option kann nur funktioneren, wenn das Gerät, auf dem die Applikation Logik läuft, auch einen Buzzer verbaut hat.
 
+#### Ja - LED-Farbe festlegen (Schwarz schaltet LED aus)
+
+Bei einem AUS-Signal wird kein Wert gesendet, sondern die interne RBG-LED mit der eingestellten Farbe eingeschaltet. Ist die Farbe Schwarz eingestellt, wir die LED ausgeschaltet. So kann man eine optische Rückmeldung erreichen.
+
+Diese Option kann nur funktionieren, wenn das Gerät, auf dem die Applikation Logik läuft, auch eine RGB-LED verbaut hat.
+
 ### Wert für EIN senden als
+
+![Wert senden in Prozent](WertSendenProzent.png)
 
 Das Feld erscheint nur, wenn für "Wert für EIN senden" ein "Ja - Wert vorgeben" ausgewählt wurde.
 
 Hier wird ein konstanter Wert erwartet, der zu dem Ausgewählten DPT für den Ausgang passt. Dieser eingegebene Wert wird auf den KNX-Bus bei einem EIN-Signal gesendet.
 
 Man kann dies z.B. auch zur Invertierung nutzen, indem bei einem DPT 1 für ein EIN-Signal der Wert AUS gesendet wird und umgekehrt.
+
+### Physilalische Adresse
+
+![Gerät zurücksetzen](ResetDevice.png)
+
+Das Feld erscheint nur, wenn für "Wert für EIN senden" ein "Ja - 'Gerät zurücksetzen' senden" ausgewählt wurde.
+
+Hier wird eine physikalische Adresse in der üblichen Punkt-Notation erwartet. Das KNX-Gerät mit dieser physikalischen Adresse wird zurückgesetzt.
+
+Dies entspricht genau der Funktion "Gerät zurücksetzen" in der ETS.
+
+### LED-Farbe festlegen (Schwarz=aus)
+
+![Led farbe festlegen](LedColor.png)
+
+Das Feld erscheint nur, wenn für "Wert für EIN senden" ein "Ja - RGB-LED schalten" ausgewählt wurde.
+
+Hier wird die Farbe der LED bestimmt, in der sie leuchten soll. Wird die Farbe Schwarz gewählt (#000000), geht die LED aus. Für die Auswahl der Farbe kann auch ein Farbauswahldialog verwendet werden.
+
+Diese Option kann nur funktionieren, wenn das Gerät, auf dem die Applikation Logik läuft, auch eine RGB-LED verbaut hat.
 
 ### Wert für AUS senden?
 
@@ -803,6 +833,12 @@ Bei einem AUS-Signal wird kein Wert gesendet, sondern der interne Buzzer zur Ton
 
 Diese Option kann nur funktioneren, wenn das Gerät, auf dem die Applikation Logik läuft, auch einen Buzzer verbaut hat.
 
+#### Ja - LED-Farbe festlegen (Schwarz schaltet LED aus)
+
+Bei einem AUS-Signal wird kein Wert gesendet, sondern die interne RBG-LED mit der eingestellten Farbe eingeschaltet. Ist die Farbe Schwarz eingestellt, wir die LED ausgeschaltet. So kann man eine optische Rückmeldung erreichen.
+
+Diese Option kann nur funktionieren, wenn das Gerät, auf dem die Applikation Logik läuft, auch eine RGB-LED verbaut hat.
+
 ### Wert für AUS senden als
 
 Das Feld erscheint nur, wenn für "Wert für AUS senden" ein "Ja - Wert vorgeben" ausgewählt wurde.
@@ -810,6 +846,22 @@ Das Feld erscheint nur, wenn für "Wert für AUS senden" ein "Ja - Wert vorgeben
 Hier wird ein konstanter Wert erwartet, der zu dem Ausgewählten DPT für den Ausgang passt. Dieser eingegebene Wert wird auf den KNX-Bus bei einem AUS-Signal gesendet.
 
 Man kann dies z.B. auch zur Invertierung nutzen, indem bei einem DPT 1 für ein AUS-Signal der Wert EIN gesendet wird und umgekehrt.
+
+### Physilalische Adresse
+
+Das Feld erscheint nur, wenn für "Wert für AUS senden" ein "Ja - 'Gerät zurücksetzen' senden" ausgewählt wurde.
+
+Hier wird eine physikalische Adresse in der üblichen Punkt-Notation erwartet. Das KNX-Gerät mit dieser physikalischen Adresse wird zurückgesetzt.
+
+Dies entspricht genau der Funktion "Gerät zurücksetzen" in der ETS.
+
+### LED-Farbe festlegen (Schwarz=aus)
+
+Das Feld erscheint nur, wenn für "Wert für AUS senden" ein "Ja - RGB-LED schalten" ausgewählt wurde.
+
+Hier wird die Farbe der LED bestimmt, in der sie leuchten soll. Wird die Farbe Schwarz gewählt (#000000), geht die LED aus. Für die Auswahl der Farbe kann auch ein Farbauswahldialog verwendet werden.
+
+Diese Option kann nur funktionieren, wenn das Gerät, auf dem die Applikation Logik läuft, auch eine RGB-LED verbaut hat.
 
 ## DPT Konverter
 
@@ -864,6 +916,20 @@ Z<sub>B</sub> |Zwang (von Binär) | Ein AUS wird nach "normal aus" (00) konverti
 ----
 
 ## Beispiele
+
+Die Beispiele müssen noch ausgearbeitet werden. Die gegebenen Überschriften zeigen aber bereits jetzt eine Liste der möglichen Funktionen.
+
+### 3 Lichtszenen sollen auch den PM sperren (der das nativ nicht unterstützt)
+
+### Ist ein Fenster zu lange offen, soll der Text "Auskühlalarm" als Meldung auf dem Glastaster erscheinen
+
+### Ist die Markise durch einen Alarm (Windalarm/Regenalarm) gesperrt, soll ein langes Piepen und ein rotes blinken bei manueller Bedienung auf den Alarm hinweisen
+
+### Wird die Haustür geöffnet, soll ein dreifaches Piepen darauf hinweisen, dass noch irgendeine eine Terrassentür nicht verschlossen ist
+
+### Fernsehen oder Musikhören soll Präsenz in dem Raum simulieren
+
+### Wenn ein Temperatursensor eine halbe Stunde lang kein Signal gesendet hat, diesen zurücksezten
 
 ----
 

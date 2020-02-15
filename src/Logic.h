@@ -12,11 +12,12 @@ class Logic
     uint32_t mLastWriteToEEPROM = 0;
     bool mIsValidEEPROM = false;
     EepromManager *mEEPROM;
+    struct tm mDateTime = {0};
+    uint32_t mTimeDelay = 0;
 
     LogicChannel *getChannel(uint8_t iChannelId);
     uint8_t getChannelId(LogicChannel *iChannel);
     bool prepareChannels();
-
 
     void writeAllDptToEEPROM();
     void writeAllInputsToEEPROM();
@@ -24,6 +25,8 @@ class Logic
     void onSavePinInterruptHandler();
     void beforeRestartHandler();
     void beforeTableUnloadHandler(TableObject & iTableObject, LoadState & iNewState);
+
+    void processTime();
 
   public:
     Logic();

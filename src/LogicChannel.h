@@ -69,6 +69,7 @@
 #define VAL_Out_ReadRequest 4
 #define VAL_Out_ResetDevice 5
 #define VAL_Out_Buzzer 6
+#define VAL_Out_RGBLed 7
 
 // enum output filter
 #define VAL_AllowRepeat_All 0
@@ -146,7 +147,8 @@ class LogicChannel
     int32_t getInputValue(uint8_t iIOIndex);
     void writeConstantValue(uint16_t iParamIndex);
     void writeParameterValue(uint8_t iIOIndex);
-
+    void setRGBColor(uint16_t iParamIndex);
+    
     bool isInputActive(uint8_t iIOIndex);
 
     void startStartup();

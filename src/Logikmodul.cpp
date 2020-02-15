@@ -1,8 +1,5 @@
 #include "Helper.h"
 #include "Board.h"
-// Reihenfolge beachten damit die Definitionen von Sensormodul.h ...
-#include "Logikmodul.h"
-// ... auf jeden Fall Vorrang haben (beeinflussen auch die Logik)
 #include "Logic.h"
 
 struct sRuntimeInfo
@@ -53,12 +50,13 @@ void appLoop()
 void appSetup(uint8_t iSavePin)
 {
 
+    // try to get rid of occasional I2C lock...
+    // savePower();
+    // delay(100);
+    // restorePower();
     // check hardware availability
     boardCheck();
-    // try to get rid of occasional I2C lock...
-    savePower();
-    delay(100);
-    restorePower();
+
     if (knx.configured())
     {
         gRuntimeData.startupDelay = millis();
