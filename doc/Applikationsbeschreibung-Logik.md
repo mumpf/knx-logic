@@ -67,7 +67,7 @@ Die binäre Signalverarbeitung beginnt mit einer logischen Verknüpfung, die all
 
 Wird ein Funktionsblock nicht genutzt (nicht parametrisiert), gibt er seine Eingabe unverändert als Ergebnis an den nächsten Funktionsblock weiter.
 
-Das nach dem Sendefilter ermittelte Signal steht für die internen Eingänge der anderen Kanäle zur Verfügung. Ferner steht es auch einem Ausgangskonverter zur Verfügung, der als Wertwandler ausgelegt ist und den ermittelten Wert als einen anderen DPT ausgeben kann. Dabei können die Ausgbewerte festgelegt werden (Konstanten) oder ein am Eingang 1 oder Eingang 2 in den Ausgangs-DPT konvertiert werden.
+Das nach dem Sendefilter ermittelte Signal steht für die internen Eingänge der anderen Kanäle zur Verfügung. Ferner steht es auch einem Ausgangskonverter zur Verfügung, der als Wertwandler ausgelegt ist und den ermittelten Wert als einen anderen DPT ausgeben kann. Dabei können die Ausgbewerte festgelegt werden (Konstanten) oder ein am Eingang 1 oder Eingang 2 vorliegender Wert in den Ausgangs-DPT konvertiert werden.
 
 ### Startverhalten
 
@@ -87,11 +87,11 @@ Die letze Möglichkeit, einen Eingang vorzubelegen, ist mit dem letzten Wert, de
 
 Das bisher beschriebene führt zu der Situation, dass ein Logikkanal nach einem Neustart, der Zeit bis das Gerät aktiv wird und der Zeit, bis der Kanal aktiv wird in einem Zustand sein kann, bei dem immer noch einer oder beide Eingägne undefiniert sind.
 
-Eine Logikverknüpfung, die aber an einigen Eingängen einen definierten und and anderen Eingängen einen undefinierten Wert hat, muss wissen, wie sie sich verhalten soll, sprich, wie die Verknüpfung durchgeführt werden soll.
+Eine Logikverknüpfung, die aber an einigen Eingängen einen definierten und and anderen Eingängen einen undefinierten Wert hat, muss wissen, wie sie sich in so einem Fall verhalten soll, sprich, ob und wie die Verknüpfung durchgeführt werden soll.
 
 Hier sind 2 Möglichkeiten implementiert (und somit parametrisierbar):
 
-1. Die Verknüpfung soll erst durchgeführt werden, wenn alle Eingänge definierte Werte haben. Bevor dies nicht eintritt, passiert am Ausgang einfach nicht.
+1. Die Verknüpfung soll erst durchgeführt werden, wenn alle Eingänge definierte Werte haben. Bevor dies nicht eintritt, passiert am Ausgang einfach nichts.
 2. Die Verknüpfung soll bereits beim Eintreffen des ersten Signals reagieren. Ist dann der andere Eingang noch undefiniert, kann man für diesen vernünftigerweise weder ein EIN noch ein AUS annehmen. Der undefinierte Eingang wird dann als nicht existent behandelt und die Verknüpfung nur für die definierten Engänge durchgeführt. Beispiel: Ein UND mit 3 Eingängen, von denen 2 auf EIN und einer auf undefiniert stehen, würde wie ein UND mit 2 Eingängen behandelt werden und ein EIN liefern.
 
 Durch die dezidierten Einstellungsmölgichkeiten des Startverhaltens pro Kanal kann man sein KNX-System sehr detailiert bezüglich des Systemstart steuern. Da genau dieses Startverhalten von vielen KNX-Geräten eher stiefmütterlich behandelt wird, hat man mit diesem Logikmodul viele Möglichkeiten, hier einzugreifen und Unzulänglichkeiten auszugleichen.
@@ -277,6 +277,8 @@ Sobald ein neues Eingangstelegramm eintrifft, wird das Ergebnis der logischen Ve
 
 #### bei folgenden Eingangstelegrammen
 
+![Logik sendet](LogikSendet.png)
+
 Es erscheint eine Liste mit allen aktiven Eingängen. Man kann die Eingänge ankreuzen, auf die die Logikauswertung reagieren soll. Nur wenn ein Telgramm von einem dieser Eingänge kommt, wird die Logikauswertung angestoßen und das Ergebnis ermittelt und an den nächsten Funktionsblock weitergeleitet.
 
 ## Eingang 1: Wert / Eingang 2: Wert
@@ -308,6 +310,7 @@ Dieses Auswahlfeld legt den DPT für den Eingang fest. Unterstützt werden:
 * DPT 8: vorzeichenbehaftete Zahl (-32768 bis 32767)
 * DPT 9: Gleitkommawert (-670760,96 bis 670760,96)
 * DPT 17: Szenen Nummer (1-64)
+* DPT 232: RGB-Wert (0-16777216)
 
 Ist der DPT anders als DPT 1, erscheint je nach DPT ein Konverter, mit dem man den gewünschten Eingangs-DPT nach DPT 1 wandeln kann. Die gesamte weitere Verarbeitung des Eingangssignals erfolgt binär, also auf Basis von DPT 1. Alle Parameter der jeweiligen Konverter werden weiter unten im Kapitel "Eingangskonverter" beschrieben.
 
@@ -325,11 +328,11 @@ Dieses Auswahlfeld erlaubt eine Vorbelegung mit einem festgelegten Wert. Die Ein
 
 Es gibt einige wenige Gründe, warum ein gespeicherter Wert nicht genutzt werden kann:
 
-* Der gespeicherte Wert hat einen anderen DPT. Das passiert, wenn man das Gerät in Benutzung mit der Einstellung "Speichern" in Benutzung hat, dann in der ETS den DPT für den Eingang ändert und das Gerät neu programmiert. Nach dem Neustart passen dann der gespeicherte DPT und der DPT vom Eingang nicht zusammen. Der gespeicherte Wert wird dann verworfen und die Einstellung dieses Feldes als Vorbelegung genommen.
+* Der gespeicherte Wert hat einen anderen DPT. Das passiert, wenn man das Gerät mit der Einstellung "Speichern" in Benutzung hat, dann in der ETS den DPT für den Eingang ändert und das Gerät neu programmiert. Nach dem Neustart passen dann der gespeicherte DPT und der DPT vom Eingang nicht zusammen. Der gespeicherte Wert wird dann verworfen und die Einstellung dieses Feldes als Vorbelegung genommen.
 * Es ist gar kein Wert gespeichert, dann kann er natürlich auch nicht genutzt werden und stattdessen wird die Einstellung dieses Feldes als Vorbelegung genommen.
 * Durch einen Speicherfehler konnte vor einem Neustart der Wert vom Eingang nicht gespeichert werden. Auch dann wird die Einstellung dieses Feldes als Vorbelegung genutzt. Dieser Fall ist rein Theoretisch und noch nie in der Praxis aufgetreten.
 
-Durch ein Einspielen einer neuen Applikation über die ETS werden die gespeicherten Werte im nichtflüchtigen Speicher nicht gelöscht. Falls aber eine neue Firmware über USB in das Gerät neu eingespielt wird, kann die neue Firmware möglicherweise die gespeicherten Werte der alten Firmware nicht mehr lesen. In diesem Fall würden die gespeicherten Werte aller Eingänge gelöscht und die Vorbelegung fürde durch die Einstellung dieses Feldes erfolgen.
+Durch ein Einspielen einer neuen Applikation über die ETS werden die gespeicherten Werte im nichtflüchtigen Speicher nicht gelöscht. Falls aber eine neue Firmware über USB in das Gerät neu eingespielt wird, kann die neue Firmware möglicherweise die gespeicherten Werte der alten Firmware nicht mehr lesen. In diesem Fall würden die gespeicherten Werte aller Eingänge gelöscht und die Vorbelegung würde durch die Einstellung dieses Feldes erfolgen.
 
 #### nichts (undefiniert)
 
@@ -513,7 +516,7 @@ Im folgenden Werden alle Logikblöcke, deren Einstellungen und deren Beeinflussu
 
 Diese Einstellung hat keine funktionale Auswirkung, erlaubt es aber, dem Ausgang einen Text zu geben, um ihn einfacher zu finden.
 
-Der eingegebene Text erscheint als Name des Kommunikationsobjekts, das diesem Ausgang zugeordnet ist.
+Der eingegebene Text erscheint auf dem Ausgang-Tag des Logikkanals und als Name des Kommunikationsobjekts, das diesem Ausgang zugeordnet ist.
 
 ### Ausgang hat eine Treppenlichtfunktion
 
@@ -521,13 +524,13 @@ Wird hier ein "Ja" ausgewählt, erscheinen folgende Felder:
 
 ![Treppenlicht](Treppenlicht.png)
 
-Mit den Einstellungen kann ein Treppenlicht mit Blinkfunktion konfigureiert werden. Ein Treppenlicht erzeugt, sobald es durch ein EIN-Signal getriggert wird, ein EIN-Signal, dass nach einer gewissen Zeit zu einem AUS-Signal wird. Man kann bestimmen, ob ein weiterer Trigger mit einem EIN-Signal dazu führt, dass die Treppenlichtzeit erneut anfängt und somit der Trigger das Treppenlicht verlängert. Ferner kann man festlegen, ob ein weiterer Trigger mit einem AUS-Singnal das Treppenlich ausschaltet oder nicht.
+Mit den Einstellungen kann ein Treppenlicht mit Blinkfunktion konfigureiert werden. Ein Treppenlicht erzeugt, sobald es durch ein EIN-Signal getriggert wird, ein EIN-Signal, dass nach einer gewissen Zeit zu einem AUS-Signal wird. Man kann bestimmen, ob ein weiterer Trigger mit einem EIN-Signal dazu führt, dass die Treppenlichtzeit erneut anfängt und somit der Trigger das Treppenlicht verlängert. Ferner kann man festlegen, ob ein weiterer Trigger mit einem AUS-Singnal das Treppenlicht ausschaltet oder nicht.
 
 Solange das Treppenlicht aktiv ist, kann ein Blinkmodul den Ausgang des Funktionsmoduls in einem felsgelegten Intervall EIN- und AUSschalten.
 
 #### Zeitbasis für Treppenlicht
 
-Die Dauer, die ein Treppenlicht eingeschaltet bleiben soll, dann von 1/10 Sekunden bis zu vielen Stunden gehen. Um die Zeiteingabe einfacher zu gestalten, gibt man erst eine Zeitbasis an, gefolgt von einer Zeit passend zu dieser Zeitbasis. Die Zeitbasis kann
+Die Dauer, die ein Treppenlicht eingeschaltet bleiben soll, kann von 1/10 Sekunden bis zu vielen Stunden gehen. Um die Zeiteingabe einfacher zu gestalten, gibt man erst eine Zeitbasis an, gefolgt von einer Zeit passend zu dieser Zeitbasis. Die Zeitbasis kann
 
 * 1/10 Sekunden
 * 1 Sekunde
@@ -556,7 +559,7 @@ Bei einer Eingabe einer Zahl größer 0 wird, solange das Treppenlicht eingescha
 
 Bei der Eingabe einer 0 wird die Blinkfunktion deaktiviert.
 
-Der Bildschirmausschnitt oben zeigt ein Beispiel für ein 3 maliges Blinken in einer Sekunde, wobei die einzelnen Blinkzyklen nur 0,2 Sekunden dauern. Wenn man den Ausgang mit einem Buzzer verbinden, erhhält man eine akustische Rückmeldung (3 mal piep) für z.B. einen Fehlerfall.
+Der Bildschirmausschnitt oben zeigt ein Beispiel für ein 3 maliges Blinken in einer Sekunde, wobei die einzelnen Blinkzyklen nur 0,2 Sekunden dauern. Wenn man den Ausgang mit einem Buzzer verbindet, erhhält man eine akustische Rückmeldung (3 mal piep) für z.B. einen Fehlerfall.
 
 ### Ausgang schaltet zeitverzögert
 
@@ -618,7 +621,7 @@ Wird eine 0 eingegeben, findet keine Verzögerung statt.
 
 Dieses Auswahlfeld erscheint nur, wenn eine AUSschaltverzögerung stattfinden soll.
 
-Während das Funktionsmodul ein AUS-Signal verzögert, muss definiert werden, wie ein weiteres UAS-Signal während der Verzögerung behandelt werden soll.
+Während das Funktionsmodul ein AUS-Signal verzögert, muss definiert werden, wie ein weiteres AUS-Signal während der Verzögerung behandelt werden soll.
 
 ##### Verzögerung bleibt bestehen
 
@@ -630,7 +633,7 @@ Während eine Verzögerung von einem AUS-Signal aktiv ist, führt ein darauffolg
 
 ##### Sofort schalten ohne Verzögerung
 
-Kommt während eine Verzögerung eines AUS-Signals aktiv ist ein weiteres UAS-Signal, wird die Verzögerung sofort beendet und das zweite AUS-Signal sofort weitergeleitet. So kann man eine Aktion, die automatisiert verzögert ausgeschaltet werden soll, durch ein manuelles Signal sofort beenden.
+Kommt während eine Verzögerung eines AUS-Signals aktiv ist ein weiteres AUS-Signal, wird die Verzögerung sofort beendet und das zweite AUS-Signal sofort weitergeleitet. So kann man eine Aktion, die automatisiert verzögert ausgeschaltet werden soll, durch ein manuelles Signal sofort beenden.
 
 #### Darauffolgendes EIN führt zu
 
@@ -724,6 +727,7 @@ Dieses Auswahlfeld legt den DPT für den Ausgang fest. Unterstützt werden:
 * DPT 9: Gleitkommawert (-670760,96 bis 670760,96)
 * DPT 16: Text (bis 14 Byte)
 * DPT 17: Szenen Nummer (1-64)
+* DPT 232: RGB-Wert (3*8 Bit Rot-, Grün-, Blauwert)
 
 Je nach gewähltem DPT unterscheiden sich die folgenden Felder leicht. Es werden erstmal die parameter für alle DPT beschrieben und anschließend die DPT-spezifischen.
 
