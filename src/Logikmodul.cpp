@@ -1,5 +1,5 @@
 #include "Helper.h"
-#include "Board.h"
+#include "Hardware.h"
 #include "Logic.h"
 
 struct sRuntimeInfo
@@ -18,6 +18,19 @@ bool startupDelay()
     return !delayCheck(gRuntimeData.startupDelay, knx.paramInt(LOG_StartupDelay) * 1000);
 }
 
+void ProcessReadRequests() {
+    // this method is called after startup delay and executes read requests, which should just happen once after startup
+    static bool sCalled = false;
+
+    if (!sCalled) {
+        if (knx.paramByte(LOG_ReadTimeDate) & 0x80) {
+            knx.getGroupObject(LOG_KoTime).requestObjectRead();
+            knx.getGroupObject(LOG_KoDate).requestObjectRead();
+        }
+        sCalled = true;
+    }
+}
+
 void ProcessHeartbeat()
 {
     // the first heartbeat is send directly after startup delay of the device
@@ -26,7 +39,7 @@ void ProcessHeartbeat()
         // we waited enough, let's send a heartbeat signal
         knx.getGroupObject(LOG_KoHeartbeat).value(true, getDPT(VAL_DPT_1));
         gRuntimeData.heartbeatDelay = millis();
-        // debug-helber for logic module, just a test
+        // debug-helper for logic module, just a test
         gLogic.debug();
     }
 }
@@ -43,7 +56,7 @@ void appLoop()
     // at this point startup-delay is done
     // we process heartbeat
     ProcessHeartbeat();
-
+    ProcessReadRequests();
     gLogic.loop();
 }
 

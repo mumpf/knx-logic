@@ -2,14 +2,18 @@
 #include <knx.h>
 
 // Parameter with single occurance
-#define LOG_NumChannels                0      // int32_t
-#define LOG_StartupDelay               4      // int32_t
-#define LOG_Heartbeat                  8      // int32_t
+#define LOG_NumChannels                0      // uint8_t
+#define LOG_StartupDelay               1      // int32_t
+#define LOG_Heartbeat                  5      // int32_t
+#define LOG_ReadTimeDate               9      // 1 Bit, Bit 7
+#define LOG_BuzzerInstalled            9      // 1 Bit, Bit 6
+#define LOG_LedInstalled               9      // 1 Bit, Bit 5
+#define LOG_EepromInstalled            9      // 1 Bit, Bit 4
 
 #define LOG_Channels 50
 
 // Parameter per channel
-#define LOG_ParamBlockOffset 12
+#define LOG_ParamBlockOffset 10
 #define LOG_ParamBlockSize 110
 #define LOG_fChannelDelay              0      // int32_t
 #define LOG_fLogic                     4      // 8 Bits, Bit 7-0
@@ -108,6 +112,10 @@
 #define LOG_fOOutputFilter            70      // 2 Bits, Bit 6-5
 #define LOG_fODpt                     79      // 8 Bits, Bit 7-0
 #define LOG_fOOn                      80      // 8 Bits, Bit 7-0
+#define LOG_fOOnBuzzer                80      // 8 Bits, Bit 7-0
+#define LOG_fOOnLed                   80      // 8 Bits, Bit 7-0
+#define LOG_fOOnAll                   80      // 8 Bits, Bit 7-0
+#define LOG_fOOnTone                  81      // 8 Bits, Bit 7-0
 #define LOG_fOOnDpt1                  81      // 8 Bits, Bit 7-0
 #define LOG_fOOnDpt2                  81      // 8 Bits, Bit 7-0
 #define LOG_fOOnDpt5                  81      // uint8_t
@@ -118,11 +126,15 @@
 #define LOG_fOOnDpt9                  81      // float
 #define LOG_fOOnDpt16                 81      // char*, 14 Byte
 #define LOG_fOOnDpt17                 81      // uint8_t
-#define LOG_fOOnRGB                   81      // 0 Bits, Bit 7
+#define LOG_fOOnRGB                   81      // color, uint, 3 Byte
 #define LOG_fOOnPAArea                81      // 4 Bits, Bit 7-4
 #define LOG_fOOnPALine                81      // 4 Bits, Bit 3-0
 #define LOG_fOOnPADevice              82      // uint8_t
 #define LOG_fOOff                     95      // 8 Bits, Bit 7-0
+#define LOG_fOOffBuzzer               95      // 8 Bits, Bit 7-0
+#define LOG_fOOffLed                  95      // 8 Bits, Bit 7-0
+#define LOG_fOOffAll                  95      // 8 Bits, Bit 7-0
+#define LOG_fOOffTone                 96      // 8 Bits, Bit 7-0
 #define LOG_fOOffDpt1                 96      // 8 Bits, Bit 7-0
 #define LOG_fOOffDpt2                 96      // 8 Bits, Bit 7-0
 #define LOG_fOOffDpt5                 96      // uint8_t
@@ -133,7 +145,7 @@
 #define LOG_fOOffDpt9                 96      // float
 #define LOG_fOOffDpt16                96      // char*, 14 Byte
 #define LOG_fOOffDpt17                96      // uint8_t
-#define LOG_fOOffRGB                  96      // 0 Bits, Bit 7
+#define LOG_fOOffRGB                  96      // color, uint, 3 Byte
 #define LOG_fOOffPAArea               96      // 4 Bits, Bit 7-4
 #define LOG_fOOffPALine               96      // 4 Bits, Bit 3-0
 #define LOG_fOOffPADevice             97      // uint8_t
@@ -141,7 +153,7 @@
 #define LOG_fE2DefaultEEPROM          34      // 1 Bit, Bit 2
 
 // Communication objects per channel (multiple occurance)
-#define LOG_KoOffset 30
+#define LOG_KoOffset 10
 #define LOG_KoBlockSize 3
 #define LOG_KoKOfE1 0
 #define LOG_KoKOfE2 1
@@ -149,6 +161,6 @@
 
 // Communication objects with single occurance
 #define LOG_KoHeartbeat 1
-#define LOG_KoTime 28
-#define LOG_KoDate 29
+#define LOG_KoTime 2
+#define LOG_KoDate 3
 

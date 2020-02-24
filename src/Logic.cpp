@@ -1,6 +1,6 @@
 #include "Logic.h"
 #include "Helper.h"
-#include "Board.h"
+#include "Hardware.h"
 
 uint8_t Logic::sMagicWord[] = {0xAE, 0x49, 0xD2, 0x9F};
 
@@ -87,6 +87,18 @@ void Logic::processAllInternalInputs(LogicChannel *iChannel, bool iValue)
     }
 }
 
+// EEPROM handling
+// We assume at max 128 channels, each channel 2 inputs, each input max 4 bytes (value) and 1 byte (DPT) = 128 * 2 * (4 + 1) = 1280 bytes to write
+// So we use 40 Pages for data and one (first) page for aditional information (metadata).
+// The DPT list is written startig with page 1 (address 32 = 0x20). It is written at device startup and is not timing critical.
+// We have 256 Bytes in 16 x 16 byte blocks (8 pages), takes 16 * 5 ms = 80 ms, just at startup time and just if necessary.
+// Writing data itself is timing critical during power failure.
+// At first, magic word at address 12 = 0x0C is deleted (5 ms).
+// The data itself is written in 16 byte blocks, each 5 ms means 1024 / 16 * 5 ms = 64 * 5 ms = 320 ms write time, starting at page 9, address 160 = 0xA0.
+// Finally, we write magic word at Address 12 again as an ack, that all data was successfully written (5 ms)
+// The resulting write time is at max 5 + 320 + 5 = 370 ms
+// Bytes of the first page (page 0) might be used differently in future
+// For inputs, which are not set as "store in memory", we write a dpt 0xFF
 void Logic::writeAllDptToEEPROM()
 {
     if (mLastWriteToEEPROM > 0 && delayCheck(mLastWriteToEEPROM, 10000))
@@ -125,7 +137,7 @@ void Logic::writeAllInputsToEEPROM()
     mEEPROM->beginWriteSession();
 
     //Begin write of KO values
-    uint16_t lAddress = (SAVE_BUFFER_START_PAGE + 5) * 32; // begin of KO value memory
+    uint16_t lAddress = (SAVE_BUFFER_START_PAGE + 9) * 32; // begin of KO value memory
     // for (uint8_t i = 0; i < 10; i++)
     for (uint8_t lChannel = 0; lChannel < mNumChannels; lChannel++)
     {
@@ -237,16 +249,16 @@ void Logic::debug() {
 void Logic::setup(uint8_t iSavePin) {
     Wire.end();   // seems to end hangs on I2C bus
     Wire.begin(); // we use I2C in logic, so we setut the bus. It is not critical to setup it more than once
-    if (LOG_ChannelsFirmware < mNumChannels)
-    {
-        printDebug("FATAL: Firmware compiled for %d channels, but knxprod needs %d channels!\n", LOG_ChannelsFirmware, mNumChannels);
-        knx.platform().fatalError();
-    }
     if (knx.configured())
     {
         // setup channels, not possible in constructor, because knx is not configured there
         // get number of channels from knxprod
-        mNumChannels = knx.paramInt(LOG_NumChannels);
+        mNumChannels = knx.paramByte(LOG_NumChannels);
+        if (LOG_ChannelsFirmware < mNumChannels)
+        {
+            printDebug("FATAL: Firmware compiled for %d channels, but knxprod needs %d channels!\n", LOG_ChannelsFirmware, mNumChannels);
+            knx.platform().fatalError();
+        }
         for (uint8_t lIndex = 0; lIndex < mNumChannels; lIndex++)
         {
             mChannel[lIndex] = new LogicChannel(lIndex);
@@ -255,7 +267,9 @@ void Logic::setup(uint8_t iSavePin) {
         mEEPROM = new EepromManager(SAVE_BUFFER_START_PAGE, SAVE_BUFFER_NUM_PAGES, sMagicWord);
         // setup buzzer
 #ifndef __linux__
+#ifdef BUZZER_PIN
         pinMode(BUZZER_PIN, OUTPUT);
+#endif
 #endif
         // we set just a callback if it is not set from a potential caller
         if (GroupObject::classCallback() == 0) GroupObject::classCallback(Logic::onInputKoHandler);

@@ -1,7 +1,7 @@
 #include "LogicChannel.h"
 #include "Logic.h"
 #include "Helper.h"
-#include "Board.h"
+#include "Hardware.h"
 #include "PCA9632.h"
 
 Logic *LogicChannel::sLogic = nullptr;
@@ -192,14 +192,27 @@ void LogicChannel::knxResetDevice(uint16_t iParamIndex)
     knx.restart(lAddress);
 }
 
-// turn on RGBLed
+// turn on/off RGBLed
 void LogicChannel::setRGBColor(uint16_t iParamIndex)
 {
+#ifdef I2C_RGBLED_DEVICE_ADDRESS
     uint32_t lRGBColor = getIntParam(iParamIndex);
     uint8_t lRed = lRGBColor >> 24;
     uint8_t lGreen = lRGBColor >> 16;
     uint8_t lBlue = lRGBColor >> 8;
     PCA9632_SetColor(lRed, lGreen, lBlue);
+#endif
+}
+
+// turn on/off Buzzer 
+void LogicChannel::setBuzzer(uint16_t iParamIndex)
+{
+#ifdef BUZZER_PIN
+    if (getByteParam(iParamIndex))
+        tone(BUZZER_PIN, BUZZER_FREQ);
+    else
+        noTone(BUZZER_PIN);
+#endif
 }
 
 /********************************
@@ -1030,10 +1043,7 @@ void LogicChannel::processOutput(bool iValue) {
                 knxResetDevice(LOG_fOOnDpt1);
                 break;
             case VAL_Out_Buzzer:
-#ifndef __linux__
-                //digitalWrite(BUZZER_PIN, HIGH);
-                tone(BUZZER_PIN, BUZZER_FREQ);
-#endif
+                setBuzzer(LOG_fOOnDpt1);
                 break;
             case VAL_Out_RGBLed:
                 setRGBColor(LOG_fOOnDpt1);
@@ -1064,10 +1074,7 @@ void LogicChannel::processOutput(bool iValue) {
                 knxResetDevice(LOG_fOOffDpt1);
                 break;
             case VAL_Out_Buzzer:
-#ifndef __linux__
-                //digitalWrite(BUZZER_PIN, LOW);
-                noTone(BUZZER_PIN);
-#endif
+                setBuzzer(LOG_fOOffDpt1);
                 break;
             case VAL_Out_RGBLed:
                 setRGBColor(LOG_fOOffDpt1);
@@ -1116,7 +1123,7 @@ bool LogicChannel::readOneInputFromEEPROM(uint8_t iIOIndex)
     if (!checkDpt(iIOIndex, lSavedDpt)) return false;
 
     // if the dpt is ok, we get the ko value
-    lAddress = (SAVE_BUFFER_START_PAGE + 5) * 32 + mChannelId * 8 + (iIOIndex - 1) * 4;
+    lAddress = (SAVE_BUFFER_START_PAGE + 9) * 32 + mChannelId * 8 + (iIOIndex - 1) * 4;
     GroupObject *lKo = getKo(iIOIndex);
     lEEPROM->prepareRead(lAddress, lKo->valueSize());
     int lIndex = 0;
@@ -1139,6 +1146,8 @@ void LogicChannel::writeSingleDptToEEPROM(uint8_t iIOIndex) {
     Wire.write(lDpt);
 }
 
+// retutns true, if any DPT from EEPROM does not fit to according input DPT. 
+// in such a case the DPTs have to be written to EEPROM again
 bool LogicChannel::prepareChannel() {
     bool lResult = false;
     bool lInput1EEPROM = false;

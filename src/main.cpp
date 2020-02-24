@@ -1,5 +1,5 @@
 #include <knx.h>
-#include "Board.h"
+#include "Hardware.h"
 
 void appSetup(uint8_t iSavePin);
 void appLoop();

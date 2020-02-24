@@ -18,6 +18,9 @@
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-Text40Byte" Name="Text40Byte">
                 <TypeText SizeInBit="320" />
               </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-NumChannels" Name="NumChannels">
+                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="127" />
+              </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-DelaySeconds" Name="DelaySeconds">
                 <TypeNumber SizeInBit="32" Type="signedInt" minInclusive="0" maxInclusive="86400" />
               </ParameterType>
@@ -115,6 +118,12 @@
                   <Enumeration Text="DPT 232.xxx (3-Byte-Wert)" Value="10" Id="M-00FA_A-0001-01-0000_PT-OutputDpt_EN-10" />
                 </TypeRestriction>
               </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-ValueBuzzer" Name="ValueBuzzer">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Ton ausschalten" Value="0" Id="M-00FA_A-0001-01-0000_PT-ValueBuzzer_EN-0" />
+                  <Enumeration Text="Ton einschalten" Value="1" Id="M-00FA_A-0001-01-0000_PT-ValueBuzzer_EN-1" />
+                </TypeRestriction>
+              </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-ValueDpt1" Name="ValueDpt1">
                 <TypeRestriction Base="Value" SizeInBit="8">
                   <Enumeration Text="AUS (0)" Value="0" Id="M-00FA_A-0001-01-0000_PT-ValueDpt1_EN-0" />
@@ -187,7 +196,7 @@
                   <Enumeration Text="Keine Wiederholungen durchlassen" Value="3" Id="M-00FA_A-0001-01-0000_PT-OutputFilter_EN-3" />
                 </TypeRestriction>
               </ParameterType>
-              <ParameterType Id="M-00FA_A-0001-01-0000_PT-OutputSendOn" Name="OutputSendOn">
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-OutputSend" Name="OutputSend">
                 <TypeRestriction Base="Value" SizeInBit="8">
                   <Enumeration Text="Nein" Value="0" Id="M-00FA_A-0001-01-0000_PT-OutputSendOn_EN-0" />
                   <Enumeration Text="Ja - Wert vorgeben" Value="1" Id="M-00FA_A-0001-01-0000_PT-OutputSendOn_EN-1" />
@@ -195,20 +204,40 @@
                   <Enumeration Text="Ja - Wert von Eingang 2" Value="3" Id="M-00FA_A-0001-01-0000_PT-OutputSendOn_EN-3" />
                   <Enumeration Text="Ja - Read Request senden" Value="4" Id="M-00FA_A-0001-01-0000_PT-OutputSendOn_EN-4" />
                   <Enumeration Text="Ja - 'Gerät zurücksetzen' senden" Value="5" Id="M-00FA_A-0001-01-0000_PT-OutputSendOn_EN-5" />
-                  <Enumeration Text="Ja - Tonwiedegabe (Buzzer) starten" Value="6" Id="M-00FA_A-0001-01-0000_PT-OutputSendOn_EN-6" />
-                  <Enumeration Text="Ja - RGB-LED schalten" Value="7" Id="M-00FA_A-0001-01-0000_PT-OutputSendOn_EN-7" />
                 </TypeRestriction>
               </ParameterType>
-              <ParameterType Id="M-00FA_A-0001-01-0000_PT-OutputSendOff" Name="OutputSendOff">
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-OutputSendBuzzer" Name="OutputSendBuzzer">
                 <TypeRestriction Base="Value" SizeInBit="8">
-                  <Enumeration Text="Nein" Value="0" Id="M-00FA_A-0001-01-0000_PT-OutputSendOff_EN-0" />
-                  <Enumeration Text="Ja - Wert vorgeben" Value="1" Id="M-00FA_A-0001-01-0000_PT-OutputSendOff_EN-1" />
-                  <Enumeration Text="Ja - Wert von Eingang 1" Value="2" Id="M-00FA_A-0001-01-0000_PT-OutputSendOff_EN-2" />
-                  <Enumeration Text="Ja - Wert von Eingang 2" Value="3" Id="M-00FA_A-0001-01-0000_PT-OutputSendOff_EN-3" />
-                  <Enumeration Text="Ja - Read Request senden" Value="4" Id="M-00FA_A-0001-01-0000_PT-OutputSendOff_EN-4" />
-                  <Enumeration Text="Ja - 'Gerät zurücksetzen' senden" Value="5" Id="M-00FA_A-0001-01-0000_PT-OutputSendOff_EN-5" />
-                  <Enumeration Text="Ja - Tonwiedergabe (Buzzer) stoppen" Value="6" Id="M-00FA_A-0001-01-0000_PT-OutputSendOff_EN-6" />
-                  <Enumeration Text="Ja - RGB-LED schalten" Value="7" Id="M-00FA_A-0001-01-0000_PT-OutputSendOff_EN-7" />
+                  <Enumeration Text="Nein" Value="0" Id="M-00FA_A-0001-01-0000_PT-OutputSendBuzzer_EN-0" />
+                  <Enumeration Text="Ja - Wert vorgeben" Value="1" Id="M-00FA_A-0001-01-0000_PT-OutputSendBuzzer_EN-1" />
+                  <Enumeration Text="Ja - Wert von Eingang 1" Value="2" Id="M-00FA_A-0001-01-0000_PT-OutputSendBuzzer_EN-2" />
+                  <Enumeration Text="Ja - Wert von Eingang 2" Value="3" Id="M-00FA_A-0001-01-0000_PT-OutputSendBuzzer_EN-3" />
+                  <Enumeration Text="Ja - Read Request senden" Value="4" Id="M-00FA_A-0001-01-0000_PT-OutputSendBuzzer_EN-4" />
+                  <Enumeration Text="Ja - 'Gerät zurücksetzen' senden" Value="5" Id="M-00FA_A-0001-01-0000_PT-OutputSendBuzzer_EN-5" />
+                  <Enumeration Text="Ja - Tonwiedegabe (Buzzer)" Value="6" Id="M-00FA_A-0001-01-0000_PT-OutputSendBuzzer_EN-6" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-OutputSendLed" Name="OutputSendLed">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Nein" Value="0" Id="M-00FA_A-0001-01-0000_PT-OutputSendLed_EN-0" />
+                  <Enumeration Text="Ja - Wert vorgeben" Value="1" Id="M-00FA_A-0001-01-0000_PT-OutputSendLed_EN-1" />
+                  <Enumeration Text="Ja - Wert von Eingang 1" Value="2" Id="M-00FA_A-0001-01-0000_PT-OutputSendLed_EN-2" />
+                  <Enumeration Text="Ja - Wert von Eingang 2" Value="3" Id="M-00FA_A-0001-01-0000_PT-OutputSendLed_EN-3" />
+                  <Enumeration Text="Ja - Read Request senden" Value="4" Id="M-00FA_A-0001-01-0000_PT-OutputSendLed_EN-4" />
+                  <Enumeration Text="Ja - 'Gerät zurücksetzen' senden" Value="5" Id="M-00FA_A-0001-01-0000_PT-OutputSendLed_EN-5" />
+                  <Enumeration Text="Ja - RGB-LED schalten" Value="7" Id="M-00FA_A-0001-01-0000_PT-OutputSendLed_EN-7" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-OutputSendAll" Name="OutputSendAll">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Nein" Value="0" Id="M-00FA_A-0001-01-0000_PT-OutputSendAll_EN-0" />
+                  <Enumeration Text="Ja - Wert vorgeben" Value="1" Id="M-00FA_A-0001-01-0000_PT-OutputSendAll_EN-1" />
+                  <Enumeration Text="Ja - Wert von Eingang 1" Value="2" Id="M-00FA_A-0001-01-0000_PT-OutputSendAll_EN-2" />
+                  <Enumeration Text="Ja - Wert von Eingang 2" Value="3" Id="M-00FA_A-0001-01-0000_PT-OutputSendAll_EN-3" />
+                  <Enumeration Text="Ja - Read Request senden" Value="4" Id="M-00FA_A-0001-01-0000_PT-OutputSendAll_EN-4" />
+                  <Enumeration Text="Ja - 'Gerät zurücksetzen' senden" Value="5" Id="M-00FA_A-0001-01-0000_PT-OutputSendAll_EN-5" />
+                  <Enumeration Text="Ja - Tonwiedegabe (Buzzer)" Value="6" Id="M-00FA_A-0001-01-0000_PT-OutputSendAll_EN-6" />
+                  <Enumeration Text="Ja - RGB-LED schalten" Value="7" Id="M-00FA_A-0001-01-0000_PT-OutputSendAll_EN-7" />
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-ValueDpt6" Name="ValueDpt6">
@@ -411,14 +440,26 @@
             </ParameterTypes>
             <Parameters>
               <!-- Standard parameter in any of our devices -->
-              <Parameter Id="M-00FA_A-0001-01-0000_P-1" Name="NumChannels" ParameterType="M-00FA_A-0001-01-0000_PT-DelaySeconds" Text="Anzahl verfügbarer Kanäle" Value="%N%" Access="None">
+              <Parameter Id="M-00FA_A-0001-01-0000_P-1" Name="NumChannels" ParameterType="M-00FA_A-0001-01-0000_PT-NumChannels" Text="Anzahl verfügbarer Logikkanäle" Value="%N%" Access="Read">
                 <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="0" BitOffset="0" />
               </Parameter>
               <Parameter Id="M-00FA_A-0001-01-0000_P-2" Name="StartupDelay" ParameterType="M-00FA_A-0001-01-0000_PT-DelaySeconds" Text="Zeit bis das Gerät nach einem Neustart aktiv wird" SuffixText="Sekunden" Value="10">
-                <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="4" BitOffset="0" />
+                <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="1" BitOffset="0" />
               </Parameter>
               <Parameter Id="M-00FA_A-0001-01-0000_P-3" Name="Heartbeat" ParameterType="M-00FA_A-0001-01-0000_PT-DelaySeconds" Text="In Betrieb senden alle" SuffixText="Sekunden" Value="300">
-                <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="8" BitOffset="0" />
+                <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="5" BitOffset="0" />
+              </Parameter>
+              <Parameter Id="M-00FA_A-0001-01-0000_P-4" Name="ReadTimeDate" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Uhrzeit und Datum nach einem Neustart vom Bus lesen" Value="1">
+                <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="9" BitOffset="0" />
+              </Parameter>              
+              <Parameter Id="M-00FA_A-0001-01-0000_P-5" Name="BuzzerInstalled" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Akustischer Signalgeber installiert (Buzzer)?" Value="1">
+                <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="9" BitOffset="1" />
+              </Parameter>
+              <Parameter Id="M-00FA_A-0001-01-0000_P-6" Name="LedInstalled" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Optischer Signalgeber installiert (RGB-LED)?" Value="1">
+                <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="9" BitOffset="2" />
+              </Parameter>
+              <Parameter Id="M-00FA_A-0001-01-0000_P-7" Name="EepromInstalled" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Nichtflüchtiger Speicher installiert (EEPROM)?" Value="1">
+                <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="9" BitOffset="3" />
               </Parameter>
             </Parameters>
             <ParameterRefs>
@@ -426,16 +467,17 @@
               <ParameterRef Id="M-00FA_A-0001-01-0000_P-1_R-1" RefId="M-00FA_A-0001-01-0000_P-1" />
               <ParameterRef Id="M-00FA_A-0001-01-0000_P-2_R-2" RefId="M-00FA_A-0001-01-0000_P-2" />
               <ParameterRef Id="M-00FA_A-0001-01-0000_P-3_R-3" RefId="M-00FA_A-0001-01-0000_P-3" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_P-4_R-4" RefId="M-00FA_A-0001-01-0000_P-4" />
             </ParameterRefs>
             <ComObjectTable>
               <ComObject Id="M-00FA_A-0001-01-0000_O-1" Name="Heartbeat" Text="In Betieb" Number="1" FunctionText="Zyklisch" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-2" />
-              <ComObject Id="M-00FA_A-0001-01-0000_O-28" Name="Time" Text="Uhrzeit" Number="28" FunctionText="Eingang" ObjectSize="3 Bytes" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" DatapointType="DPST-10-1" />
-              <ComObject Id="M-00FA_A-0001-01-0000_O-29" Name="Date" Text="Datum" Number="29" FunctionText="Eingang" ObjectSize="3 Bytes" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" DatapointType="DPST-11-1" />
+              <ComObject Id="M-00FA_A-0001-01-0000_O-2" Name="Time" Text="Uhrzeit" Number="2" FunctionText="Eingang" ObjectSize="3 Bytes" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" DatapointType="DPST-10-1" />
+              <ComObject Id="M-00FA_A-0001-01-0000_O-3" Name="Date" Text="Datum" Number="3" FunctionText="Eingang" ObjectSize="3 Bytes" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" DatapointType="DPST-11-1" />
             </ComObjectTable>
             <ComObjectRefs>
               <ComObjectRef Id="M-00FA_A-0001-01-0000_O-1_R-1" RefId="M-00FA_A-0001-01-0000_O-1" />
-              <ComObjectRef Id="M-00FA_A-0001-01-0000_O-28_R-28" RefId="M-00FA_A-0001-01-0000_O-28" />
-              <ComObjectRef Id="M-00FA_A-0001-01-0000_O-29_R-29" RefId="M-00FA_A-0001-01-0000_O-29" />
+              <ComObjectRef Id="M-00FA_A-0001-01-0000_O-2_R-2" RefId="M-00FA_A-0001-01-0000_O-2" />
+              <ComObjectRef Id="M-00FA_A-0001-01-0000_O-3_R-3" RefId="M-00FA_A-0001-01-0000_O-3" />
             </ComObjectRefs>
             <AddressTable MaxEntries="255" />
             <AssociationTable MaxEntries="255" />
@@ -452,12 +494,16 @@
           <Dynamic>
             <ChannelIndependentBlock>
               <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-1" Name="General" Text="Allgemeine Parameter">
-                <!-- the following parameter is invisible, but necessary (number of logik channels used in knxdprod) -->
+                <!-- the following parameter is read only and necessary (number of logik channels used in knxdprod) -->
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-1_R-1" />
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-2_R-2" />
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-3_R-3" />
-                <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-28_R-28" />
-                <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-29_R-29" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-4_R-4" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-5_R-5" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-6_R-6" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-7_R-7" />
+                <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-2_R-2" />
+                <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-3_R-3" />
                 <choose ParamRefId="M-00FA_A-0001-01-0000_P-3_R-3">
                   <when test="!=0">
                     <!-- show heartbeat only if it is parametrized -->
