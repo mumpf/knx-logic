@@ -59,8 +59,8 @@
 #define LOG_fE1Default                19      // 2 Bits, Bit 1-0
 #define LOG_fE1Repeat                 20      // int32_t
 #define LOG_fE2                       24      // 4 Bits, Bit 3-0
-#define LOG_fE2Dpt                    25      // 8 Bits, Bit 7-0
 #define LOG_fE2Convert                24      // 4 Bits, Bit 7-4
+#define LOG_fE2Dpt                    25      // 8 Bits, Bit 7-0
 #define LOG_fE2Low0Dpt2               26      // 8 Bits, Bit 7-0
 #define LOG_fE2Low1Dpt2               27      // 8 Bits, Bit 7-0
 #define LOG_fE2Low2Dpt2               28      // 8 Bits, Bit 7-0
