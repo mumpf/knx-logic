@@ -57,6 +57,7 @@
 #define LOG_fE1LowDptRGB              11      // int32_t
 #define LOG_fE1HighDptRGB             15      // int32_t
 #define LOG_fE1Default                19      // 2 Bits, Bit 1-0
+#define LOG_fE1DefaultEEPROM          19      // 1 Bit, Bit 2
 #define LOG_fE1Repeat                 20      // int32_t
 #define LOG_fE2                       24      // 4 Bits, Bit 3-0
 #define LOG_fE2Convert                24      // 4 Bits, Bit 7-4
@@ -88,6 +89,7 @@
 #define LOG_fE2LowDptRGB              26      // int32_t
 #define LOG_fE2HighDptRGB             30      // int32_t
 #define LOG_fE2Default                34      // 2 Bits, Bit 1-0
+#define LOG_fE2DefaultEEPROM          34      // 1 Bit, Bit 2
 #define LOG_fE2Repeat                 35      // int32_t
 #define LOG_fI1                       39      // 4 Bits, Bit 7-4
 #define LOG_fI1Function               40      // int32_t
@@ -100,16 +102,16 @@
 #define LOG_fOStairOff                56      // 8 Bits, Bit 7-0
 #define LOG_fOBlink                   57      // int32_t
 #define LOG_fODelay                   61      // 1 Bit, Bit 7
-#define LOG_fODelayOn                 62      // int32_t
 #define LOG_fODelayOnRepeat           61      // 2 Bits, Bit 6-5
 #define LOG_fODelayOnReset            61      // 1 Bit, Bit 4
-#define LOG_fODelayOff                66      // int32_t
 #define LOG_fODelayOffRepeat          61      // 2 Bits, Bit 3-2
 #define LOG_fODelayOffReset           61      // 1 Bit, Bit 1
+#define LOG_fODelayOn                 62      // int32_t
+#define LOG_fODelayOff                66      // int32_t
 #define LOG_fORepeat                  70      // 1 Bit, Bit 7
+#define LOG_fOOutputFilter            70      // 2 Bits, Bit 6-5
 #define LOG_fORepeatOn                71      // int32_t
 #define LOG_fORepeatOff               75      // int32_t
-#define LOG_fOOutputFilter            70      // 2 Bits, Bit 6-5
 #define LOG_fODpt                     79      // 8 Bits, Bit 7-0
 #define LOG_fOOn                      80      // 8 Bits, Bit 7-0
 #define LOG_fOOnBuzzer                80      // 8 Bits, Bit 7-0
@@ -149,8 +151,6 @@
 #define LOG_fOOffPAArea               96      // 4 Bits, Bit 7-4
 #define LOG_fOOffPALine               96      // 4 Bits, Bit 3-0
 #define LOG_fOOffPADevice             97      // uint8_t
-#define LOG_fE1DefaultEEPROM          19      // 1 Bit, Bit 2
-#define LOG_fE2DefaultEEPROM          34      // 1 Bit, Bit 2
 
 // Communication objects per channel (multiple occurance)
 #define LOG_KoOffset 10
