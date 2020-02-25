@@ -465,9 +465,9 @@
             <ParameterRefs>
               <!-- General -->
               <ParameterRef Id="M-00FA_A-0001-01-0000_P-1_R-1" RefId="M-00FA_A-0001-01-0000_P-1" />
-              <ParameterRef Id="M-00FA_A-0001-01-0000_P-2_R-2" RefId="M-00FA_A-0001-01-0000_P-2" />
-              <ParameterRef Id="M-00FA_A-0001-01-0000_P-3_R-3" RefId="M-00FA_A-0001-01-0000_P-3" />
-              <ParameterRef Id="M-00FA_A-0001-01-0000_P-4_R-4" RefId="M-00FA_A-0001-01-0000_P-4" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_P-2_R-1" RefId="M-00FA_A-0001-01-0000_P-2" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_P-3_R-1" RefId="M-00FA_A-0001-01-0000_P-3" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_P-4_R-1" RefId="M-00FA_A-0001-01-0000_P-4" />
             </ParameterRefs>
             <ComObjectTable>
               <ComObject Id="M-00FA_A-0001-01-0000_O-1" Name="Heartbeat" Text="In Betieb" Number="1" FunctionText="Zyklisch" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-2" />
@@ -476,8 +476,8 @@
             </ComObjectTable>
             <ComObjectRefs>
               <ComObjectRef Id="M-00FA_A-0001-01-0000_O-1_R-1" RefId="M-00FA_A-0001-01-0000_O-1" />
-              <ComObjectRef Id="M-00FA_A-0001-01-0000_O-2_R-2" RefId="M-00FA_A-0001-01-0000_O-2" />
-              <ComObjectRef Id="M-00FA_A-0001-01-0000_O-3_R-3" RefId="M-00FA_A-0001-01-0000_O-3" />
+              <ComObjectRef Id="M-00FA_A-0001-01-0000_O-2_R-1" RefId="M-00FA_A-0001-01-0000_O-2" />
+              <ComObjectRef Id="M-00FA_A-0001-01-0000_O-3_R-1" RefId="M-00FA_A-0001-01-0000_O-3" />
             </ComObjectRefs>
             <AddressTable MaxEntries="255" />
             <AssociationTable MaxEntries="255" />
@@ -496,15 +496,15 @@
               <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-1" Name="General" Text="Allgemeine Parameter">
                 <!-- the following parameter is read only and necessary (number of logik channels used in knxdprod) -->
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-1_R-1" />
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-2_R-2" />
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-3_R-3" />
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-4_R-4" />
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-5_R-5" />
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-6_R-6" />
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-7_R-7" />
-                <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-2_R-2" />
-                <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-3_R-3" />
-                <choose ParamRefId="M-00FA_A-0001-01-0000_P-3_R-3">
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-2_R-1" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-3_R-1" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-4_R-1" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-5_R-1" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-6_R-1" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-7_R-1" />
+                <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-2_R-1" />
+                <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-3_R-1" />
+                <choose ParamRefId="M-00FA_A-0001-01-0000_P-3_R-1">
                   <when test="!=0">
                     <!-- show heartbeat only if it is parametrized -->
                     <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-1_R-1" />
