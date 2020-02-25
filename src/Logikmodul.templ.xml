@@ -11,21 +11,14 @@
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%004" Name="f%C%Calculate" ParameterType="M-00FA_A-0001-01-0000_PT-Calculate" Text="Logik auswerten" Value="0">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="5" BitOffset="0" />
     </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%005" Name="f%C%Trigger" ParameterType="M-00FA_A-0001-01-0000_PT-Trigger" Text="Logik sendet ihren Wert weiter" Value="0">
+    <Union SizeInBit="8">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="6" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%089" Name="f%C%TriggerE1" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="          Eingang 1" Value="0">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="6" BitOffset="7" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%090" Name="f%C%TriggerE2" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="          Eingang 2" Value="0">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="6" BitOffset="6" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%091" Name="f%C%TriggerI1" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="          Kanalausgang X" Value="0">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="6" BitOffset="5" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%092" Name="f%C%TriggerI2" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="          Kanalausgang Y" Value="0">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="6" BitOffset="4" />
-    </Parameter>
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%005" Name="f%C%Trigger" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-Trigger" Text="Logik sendet ihren Wert weiter" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%089" Name="f%C%TriggerE1" Offset="0" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="          Eingang 1" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%090" Name="f%C%TriggerE2" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="          Eingang 2" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%091" Name="f%C%TriggerI1" Offset="0" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="          Kanalausgang X" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%092" Name="f%C%TriggerI2" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="          Kanalausgang Y" Value="0" />
+    </Union>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%006" Name="f%C%TriggerGateClose" ParameterType="M-00FA_A-0001-01-0000_PT-GateTrigger" Text="Beim schließen vom Tor wird" Value="0">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="7" BitOffset="0" />
     </Parameter>
@@ -35,11 +28,11 @@
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%008" Name="f%C%E1" ParameterType="M-00FA_A-0001-01-0000_PT-InputEnable" Text="Eingang 1" Value="0">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="9" BitOffset="4" />
     </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%009" Name="f%C%E1Dpt" ParameterType="M-00FA_A-0001-01-0000_PT-InputDpt" Text="DPT für Eingang 1" Value="0">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="10" BitOffset="0" />
-    </Parameter>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%093" Name="f%C%E1Convert" ParameterType="M-00FA_A-0001-01-0000_PT-InputConv" Text="Wert für Eingang 1 wird ermittelt durch" Value="0">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="9" BitOffset="0" />
+    </Parameter>
+    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%009" Name="f%C%E1Dpt" ParameterType="M-00FA_A-0001-01-0000_PT-InputDpt" Text="DPT für Eingang 1" Value="0">
+      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="10" BitOffset="0" />
     </Parameter>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%115" Name="f%C%E1LowDelta" ParameterType="M-00FA_A-0001-01-0000_PT-Delta" Text="Von-Wert" Value="-10">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="11" BitOffset="0" />

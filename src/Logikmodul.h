@@ -26,8 +26,8 @@
 #define LOG_fTriggerGateClose          7      // 8 Bits, Bit 7-0
 #define LOG_fTriggerGateOpen           8      // 8 Bits, Bit 7-0
 #define LOG_fE1                        9      // 4 Bits, Bit 3-0
-#define LOG_fE1Dpt                    10      // 8 Bits, Bit 7-0
 #define LOG_fE1Convert                 9      // 4 Bits, Bit 7-4
+#define LOG_fE1Dpt                    10      // 8 Bits, Bit 7-0
 #define LOG_fE1LowDelta               11      // int32_t
 #define LOG_fE1HighDelta              15      // int32_t
 #define LOG_fE1LowDpt2                11      // 8 Bits, Bit 7-0
