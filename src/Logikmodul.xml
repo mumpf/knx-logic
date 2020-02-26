@@ -19,7 +19,7 @@
             </ParameterTypes>
             <Parameters>
               <!-- Standard parameter in any of our devices -->
-              <mc:include href="Logikmodul.share.xml" xpath="//Parameters/Parameter" prefix="LOG" />
+              <mc:include href="Logikmodul.share.xml" xpath="//Parameters/Parameter|//Parameters/Union" prefix="LOG" />
               <mc:include href="Logikmodul.templ.xml" xpath="//Parameters/Parameter|//Parameters/Union" header="Logikmodul.h" prefix="LOG" />
             </Parameters>
             <ParameterRefs>
@@ -27,6 +27,7 @@
               <ParameterRef Id="M-00FA_A-0001-01-0000_P-5_R-1" RefId="M-00FA_A-0001-01-0000_P-5" />
               <ParameterRef Id="M-00FA_A-0001-01-0000_P-6_R-1" RefId="M-00FA_A-0001-01-0000_P-6" />
               <ParameterRef Id="M-00FA_A-0001-01-0000_P-7_R-1" RefId="M-00FA_A-0001-01-0000_P-7" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_P-8_R-1" RefId="M-00FA_A-0001-01-0000_P-8" />
               <mc:include href="Logikmodul.share.xml" xpath="//ParameterRefs/ParameterRef" prefix="LOG" />
               <mc:include href="Logikmodul.templ.xml" xpath="//ParameterRefs/ParameterRef" header="Logikmodul.h" prefix="LOG" />
             </ParameterRefs>

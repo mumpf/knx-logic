@@ -449,18 +449,14 @@
               <Parameter Id="M-00FA_A-0001-01-0000_P-3" Name="Heartbeat" ParameterType="M-00FA_A-0001-01-0000_PT-DelaySeconds" Text="In Betrieb senden alle" SuffixText="Sekunden" Value="300">
                 <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="5" BitOffset="0" />
               </Parameter>
-              <Parameter Id="M-00FA_A-0001-01-0000_P-4" Name="ReadTimeDate" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Uhrzeit und Datum nach einem Neustart vom Bus lesen" Value="1">
+              <Union SizeInBit="8">
                 <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="9" BitOffset="0" />
-              </Parameter>              
-              <Parameter Id="M-00FA_A-0001-01-0000_P-5" Name="BuzzerInstalled" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Akustischer Signalgeber installiert (Buzzer)?" Value="1">
-                <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="9" BitOffset="1" />
-              </Parameter>
-              <Parameter Id="M-00FA_A-0001-01-0000_P-6" Name="LedInstalled" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Optischer Signalgeber installiert (RGB-LED)?" Value="1">
-                <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="9" BitOffset="2" />
-              </Parameter>
-              <Parameter Id="M-00FA_A-0001-01-0000_P-7" Name="EepromInstalled" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Nichtflüchtiger Speicher installiert (EEPROM)?" Value="1">
-                <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="9" BitOffset="3" />
-              </Parameter>
+                <Parameter Id="M-00FA_A-0001-01-0000_P-4" Name="ReadTimeDate" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Uhrzeit und Datum nach einem Neustart vom Bus lesen" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_P-5" Name="BuzzerInstalled" Offset="0" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Akustischer Signalgeber installiert (Buzzer)?" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_P-6" Name="LedInstalled" Offset="0" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Optischer Signalgeber installiert (RGB-LED)?" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_P-7" Name="EepromInstalled" Offset="0" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Nichtflüchtiger Speicher installiert (EEPROM)?" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_P-8" Name="NCN5130Installed" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Zusatzhardware abschaltbar (z.B. mit NCN5130)?" Value="1" />
+              </Union>
             </Parameters>
             <ParameterRefs>
               <!-- General -->
@@ -502,6 +498,7 @@
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-5_R-1" />
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-6_R-1" />
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-7_R-1" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-8_R-1" />
                 <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-2_R-1" />
                 <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-3_R-1" />
                 <choose ParamRefId="M-00FA_A-0001-01-0000_P-3_R-1">

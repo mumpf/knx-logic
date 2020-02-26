@@ -9,6 +9,7 @@
 #define LOG_BuzzerInstalled            9      // 1 Bit, Bit 6
 #define LOG_LedInstalled               9      // 1 Bit, Bit 5
 #define LOG_EepromInstalled            9      // 1 Bit, Bit 4
+#define LOG_NCN5130Installed           9      // 1 Bit, Bit 3
 
 #define LOG_Channels 50
 
