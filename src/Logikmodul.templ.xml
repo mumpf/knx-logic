@@ -64,12 +64,11 @@
       <Parameter Id="M-00FA_A-0001-01-0000_P-%C%024" Name="f%C%E1LowDptRGB" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB" Text="Von-Wert" Value="8388608" />
       <Parameter Id="M-00FA_A-0001-01-0000_P-%C%025" Name="f%C%E1HighDptRGB" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB" Text="Bis-Wert" Value="16777216" />
     </Union>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%026" Name="f%C%E1Default" ParameterType="M-00FA_A-0001-01-0000_PT-InputDefault" Text="Falls Vorbelegung aus dem Speicher nicht möglich oder nicht gewünscht, dann vorbelegen mit" Value="0">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="19" BitOffset="6" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%130" Name="f%C%E1DefaultEEPROM" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Eingangswert speichern und beim nächsten Neustart als Vorbelegung nutzen?" Value="0">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="19" BitOffset="5" />
-    </Parameter>
+    <Union SizeInBit="8">
+      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="19" BitOffset="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%026" Name="f%C%E1Default" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-InputDefault" Text="Falls Vorbelegung aus dem Speicher nicht möglich oder nicht gewünscht, dann vorbelegen mit" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%130" Name="f%C%E1DefaultEEPROM" Offset="0" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Eingangswert speichern und beim nächsten Neustart als Vorbelegung nutzen?" Value="0" />
+    </Union>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%027" Name="f%C%E1Repeat" ParameterType="M-00FA_A-0001-01-0000_PT-DelaySeconds" Text="Eingang 1 wird alle n Sekunden gelesen (0 = nicht zyklisch lesen)" SuffixText="Sekunden" Value="0">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="20" BitOffset="0" />
     </Parameter>
@@ -110,12 +109,11 @@
       <Parameter Id="M-00FA_A-0001-01-0000_P-%C%044" Name="f%C%E2LowDptRGB" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB" Text="Von-Wert" Value="8388608" />
       <Parameter Id="M-00FA_A-0001-01-0000_P-%C%045" Name="f%C%E2HighDptRGB" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB" Text="Bis-Wert" Value="16777216" />
     </Union>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%046" Name="f%C%E2Default" ParameterType="M-00FA_A-0001-01-0000_PT-InputDefault" Text="Falls Vorbelegung aus dem Speicher nicht möglich oder nicht gewünscht, dann vorbelegen mit" Value="0">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="34" BitOffset="6" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%131" Name="f%C%E2DefaultEEPROM" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Eingangswert speichern und beim nächsten Neustart als Vorbelegung nutzen" Value="0">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="34" BitOffset="5" />
-    </Parameter>
+    <Union SizeInBit="8">
+      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="34" BitOffset="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%046" Name="f%C%E2Default" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-InputDefault" Text="Falls Vorbelegung aus dem Speicher nicht möglich oder nicht gewünscht, dann vorbelegen mit" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%131" Name="f%C%E2DefaultEEPROM" Offset="0" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Eingangswert speichern und beim nächsten Neustart als Vorbelegung nutzen" Value="0" />
+    </Union>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%047" Name="f%C%E2Repeat" ParameterType="M-00FA_A-0001-01-0000_PT-DelaySeconds" Text="Eingang 2 wird alle n Sekunden gelesen (0 = nicht zyklisch lesen)" Value="0">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="35" BitOffset="0" />
     </Parameter>
@@ -149,33 +147,25 @@
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%057" Name="f%C%OBlink" ParameterType="M-00FA_A-0001-01-0000_PT-DelayDeziSeconds" Text="Treppenlicht blinkt im n/10 Sekunden Rythmus (0 = nicht blinken)" SuffixText="/10 Sekunden" Value="0">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="57" BitOffset="0" />
     </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%058" Name="f%C%ODelay" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Ausgang schaltet zeitverzögert" Value="0">
+    <Union SizeInBits="8">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="61" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%117" Name="f%C%ODelayOnRepeat" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffRepeat" Text="Erneutes EIN führt zu" Value="0">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="61" BitOffset="1" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%118" Name="f%C%ODelayOnReset" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffReset" Text="Darauffolgendes AUS führt zu" Value="0">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="61" BitOffset="3" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%119" Name="f%C%ODelayOffRepeat" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffRepeat" Text="Erneutes AUS führt zu" Value="0">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="61" BitOffset="4" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%120" Name="f%C%ODelayOffReset" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffReset" Text="Darauffolgendes EIN führt zu" Value="0">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="61" BitOffset="6" />
-    </Parameter>
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%058" Name="f%C%ODelay" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Ausgang schaltet zeitverzögert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%117" Name="f%C%ODelayOnRepeat" Offset="0" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffRepeat" Text="Erneutes EIN führt zu" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%118" Name="f%C%ODelayOnReset" Offset="0" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffReset" Text="Darauffolgendes AUS führt zu" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%119" Name="f%C%ODelayOffRepeat" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffRepeat" Text="Erneutes AUS führt zu" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%120" Name="f%C%ODelayOffReset" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffReset" Text="Darauffolgendes EIN führt zu" Value="0" />
+    </Union>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%059" Name="f%C%ODelayOn" ParameterType="M-00FA_A-0001-01-0000_PT-DelayDeziSeconds" Text="EINschalten wird um n/10 Sekunden verzögert (0 = nicht verzögern)" SuffixText="/10 Sekunden" Value="0">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="62" BitOffset="0" />
     </Parameter>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%060" Name="f%C%ODelayOff" ParameterType="M-00FA_A-0001-01-0000_PT-DelayDeziSeconds" Text="AUSschalten wird um n/10 Sekunden verzögert (0 = nicht verzögern)" SuffixText="/10 Sekunden" Value="0">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="66" BitOffset="0" />
     </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%061" Name="f%C%ORepeat" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Ausgang wiederholt zyklisch" Value="0">
+    <Union SizeInBit="8">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="70" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%127" Name="f%C%OOutputFilter" ParameterType="M-00FA_A-0001-01-0000_PT-OutputFilter" Text="Wiederholungsfilter" Value="0">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="70" BitOffset="1" />
-    </Parameter>
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%061" Name="f%C%ORepeat" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Ausgang wiederholt zyklisch" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%127" Name="f%C%OOutputFilter" Offset="0" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-OutputFilter" Text="Wiederholungsfilter" Value="0" />
+    </Union>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%062" Name="f%C%ORepeatOn" ParameterType="M-00FA_A-0001-01-0000_PT-DelayDeziSeconds" Text="EIN-Telegramm wird alle n/10 Sekunden wiederholt (0 = nicht wiederholen)" SuffixText="/10 Sekunden" Value="0">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="71" BitOffset="0" />
     </Parameter>
@@ -192,51 +182,24 @@
       <Parameter Id="M-00FA_A-0001-01-0000_P-%C%135" Name="f%C%OOnLed" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OutputSendLed" Text="Wert für EIN senden?" Value="1" />
       <Parameter Id="M-00FA_A-0001-01-0000_P-%C%136" Name="f%C%OOnAll" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OutputSendAll" Text="Wert für EIN senden?" Value="1" />
     </Union>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%140" Name="f%C%OOnTone" ParameterType="M-00FA_A-0001-01-0000_PT-ValueBuzzer" Text="    Wert für EIN senden als" Value="1">
+    <Union SizeInBit="112">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="81" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%066" Name="f%C%OOnDpt1" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt1" Text="    Wert für EIN senden als" Value="1">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="81" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%067" Name="f%C%OOnDpt2" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2" Text="    Wert für EIN senden als" Value="1">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="81" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%068" Name="f%C%OOnDpt5" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5" Text="    Wert für EIN senden als " Value="1">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="81" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%069" Name="f%C%OOnDpt5001" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001" Text="    Wert für EIN senden als" Value="100">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="81" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%070" Name="f%C%OOnDpt6" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6" Text="    Wert für EIN senden als" Value="1">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="81" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%071" Name="f%C%OOnDpt7" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7" Text="    Wert für EIN senden als" Value="1">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="81" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%072" Name="f%C%OOnDpt8" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8" Text="    Wert für EIN senden als" Value="1">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="81" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%073" Name="f%C%OOnDpt9" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9" Text="    Wert für EIN senden als" Value="1">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="81" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%074" Name="f%C%OOnDpt16" ParameterType="M-00FA_A-0001-01-0000_PT-ValueText" Text="    Wert für EIN senden als " Value="Ein">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="81" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%075" Name="f%C%OOnDpt17" ParameterType="M-00FA_A-0001-01-0000_PT-ValueScene" Text="    Wert für EIN senden als " Value="2">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="81" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%076" Name="f%C%OOnRGB" ParameterType="M-00FA_A-0001-01-0000_PT-ValueColor" Text="    Wert für EIN senden als (3-Byte-RGB)" Value="FFFFFF">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="81" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%121" Name="f%C%OOnPAArea" ParameterType="M-00FA_A-0001-01-0000_PT-PALine" Text="" Value="1">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="81" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%122" Name="f%C%OOnPALine" ParameterType="M-00FA_A-0001-01-0000_PT-PALine" Text="" Value="1">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="81" BitOffset="4" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%123" Name="f%C%OOnPADevice" ParameterType="M-00FA_A-0001-01-0000_PT-PADevice" Text="" Value="1">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="82" BitOffset="0" />
-    </Parameter>
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%140" Name="f%C%OOnTone" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueBuzzer" Text="    Wert für EIN senden als" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%066" Name="f%C%OOnDpt1" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt1" Text="    Wert für EIN senden als" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%067" Name="f%C%OOnDpt2" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2" Text="    Wert für EIN senden als" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%068" Name="f%C%OOnDpt5" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5" Text="    Wert für EIN senden als " Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%069" Name="f%C%OOnDpt5001" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001" Text="    Wert für EIN senden als" Value="100" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%070" Name="f%C%OOnDpt6" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6" Text="    Wert für EIN senden als" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%071" Name="f%C%OOnDpt7" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7" Text="    Wert für EIN senden als" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%072" Name="f%C%OOnDpt8" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8" Text="    Wert für EIN senden als" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%073" Name="f%C%OOnDpt9" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9" Text="    Wert für EIN senden als" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%074" Name="f%C%OOnDpt16" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueText" Text="    Wert für EIN senden als " Value="Ein" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%075" Name="f%C%OOnDpt17" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueScene" Text="    Wert für EIN senden als " Value="2" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%076" Name="f%C%OOnRGB" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueColor" Text="    Wert für EIN senden als (3-Byte-RGB)" Value="FFFFFF" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%121" Name="f%C%OOnPAArea" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-PALine" Text="" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%122" Name="f%C%OOnPALine" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-PALine" Text="" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%123" Name="f%C%OOnPADevice" Offset="1" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-PADevice" Text="" Value="1" />
+    </Union>
     <Union SizeInBit="8">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="95" BitOffset="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_P-%C%077" Name="f%C%OOff" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OutputSend" Text="Wert für AUS senden?" Value="1" />
@@ -244,51 +207,24 @@
       <Parameter Id="M-00FA_A-0001-01-0000_P-%C%138" Name="f%C%OOffLed" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OutputSendLed" Text="Wert für AUS senden?" Value="1" />
       <Parameter Id="M-00FA_A-0001-01-0000_P-%C%139" Name="f%C%OOffAll" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OutputSendAll" Text="Wert für AUS senden?" Value="1" />
     </Union>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%141" Name="f%C%OOffTone" ParameterType="M-00FA_A-0001-01-0000_PT-ValueBuzzer" Text="    Wert für AUS senden als" Value="0">
+    <Union SizeInBit="112">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="96" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%078" Name="f%C%OOffDpt1" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt1" Text="    Wert für AUS senden als" Value="0">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="96" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%079" Name="f%C%OOffDpt2" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2" Text="    Wert für AUS senden als" Value="0">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="96" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%080" Name="f%C%OOffDpt5" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5" Text="    Wert für AUS senden als" Value="0">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="96" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%081" Name="f%C%OOffDpt5001" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001" Text="    Wert für AUS senden als" Value="0">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="96" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%082" Name="f%C%OOffDpt6" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6" Text="    Wert für AUS senden als" Value="0">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="96" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%083" Name="f%C%OOffDpt7" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7" Text="    Wert für AUS senden als" Value="0">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="96" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%084" Name="f%C%OOffDpt8" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8" Text="    Wert für AUS senden als" Value="0">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="96" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%085" Name="f%C%OOffDpt9" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9" Text="    Wert für AUS senden als" Value="0">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="96" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%086" Name="f%C%OOffDpt16" ParameterType="M-00FA_A-0001-01-0000_PT-ValueText" Text="    Wert für AUS senden als" Value="Aus">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="96" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%087" Name="f%C%OOffDpt17" ParameterType="M-00FA_A-0001-01-0000_PT-ValueScene" Text="    Wert für AUS senden als " Value="1">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="96" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%088" Name="f%C%OOffRGB" ParameterType="M-00FA_A-0001-01-0000_PT-ValueColor" Text="    Wert für AUS senden als (3-Byte-RGB)" Value="000000">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="96" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%124" Name="f%C%OOffPAArea" ParameterType="M-00FA_A-0001-01-0000_PT-PALine" Text="" Value="1">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="96" BitOffset="0" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%125" Name="f%C%OOffPALine" ParameterType="M-00FA_A-0001-01-0000_PT-PALine" Text="" Value="1">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="96" BitOffset="4" />
-    </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%126" Name="f%C%OOffPADevice" ParameterType="M-00FA_A-0001-01-0000_PT-PADevice" Text="" Value="1">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="97" BitOffset="0" />
-    </Parameter>
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%141" Name="f%C%OOffTone" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueBuzzer" Text="    Wert für AUS senden als" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%078" Name="f%C%OOffDpt1" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt1" Text="    Wert für AUS senden als" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%079" Name="f%C%OOffDpt2" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2" Text="    Wert für AUS senden als" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%080" Name="f%C%OOffDpt5" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5" Text="    Wert für AUS senden als" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%081" Name="f%C%OOffDpt5001" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001" Text="    Wert für AUS senden als" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%082" Name="f%C%OOffDpt6" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6" Text="    Wert für AUS senden als" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%083" Name="f%C%OOffDpt7" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7" Text="    Wert für AUS senden als" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%084" Name="f%C%OOffDpt8" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8" Text="    Wert für AUS senden als" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%085" Name="f%C%OOffDpt9" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9" Text="    Wert für AUS senden als" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%086" Name="f%C%OOffDpt16" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueText" Text="    Wert für AUS senden als" Value="Aus" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%087" Name="f%C%OOffDpt17" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueScene" Text="    Wert für AUS senden als " Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%088" Name="f%C%OOffRGB" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueColor" Text="    Wert für AUS senden als (3-Byte-RGB)" Value="000000" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%124" Name="f%C%OOffPAArea" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-PALine" Text="" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%125" Name="f%C%OOffPALine" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-PALine" Text="" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%126" Name="f%C%OOffPADevice" Offset="1" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-PADevice" Text="" Value="1" />
+    </Union>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%128" Name="f%C%NameInput1" ParameterType="M-00FA_A-0001-01-0000_PT-Text40Byte" Text="Beschreibung Eingang 1" Value="" />
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%129" Name="f%C%NameInput2" ParameterType="M-00FA_A-0001-01-0000_PT-Text40Byte" Text="Beschreibung Eingang 2" Value="" />
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%132" Name="f%C%NameOutput" ParameterType="M-00FA_A-0001-01-0000_PT-Text40Byte" Text="Beschreibung Ausgang" Value="" />
