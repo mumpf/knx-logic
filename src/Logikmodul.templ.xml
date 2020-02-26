@@ -57,7 +57,7 @@
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%047" Name="f%C%E2Repeat" ParameterType="M-00FA_A-0001-01-0000_PT-DelaySeconds" Text="Eingang 2 wird alle n Sekunden gelesen (0 = nicht zyklisch lesen)" Value="0">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="19" BitOffset="0" />
     </Parameter>
-    <Union SizeInBit="64">
+    <Union SizeInBit="128">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="23" BitOffset="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_P-%C%115" Name="f%C%E1LowDelta" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-Delta" Text="Von-Wert" Value="-10" />
       <Parameter Id="M-00FA_A-0001-01-0000_P-%C%116" Name="f%C%E1HighDelta" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-Delta" Text="Bis-Wert" Value="10" />
@@ -87,35 +87,33 @@
       <Parameter Id="M-00FA_A-0001-01-0000_P-%C%107" Name="f%C%E1Low7Dpt17" Offset="7" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueScene" Text="... oder bei Szene" Value="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_P-%C%024" Name="f%C%E1LowDptRGB" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB" Text="Von-Wert" Value="8388608" />
       <Parameter Id="M-00FA_A-0001-01-0000_P-%C%025" Name="f%C%E1HighDptRGB" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB" Text="Bis-Wert" Value="16777216" />
-    </Union>
-    <Union SizeInBit="64">
-      <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="31" BitOffset="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%030" Name="f%C%E2Low0Dpt2" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2" Text="Eingang 2 ist EIN, wenn Wert gleich " Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%095" Name="f%C%E2Low1Dpt2" Offset="1" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2" Text="... oder wenn Wert gleich " Value="4" />
-      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%096" Name="f%C%E2Low2Dpt2" Offset="2" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2" Text="... oder wenn Wert gleich " Value="4" />
-      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%097" Name="f%C%E2Low3Dpt2" Offset="3" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2" Text="... oder wenn Wert gleich " Value="4" />
-      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%031" Name="f%C%E2LowDpt5" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5" Text="Von-Wert" Value="128" />
-      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%032" Name="f%C%E2HighDpt5" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5" Text="Bis-Wert" Value="255" />
-      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%033" Name="f%C%E2LowDpt5001" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001" Text="Von-Wert" Value="50" />
-      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%034" Name="f%C%E2HighDpt5001" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001" Text="Bis-Wert" Value="100" />
-      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%035" Name="f%C%E2LowDpt6" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6" Text="Von-Wert" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%036" Name="f%C%E2HighDpt6" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6" Text="Bis-Wert" Value="127" />
-      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%037" Name="f%C%E2LowDpt7" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7" Text="Von-Wert" Value="32768" />
-      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%038" Name="f%C%E2HighDpt7" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7" Text="Bis-Wert" Value="65535" />
-      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%039" Name="f%C%E2LowDpt8" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8" Text="Von-Wert" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%040" Name="f%C%E2HighDpt8" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8" Text="Bis-Wert" Value="32767" />
-      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%041" Name="f%C%E2LowDpt9" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9" Text="Von-Wert" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%042" Name="f%C%E2HighDpt9" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9" Text="Bis-Wert" Value="670760" />
-      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%043" Name="f%C%E2Low0Dpt17" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueScene" Text="Eingang 2 ist EIN bei Szene" Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%108" Name="f%C%E2Low1Dpt17" Offset="1" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueScene" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%109" Name="f%C%E2Low2Dpt17" Offset="2" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueScene" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%110" Name="f%C%E2Low3Dpt17" Offset="3" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueScene" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%111" Name="f%C%E2Low4Dpt17" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueScene" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%112" Name="f%C%E2Low5Dpt17" Offset="5" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueScene" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%113" Name="f%C%E2Low6Dpt17" Offset="6" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueScene" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%114" Name="f%C%E2Low7Dpt17" Offset="7" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueScene" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%044" Name="f%C%E2LowDptRGB" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB" Text="Von-Wert" Value="8388608" />
-      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%045" Name="f%C%E2HighDptRGB" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB" Text="Bis-Wert" Value="16777216" />
+
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%030" Name="f%C%E2Low0Dpt2" Offset="8" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2" Text="Eingang 2 ist EIN, wenn Wert gleich " Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%095" Name="f%C%E2Low1Dpt2" Offset="9" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2" Text="... oder wenn Wert gleich " Value="4" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%096" Name="f%C%E2Low2Dpt2" Offset="10" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2" Text="... oder wenn Wert gleich " Value="4" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%097" Name="f%C%E2Low3Dpt2" Offset="11" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2" Text="... oder wenn Wert gleich " Value="4" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%031" Name="f%C%E2LowDpt5" Offset="8" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5" Text="Von-Wert" Value="128" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%032" Name="f%C%E2HighDpt5" Offset="12" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5" Text="Bis-Wert" Value="255" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%033" Name="f%C%E2LowDpt5001" Offset="8" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001" Text="Von-Wert" Value="50" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%034" Name="f%C%E2HighDpt5001" Offset="12" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001" Text="Bis-Wert" Value="100" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%035" Name="f%C%E2LowDpt6" Offset="8" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6" Text="Von-Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%036" Name="f%C%E2HighDpt6" Offset="12" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6" Text="Bis-Wert" Value="127" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%037" Name="f%C%E2LowDpt7" Offset="8" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7" Text="Von-Wert" Value="32768" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%038" Name="f%C%E2HighDpt7" Offset="12" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7" Text="Bis-Wert" Value="65535" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%039" Name="f%C%E2LowDpt8" Offset="8" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8" Text="Von-Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%040" Name="f%C%E2HighDpt8" Offset="12" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8" Text="Bis-Wert" Value="32767" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%041" Name="f%C%E2LowDpt9" Offset="8" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9" Text="Von-Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%042" Name="f%C%E2HighDpt9" Offset="12" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9" Text="Bis-Wert" Value="670760" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%043" Name="f%C%E2Low0Dpt17" Offset="8" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueScene" Text="Eingang 2 ist EIN bei Szene" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%108" Name="f%C%E2Low1Dpt17" Offset="9" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueScene" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%109" Name="f%C%E2Low2Dpt17" Offset="10" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueScene" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%110" Name="f%C%E2Low3Dpt17" Offset="11" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueScene" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%111" Name="f%C%E2Low4Dpt17" Offset="12" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueScene" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%112" Name="f%C%E2Low5Dpt17" Offset="13" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueScene" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%113" Name="f%C%E2Low6Dpt17" Offset="14" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueScene" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%114" Name="f%C%E2Low7Dpt17" Offset="15" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueScene" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%044" Name="f%C%E2LowDptRGB" Offset="8" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB" Text="Von-Wert" Value="8388608" />
+      <Parameter Id="M-00FA_A-0001-01-0000_P-%C%045" Name="f%C%E2HighDptRGB" Offset="12" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB" Text="Bis-Wert" Value="16777216" />
     </Union>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%048" Name="f%C%I1" ParameterType="M-00FA_A-0001-01-0000_PT-InputEnable" Text="Kanalausgang X" Value="0">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="39" BitOffset="0" />
