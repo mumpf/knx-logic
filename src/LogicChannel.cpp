@@ -610,8 +610,11 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex) {
 void LogicChannel::startLogic(uint8_t iIOIndex, bool iValue) {
     // invert input
     bool lValue = iValue;
-    uint16_t lParamBase = (iIOIndex == 1) ? LOG_fE1 : (iIOIndex == 2) ? LOG_fE2 : (iIOIndex == 4) ? LOG_fI1 : LOG_fI2;
-    if ((getByteParam(lParamBase) & BIT_INPUT_MASK) == 2)
+    uint16_t lParamBase = (iIOIndex == BIT_EXT_INPUT_1) ? LOG_fE1 : (iIOIndex == BIT_EXT_INPUT_2) ? LOG_fE2 : (iIOIndex == BIT_INT_INPUT_1) ? LOG_fI1 : LOG_fI2;
+    uint8_t lInput = getByteParam(lParamBase);
+    if (iIOIndex == BIT_INT_INPUT_1)
+        lInput >>= 4;
+    if ((lInput & BIT_INPUT_MASK) == 2)
         lValue = !iValue;
     // set according input bit
     pCurrentIO &= ~iIOIndex;
@@ -714,7 +717,7 @@ void LogicChannel::processLogic() {
 }
 
 void LogicChannel::startStairlight(bool iOutput) {
-    if (getByteParam(LOG_fOStair))
+    if (getByteParam(LOG_fOStair) & 128)
     {
         if (iOutput)
         {
@@ -722,8 +725,8 @@ void LogicChannel::startStairlight(bool iOutput) {
             if ((pCurrentPipeline & PIP_STAIRLIGHT) == 0)
                 startOnDelay();
             // stairlight should also be switched on
-            uint8_t lRetrigger = getByteParam(LOG_fORetrigger);
-            if ((pCurrentPipeline & PIP_STAIRLIGHT) == 0 || lRetrigger == 1)
+            bool lRetrigger = getByteParam(LOG_fORetrigger) & 64;
+            if ((pCurrentPipeline & PIP_STAIRLIGHT) == 0 || lRetrigger)
             {
                 // stairlight is not running or may be retriggered
                 // we init the stairlight timer
@@ -738,8 +741,8 @@ void LogicChannel::startStairlight(bool iOutput) {
             if ((pCurrentPipeline & PIP_STAIRLIGHT) == 0)
                 startOffDelay();
             // stairlight should be switched off
-            uint8_t lOff = getByteParam(LOG_fOStairOff);
-            if (lOff == 1)
+            bool lOff = getByteParam(LOG_fOStairOff) & 32;
+            if (lOff)
             {
                 // stairlight might be switched off,
                 // we set the timer to 0
@@ -903,7 +906,7 @@ void LogicChannel::processOffDelay() {
 
 // Output filter prevents repetition of 0 or 1 values
 void LogicChannel::startOutputFilter(bool iOutput) {
-    uint8_t lAllow = (getByteParam(LOG_fOOutputFilter) & 96) >> 5;
+    uint8_t lAllow = (getByteParam(LOG_fOOutputFilter) & 12) >> 2;
     bool lLastOutput = (pCurrentIO & BIT_LAST_OUTPUT) > 0;
     bool lContinue = false;
     switch (lAllow)
@@ -999,20 +1002,20 @@ void LogicChannel::processOnOffRepeat() {
 // we trigger all associated internal inputs with the new value
 void LogicChannel::processInternalInputs(uint8_t iChannelId, bool iValue)
 {
-    uint8_t lInput1 = getByteParam(LOG_fI1);
+    uint8_t lInput1 = getByteParam(LOG_fI1) >> 4;
     if (lInput1 > 0)
     {
-        uint32_t lFunction1 = getIntParam(LOG_fI1Function);
-        if (lFunction1 == (uint32_t)(iChannelId + 1))
+        uint8_t lFunction1 = getByteParam(LOG_fI1Function);
+        if (lFunction1 == (iChannelId + 1))
         {
             startLogic(BIT_INT_INPUT_1, iValue);
         }
     }
-    uint8_t lInput2 = getByteParam(LOG_fI2);
+    uint8_t lInput2 = getByteParam(LOG_fI2) & BIT_INPUT_MASK;
     if (lInput2 > 0)
     {
-        uint32_t lFunction2 = getIntParam(LOG_fI2Function);
-        if (lFunction2 == (uint32_t)(iChannelId + 1))
+        uint8_t lFunction2 = getByteParam(LOG_fI2Function);
+        if (lFunction2 == (iChannelId + 1))
         {
             startLogic(BIT_INT_INPUT_2, iValue);
         }
@@ -1232,7 +1235,7 @@ bool LogicChannel::prepareChannel() {
         }
         // internal input 1
         // first check, if input is active
-        uint8_t lIsActive = getByteParam(LOG_fI1);
+        uint8_t lIsActive = getByteParam(LOG_fI1) >> 4;
         if (lIsActive > 0)
         {
             // input is active, we set according flag
@@ -1240,7 +1243,7 @@ bool LogicChannel::prepareChannel() {
         }
         // internal input 2
         // first check, if input is active
-        lIsActive = getByteParam(LOG_fI2);
+        lIsActive = getByteParam(LOG_fI2) & BIT_INPUT_MASK;
         if (lIsActive > 0)
         {
             // input is active, we set according flag
