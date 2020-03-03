@@ -8,12 +8,18 @@ Sie ist in die Bereiche
 * Logikdokumentation
 * Logikkanäle
 
-gegliedert, wobei die Logikkanäle wiederum in bis zu 60 Kanäle untergierdert sind.
+gegliedert, wobei die Logikkanäle wiederum in bis zu 80 Kanäle untergierdert sind.
 
 ## Allgemeine Parameter
 
 ![Allgemeine Parameter](AllgemeineParameter.png)
 Hier werden Einstellungen getroffen, die die generelle Arbeitsweise des Logikmoduls bestimmen.
+
+### Anzahl verfügbarer Logikkanäle
+
+Dieses Feld gibt an, für wie viele Logikkanäle dieses Applikationsprogramm erstellt wurde.
+
+Es stehen ETS-Applikationen mit 10, 30, 50 und 80 Logikkanälen zur Verfügung. Die Anzahl der Logikkanäle wesentlich die Programmierzeit mit der ETS. Ein Logikmodul mit 10 Logikkanälen braucht ca. 30 Sekunden für die Programmierung, mit 80 Logikkanälen weit über 3 Minuten. Die Programmierzeit hängt immer von der Anzahl der verfügbaren Logikkanäle ab, nicht von der Anzahl der genutzen.
 
 ### Zeit bis das Gerät nach einem Neustart aktiv wird
 
@@ -26,6 +32,44 @@ Da das Gerät prinzipiell (sofern parametriert) auch Lesetelegramme auf den Bus 
 Das Gerät kann einen Status "Ich bin noch in Betrieb" über das KO 1 senden. Hier wird das Sendeintervall in Sekunden eingestellt.
 
 Sollte hier eine 0 angegeben werden, wird kein "In Betrieb"-Signal gesendet und das KO 1 steht nicht zur Verfügung.
+
+### Uhrzeit und Datum nach einem Neustart vom Bus lesen
+
+Dieses Gerät kann Uhrzeit und Datum vom Bus empfangen. Nach einem Neustart können Uhrzeit und Datum auch aktiv über Lesetelegramme abgefragt werden. Mit diesem Parameter wird bestimmt, ob Uhrzeit und Datum nach einem Neustart aktiv gelesen werden.
+
+Derzeit werden die Informationen über Uhrzeit und Datum noch nicht verarbeitet. Sie sind für zukünftige Erweiterungen vorgesehen, vor allem für eine Zeitschaltuhrfunktion.
+
+### Vorhandene Hardware
+
+Die Firmware im Logikmodul unterstützt eine Vielzahl an Hardwarevarianten. Um nicht für jede Hardwarekombination ein eigenes Applikationsprogramm zu benötigen, kann über die folgenden Felder die Hardwareausstattung des Logikmoduls bestimmt werden.
+
+Die Angaben in diesem Teil müssen der vorhandenen Hardware entsprechen, da sie das Verhalten der Applikation und auch der Firmware bestimmen. Das Applikationsprogramm hat keine Möglichkeit, die Korrektheit der Angaben zu überprüfen.
+
+Falsche Angaben können zu falschern Konfigurationen der Applikation und somit zum Fehlverhalten des Logikmoduls führen.
+
+#### Akustischer Signalgeber vorhanden (Buzzer)?
+
+Das Logikmodul unterstützt auch die Ausgabe von Pieptönen mittels eines Buzzers. Mit einem Haken in diesem Feld wird angegeben, ob ein Buzzer installiert ist.
+
+#### Optischer Signalgeber vorhanden (RGB-LED)?
+
+Das Logikmodul unterstützt auch die Ausgabe eines Lichtsignals mittels einer RGB-LED. Mit einem Haken in diesem Feld wird angegeben, ob eine RGB-LED installiert ist.
+
+#### Nichtflüchtiger Speicher vorhanden (EEPROM)
+
+Ein EEPROM ist ein Speicher, der seine Informationen auch nach einem Stromausfall nicht verliert. Ein solches EEPROM wird von der Firmware genutzt, um Werte von bestimmten Kommunikationsobjekten zu speichern.
+
+Ist kein EEPROM auf dem Board vorhanden, können diese Informationen nicht gespeichert werden. Die Applikation wird dann alle Einstellungen, die ein Speichern erlauben, nicht anbieten. In einem solchen Fall erscheint die folgende Information:
+![Info EEPROM](InfoEeprom.png)
+
+#### Zusatzhardware abschaltbar (z.B. mit dem NCN5130)?
+
+Damit bei einem Stromausfall Daten in einem EEPROM gespeichert werden können, muss nicht nur ein EEPROM vorhanden sein, sondern auch genügend lange Strom zum Speichern vorhanden sein. Angeschlossene Hardware (RGB-LED, Buzzer) verbrauchen aber viel Strom und verhindern somit die Speicherung bei Stromausfall.
+
+Die Firmware unterstützt aber eine Abschaltung der Zusatzhardware, falls der Strom ausfällt. Derzeit wird die Abschaltung nur über den NCN5130 (KNX-Bus-Interface) unterstützt, kann aber bei Bedarf entsprechend um weitere Abschaltmöglichkeiten erweitert werden.
+
+Ist keine Möglichkeit zur Abschaltung vorhanden, wird die Speicherung ins EEPROM unterbunden. Die Applikation wird dann alle Einstellungen, die ein Speichern erlauben, nicht anbieten. In einem solchen Fall erscheint die folgende Information:
+![Info Stromabschaltung](InfoPower.png)
 
 ## Logikdokumentation
 
@@ -318,13 +362,15 @@ Ist der DPT anders als DPT 1, erscheint je nach DPT ein Konverter, mit dem man d
 
 Diese Einstellung erlaubt ein dezidiertes Verhalten beim Neustart des Gerätes, wie im Kapitel "Logikkanäle -> Startverhalten" beschrieben.
 
+Diese Einstellung erscheint nur, wenn ein nichtflüchtiger Speicher vorhanden ist und Zusatzhardware (RGB-LED, Buzzer) von der Firmware abgeschaltet werden können.
+
 Mit "Ja" legt man fest, dass der zuletzt an diesem Eingang empfangene Wert im nichtflüchtigen Speicher abgelegt wird und nach einem Neustart wieder gelesen wird. Der dann gelesene Wert wird als Vorbelegung für den Eingang genommen, falls nötig über den Eingangskonverter in einen DPT 1 konvertiert und dann die logische Operation getriggert.
 
 Da nichtflüchtige Speicher nur eine relativ geringe Anzahl an Schreibzyklen zulassen, wird der Eingangswert nicht direkt nach dem Empfang im Speicher geschrieben, sondern erst beim Stromausfall, bei einem "Gerät zurücksetzen" über die ETS oder bei einer neuprogrammierung über die ETS. Wird die RESET-Taste direkt am Gerät gedrückt, wird der nichtflüchtige Speicher nicht mit dem Eingangswert beschrieben.
 
 ### Falls Vorbelegung aus dem Speicher nicht möglich oder nicht gewünscht, dann vorbelegen mit
 
-Dieses Auswahlfeld erlaubt eine Vorbelegung mit einem festgelegten Wert. Die Einstellung kommt aber nur zur Auswirkung, falls die vorhergehende Einstellung "Eingangswert speichern und beim nächsten Neustart als Vorbelegung nutzen" auf "Nein" steht oder der gespeicherte Wert nicht genutzt werden kann.
+Dieses Auswahlfeld erlaubt eine Vorbelegung mit einem festgelegten Wert. Die Einstellung kommt aber nur zur Auswirkung, falls die vorhergehende Einstellung "Eingangswert speichern und beim nächsten Neustart als Vorbelegung nutzen" auf "Nein" steht, nicht vorhanden ist oder der gespeicherte Wert nicht genutzt werden kann.
 
 Es gibt einige wenige Gründe, warum ein gespeicherter Wert nicht genutzt werden kann:
 
@@ -761,17 +807,19 @@ Bei einem EIN-Signal wird kein Wert auf die GA am Ausgang gesendet sondern ein L
 
 Bei einem EIN-Signal wird kein Wert gesendet, sondern die ETS-Funktion "Gerät zurücksetzen" an eine bestimmte PA geschickt. So kann man bestimmte Geräte überwachen und bei Bedarf zurücksetzen, ohne die ETS starten zu müssen.
 
-#### Ja - Tonwiedergabe starten
+#### Ja - Tonwiedergabe (Buzzer)
 
-Bei einem EIN-Signal wird kein Wert gesendet, sondern der interne Buzzer zur Tonwiedergabe gestartet. Damit kann man eine akustische Rückmeldung erreichen.
+Wird nur angeboten, wenn ein Buzzer vorhanden ist.
 
-Diese Option kann nur funktioneren, wenn das Gerät, auf dem die Applikation Logik läuft, auch einen Buzzer verbaut hat.
+Bei einem EIN-Signal wird kein Wert gesendet, sondern der interne Buzzer zur Tonwiedergabe angesprochen. In einem weiteren Feld wird angegeben, ob die Tonwiedergabe gestartet oder gestoppt wird.
 
-#### Ja - LED-Farbe festlegen (Schwarz schaltet LED aus)
+#### Ja - RGB-LED schalten
 
-Bei einem AUS-Signal wird kein Wert gesendet, sondern die interne RBG-LED mit der eingestellten Farbe eingeschaltet. Ist die Farbe Schwarz eingestellt, wir die LED ausgeschaltet. So kann man eine optische Rückmeldung erreichen.
+Wird nur angeboten, wenn eine RGB-LED vorhanden ist.
 
-Diese Option kann nur funktionieren, wenn das Gerät, auf dem die Applikation Logik läuft, auch eine RGB-LED verbaut hat.
+Bei einem EIN-Signal wird kein Wert gesendet, sondern die interne RBG-LED angesprochen. So kann man eine optische Rückmeldung erreichen.
+
+In einem weiteren Feld wird die Farbe eingestellt. Ist die Farbe Schwarz eingestellt, wir die LED ausgeschaltet.
 
 ### Wert für EIN senden als
 
@@ -831,17 +879,19 @@ Bei einem AUS-Signal wird kein Wert auf die GA am Ausgang gesendet sondern ein L
 
 Bei einem AUS-Signal wird kein Wert gesendet, sondern die ETS-Funktion "Gerät zurücksetzen" an eine bestimmte PA geschickt. So kann man bestimmte Geräte überwachen und bei Bedarf zurücksetzen, ohne die ETS starten zu müssen.
 
-#### Ja - Tonwiedergabe starten
+#### Ja - Tonwiedergabe (Buzzer)
 
-Bei einem AUS-Signal wird kein Wert gesendet, sondern der interne Buzzer zur Tonwiedergabe gestartet. Damit kann man eine akustische Rückmeldung erreichen.
+Wird nur angeboten, wenn ein Buzzer vorhanden ist.
 
-Diese Option kann nur funktioneren, wenn das Gerät, auf dem die Applikation Logik läuft, auch einen Buzzer verbaut hat.
+Bei einem AUS-Signal wird kein Wert gesendet, sondern der interne Buzzer zur Tonwiedergabe angesprochen. In einem weiteren Feld wird angegeben, ob die Tonwiedergabe gestartet oder gestoppt wird.
 
-#### Ja - LED-Farbe festlegen (Schwarz schaltet LED aus)
+#### Ja - RGB-LED schalten
 
-Bei einem AUS-Signal wird kein Wert gesendet, sondern die interne RBG-LED mit der eingestellten Farbe eingeschaltet. Ist die Farbe Schwarz eingestellt, wir die LED ausgeschaltet. So kann man eine optische Rückmeldung erreichen.
+Wird nur angeboten, wenn eine RGB-LED vorhanden ist.
 
-Diese Option kann nur funktionieren, wenn das Gerät, auf dem die Applikation Logik läuft, auch eine RGB-LED verbaut hat.
+Bei einem AUS-Signal wird kein Wert gesendet, sondern die interne RBG-LED angesprochen. So kann man eine optische Rückmeldung erreichen.
+
+In einem weiteren Feld wird die Farbe eingestellt. Ist die Farbe Schwarz eingestellt, wir die LED ausgeschaltet.
 
 ### Wert für AUS senden als
 
@@ -939,6 +989,9 @@ Die Beispiele müssen noch ausgearbeitet werden. Die gegebenen Überschriften ze
 
 ## Hardware
 
+Dieses Kapital beschreibt die von dieser Firmware unterstützte Hardware
+(noch nicht ausgearbeitet)
+
 Buzzer
 
 RGB-LED
@@ -950,12 +1003,19 @@ RGB-LED
 KO | Name | DPT | Bedeutung
 :---:|:---|---:|:--
 1 | in Betrieb | 1.002 | Meldet zyklisch auf den Bus, dass das Gerät noch funktioniert. Das KO steht nicht zur Verfügung, wenn kein Sendezyklus eingestellt wurde.
+2 | Uhrzeit | 10.001 | Eingnang zum empfangen der Uhrzeit
+3 | Datum | 11.001 | Eingang zum empfangen des Datums
 n | Eingang 1 | *) | Eingang 1 für einen Logikkanal
 n+1 | Eingang 2 | *) | Eingang 2 für einen Logikkanal
 n+2 | Ausgang | **) | Ausgang eines Logikkanals
 
-Jeder Logikkanal hat genau 3 aufeinanderfolgende Kommunikationsobjekte. n für Kanal 1 ist von dem Gerät abhängig, auf dem die Applikation Logik läuft. Für das Sensormodul ist n=30. 
-
 *) Eingangs-DPT ist 1, 2, 5, 5.001, 6, 7, 8, 9, 17, 232
 
 **) Ausgangs-DPT ist Eingangs-DPT ergänzt um DPT 16.
+
+Jeder Logikkanal hat genau 3 aufeinanderfolgende Kommunikationsobjekte. Wenn n der Eingang 1 für Kanal x ist, so ist n+3 der Eingang 1 für Kanal x+1. Bei 80 Kanälen ist das letzte KO der Ausgang für Kanal 80 und hat die Nummer n+239.
+
+n für Kanal 1 ist von dem Gerät abhängig, auf dem die Applikation Logik läuft:
+
+* Für das Logikmodul ist n=10, somit ist das letzte belegte KO 249.
+* Für das Sensormodul ist n=50, somit ist das letzte belegte KO 289.

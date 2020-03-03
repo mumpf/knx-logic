@@ -1277,12 +1277,12 @@ void LogicChannel::loop()
     // On delay pipeline
     if (pCurrentPipeline & PIP_ON_DELAY)
         processOnDelay();
-    // blink pipeline
-    if (pCurrentPipeline & PIP_BLINK)
-        processBlink();
     // stairlight pipeline
     if (pCurrentPipeline & PIP_STAIRLIGHT)
         processStairlight();
+    // blink pipeline (has to be "after" stairlight)
+    if (pCurrentPipeline & PIP_BLINK)
+        processBlink();
     // Logic execution pipeline
     if (pCurrentPipeline & PIP_LOGIC_EXECUTE)
         processLogic();
