@@ -44,6 +44,7 @@ Logic::Logic()
     mDateTime.tm_mday = 1;
     mDateTime.tm_wday = 3;
     mktime(&mDateTime);
+    mTimeDelay = millis();
 }
 
 Logic::~Logic()

@@ -179,7 +179,7 @@ void LogicChannel::knxWriteString(uint8_t iIOIndex, char *iValue)
 // send read request on bus
 void LogicChannel::knxRead(uint8_t iIOIndex)
 {
-    printDebug("knxReadRequest end from KO %d\n", calcKoNumber(iIOIndex));
+    printDebug("knxReadRequest send from KO %d\n", calcKoNumber(iIOIndex));
     getKo(iIOIndex)->requestObjectRead();
 }
 
@@ -532,6 +532,7 @@ void LogicChannel::startConvert(uint8_t iIOIndex) {
 
 void LogicChannel::processConvertInput(uint8_t iIOIndex) {
     uint16_t lParamBase = (iIOIndex == 1) ? LOG_fE1 : LOG_fE2;
+    uint16_t lParamLow = (iIOIndex == 1) ? LOG_fE1LowDelta : LOG_fE2LowDelta;
     uint8_t lConvert = getByteParam(lParamBase) >> 4;
     bool lValueOut = 0;
     // get input value
@@ -552,16 +553,16 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex) {
             break;
         case VAL_DPT_17:
             // there might be 8 possible scenes to check
-            lUpperBound = 9; // we start with 2
+            lUpperBound = 8; // we start with 2
             lValue1In += 1;
         case VAL_DPT_2:
             // there might be 4 possible zwangsführung values to check
             if (lUpperBound == 0)
-                lUpperBound = 5; // we start with 2
+                lUpperBound = 4; // we start with 2
             // scenes or zwngsführung have no intervals, but multiple single values
-            for (size_t lScene = 2; lScene <= lUpperBound && lValueOut == 0; lScene++)
+            for (size_t lScene = 0; lScene < lUpperBound && lValueOut == 0; lScene++)
             {
-                uint8_t lValue = getByteParam(lParamBase + lScene);
+                uint8_t lValue = getByteParam(lParamLow + lScene);
                 lValueOut = ((uint8_t)lValue1In == lValue);
             }
             break;
@@ -575,25 +576,25 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex) {
         switch (lConvert)
         {
             case VAL_InputConvert_Interval:
-                lValueOut = (lValue1In >= getParamByDpt(lDpt, lParamBase + 2)) &&
-                            (lValue1In <= getParamByDpt(lDpt, lParamBase + 6));
+                lValueOut = (lValue1In >= getParamByDpt(lDpt, lParamLow + 0)) &&
+                            (lValue1In <= getParamByDpt(lDpt, lParamLow + 4));
                 break;
             case VAL_InputConvert_DeltaInterval:
-                lValueOut = (lValue1In - lValue2In >= getParamForDelta(lDpt, lParamBase + 2)) &&
-                            (lValue1In - lValue2In <= getParamForDelta(lDpt, lParamBase + 6));
+                lValueOut = (lValue1In - lValue2In >= getParamForDelta(lDpt, lParamLow + 0)) &&
+                            (lValue1In - lValue2In <= getParamForDelta(lDpt, lParamLow + 4));
                 break;
             case VAL_InputConvert_Hysterese:
                 lValueOut = pCurrentIO & iIOIndex; // retrieve old result, will be send if current value is in hysterese inbervall
-                if (lValue1In <= getParamByDpt(lDpt, lParamBase + 2))
+                if (lValue1In <= getParamByDpt(lDpt, lParamLow + 0))
                     lValueOut = false;
-                if (lValue1In >= getParamByDpt(lDpt, lParamBase + 6))
+                if (lValue1In >= getParamByDpt(lDpt, lParamLow + 4))
                     lValueOut = true;
                 break;
             case VAL_InputConvert_DeltaHysterese:
                 lValueOut = pCurrentIO & iIOIndex; // retrieve old result, will be send if current value is in hysterese inbervall
-                if (lValue1In - lValue2In <= getParamForDelta(lDpt, lParamBase + 2))
+                if (lValue1In - lValue2In <= getParamForDelta(lDpt, lParamLow + 0))
                     lValueOut = false;
-                if (lValue1In - lValue2In >= getParamForDelta(lDpt, lParamBase + 6))
+                if (lValue1In - lValue2In >= getParamForDelta(lDpt, lParamLow + 4))
                     lValueOut = true;
                 break;
             default:
