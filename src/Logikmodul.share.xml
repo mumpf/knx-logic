@@ -19,7 +19,7 @@
                 <TypeText SizeInBit="320" />
               </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-NumChannels" Name="NumChannels">
-                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="127" />
+                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="%N%" maxInclusive="127" />
               </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-DelaySeconds" Name="DelaySeconds">
                 <TypeNumber SizeInBit="32" Type="signedInt" minInclusive="0" maxInclusive="86400" />
@@ -176,8 +176,142 @@
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-TimeBasedTime" Name="TimeBasedTime">
                 <TypeNumber SizeInBit="32" Type="signedInt" minInclusive="0" maxInclusive="32767" />
               </ParameterType>
-              <ParameterType Id="M-00FA_A-0001-01-0000_PT-ValueScene" Name="ValueScene">
-                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="64" />
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Name="ValueSceneIn">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="nicht genutzt" Value="0" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-0" />
+                  <Enumeration Text="Szene 1" Value="1" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-1" />
+                  <Enumeration Text="Szene 2" Value="2" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-2" />
+                  <Enumeration Text="Szene 3" Value="3" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-3" />
+                  <Enumeration Text="Szene 4" Value="4" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-4" />
+                  <Enumeration Text="Szene 5" Value="5" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-5" />
+                  <Enumeration Text="Szene 6" Value="6" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-6" />
+                  <Enumeration Text="Szene 7" Value="7" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-7" />
+                  <Enumeration Text="Szene 8" Value="8" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-8" />
+                  <Enumeration Text="Szene 9" Value="9" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-9" />
+                  <Enumeration Text="Szene 10" Value="10" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-10" />
+                  <Enumeration Text="Szene 11" Value="11" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-11" />
+                  <Enumeration Text="Szene 12" Value="12" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-12" />
+                  <Enumeration Text="Szene 13" Value="13" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-13" />
+                  <Enumeration Text="Szene 14" Value="14" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-14" />
+                  <Enumeration Text="Szene 15" Value="15" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-15" />
+                  <Enumeration Text="Szene 16" Value="16" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-16" />
+                  <Enumeration Text="Szene 17" Value="17" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-17" />
+                  <Enumeration Text="Szene 18" Value="18" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-18" />
+                  <Enumeration Text="Szene 19" Value="19" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-19" />
+                  <Enumeration Text="Szene 20" Value="20" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-20" />
+                  <Enumeration Text="Szene 21" Value="21" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-21" />
+                  <Enumeration Text="Szene 22" Value="22" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-22" />
+                  <Enumeration Text="Szene 23" Value="23" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-23" />
+                  <Enumeration Text="Szene 24" Value="24" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-24" />
+                  <Enumeration Text="Szene 25" Value="25" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-25" />
+                  <Enumeration Text="Szene 26" Value="26" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-26" />
+                  <Enumeration Text="Szene 27" Value="27" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-27" />
+                  <Enumeration Text="Szene 28" Value="28" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-28" />
+                  <Enumeration Text="Szene 29" Value="29" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-29" />
+                  <Enumeration Text="Szene 30" Value="30" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-30" />
+                  <Enumeration Text="Szene 31" Value="31" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-31" />
+                  <Enumeration Text="Szene 32" Value="32" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-32" />
+                  <Enumeration Text="Szene 33" Value="33" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-33" />
+                  <Enumeration Text="Szene 34" Value="34" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-34" />
+                  <Enumeration Text="Szene 35" Value="35" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-35" />
+                  <Enumeration Text="Szene 36" Value="36" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-36" />
+                  <Enumeration Text="Szene 37" Value="37" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-37" />
+                  <Enumeration Text="Szene 38" Value="38" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-38" />
+                  <Enumeration Text="Szene 39" Value="39" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-39" />
+                  <Enumeration Text="Szene 40" Value="40" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-40" />
+                  <Enumeration Text="Szene 41" Value="41" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-41" />
+                  <Enumeration Text="Szene 42" Value="42" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-42" />
+                  <Enumeration Text="Szene 43" Value="43" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-43" />
+                  <Enumeration Text="Szene 44" Value="44" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-44" />
+                  <Enumeration Text="Szene 45" Value="45" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-45" />
+                  <Enumeration Text="Szene 46" Value="46" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-46" />
+                  <Enumeration Text="Szene 47" Value="47" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-47" />
+                  <Enumeration Text="Szene 48" Value="48" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-48" />
+                  <Enumeration Text="Szene 49" Value="49" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-49" />
+                  <Enumeration Text="Szene 50" Value="50" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-50" />
+                  <Enumeration Text="Szene 51" Value="51" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-51" />
+                  <Enumeration Text="Szene 52" Value="52" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-52" />
+                  <Enumeration Text="Szene 53" Value="53" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-53" />
+                  <Enumeration Text="Szene 54" Value="54" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-54" />
+                  <Enumeration Text="Szene 55" Value="55" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-55" />
+                  <Enumeration Text="Szene 56" Value="56" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-56" />
+                  <Enumeration Text="Szene 57" Value="57" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-57" />
+                  <Enumeration Text="Szene 58" Value="58" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-58" />
+                  <Enumeration Text="Szene 59" Value="59" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-59" />
+                  <Enumeration Text="Szene 60" Value="60" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-60" />
+                  <Enumeration Text="Szene 61" Value="61" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-61" />
+                  <Enumeration Text="Szene 62" Value="62" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-62" />
+                  <Enumeration Text="Szene 63" Value="63" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-63" />
+                  <Enumeration Text="Szene 64" Value="64" Id="M-00FA_A-0001-01-0000_PT-ValueSceneIn_EN-64" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut" Name="ValueSceneOut">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Szene 1" Value="1" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-1" />
+                  <Enumeration Text="Szene 2" Value="2" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-2" />
+                  <Enumeration Text="Szene 3" Value="3" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-3" />
+                  <Enumeration Text="Szene 4" Value="4" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-4" />
+                  <Enumeration Text="Szene 5" Value="5" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-5" />
+                  <Enumeration Text="Szene 6" Value="6" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-6" />
+                  <Enumeration Text="Szene 7" Value="7" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-7" />
+                  <Enumeration Text="Szene 8" Value="8" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-8" />
+                  <Enumeration Text="Szene 9" Value="9" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-9" />
+                  <Enumeration Text="Szene 10" Value="10" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-10" />
+                  <Enumeration Text="Szene 11" Value="11" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-11" />
+                  <Enumeration Text="Szene 12" Value="12" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-12" />
+                  <Enumeration Text="Szene 13" Value="13" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-13" />
+                  <Enumeration Text="Szene 14" Value="14" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-14" />
+                  <Enumeration Text="Szene 15" Value="15" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-15" />
+                  <Enumeration Text="Szene 16" Value="16" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-16" />
+                  <Enumeration Text="Szene 17" Value="17" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-17" />
+                  <Enumeration Text="Szene 18" Value="18" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-18" />
+                  <Enumeration Text="Szene 19" Value="19" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-19" />
+                  <Enumeration Text="Szene 20" Value="20" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-20" />
+                  <Enumeration Text="Szene 21" Value="21" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-21" />
+                  <Enumeration Text="Szene 22" Value="22" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-22" />
+                  <Enumeration Text="Szene 23" Value="23" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-23" />
+                  <Enumeration Text="Szene 24" Value="24" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-24" />
+                  <Enumeration Text="Szene 25" Value="25" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-25" />
+                  <Enumeration Text="Szene 26" Value="26" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-26" />
+                  <Enumeration Text="Szene 27" Value="27" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-27" />
+                  <Enumeration Text="Szene 28" Value="28" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-28" />
+                  <Enumeration Text="Szene 29" Value="29" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-29" />
+                  <Enumeration Text="Szene 30" Value="30" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-30" />
+                  <Enumeration Text="Szene 31" Value="31" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-31" />
+                  <Enumeration Text="Szene 32" Value="32" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-32" />
+                  <Enumeration Text="Szene 33" Value="33" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-33" />
+                  <Enumeration Text="Szene 34" Value="34" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-34" />
+                  <Enumeration Text="Szene 35" Value="35" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-35" />
+                  <Enumeration Text="Szene 36" Value="36" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-36" />
+                  <Enumeration Text="Szene 37" Value="37" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-37" />
+                  <Enumeration Text="Szene 38" Value="38" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-38" />
+                  <Enumeration Text="Szene 39" Value="39" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-39" />
+                  <Enumeration Text="Szene 40" Value="40" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-40" />
+                  <Enumeration Text="Szene 41" Value="41" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-41" />
+                  <Enumeration Text="Szene 42" Value="42" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-42" />
+                  <Enumeration Text="Szene 43" Value="43" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-43" />
+                  <Enumeration Text="Szene 44" Value="44" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-44" />
+                  <Enumeration Text="Szene 45" Value="45" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-45" />
+                  <Enumeration Text="Szene 46" Value="46" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-46" />
+                  <Enumeration Text="Szene 47" Value="47" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-47" />
+                  <Enumeration Text="Szene 48" Value="48" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-48" />
+                  <Enumeration Text="Szene 49" Value="49" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-49" />
+                  <Enumeration Text="Szene 50" Value="50" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-50" />
+                  <Enumeration Text="Szene 51" Value="51" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-51" />
+                  <Enumeration Text="Szene 52" Value="52" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-52" />
+                  <Enumeration Text="Szene 53" Value="53" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-53" />
+                  <Enumeration Text="Szene 54" Value="54" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-54" />
+                  <Enumeration Text="Szene 55" Value="55" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-55" />
+                  <Enumeration Text="Szene 56" Value="56" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-56" />
+                  <Enumeration Text="Szene 57" Value="57" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-57" />
+                  <Enumeration Text="Szene 58" Value="58" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-58" />
+                  <Enumeration Text="Szene 59" Value="59" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-59" />
+                  <Enumeration Text="Szene 60" Value="60" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-60" />
+                  <Enumeration Text="Szene 61" Value="61" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-61" />
+                  <Enumeration Text="Szene 62" Value="62" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-62" />
+                  <Enumeration Text="Szene 63" Value="63" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-63" />
+                  <Enumeration Text="Szene 64" Value="64" Id="M-00FA_A-0001-01-0000_PT-ValueSceneOut_EN-64" />
+                </TypeRestriction>
               </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-ValueText" Name="ValueText">
                 <TypeText SizeInBit="112" />
@@ -454,10 +588,10 @@
             </Parameters>
             <ParameterRefs>
               <!-- General -->
-              <ParameterRef Id="M-00FA_A-0001-01-0000_P-1_R-1" RefId="M-00FA_A-0001-01-0000_P-1" />
-              <ParameterRef Id="M-00FA_A-0001-01-0000_P-2_R-1" RefId="M-00FA_A-0001-01-0000_P-2" />
-              <ParameterRef Id="M-00FA_A-0001-01-0000_P-3_R-1" RefId="M-00FA_A-0001-01-0000_P-3" />
-              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-4_R-1" RefId="M-00FA_A-0001-01-0000_UP-4" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_P-1_R-11" RefId="M-00FA_A-0001-01-0000_P-1" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_P-2_R-21" RefId="M-00FA_A-0001-01-0000_P-2" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_P-3_R-31" RefId="M-00FA_A-0001-01-0000_P-3" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-4_R-41" RefId="M-00FA_A-0001-01-0000_UP-4" />
             </ParameterRefs>
             <ComObjectTable>
               <ComObject Id="M-00FA_A-0001-01-0000_O-1" Name="Heartbeat" Text="In Betieb" Number="1" FunctionText="Zyklisch" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-2" />
@@ -465,9 +599,9 @@
               <ComObject Id="M-00FA_A-0001-01-0000_O-3" Name="Date" Text="Datum" Number="3" FunctionText="Eingang" ObjectSize="3 Bytes" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" DatapointType="DPST-11-1" />
             </ComObjectTable>
             <ComObjectRefs>
-              <ComObjectRef Id="M-00FA_A-0001-01-0000_O-1_R-1" RefId="M-00FA_A-0001-01-0000_O-1" />
-              <ComObjectRef Id="M-00FA_A-0001-01-0000_O-2_R-1" RefId="M-00FA_A-0001-01-0000_O-2" />
-              <ComObjectRef Id="M-00FA_A-0001-01-0000_O-3_R-1" RefId="M-00FA_A-0001-01-0000_O-3" />
+              <ComObjectRef Id="M-00FA_A-0001-01-0000_O-1_R-11" RefId="M-00FA_A-0001-01-0000_O-1" />
+              <ComObjectRef Id="M-00FA_A-0001-01-0000_O-2_R-21" RefId="M-00FA_A-0001-01-0000_O-2" />
+              <ComObjectRef Id="M-00FA_A-0001-01-0000_O-3_R-31" RefId="M-00FA_A-0001-01-0000_O-3" />
             </ComObjectRefs>
             <AddressTable MaxEntries="255" />
             <AssociationTable MaxEntries="255" />
@@ -485,30 +619,30 @@
             <ChannelIndependentBlock>
               <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-1" Name="General" Text="Allgemeine Parameter">
                 <!-- the following parameter is read only and necessary (number of logik channels used in knxdprod) -->
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-1_R-1" />
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-2_R-1" />
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-3_R-1" />
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-4_R-1" />
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-5_R-1" />
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-6_R-1" />
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-7_R-1" />
-                <choose ParamRefId="M-00FA_A-0001-01-0000_UP-7_R-1">
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-1_R-11" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-2_R-21" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-3_R-31" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-4_R-41" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-5_R-51" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-6_R-61" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-7_R-71" />
+                <choose ParamRefId="M-00FA_A-0001-01-0000_UP-7_R-71">
                   <when test="0">
                     <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Ohne EEPROM kann das Logikmodul Werte der Eingänge nicht speichern und nach einem Neustart wieder zur Verfügung stellen. Diese Funktion wird in der Applikation nicht angeboten." UIHint="Information" />
                   </when>
                 </choose>
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-8_R-1" />
-                  <choose ParamRefId="M-00FA_A-0001-01-0000_UP-8_R-1">
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-8_R-81" />
+                  <choose ParamRefId="M-00FA_A-0001-01-0000_UP-8_R-81">
                     <when test="0">
                       <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Ohne Abschaltmöglichkeit der Zusatzhardware (RGB-LED, Buzzer) kann das Logikmodul Werte der Eingänge nicht speichern und nach einem Neustart wieder zur Verfügung stellen. Diese Funktion wird in der Applikation nicht angeboten." UIHint="Information" />
                     </when>
                   </choose>
-                <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-2_R-1" />
-                <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-3_R-1" />
-                <choose ParamRefId="M-00FA_A-0001-01-0000_P-3_R-1">
+                <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-2_R-21" />
+                <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-3_R-31" />
+                <choose ParamRefId="M-00FA_A-0001-01-0000_P-3_R-31">
                   <when test="!=0">
                     <!-- show heartbeat only if it is parametrized -->
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-1_R-1" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-1_R-11" />
                   </when>
                 </choose>
               </ParameterBlock>
