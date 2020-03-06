@@ -440,7 +440,7 @@ Wird der Zwangsführungs-Wert "priorität EIN" empfangen (im KNX durch eine 11 r
 
 Der Szenenkonverter kann bis zu 8 Szenennummern in eine EIN-Signal konvertieren. Alle anderen Szenennummern führen zu einem AUS-Signal. Sollten mehr Szenennummern benötigt werden, kann man mit einem weiteren Eingang oder einem weiteren Logikkanal jeweils 8 weitere Szenen einbeziehen.
 
-In den Eingabefeldern werden die jeweiligen Szenennummern eingegeben, die zu einem EIN-Signal führen sollen. Die (nicht existierende) Szenennummer 0 wird dann eingegeben, wenn das Eingabefeld nicht ausgewertet werden soll.
+In den Eingabefeldern werden die jeweiligen Szenennummern eingegeben, die zu einem EIN-Signal führen sollen. Der Wert "nicht genutzt" wird dann eingegeben, wenn das Eingabefeld nicht ausgewertet werden soll.
 
 ### Zahlenbasierte DPT
 
@@ -533,9 +533,15 @@ Wird ein Differenzeingang genutzt, sollte dieser nicht auch noch als "normal akt
 
 Wird für eine logische Operation "Kanalausgang X" oder "Kanalausgang Y" als "normal aktiv" oder "invertiert aktiv" freigeschaltet, erscheint diese Seite.
 
-Solange der Ausgang eines anderen Kanals nicht zugeordnet worden ist, wird der interne Eingang als undefiniert von der logischen Operation betrachtet.
+Solange der Ausgang eines anderen Kanals nicht zugeordnet worden ist, wird der interne Eingang von der logischen Operation als undefiniert betrachtet.
 
 Ausgänge von anderen Kanälen können dazu genutzt werden, große Logikblöcke zu bauen, ohne für jede Teillogik (jenden Logikkanal) eine eigene GA zur Verbindung von Eingang und Ausgang zu benötigen.
+
+### Beschreibung interner Eingang 1
+
+Erscheint nur, wenn bei der logischen Operation "Kanalausgang X" als "normal aktiv" oder "invertiert aktiv" ausgewählt wurde.
+
+Diese Feld erlaubt eine kurze Beschreibung, wozu dieser Eingang verwendet wird. Es hat keinen Einfluß auf die Funktion des Eingangs und dient rein zu Dokumentationszwecken.
 
 ### Kanalausgang X als Eingang, X =
 
@@ -543,11 +549,23 @@ Erscheint nur, wenn bei der logischen Operation "Kanalausgang X" als "normal akt
 
 Als Eingabe wird hier die Nummer der Logik erwartet, deren Ausgang als interner Eingang genutzt werden soll. Solange der Eingang nicht verbunden ist (Wert im Eingabefeld ist 0) erscheint eine Warnmeldung, dass der Eingang inaktiv (undefiniert) ist.
 
+Es kann auch der Ausgang des aktuellen Kanals als interner Eingang verwendet werden. Da dies aber schwer abzusehende Seiteneffekte haben kann, die im Falle einer Schleife auch den Bus mit vielen Telegrammen fluten können, erscheint in einem solchen Fall eine Warnung:
+![Warnung Rueckkopplung](Rueckkopplung.png)
+
+### Beschreibung interner Eingang 2
+
+Erscheint nur, wenn bei der logischen Operation "Kanalausgang Y" als "normal aktiv" oder "invertiert aktiv" ausgewählt wurde.
+
+Diese Feld erlaubt eine kurze Beschreibung, wozu dieser Eingang verwendet wird. Es hat keinen Einfluß auf die Funktion des Eingangs und dient rein zu Dokumentationszwecken.
+
 ### Kanalausgang Y als Eingang, Y =
 
 Erscheint nur, wenn bei der logischen Operation "Kanalausgang Y" als "normal aktiv" oder "invertiert aktiv" ausgewählt wurde.
 
 Als Eingabe wird hier die Nummer der Logik erwartet, deren Ausgang als interner Eingang genutzt werden soll. Solange der Eingang nicht verbunden ist (Wert im Eingabefeld ist 0) erscheint eine Warnmeldung, dass der Eingang inaktiv (undefiniert) ist.
+
+Es kann auch der Ausgang des aktuellen Kanals als interner Eingang verwendet werden. Da dies aber schwer abzusehende Seiteneffekte haben kann, die im Falle einer Schleife auch den Bus mit vielen Telegrammen fluten können, erscheint in einem solchen Fall eine Warnung:
+![Warnung Rueckkopplung](Rueckkopplung.png)
 
 ## Ausgang
 
