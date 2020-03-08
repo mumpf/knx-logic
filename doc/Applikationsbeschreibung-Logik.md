@@ -19,7 +19,7 @@ Hier werden Einstellungen getroffen, die die generelle Arbeitsweise des Logikmod
 
 Dieses Feld gibt an, für wie viele Logikkanäle dieses Applikationsprogramm erstellt wurde.
 
-Es stehen ETS-Applikationen mit 10, 30, 50 und 80 Logikkanälen zur Verfügung. Die Anzahl der Logikkanäle wesentlich die Programmierzeit mit der ETS. Ein Logikmodul mit 10 Logikkanälen braucht ca. 30 Sekunden für die Programmierung, mit 80 Logikkanälen weit über 3 Minuten. Die Programmierzeit hängt immer von der Anzahl der verfügbaren Logikkanäle ab, nicht von der Anzahl der genutzen.
+Es stehen ETS-Applikationen mit 10, 20, 40 und 80 Logikkanälen zur Verfügung. Die Anzahl der Logikkanäle wesentlich die Programmierzeit mit der ETS. Ein Logikmodul mit 10 Logikkanälen braucht ca. 30 Sekunden für die Programmierung, mit 80 Logikkanälen weit über 3 Minuten. Die Programmierzeit hängt immer von der Anzahl der verfügbaren Logikkanäle ab, nicht von der Anzahl der genutzen.
 
 ### Zeit bis das Gerät nach einem Neustart aktiv wird
 
@@ -91,7 +91,7 @@ Hier werden die Funktionsmodule für die Ausgänge beschrieben.
 
 Im Folgenden werden die generellen Konzepte und die grobe Funktion eines Logikkanals beschrieben. Die Parameter eines jeden Kanals werden später im Detail beschrieben.
 
-Jeder Logikkanal, von denen bis zu 60 zur Verfügung stehen, ist identisch aufgebaut. Es stehen immer 2 externe Eingänge, 2 interne Eingänge und ein Ausgang zur Verfügung.
+Jeder Logikkanal, von denen bis zu 80 zur Verfügung stehen, ist identisch aufgebaut. Es stehen immer 2 externe Eingänge, 2 interne Eingänge und ein Ausgang zur Verfügung.
 
 Zwischen die Eingänge und den Ausgang können verschiedene Funktionsblöcke geschaltet werden, die die Eingangssignale beeinflussen und Verknüpfen können und so ein Ausgangssignal erzeugen.
 
