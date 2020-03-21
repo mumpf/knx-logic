@@ -247,7 +247,7 @@ void Logic::debug() {
     // digitalWrite(LED_YELLOW_PIN, LOW);
 }
 
-void Logic::setup(uint8_t iSavePin) {
+void Logic::setup(bool iSaveSupported) {
     Wire.end();   // seems to end hangs on I2C bus
     Wire.begin(); // we use I2C in logic, so we setut the bus. It is not critical to setup it more than once
     if (knx.configured())
@@ -283,9 +283,11 @@ void Logic::setup(uint8_t iSavePin) {
         if (knx.getBeforeRestartCallback() == 0) knx.addBeforeRestartCallback(onBeforeRestartHandler);
         if (TableObject::getBeforeTableUnloadCallback() == 0) TableObject::addBeforeTableUnloadCallback(onBeforeTableUnloadHandler);
         // set interrupt for poweroff handling
-        if (iSavePin) {
-            attachInterrupt(digitalPinToInterrupt(iSavePin), onSafePinInterruptHandler, FALLING);
+#ifdef SAVE_INTERRUPT_PIN
+        if (iSaveSupported) {
+            attachInterrupt(digitalPinToInterrupt(SAVE_INTERRUPT_PIN), onSafePinInterruptHandler, FALLING);
         }
+#endif
         if (prepareChannels())
             writeAllDptToEEPROM();
     }

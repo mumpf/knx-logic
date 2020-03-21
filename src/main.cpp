@@ -33,7 +33,7 @@ void setup()
 
     // print values of parameters if device is already configured
     if (knx.configured())
-        appSetup(SAVE_INTERRUPT_PIN);
+        appSetup(true);
 
     // start the framework.
     knx.start();

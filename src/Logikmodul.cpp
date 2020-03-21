@@ -60,7 +60,7 @@ void appLoop()
     gLogic.loop();
 }
 
-void appSetup(uint8_t iSavePin)
+void appSetup(bool iSaveSupported)
 {
 
     // try to get rid of occasional I2C lock...
@@ -74,6 +74,6 @@ void appSetup(uint8_t iSavePin)
     {
         gRuntimeData.startupDelay = millis();
         gRuntimeData.heartbeatDelay = 0;
-        gLogic.setup(iSavePin);
+        gLogic.setup(iSaveSupported);
     }
 }

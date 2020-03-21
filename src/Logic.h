@@ -45,7 +45,7 @@ class Logic
     void processInputKo(GroupObject &iKo);
     void processInterrupt(bool iForce = false);
     void debug();
-    void setup(uint8_t iSavePin);
+    void setup(bool iSaveSupported);
     void loop();
 };
 
