@@ -500,7 +500,7 @@
     <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%10" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="3 Bytes" DatapointType="DPST-232-600" />
   </ComObjectRefs>
   <Dynamic>
-    <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-%C%17" Name="f%C%Logic" Text="Logik %C%: {{0:undefiniert}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%001_R-%C%0011">
+    <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-%C%17" Name="f%C%Logic" Text="Logik %C%: {{0:unbenannt}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%001_R-%C%0011">
       <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%133_R-%C%1331" />
 
       <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%001_R-%C%0011" />
