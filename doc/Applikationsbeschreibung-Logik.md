@@ -10,6 +10,18 @@ Sie ist in die Bereiche
 
 gegliedert, wobei die Logikkanäle wiederum in bis zu 80 Kanäle untergierdert sind.
 
+## Änderungshistorie
+
+Im folgenden werden Änderungen an dem Dokument erfasst, damit man nicht immer das Gesamtdokument lesen muss, um Neuerungen zu erfahren.
+
+11.04.2020: Firmware 1.0.3, Applikation 1.4 - 1.7
+
+* neue Optionen bei 'Logik sendet ihren Wert weiter'
+* Ergänzung bei 'Wert vom Bus lesen'
+* vergessene Beschreibung 'Eingang wird alle n Sekunden gelesen'
+* neue Einstellung 'Nur so lange wiederholen, bis erstes Telegramm eingeht'
+* Ergänzung bei 'Ja - Tonwiedergabe (Buzzer)'
+
 ## Allgemeine Parameter
 
 ![Allgemeine Parameter](AllgemeineParameter.png)
@@ -160,11 +172,11 @@ Die hier für jeden Kanal zur Verfügung stehenden Möglichkeiten der Beeinfluss
 * Verzögere ein Signal
 * tbc
 
-## Logik n: undefiniert
+## Logik n: unbenannt
 
 Da alle Kanäle identisch sind, wird hier nur ein Kanal repräsentativ beschrieben. Das gesagte kann für alle Kanäle eingestellt werden.
 
-Ein Logikkanal wird durch einen Tab mit dem Namen "Logik n: \<Name der Logik>" repräsentiert, wobei n die Nummer des Kanals ist und der \<Name der Logik> anfänglich "undefiniert" lautet.
+Ein Logikkanal wird durch einen Tab mit dem Namen "Logik n: \<Name der Logik>" repräsentiert, wobei n die Nummer des Kanals ist und der \<Name der Logik> anfänglich "unbenannt" lautet.
 
 ![Baumansicht der Kanäle](Kanalbaum.png)
 
@@ -315,6 +327,14 @@ Diese Auswahlbox erlaubt eine Detaillierte Einstellung des Verhaltens.
 
 Das Ergebnis der Logikauswertung wird nur dann weitergeschickt, wenn sich das Ergebnis geändert hat. Dazu wird das zuvor ermittelte Ergebnis der Logik (wichtig: nicht das Ergebnis am Ausgang des Logikkanals) herangezogen und mit dem aktuellen Ergebnis verglichen. Weicht es ab, wird das gerade ermittelte Ergebnis weitergeleitet.
 
+#### Nur bei geändertem Ergebnis, aber erstes Telegramm immer senden
+
+Diese Einstellung hat ein spezifisches Verhalten beim Neustart der Logik. Bei einem Neustart ist nicht klar, was "geändertes Ergebnis" heißt. Mit dieser Einstellung sagt man klar, dass das erste Ergebnis der Logik immer als "geändert" behandelt wird und so weitergeschikt wird. Gleichzeitig stellt das Ergebnis den Vergleichswert für die nächste Logikoperation dar, anhand dessen ein "geändertes Ergebnis" festgestellt werden kann.
+
+#### Nur bei geändertem Ergebnis, aber erstes Telegramm nicht senden
+
+Diese Einstellung hat ein spezifisches Verhalten beim Neustart der Logik. Bei einem Neustart ist nicht klar, was "geändertes Ergebnis" heißt. Mit dieser Einstellung sagt man klar, dass das erste Ergebnis der Logik immer als "nicht geändert" behandelt wird und somit nicht weitergeschikt wird. Gleichzeitig stellt das Ergebnis den Vergleichswert für die nächste Logikoperation dar, anhand dessen ein "geändertes Ergebnis" festgestellt werden kann.
+
 #### bei allen Eingangstelegrammen
 
 Sobald ein neues Eingangstelegramm eintrifft, wird das Ergebnis der logischen Verknüpfung ermittelt und an den nächsten Funktionsblock weitergeleitet.
@@ -388,6 +408,8 @@ Der Eingang wird nicht vorbelegt und bleibt undefiniert, bis ein erstes Telegram
 
 Nach der eingestellten Starterzögerung für das gesamte Gerät zuzüglich der Startverzögerung für den Logikkanal wird ein Lesetelegramm auf den KNX-Bus geschickt. Bis die Antwort empfangen wurde ist der Eingang undefiniert.
 
+Sollte in der Zeit, bis der Logikkanal startet, bereits ein Telegramm empfangen werden, dass das Lesetelegramm beantwortet hätte, wird das Lesetelegramm nicht gesendet. Damit wird verhindert, dass mehrere Eingänge, die mit der gleichen GA verbunden sind, viele Lesetelegramme auf die gleiche GA schicken.
+
 #### AUS (0)
 
 Der Eingang wird konstant mit einer 0 vorbelegt und hat somit sofort einen defnierten Zustand.
@@ -395,6 +417,16 @@ Der Eingang wird konstant mit einer 0 vorbelegt und hat somit sofort einen defni
 #### EIN (1)
 
 Der Eingang wird konstant mit einer 1 vorbelegt und hat somit sofort einen defnierten Zustand.
+
+### Eingang wird alle n Sekunden gelesen (0=nicht zyklisch lesen)
+
+Manche Geräte können nicht von sich aus zyklisch senden. Hier kann man einstellen, dass ein Eingang aktiv den Wert zyklisch liest. In den Feld kann man angeben, wie viele Sekunden zwischen 2 Leseintervallen vergehen sollen.
+
+### Nur so lange wiederholen, bis erstes Telegramm eingeht
+
+Standardmäßig wird zyklisches lesen ununterbrochen durchgeführt. Mit einem 'Ja' kann man hier festlegen, dass nur so lange zyklisch gelesen wird, bis ein erstes Antworttelegramm eingeht.
+
+Dies kann vor allem nach einem Neustart der Logik von Nutzen sein, da Lesetelegramme womöglich nicht sofort beantwortet werden können. Hier kann man diese Lesetelegramme so lange wiederholen lassen, bis sie beantwortet werden können, anschließend kann ohne aktives Nachfragen auf normale Schreibtelegramme reagiert werden.
 
 ## Eingangskonverter
 
@@ -829,7 +861,9 @@ Bei einem EIN-Signal wird kein Wert gesendet, sondern die ETS-Funktion "Gerät z
 
 Wird nur angeboten, wenn ein Buzzer vorhanden ist.
 
-Bei einem EIN-Signal wird kein Wert gesendet, sondern der interne Buzzer zur Tonwiedergabe angesprochen. In einem weiteren Feld wird angegeben, ob die Tonwiedergabe gestartet oder gestoppt wird.
+Bei einem EIN-Signal wird kein Wert gesendet, sondern der interne Buzzer zur Tonwiedergabe angesprochen. In einem weiteren Feld wird angegeben, in welcher Lautstärke die Tonwiedergabe gestartet oder ob sie gestoppt wird.
+
+![Tonwiedergabe](Tonwiedergabe.png)
 
 #### Ja - RGB-LED schalten
 
