@@ -90,6 +90,7 @@
 #define BIT_INT_INPUT_2 8
 #define BIT_INPUT_MASK 15
 #define BIT_OUTPUT 16
+#define BIT_FIRST_PROCESSING 32
 #define BIT_LAST_OUTPUT 128
 
 // enum fo IOIndex
@@ -113,6 +114,7 @@
 #define PIP_OUTPUT_FILTER_OFF 2048 // Filter repeated signals
 #define PIP_ON_REPEAT 4096         // repeat on signal
 #define PIP_OFF_REPEAT 8192        // repeat off signal
+#define PIP_RUNNING 32768          // is a currently running channel
 
 #ifdef __linux__
 extern KnxFacade<LinuxPlatform, Bau57B0> knx;
@@ -162,6 +164,7 @@ class LogicChannel
     void processStartup();
     void processRepeatInput1();
     void processRepeatInput2();
+    void stopRepeatInput(uint8_t iIOIndex);
     void startConvert(uint8_t iIOIndex);
     void processConvertInput(uint8_t iIOIndex);
     void startLogic(uint8_t iIOIndex, bool iValue);
@@ -191,7 +194,7 @@ class LogicChannel
     /* Runtime information per channel */
     uint8_t pTriggerIO;        // Bitfield: Which input (0-3) triggered processing, output (4) is triggering further processing
     uint8_t pValidActiveIO;    // Bitfield: validity flags for input (0-3) values and active inputs (4-7)
-    uint8_t pCurrentIO;        // Bitfield: current input (0-3) and current output (4) and last (previous) output (7) values
+    uint8_t pCurrentIO;        // Bitfield: current input (0-3), current output (4), first processing (5) and previous output (7) values
     uint16_t pCurrentPipeline; // Bitfield: indicator for current pipeline step
     uint32_t pRepeatInput1Delay;
     uint32_t pRepeatInput2Delay;

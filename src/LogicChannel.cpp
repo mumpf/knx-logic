@@ -208,10 +208,23 @@ void LogicChannel::setRGBColor(uint16_t iParamIndex)
 void LogicChannel::setBuzzer(uint16_t iParamIndex)
 {
 #ifdef BUZZER_PIN
-    if (getByteParam(iParamIndex))
-        tone(BUZZER_PIN, BUZZER_FREQ);
-    else
+    switch (getByteParam(iParamIndex))
+    {
+    case 0:
         noTone(BUZZER_PIN);
+        break;
+    case 1:
+        tone(BUZZER_PIN, BUZZER_FREQ_LOUD);
+        break;
+    case 2:
+        tone(BUZZER_PIN, BUZZER_FREQ_SILENT);
+        break;
+    case 3:
+        tone(BUZZER_PIN, BUZZER_FREQ_NORMAL);
+        break;
+    default:
+        break;
+    }
 #endif
 }
 
@@ -473,10 +486,11 @@ void LogicChannel::startStartup()
 
 void LogicChannel::processStartup()
 {
-    if (millis() - pOnDelay > getIntParam(LOG_fChannelDelay) * 1000)
+    if (delayCheck(pOnDelay, getIntParam(LOG_fChannelDelay) * 1000))
     {
         // we waited enough, remove pipeline marker
         pCurrentPipeline &= ~PIP_STARTUP;
+        pCurrentPipeline |= PIP_RUNNING;
         pOnDelay = 0;
     }
 }
@@ -526,8 +540,43 @@ void LogicChannel::processRepeatInput2() {
     }
 }
 
-void LogicChannel::startConvert(uint8_t iIOIndex) {
-        pCurrentPipeline |= (iIOIndex == 1) ? PIP_CONVERT_INPUT1 : PIP_CONVERT_INPUT2;
+void LogicChannel::stopRepeatInput(uint8_t iIOIndex) {
+    // repeated read on an input KO is stopped in following cases:
+    // 1. There is one single read on startup and this read was executed (is solved in processRepeatInputX())
+    // 2. There is one single read on startup, the read was not yet executed (channel is not running) but 
+    //    nevertheless the telegram was received (i.E. through an other read of a running channel)
+    // 3. There is a continious read with condition "until telegram received"
+    uint16_t lRepeatInputBit;
+    uint32_t lRepeatTime;
+    bool lJustOneTelegram;
+
+    switch (iIOIndex)
+    {
+        case 1:
+            lRepeatInputBit = PIP_REPEAT_INPUT1;
+            lRepeatTime = getIntParam(LOG_fE1Repeat);
+            lJustOneTelegram = getByteParam(LOG_fE1DefaultRepeat) & 8;
+            break;
+        case 2:
+            lRepeatInputBit = PIP_REPEAT_INPUT2;
+            lRepeatTime = getIntParam(LOG_fE2Repeat);
+            lJustOneTelegram = getByteParam(LOG_fE2DefaultRepeat) & 8;
+            break;
+        default:
+            return;
+            break;
+    }
+    // if (!lJustOneTelegram || (pCurrentPipeline & PIP_RUNNING))
+    //     return;
+    if (pCurrentPipeline & lRepeatInputBit) {
+        if (lRepeatTime == 0 || lJustOneTelegram)
+            pCurrentPipeline &= ~lRepeatInputBit;
+    }
+}
+
+void LogicChannel::startConvert(uint8_t iIOIndex){
+    pCurrentPipeline |= (iIOIndex == 1) ? PIP_CONVERT_INPUT1 : PIP_CONVERT_INPUT2;
+    stopRepeatInput(iIOIndex);
 }
 
 void LogicChannel::processConvertInput(uint8_t iIOIndex) {
@@ -641,39 +690,33 @@ void LogicChannel::processLogic() {
     pCurrentPipeline &= ~PIP_LOGIC_EXECUTE;
     // we have to delete all trigger if output pipeline is not started
     bool lOutputSent = false;
-    if (getByteParam(LOG_fCalculate) == 0 || lValidInputs == lActiveInputs)
+    if ((getByteParam(LOG_fCalculate) & 3) == 0 || lValidInputs == lActiveInputs)
     {
         // we process only if all inputs are valid or the user requested invalid evaluation
         uint8_t lLogic = getByteParam(LOG_fLogic);
         uint8_t lOnes = 0;
         switch (lLogic)
         {
-
             case VAL_Logic_And:
                 // AND handles invalid inputs as 1
                 //Check if all bits are set -> logical AND of all input bits
                 lNewOutput = (lCurrentInputs == lActiveInputs);
                 lValidOutput = true;
                 break;
-
             case VAL_Logic_Or:
                 // Check if any bit is set -> logical OR of all input bits
                 lNewOutput = (lCurrentInputs > 0); 
                 lValidOutput = true;
                 break;
-
             case VAL_Logic_ExOr:
                 // EXOR handles invalid inputs as non existig
                 // count valid bits in input mask
                 for (size_t lBit = 1; lBit < BIT_INPUT_MASK; lBit <<= 1)
-                {
                     lOnes += (lCurrentInputs & lBit) > 0;
-                }
                 // Check if we have an odd number of bits -> logical EXOR of all input bits
                 lNewOutput = (lOnes % 2 == 1); 
                 lValidOutput = true;
                 break;
-
             case VAL_Logic_Gate:
                 // GATE works a little bit more complex
                 // E1 OR I1 are the data inputs
@@ -688,7 +731,6 @@ void LogicChannel::processLogic() {
                     lNewOutput = lValue; 
                 lValidOutput = lGate;
                 break;
-
             default:
                 break;
         }
@@ -698,16 +740,26 @@ void LogicChannel::processLogic() {
         if (lValidOutput)
         {
             uint8_t lTrigger = getByteParam(LOG_fTrigger);
-            if ((lTrigger == 0 && lNewOutput != lCurrentOuput) ||
-                (lTrigger & pTriggerIO) > 0)
+            uint8_t lHandleFirstProcessing = (lTrigger & 0x30);
+            lTrigger &= BIT_INPUT_MASK;
+            if (lHandleFirstProcessing == 0)
+                pCurrentIO |= BIT_FIRST_PROCESSING;
+            if ((lTrigger == 0 && lNewOutput != lCurrentOuput) || /* Just Changes  */
+                (lTrigger & pTriggerIO) > 0 || /* each telegram on specific input */
+                (lHandleFirstProcessing > 0 && (pCurrentIO & BIT_FIRST_PROCESSING) == 0)) /* first processing */
             {
-                // set the output value (first delete BIT_OUTPUT and the set the value
+                // set the output value (first delete BIT_OUTPUT and then set the value
                 // of lNewOutput)
                 pCurrentIO = (pCurrentIO & ~BIT_OUTPUT) | lNewOutput << 4;
                 // set the output trigger bit
                 pTriggerIO |= BIT_OUTPUT;
-                // now we start stairlight processing
-                startStairlight(lNewOutput);
+                // in case that first processing should be skipped, this happens here
+                if (pCurrentIO & BIT_FIRST_PROCESSING || lHandleFirstProcessing == BIT_FIRST_PROCESSING)
+                {
+                    // now we start stairlight processing
+                    startStairlight(lNewOutput);
+                }
+                pCurrentIO |= BIT_FIRST_PROCESSING; //first processing was done
                 lOutputSent = true;
             }
         }
@@ -1164,6 +1216,12 @@ bool LogicChannel::prepareChannel() {
         {
             // input is active, we set according flag
             pValidActiveIO |= BIT_EXT_INPUT_1 << 4;
+            // prepare input for cyclic read
+            pRepeatInput1Delay = getIntParam(LOG_fE1Repeat);
+            if (pRepeatInput1Delay) {
+                pRepeatInput1Delay = millis();
+                pCurrentPipeline |= PIP_REPEAT_INPUT1;
+            }
             // now set input default value
             uint8_t lParInput = getByteParam(LOG_fE1Default);
             // shoud default be fetched from EEPROM
@@ -1202,6 +1260,13 @@ bool LogicChannel::prepareChannel() {
         {
             // input is active, we set according flag
             pValidActiveIO |= BIT_EXT_INPUT_2 << 4;
+            // prepare input for cyclic read
+            pRepeatInput2Delay = getIntParam(LOG_fE2Repeat);
+            if (pRepeatInput2Delay)
+            {
+                pRepeatInput2Delay = millis();
+                pCurrentPipeline |= PIP_REPEAT_INPUT2;
+            }
             uint8_t lParInput = getByteParam(LOG_fE2Default);
             // shoud default be fetched from EEPROM
             if (lParInput & VAL_InputDefault_EEPROM) {
@@ -1263,40 +1328,45 @@ void LogicChannel::loop()
 {
     if (!knx.configured())
         return;
-    // we revert the processing order for pipeline events
-    // this reduces the chance to have a long running
-    // sequence of funtions because of according pipeline settings
-    // On/Off repeat pipeline
-    if (pCurrentPipeline & (PIP_ON_REPEAT | PIP_OFF_REPEAT))
-        processOnOffRepeat();
-    // Output Filter pipeline
-    if (pCurrentPipeline & (PIP_OUTPUT_FILTER_ON | PIP_OUTPUT_FILTER_OFF))
-        processOutputFilter();
-    // Off delay pipeline
-    if (pCurrentPipeline & PIP_OFF_DELAY)
-        processOffDelay();
-    // On delay pipeline
-    if (pCurrentPipeline & PIP_ON_DELAY)
-        processOnDelay();
-    // stairlight pipeline
-    if (pCurrentPipeline & PIP_STAIRLIGHT)
-        processStairlight();
-    // blink pipeline (has to be "after" stairlight)
-    if (pCurrentPipeline & PIP_BLINK)
-        processBlink();
-    // Logic execution pipeline
-    if (pCurrentPipeline & PIP_LOGIC_EXECUTE)
-        processLogic();
-    // convert input pipeline
-    if (pCurrentPipeline & PIP_CONVERT_INPUT1)
-        processConvertInput(IO_Input1);
-    if (pCurrentPipeline & PIP_CONVERT_INPUT2)
-        processConvertInput(IO_Input2);
-    // repeat input pipeline
-    if (pCurrentPipeline & PIP_REPEAT_INPUT1)
-        processRepeatInput1();
-    if (pCurrentPipeline & PIP_REPEAT_INPUT2)
-        processRepeatInput2();
+
     if (pCurrentPipeline & PIP_STARTUP)
         processStartup();
+
+    // do no further processing until channel passed its startup time
+    if (pCurrentPipeline & PIP_RUNNING) {
+        // we revert the processing order for pipeline events
+        // this reduces the chance to have a long running
+        // sequence of funtions because of according pipeline settings
+        // On/Off repeat pipeline
+        if (pCurrentPipeline & (PIP_ON_REPEAT | PIP_OFF_REPEAT))
+            processOnOffRepeat();
+        // Output Filter pipeline
+        if (pCurrentPipeline & (PIP_OUTPUT_FILTER_ON | PIP_OUTPUT_FILTER_OFF))
+            processOutputFilter();
+        // Off delay pipeline
+        if (pCurrentPipeline & PIP_OFF_DELAY)
+            processOffDelay();
+        // On delay pipeline
+        if (pCurrentPipeline & PIP_ON_DELAY)
+            processOnDelay();
+        // stairlight pipeline
+        if (pCurrentPipeline & PIP_STAIRLIGHT)
+            processStairlight();
+        // blink pipeline (has to be "after" stairlight)
+        if (pCurrentPipeline & PIP_BLINK)
+            processBlink();
+        // Logic execution pipeline
+        if (pCurrentPipeline & PIP_LOGIC_EXECUTE)
+            processLogic();
+        // convert input pipeline
+        if (pCurrentPipeline & PIP_CONVERT_INPUT1)
+            processConvertInput(IO_Input1);
+        if (pCurrentPipeline & PIP_CONVERT_INPUT2)
+            processConvertInput(IO_Input2);
+        // repeat input pipeline
+        if (pCurrentPipeline & PIP_REPEAT_INPUT1)
+            processRepeatInput1();
+        if (pCurrentPipeline & PIP_REPEAT_INPUT2)
+            processRepeatInput2();
+    }
 }

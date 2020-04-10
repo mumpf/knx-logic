@@ -8,9 +8,11 @@
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%003" Name="f%C%Logic" ParameterType="M-00FA_A-0001-01-0000_PT-Logic" Text="Logische Operation" Value="0">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="4" BitOffset="0" />
     </Parameter>
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%004" Name="f%C%Calculate" ParameterType="M-00FA_A-0001-01-0000_PT-Calculate" Text="Logik auswerten" Value="0">
+    <Union SizeInBit="8">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="5" BitOffset="0" />
-    </Parameter>
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%004" Name="f%C%Calculate" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-Calculate" Text="Logik auswerten" Value="0" />
+      <!-- <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%164" Name="f%C%SkipFirstProcessing" Offset="0" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Erste Logikausführung auslassen (Ergebnis dient nur der Initialisierung)" Value="0" /> -->
+    </Union>
     <Union SizeInBit="8">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="6" BitOffset="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%005" Name="f%C%Trigger" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-Trigger" Text="Logik sendet ihren Wert weiter" Value="15" />
@@ -37,6 +39,7 @@
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="11" BitOffset="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%026" Name="f%C%E1Default" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-InputDefault" Text="Falls Vorbelegung aus dem Speicher nicht möglich oder nicht gewünscht, dann vorbelegen mit" Value="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%130" Name="f%C%E1DefaultEEPROM" Offset="0" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Eingangswert speichern und beim nächsten Neustart als Vorbelegung nutzen?" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%164" Name="f%C%E1DefaultRepeat" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Nur so lange wiederholen, bis erstes Telegramm eingeht" Value="0" />
     </Union>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%027" Name="f%C%E1Repeat" ParameterType="M-00FA_A-0001-01-0000_PT-DelaySeconds" Text="Eingang 1 wird alle n Sekunden gelesen (0 = nicht zyklisch lesen)" SuffixText="Sekunden" Value="0">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="12" BitOffset="0" />
@@ -53,6 +56,7 @@
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="18" BitOffset="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%046" Name="f%C%E2Default" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-InputDefault" Text="Falls Vorbelegung aus dem Speicher nicht möglich oder nicht gewünscht, dann vorbelegen mit" Value="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%131" Name="f%C%E2DefaultEEPROM" Offset="0" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Eingangswert speichern und beim nächsten Neustart als Vorbelegung nutzen" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%165" Name="f%C%E2DefaultRepeat" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Nur so lange wiederholen, bis erstes Telegramm eingeht" Value="0" />
     </Union>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%047" Name="f%C%E2Repeat" ParameterType="M-00FA_A-0001-01-0000_PT-DelaySeconds" Text="Eingang 2 wird alle n Sekunden gelesen (0 = nicht zyklisch lesen)" Value="0">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="19" BitOffset="0" />
@@ -263,7 +267,7 @@
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%001_R-%C%0011" RefId="M-00FA_A-0001-01-0000_P-%C%001" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%002_R-%C%0021" RefId="M-00FA_A-0001-01-0000_P-%C%002" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%003_R-%C%0031" RefId="M-00FA_A-0001-01-0000_P-%C%003" />
-    <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%004_R-%C%0041" RefId="M-00FA_A-0001-01-0000_P-%C%004" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%004_R-%C%0041" RefId="M-00FA_A-0001-01-0000_UP-%C%004" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%005_R-%C%0051" RefId="M-00FA_A-0001-01-0000_UP-%C%005" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%006_R-%C%0061" RefId="M-00FA_A-0001-01-0000_P-%C%006" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%007_R-%C%0071" RefId="M-00FA_A-0001-01-0000_P-%C%007" />
@@ -460,6 +464,8 @@
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%161_R-%C%1611" RefId="M-00FA_A-0001-01-0000_P-%C%161" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%162_R-%C%1621" RefId="M-00FA_A-0001-01-0000_P-%C%162" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%163_R-%C%1631" RefId="M-00FA_A-0001-01-0000_P-%C%163" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%164_R-%C%1641" RefId="M-00FA_A-0001-01-0000_UP-%C%164" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%165_R-%C%1651" RefId="M-00FA_A-0001-01-0000_UP-%C%165" />
   </ParameterRefs>
   <ComObjectTable>
     <ComObject Id="M-00FA_A-0001-01-0000_O-%K0%" Name="KOf%C%E1" Number="%K0%" Text="Eingang 1" FunctionText="Logik %C%, Eingang 1" ObjectSize="1 Bit" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" />
@@ -513,7 +519,7 @@
       <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%050_R-%C%0501" />
       <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="" UIHint="HorizontalRuler" />
       <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Hier kann man angeben, wie sich die Logikauswertung verhalten soll, wenn noch nicht alle Eingänge gültige Werte haben. Ungültige Eingeänge werden so betrachtet, als ob sie nicht da wären." />
-      <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%004_R-%C%0041" />
+      <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%004_R-%C%0041" />
       <choose ParamRefId="M-00FA_A-0001-01-0000_P-%C%003_R-%C%0031">
         <when test="4">
           <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%006_R-%C%0061" />
@@ -546,6 +552,7 @@
           </choose>
         </when>
       </choose>
+      <!-- <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%164_R-%C%1641" /> -->
       <!-- Delta ext. 1 Input-->
       <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%008_R-%C%0081">
         <when test="0">
@@ -602,6 +609,7 @@
                 </choose>
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%026_R-%C%0261" />
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%027_R-%C%0271" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%164_R-%C%1641" />
               </ParameterBlock>
             </when>
           </choose>
@@ -915,6 +923,7 @@
                 </choose>
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%026_R-%C%0261" />
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%027_R-%C%0271" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%164_R-%C%1641" />
               </when>
             </choose>
           </ParameterBlock>
@@ -976,6 +985,7 @@
                 </choose>
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%046_R-%C%0461" />
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%047_R-%C%0471" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%165_R-%C%1651" />
               </ParameterBlock>
             </when>
           </choose>
@@ -1289,6 +1299,7 @@
                 </choose>
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%046_R-%C%0461" />
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%047_R-%C%0471" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%165_R-%C%1651" />
               </when>
             </choose>
           </ParameterBlock>

@@ -248,8 +248,8 @@ void Logic::debug() {
 }
 
 void Logic::setup(bool iSaveSupported) {
-    Wire.end();   // seems to end hangs on I2C bus
-    Wire.begin(); // we use I2C in logic, so we setut the bus. It is not critical to setup it more than once
+    // Wire.end();   // seems to end hangs on I2C bus
+    // Wire.begin(); // we use I2C in logic, so we setup the bus. It is not critical to setup it more than once
     if (knx.configured())
     {
         // setup channels, not possible in constructor, because knx is not configured there

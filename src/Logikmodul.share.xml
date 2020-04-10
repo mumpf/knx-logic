@@ -47,7 +47,7 @@
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-Calculate" Name="Calculate">
-                <TypeRestriction Base="Value" SizeInBit="8">
+                <TypeRestriction Base="Value" SizeInBit="2">
                   <Enumeration Text="auch wenn noch nicht alle Werte gültig sind" Value="0" Id="M-00FA_A-0001-01-0000_PT-Calculate_EN-0" />
                   <Enumeration Text="erst wenn alle Werte gültig sind" Value="1" Id="M-00FA_A-0001-01-0000_PT-Calculate_EN-1" />
                 </TypeRestriction>
@@ -55,6 +55,8 @@
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-Trigger" Name="Trigger">
                 <TypeRestriction Base="Value" SizeInBit="8">
                   <Enumeration Text="nur bei geändertem Ergebnis" Value="0" Id="M-00FA_A-0001-01-0000_PT-Trigger_EN-0" />
+                  <Enumeration Text="nur bei geändertem Ergebnis, aber erstes Telegramm immer senden" Value="32" Id="M-00FA_A-0001-01-0000_PT-Trigger_EN-2" />
+                  <Enumeration Text="nur bei geändertem Ergebnis, aber erstes Telegramm nicht senden" Value="16" Id="M-00FA_A-0001-01-0000_PT-Trigger_EN-3" />
                   <Enumeration Text="bei jedem Eingangstelegramm" Value="15" Id="M-00FA_A-0001-01-0000_PT-Trigger_EN-15" />
                   <Enumeration Text="bei folgenden Eingangstelegrammen" Value="1" Id="M-00FA_A-0001-01-0000_PT-Trigger_EN-1" />
                 </TypeRestriction>
@@ -115,7 +117,9 @@
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-ValueBuzzer" Name="ValueBuzzer">
                 <TypeRestriction Base="Value" SizeInBit="8">
                   <Enumeration Text="Ton ausschalten" Value="0" Id="M-00FA_A-0001-01-0000_PT-ValueBuzzer_EN-0" />
-                  <Enumeration Text="Ton einschalten" Value="1" Id="M-00FA_A-0001-01-0000_PT-ValueBuzzer_EN-1" />
+                  <Enumeration Text="Ton leise einschalten" Value="2" Id="M-00FA_A-0001-01-0000_PT-ValueBuzzer_EN-2" />
+                  <Enumeration Text="Ton normal einschalten" Value="3" Id="M-00FA_A-0001-01-0000_PT-ValueBuzzer_EN-3" />
+                  <Enumeration Text="Ton laut einschalten" Value="1" Id="M-00FA_A-0001-01-0000_PT-ValueBuzzer_EN-1" />
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-ValueDpt1" Name="ValueDpt1">
