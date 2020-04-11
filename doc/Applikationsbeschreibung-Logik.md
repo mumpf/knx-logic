@@ -19,7 +19,7 @@ Im folgenden werden Änderungen an dem Dokument erfasst, damit man nicht immer d
 * neue Optionen bei 'Logik sendet ihren Wert weiter'
 * Ergänzung bei 'Wert vom Bus lesen'
 * vergessene Beschreibung 'Eingang wird alle n Sekunden gelesen'
-* neue Einstellung 'Nur so lange wiederholen, bis erstes Telegramm eingeht'
+* neue Einstellung 'Nur so lange zyklisch lesen, bis erstes Telegramm eingeht'
 * Ergänzung bei 'Ja - Tonwiedergabe (Buzzer)'
 
 ## Allgemeine Parameter
@@ -186,7 +186,7 @@ Folgende Parameter kann man für einen Logikkanal angeben:
 
 ### Beschreibung des Kanals
 
-Der hier vergebene Name hat keinen funktionalen Einfluß, erlaubt es aber, dem Kanal einen eigenen Namen zu geben, und ihn so leichter wiederzufinden. Der Name wird im Kanalbaum dargestellt und statt dem Text "undefiniert" genommen.
+Der hier vergebene Name hat keinen funktionalen Einfluß, erlaubt es aber, dem Kanal einen eigenen Namen zu geben, und ihn so leichter wiederzufinden. Der Name wird im Kanalbaum dargestellt und statt dem Text "unbenannt" genommen.
 
 ### Zeit bis der Kanal nach einem Neustart aktiv wird
 
@@ -422,11 +422,13 @@ Der Eingang wird konstant mit einer 1 vorbelegt und hat somit sofort einen defni
 
 Manche Geräte können nicht von sich aus zyklisch senden. Hier kann man einstellen, dass ein Eingang aktiv den Wert zyklisch liest. In den Feld kann man angeben, wie viele Sekunden zwischen 2 Leseintervallen vergehen sollen.
 
-### Nur so lange wiederholen, bis erstes Telegramm eingeht
+### Nur so lange zyklisch lesen, bis erstes Telegramm eingeht
 
-Standardmäßig wird zyklisches lesen ununterbrochen durchgeführt. Mit einem 'Ja' kann man hier festlegen, dass nur so lange zyklisch gelesen wird, bis ein erstes Antworttelegramm eingeht.
+Standardmäßig wird zyklisches lesen ununterbrochen durchgeführt. Mit einem 'Ja' kann man hier festlegen, dass nur so lange zyklisch gelesen wird, bis ein erstes Telegramm eingeht, dass den Wert bestimmt. Das kann sowohl ein Antworttelegramm (GroupValueResponse) wie auch ein Schreibtelegramm (GroupValueWrite) sein.
 
-Dies kann vor allem nach einem Neustart der Logik von Nutzen sein, da Lesetelegramme womöglich nicht sofort beantwortet werden können. Hier kann man diese Lesetelegramme so lange wiederholen lassen, bis sie beantwortet werden können, anschließend kann ohne aktives Nachfragen auf normale Schreibtelegramme reagiert werden.
+Diese Funktion vor allem nach einem Neustart der Logik von Nutzen sein, da Lesetelegramme womöglich nicht sofort beantwortet werden können, falls das antwortende Gerät sich selbst noch in der Startphase befindet. Hier kann man diese Lesetelegramme so lange wiederholen lassen, bis sie beantwortet werden können, anschließend kann ohne aktives Nachfragen auf normale Schreibtelegramme reagiert werden.
+
+Dies erlaubt es, eine KNX-Anlage nach einem Neustart relativ schnell in einen Zustand zu versetzen, bei dem alle Initialisierungen erfolgt sind und alle Funktionen erwartungskonform ausgeführt werden.
 
 ## Eingangskonverter
 

@@ -38,7 +38,7 @@
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="11" BitOffset="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%026" Name="f%C%E1Default" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-InputDefault" Text="Falls Vorbelegung aus dem Speicher nicht möglich oder nicht gewünscht, dann vorbelegen mit" Value="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%130" Name="f%C%E1DefaultEEPROM" Offset="0" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Eingangswert speichern und beim nächsten Neustart als Vorbelegung nutzen?" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%164" Name="f%C%E1DefaultRepeat" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Nur so lange wiederholen, bis erstes Telegramm eingeht" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%164" Name="f%C%E1DefaultRepeat" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Nur so lange zyklisch lesen, bis erstes Telegramm eingeht" Value="0" />
     </Union>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%027" Name="f%C%E1Repeat" ParameterType="M-00FA_A-0001-01-0000_PT-DelaySeconds" Text="Eingang 1 wird alle n Sekunden gelesen (0 = nicht zyklisch lesen)" SuffixText="Sekunden" Value="0">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="12" BitOffset="0" />
@@ -55,7 +55,7 @@
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="18" BitOffset="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%046" Name="f%C%E2Default" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-InputDefault" Text="Falls Vorbelegung aus dem Speicher nicht möglich oder nicht gewünscht, dann vorbelegen mit" Value="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%131" Name="f%C%E2DefaultEEPROM" Offset="0" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Eingangswert speichern und beim nächsten Neustart als Vorbelegung nutzen" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%165" Name="f%C%E2DefaultRepeat" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Nur so lange wiederholen, bis erstes Telegramm eingeht" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%165" Name="f%C%E2DefaultRepeat" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Nur so lange zyklisch lesen, bis erstes Telegramm eingeht" Value="0" />
     </Union>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%047" Name="f%C%E2Repeat" ParameterType="M-00FA_A-0001-01-0000_PT-DelaySeconds" Text="Eingang 2 wird alle n Sekunden gelesen (0 = nicht zyklisch lesen)" Value="0">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="19" BitOffset="0" />
@@ -472,36 +472,36 @@
     <ComObject Id="M-00FA_A-0001-01-0000_O-%K2%" Name="KOf%C%O" Number="%K2%" Text="Ausgang" FunctionText="Logik %C%, Ausgang" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" />
   </ComObjectTable>
   <ComObjectRefs>
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%1" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="1 Bit" DatapointType="DPST-1-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%2" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="2 Bit" DatapointType="DPST-2-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%3" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="1 Byte" DatapointType="DPST-5-10" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%4" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="1 Byte" DatapointType="DPST-5-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%5" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="1 Byte" DatapointType="DPST-6-10" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%6" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="2 Bytes" DatapointType="DPST-7-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%7" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="2 Bytes" DatapointType="DPST-8-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%8" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="2 Bytes" DatapointType="DPST-9-2" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%9" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="14 Bytes" DatapointType="DPST-16-1" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%01" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="1 Bit" DatapointType="DPST-1-1" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%02" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="2 Bit" DatapointType="DPST-2-1" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%03" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="1 Byte" DatapointType="DPST-5-10" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%04" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="1 Byte" DatapointType="DPST-5-1" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%05" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="1 Byte" DatapointType="DPST-6-10" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%06" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="2 Bytes" DatapointType="DPST-7-1" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%07" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="2 Bytes" DatapointType="DPST-8-1" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%08" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="2 Bytes" DatapointType="DPST-9-2" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%09" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="14 Bytes" DatapointType="DPST-16-1" />
     <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%10" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="1 Byte" DatapointType="DPST-17-1" />
     <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%11" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="3 Bytes" DatapointType="DPST-232-600" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%1" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="1 Bit" DatapointType="DPST-1-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%2" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="2 Bit" DatapointType="DPST-2-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%3" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="1 Byte" DatapointType="DPST-5-10" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%4" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="1 Byte" DatapointType="DPST-5-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%5" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="1 Byte" DatapointType="DPST-6-10" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%6" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="2 Bytes" DatapointType="DPST-7-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%7" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="2 Bytes" DatapointType="DPST-8-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%8" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="2 Bytes" DatapointType="DPST-9-2" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%9" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="1 Byte" DatapointType="DPST-17-1" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%01" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="1 Bit" DatapointType="DPST-1-1" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%02" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="2 Bit" DatapointType="DPST-2-1" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%03" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="1 Byte" DatapointType="DPST-5-10" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%04" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="1 Byte" DatapointType="DPST-5-1" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%05" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="1 Byte" DatapointType="DPST-6-10" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%06" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="2 Bytes" DatapointType="DPST-7-1" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%07" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="2 Bytes" DatapointType="DPST-8-1" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%08" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="2 Bytes" DatapointType="DPST-9-2" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%09" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="1 Byte" DatapointType="DPST-17-1" />
     <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%10" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="3 Bytes" DatapointType="DPST-232-600" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%1" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="1 Bit" DatapointType="DPST-1-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%2" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="2 Bit" DatapointType="DPST-2-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%3" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="1 Byte" DatapointType="DPST-5-10" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%4" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="1 Byte" DatapointType="DPST-5-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%5" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="1 Byte" DatapointType="DPST-6-10" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%6" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="2 Bytes" DatapointType="DPST-7-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%7" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="2 Bytes" DatapointType="DPST-8-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%8" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="2 Bytes" DatapointType="DPST-9-2" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%9" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="1 Byte" DatapointType="DPST-17-1" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%01" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="1 Bit" DatapointType="DPST-1-1" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%02" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="2 Bit" DatapointType="DPST-2-1" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%03" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="1 Byte" DatapointType="DPST-5-10" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%04" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="1 Byte" DatapointType="DPST-5-1" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%05" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="1 Byte" DatapointType="DPST-6-10" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%06" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="2 Bytes" DatapointType="DPST-7-1" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%07" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="2 Bytes" DatapointType="DPST-8-1" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%08" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="2 Bytes" DatapointType="DPST-9-2" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%09" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="1 Byte" DatapointType="DPST-17-1" />
     <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%10" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="3 Bytes" DatapointType="DPST-232-600" />
   </ComObjectRefs>
   <Dynamic>
@@ -563,33 +563,33 @@
                 <choose ParamRefId="M-00FA_A-0001-01-0000_P-%C%009_R-%C%0091">
                   <when test="0">
                     <!-- DPT1 -->
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%1" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%01" />
                   </when>
                   <when test="1">
                     <!-- DPT2 -->
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%2" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%02" />
                   </when>
                   <when test="2">
                     <!-- DPT5 -->
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%3" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%03" />
                   </when>
                   <when test="3">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%4" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%04" />
                   </when>
                   <when test="4">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%5" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%05" />
                   </when>
                   <when test="5">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%6" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%06" />
                   </when>
                   <when test="6">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%7" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%07" />
                   </when>
                   <when test="7">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%8" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%08" />
                   </when>
                   <when test="9">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%9" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%09" />
                   </when>
                   <when test="10">
                     <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%10" />
@@ -669,11 +669,11 @@
                   </when>
                   <when test="0">
                     <!-- DPT1 -->
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%1" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%01" />
                   </when>
                   <when test="1">
                     <!-- DPT2 -->
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%2" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%02" />
                     <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%010_R-%C%0101" />
                     <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%098_R-%C%0981" />
                     <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%099_R-%C%0991" />
@@ -681,7 +681,7 @@
                   </when>
                   <when test="2">
                     <!-- DPT5 -->
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%3" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%03" />
                     <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%093_R-%C%0931">
                       <when test="0">
                         <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%011_R-%C%0111" />
@@ -703,7 +703,7 @@
                   </when>
                   <when test="3">
                     <!-- DPT5.001 -->
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%4" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%04" />
                     <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%093_R-%C%0931">
                       <when test="0">
                         <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%013_R-%C%0131" />
@@ -724,7 +724,7 @@
                     </choose>
                   </when>
                   <when test="4">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%5" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%05" />
                     <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%093_R-%C%0931">
                       <when test="0">
                         <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%015_R-%C%0151" />
@@ -745,7 +745,7 @@
                     </choose>
                   </when>
                   <when test="5">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%6" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%06" />
                     <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%093_R-%C%0931">
                       <when test="0">
                         <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%017_R-%C%0171" />
@@ -766,7 +766,7 @@
                     </choose>
                   </when>
                   <when test="6">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%7" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%07" />
                     <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%093_R-%C%0931">
                       <when test="0">
                         <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%019_R-%C%0191" />
@@ -787,7 +787,7 @@
                     </choose>
                   </when>
                   <when test="7">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%8" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%08" />
                     <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%093_R-%C%0931">
                       <when test="0">
                         <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%021_R-%C%0211" />
@@ -808,7 +808,7 @@
                     </choose>
                   </when>
                   <when test="9">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%9" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%09" />
                     <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%023_R-%C%0231" />
                     <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%101_R-%C%1011" />
                     <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%102_R-%C%1021" />
@@ -939,33 +939,33 @@
                 <choose ParamRefId="M-00FA_A-0001-01-0000_P-%C%029_R-%C%0291">
                   <when test="0">
                     <!-- DPT1 -->
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%1" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%01" />
                   </when>
                   <when test="1">
                     <!-- DPT2 -->
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%2" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%02" />
                   </when>
                   <when test="2">
                     <!-- DPT5 -->
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%3" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%03" />
                   </when>
                   <when test="3">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%4" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%04" />
                   </when>
                   <when test="4">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%5" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%05" />
                   </when>
                   <when test="5">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%6" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%06" />
                   </when>
                   <when test="6">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%7" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%07" />
                   </when>
                   <when test="7">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%8" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%08" />
                   </when>
                   <when test="9">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%9" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%09" />
                   </when>
                   <when test="10">
                     <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%10" />
@@ -1045,11 +1045,11 @@
                   </when>
                   <when test="0">
                     <!-- DPT1 -->
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%1" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%01" />
                   </when>
                   <when test="1">
                     <!-- DPT2 -->
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%2" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%02" />
                     <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%030_R-%C%0301" />
                     <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%095_R-%C%0951" />
                     <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%096_R-%C%0961" />
@@ -1057,7 +1057,7 @@
                   </when>
                   <when test="2">
                     <!-- DPT5 -->
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%3" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%03" />
                     <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%094_R-%C%0941">
                       <when test="0">
                         <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%031_R-%C%0311" />
@@ -1079,7 +1079,7 @@
                   </when>
                   <when test="3">
                     <!-- DPT5.001 -->
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%4" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%04" />
                     <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%094_R-%C%0941">
                       <when test="0">
                         <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%033_R-%C%0331" />
@@ -1100,7 +1100,7 @@
                     </choose>
                   </when>
                   <when test="4">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%5" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%05" />
                     <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%094_R-%C%0941">
                       <when test="0">
                         <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%035_R-%C%0351" />
@@ -1121,7 +1121,7 @@
                     </choose>
                   </when>
                   <when test="5">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%6" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%06" />
                     <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%094_R-%C%0941">
                       <when test="0">
                         <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%037_R-%C%0371" />
@@ -1142,7 +1142,7 @@
                     </choose>
                   </when>
                   <when test="6">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%7" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%07" />
                     <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%094_R-%C%0941">
                       <when test="0">
                         <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%039_R-%C%0391" />
@@ -1163,7 +1163,7 @@
                     </choose>
                   </when>
                   <when test="7">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%8" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%08" />
                     <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%094_R-%C%0941">
                       <when test="0">
                         <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%041_R-%C%0411" />
@@ -1184,7 +1184,7 @@
                     </choose>
                   </when>
                   <when test="9">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%9" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%09" />
                     <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%043_R-%C%0431" />
                     <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%108_R-%C%1081" />
                     <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%109_R-%C%1091" />
@@ -1673,31 +1673,31 @@
               <when test="1 2 3 4">
                 <choose ParamRefId="M-00FA_A-0001-01-0000_P-%C%064_R-%C%0641">
                   <when test="0">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%1" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%01" />
                   </when>
                   <when test="1">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%2" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%02" />
                   </when>
                   <when test="2">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%3" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%03" />
                   </when>
                   <when test="3">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%4" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%04" />
                   </when>
                   <when test="4">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%5" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%05" />
                   </when>
                   <when test="5">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%6" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%06" />
                   </when>
                   <when test="6">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%7" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%07" />
                   </when>
                   <when test="7">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%8" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%08" />
                   </when>
                   <when test="8">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%9" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%09" />
                   </when>
                   <when test="9">
                     <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%10" />
@@ -1713,31 +1713,31 @@
               <when test="1 2 3 4">
                 <choose ParamRefId="M-00FA_A-0001-01-0000_P-%C%064_R-%C%0641">
                   <when test="0">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%1" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%01" />
                   </when>
                   <when test="1">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%2" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%02" />
                   </when>
                   <when test="2">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%3" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%03" />
                   </when>
                   <when test="3">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%4" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%04" />
                   </when>
                   <when test="4">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%5" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%05" />
                   </when>
                   <when test="5">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%6" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%06" />
                   </when>
                   <when test="6">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%7" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%07" />
                   </when>
                   <when test="7">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%8" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%08" />
                   </when>
                   <when test="8">
-                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%9" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%09" />
                   </when>
                   <when test="9">
                     <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%10" />
