@@ -14,13 +14,14 @@ gegliedert, wobei die Logikkanäle wiederum in bis zu 80 Kanäle untergierdert s
 
 Im folgenden werden Änderungen an dem Dokument erfasst, damit man nicht immer das Gesamtdokument lesen muss, um Neuerungen zu erfahren.
 
-11.04.2020: Firmware 1.0.3, Applikation 1.4 - 1.7
+11.04.2020: Firmware 1.1.0, Applikation 1.4 - 1.7
 
 * neue Optionen bei 'Logik sendet ihren Wert weiter'
 * Ergänzung bei 'Wert vom Bus lesen'
 * vergessene Beschreibung 'Eingang wird alle n Sekunden gelesen'
 * neue Einstellung 'Nur so lange zyklisch lesen, bis erstes Telegramm eingeht'
 * Ergänzung bei 'Ja - Tonwiedergabe (Buzzer)'
+* **inkompatible Änderung**: Beim Update der Applikation werden für die KO der Logikkanäle die bereits zugeordneten GA nicht übernommen. Alle Parameter bleiben erhalten.
 
 ## Allgemeine Parameter
 
