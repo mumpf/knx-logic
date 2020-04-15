@@ -196,6 +196,7 @@ class LogicChannel
     uint8_t pValidActiveIO;    // Bitfield: validity flags for input (0-3) values and active inputs (4-7)
     uint8_t pCurrentIO;        // Bitfield: current input (0-3), current output (4), first processing (5) and previous output (7) values
     uint16_t pCurrentPipeline; // Bitfield: indicator for current pipeline step
+    uint8_t pCurrentIODebug;   // Bitfield: current input (0-3), current output (4), first processing (5) and previous output (7) values
     uint32_t pRepeatInput1Delay;
     uint32_t pRepeatInput2Delay;
     uint32_t pStairlightDelay;
@@ -218,8 +219,9 @@ class LogicChannel
     bool checkDpt(uint8_t iIOIndex, uint8_t iDpt);
     void processInput(uint8_t iIOIndex);
     void processInternalInputs(uint8_t iChannelId, bool iValue);
+    void processDiagnoseCommand(char* cBuffer);
     void writeSingleDptToEEPROM(uint8_t iIOIndex);
-    
+
     bool prepareChannel();
     void loop();
 };

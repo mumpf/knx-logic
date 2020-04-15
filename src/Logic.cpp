@@ -209,6 +209,17 @@ void Logic::processInterrupt(bool iForce)
     }
 }
 
+void Logic::processDiagnoseCommand(char* cBuffer) {
+    //diagnose is interactive and reacts on commands
+    if (cBuffer[0] == 'l')
+    {
+        // Command l<nn>: Logic inputs and output of last execution
+        // find channel and dispatch
+        uint8_t lIndex = (cBuffer[1] - '0') * 10 + cBuffer[2] - '0' - 1;
+        mChannel[lIndex]->processDiagnoseCommand(cBuffer);
+    }
+}
+
 void Logic::onSavePinInterruptHandler() {
     mSaveInterruptTimestamp = millis();
 }
