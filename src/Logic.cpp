@@ -3,6 +3,8 @@
 #include "Hardware.h"
 
 uint8_t Logic::sMagicWord[] = {0xAE, 0x49, 0xD2, 0x9F};
+tm Logic::sDateTime = {0};
+uint8_t Logic::sTimeOk = 0;
 
 // callbacks have to be static members
 void Logic::onInputKoHandler(GroupObject &iKo) {
@@ -36,14 +38,18 @@ void Logic::onSafePinInterruptHandler()
     LogicChannel::sLogic->mSaveInterruptTimestamp = millis();
 }
 
+tm* Logic::getDateTime() {
+    return &sDateTime;
+}
+
 Logic::Logic()
 {
     LogicChannel::sLogic = this;
-    mDateTime.tm_year = 120;
-    mDateTime.tm_mon = 0;
-    mDateTime.tm_mday = 1;
-    mDateTime.tm_wday = 3;
-    mktime(&mDateTime);
+    sDateTime.tm_year = 120;
+    sDateTime.tm_mon = 0;
+    sDateTime.tm_mday = 1;
+    sDateTime.tm_wday = 3;
+    mktime(&sDateTime);
     mTimeDelay = millis();
 }
 
@@ -172,18 +178,20 @@ void Logic::processInputKo(GroupObject &iKo)
 {
     if (iKo.asap() == LOG_KoTime) {
         struct tm lTmp = iKo.value(getDPT(VAL_DPT_10));
-        mDateTime.tm_sec = lTmp.tm_sec;
-        mDateTime.tm_min = lTmp.tm_min;
-        mDateTime.tm_hour = lTmp.tm_hour;
-        mktime(&mDateTime);
+        sDateTime.tm_sec = lTmp.tm_sec;
+        sDateTime.tm_min = lTmp.tm_min;
+        sDateTime.tm_hour = lTmp.tm_hour;
+        mktime(&sDateTime);
         mTimeDelay = millis();
+        sTimeOk |= 1;
     } else if (iKo.asap() == LOG_KoDate) {
         struct tm lTmp = iKo.value(getDPT(VAL_DPT_11));
-        mDateTime.tm_mday = lTmp.tm_mday;
-        mDateTime.tm_mon = lTmp.tm_mon - 1;
-        mDateTime.tm_year = lTmp.tm_year - 1900;
-        mktime(&mDateTime);
+        sDateTime.tm_mday = lTmp.tm_mday;
+        sDateTime.tm_mon = lTmp.tm_mon - 1;
+        sDateTime.tm_year = lTmp.tm_year - 1900;
+        mktime(&sDateTime);
         mTimeDelay = millis();
+        sTimeOk |= 2;
     } else if (iKo.asap() >= LOG_KoOffset && iKo.asap() < LOG_KoOffset + mNumChannels * LOG_KoBlockSize) {
         uint16_t lKoNumber = iKo.asap() - LOG_KoOffset;
         uint8_t lChannelId = lKoNumber / LOG_KoBlockSize;
@@ -206,6 +214,17 @@ void Logic::processInterrupt(bool iForce)
         writeAllInputsToEEPROM();
         printDebug("Logic: SAVE-Interrupt processing duration %lu ms\n", millis() - mSaveInterruptTimestamp);
         mSaveInterruptTimestamp = 0;
+    }
+}
+
+void Logic::processDiagnoseCommand(char* cBuffer) {
+    //diagnose is interactive and reacts on commands
+    if (cBuffer[0] == 'l')
+    {
+        // Command l<nn>: Logic inputs and output of last execution
+        // find channel and dispatch
+        uint8_t lIndex = (cBuffer[1] - '0') * 10 + cBuffer[2] - '0' - 1;
+        mChannel[lIndex]->processDiagnoseCommand(cBuffer);
     }
 }
 
@@ -238,7 +257,7 @@ void Logic::beforeTableUnloadHandler(TableObject & iTableObject, LoadState & iNe
 void Logic::debug() {
     printDebug("Logik-LOG_ChannelsFirmware (in Firmware): %d\n", LOG_ChannelsFirmware);
     printDebug("Logik-gNumChannels (in knxprod):  %d\n", mNumChannels);
-    printDebug("Aktuelle Zeit: %s", asctime(&mDateTime));
+    printDebug("Aktuelle Zeit: %s", asctime(&sDateTime));
     // Test i2c failure
     // we start an i2c read i.e. for EEPROM
     // prepareReadEEPROM(4711, 20);
@@ -294,10 +313,16 @@ void Logic::setup(bool iSaveSupported) {
 }
 
 void Logic::processTime() {
+    static int8_t lMinute = -1;
     if (delayCheck(mTimeDelay, 1000)) {
-        mDateTime.tm_sec += 1;
-        mktime(&mDateTime);
         mTimeDelay = millis();
+        sDateTime.tm_sec += 1;
+        mktime(&sDateTime);
+        if (lMinute != sDateTime.tm_min && sTimeOk == 3) {
+            mIndicateTimerInput = true;
+            // just call once a minute
+            lMinute = sDateTime.tm_min;
+        }
     }
 }
 
@@ -313,9 +338,12 @@ void Logic::loop()
     for (uint8_t lIndex = 0; lIndex < mNumChannels; lIndex++)
     {
         LogicChannel *lChannel = mChannel[lIndex];
+        if (mIndicateTimerInput)
+            lChannel->startTimerInput();
         lChannel->loop();
         knx.loop();
     }
+    mIndicateTimerInput = false;
 }
 
 EepromManager *Logic::getEEPROM() {
