@@ -304,7 +304,7 @@ class LogicChannel
     void processDiagnoseCommand(char* cBuffer);
     void startTimerInput();
     void writeSingleDptToEEPROM(uint8_t iIOIndex);
-    
+
     bool prepareChannel();
     void loop();
 };
