@@ -1080,28 +1080,38 @@ void LogicChannel::processInternalInputs(uint8_t iChannelId, bool iValue)
 }
 
 void LogicChannel::processDiagnoseCommand(char *cBuffer) {
-    if (cBuffer[0] == 'l') {
-        char v[5];
-        // here we find the last IO state
-        uint8_t lValidInput = pValidActiveIO & BIT_INPUT_MASK;
-        uint8_t lCurrentIO = pCurrentIODebug & 0x1F;
-        for (uint8_t i = 0; i < 4; i++)
-        {
-            if (lValidInput & 1) {
-                //input is valid, we present its value
-                v[i] = (lCurrentIO & 1) ? '1' : '0';
-            } else {
-                // invalid input
-                v[i] = 'x';
+    switch (cBuffer[0])
+    {
+        case 'l': {
+            char v[5];
+            // here we find the last IO state
+            uint8_t lValidInput = pValidActiveIO & BIT_INPUT_MASK;
+            uint8_t lCurrentIO = pCurrentIODebug & 0x1F;
+            // input values
+            for (uint8_t i = 0; i < 4; i++)
+            {
+                if (lValidInput & 1) {
+                    //input is valid, we present its value
+                    v[i] = (lCurrentIO & 1) ? '1' : '0';
+                } else {
+                    // invalid input
+                    v[i] = 'x';
+                }
+                lValidInput >>= 1;
+                lCurrentIO >>= 1;
             }
-            lValidInput >>= 1;
-            lCurrentIO >>= 1;
+            // output value
+            if ((pCurrentPipeline & PIP_RUNNING) && (pCurrentIO & BIT_FIRST_PROCESSING)) {
+                v[4] = (lCurrentIO & 1) ? '1' : '0';
+            } else {
+                v[4] = 'x';
+            }
+            // list state of logic of last execution
+            sprintf(cBuffer, "A%c B%c C%c D%c Q%c", v[0], v[1], v[2], v[3], v[4]);
+            break;
         }
-        if (pCurrentPipeline & PIP_RUNNING) {
-            v[4] = (lCurrentIO & 1) ? '1' : '0';
-        }
-        // list state of logic of last execution
-        sprintf(cBuffer, "A%c B%c C%c D%c Q%c", v[0], v[1], v[2], v[3], v[4]);
+        default:
+            break;
     }
 }
 
