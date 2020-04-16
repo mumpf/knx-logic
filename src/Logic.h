@@ -37,7 +37,7 @@ class Logic
     static void onBeforeRestartHandler();
     static void onBeforeTableUnloadHandler(TableObject & iTableObject, LoadState & iNewState);
     static void onSafePinInterruptHandler();
-
+    tm *getDateTime();
     // instance
     EepromManager *getEEPROM();
     void writeAllInputsToEEPROMFacade();

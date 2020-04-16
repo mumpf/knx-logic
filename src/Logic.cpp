@@ -36,6 +36,10 @@ void Logic::onSafePinInterruptHandler()
     LogicChannel::sLogic->mSaveInterruptTimestamp = millis();
 }
 
+tm* Logic::getDateTime() {
+    return &mDateTime;
+}
+
 Logic::Logic()
 {
     LogicChannel::sLogic = this;
@@ -211,12 +215,19 @@ void Logic::processInterrupt(bool iForce)
 
 void Logic::processDiagnoseCommand(char* cBuffer) {
     //diagnose is interactive and reacts on commands
-    if (cBuffer[0] == 'l')
-    {
-        // Command l<nn>: Logic inputs and output of last execution
-        // find channel and dispatch
-        uint8_t lIndex = (cBuffer[1] - '0') * 10 + cBuffer[2] - '0' - 1;
-        mChannel[lIndex]->processDiagnoseCommand(cBuffer);
+    switch (cBuffer[0]) {
+        case 'l': {
+            // Command l<nn>: Logic inputs and output of last execution
+            // find channel and dispatch
+            uint8_t lIndex = (cBuffer[1] - '0') * 10 + cBuffer[2] - '0' - 1;
+            mChannel[lIndex]->processDiagnoseCommand(cBuffer);
+            break;
+        }
+        case 't': {
+            // return internal time (might differ from external
+            sprintf(cBuffer, "%02d:%02d:%02d %02d.%02d", mDateTime.tm_hour, mDateTime.tm_min, mDateTime.tm_sec, mDateTime.tm_mday, mDateTime.tm_mon + 1);
+            break;
+        }
     }
 }
 
