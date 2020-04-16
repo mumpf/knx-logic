@@ -1494,7 +1494,7 @@ bool LogicChannel::checkTimerToday(uint8_t iTimerIndex) {
             } else {
                 // Tag
                 lDayWeekday >>= 1;
-                lResult = (lDayWeekday == 0) || (lDayWeekday == sLogic->getDateTime()->tm_mday + 1);
+                lResult = (lDayWeekday == 0) || (lDayWeekday == sLogic->getDateTime()->tm_mday);
             }
         }
     }
