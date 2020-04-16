@@ -46,7 +46,7 @@ class Logic
     void processAllInternalInputs(LogicChannel *iChannel, bool iValue);
     void processInputKo(GroupObject &iKo);
     void processInterrupt(bool iForce = false);
-    void processDiagnoseCommand(char *iBuffer);
+    bool processDiagnoseCommand(char *iBuffer);
     void debug();
     void setup(bool iSaveSupported);
     void loop();

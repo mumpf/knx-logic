@@ -301,11 +301,10 @@ class LogicChannel
     bool checkDpt(uint8_t iIOIndex, uint8_t iDpt);
     void processInput(uint8_t iIOIndex);
     void processInternalInputs(uint8_t iChannelId, bool iValue);
-    void processDiagnoseCommand(char* cBuffer);
+    bool processDiagnoseCommand(char* cBuffer);
     void startTimerInput();
     void writeSingleDptToEEPROM(uint8_t iIOIndex);
 
     bool prepareChannel();
     void loop();
 };
-

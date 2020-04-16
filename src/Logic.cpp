@@ -1,6 +1,7 @@
 #include "Logic.h"
 #include "Helper.h"
 #include "Hardware.h"
+#include "sun.h"
 
 uint8_t Logic::sMagicWord[] = {0xAE, 0x49, 0xD2, 0x9F};
 tm Logic::sDateTime = {0};
@@ -217,22 +218,52 @@ void Logic::processInterrupt(bool iForce)
     }
 }
 
-void Logic::processDiagnoseCommand(char* cBuffer) {
+bool Logic::processDiagnoseCommand(char* cBuffer) {
+    bool lResult = false;
     //diagnose is interactive and reacts on commands
     switch (cBuffer[0]) {
         case 'l': {
             // Command l<nn>: Logic inputs and output of last execution
             // find channel and dispatch
             uint8_t lIndex = (cBuffer[1] - '0') * 10 + cBuffer[2] - '0' - 1;
-            mChannel[lIndex]->processDiagnoseCommand(cBuffer);
+            lResult = mChannel[lIndex]->processDiagnoseCommand(cBuffer);
             break;
         }
         case 't': {
             // return internal time (might differ from external
             sprintf(cBuffer, "%02d:%02d:%02d %02d.%02d", sDateTime.tm_hour, sDateTime.tm_min, sDateTime.tm_sec, sDateTime.tm_mday, sDateTime.tm_mon + 1);
+            lResult = true;
             break;
         }
+        case 'r': {
+            double rise, set;
+            // sunrise/sunset calculation
+            uint8_t rs = sun_rise_set(sDateTime.tm_year + 1900, sDateTime.tm_mon + 1, sDateTime.tm_mday,
+                                      8.639751, 49.310209,
+                                      &rise, &set);
+            double lTmp;
+            uint8_t lRiseMinute = round(modf(rise, &lTmp) * 60.0);
+            uint8_t lRiseHour = lTmp + 2;
+            uint8_t lSetMinute = round(modf(set, &lTmp) * 60.0);
+            uint8_t lSetHour = lTmp + 2;
+            sprintf(cBuffer, "R%02d:%02d S%02d:%02d", lRiseHour, lRiseMinute, lSetHour, lSetMinute);
+            lResult = true;
+            break;
+        }
+        case 'o': {
+            // calculate easter date
+            uint8_t lDay = 0;
+            uint8_t lMonth = 0;
+            getEaster(sDateTime.tm_year + 1900, &lDay, &lMonth);
+            sprintf(cBuffer, "O%02d.%02d", lDay, lMonth);
+            lResult = true;
+            break;
+        }
+        default:
+            lResult = false;
+            break;
     }
+    return lResult;
 }
 
 void Logic::onSavePinInterruptHandler() {

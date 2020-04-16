@@ -1079,7 +1079,8 @@ void LogicChannel::processInternalInputs(uint8_t iChannelId, bool iValue)
     }
 }
 
-void LogicChannel::processDiagnoseCommand(char *cBuffer) {
+bool LogicChannel::processDiagnoseCommand(char *cBuffer) {
+    bool lResult = false;
     switch (cBuffer[0])
     {
         case 'l': {
@@ -1108,11 +1109,13 @@ void LogicChannel::processDiagnoseCommand(char *cBuffer) {
             }
             // list state of logic of last execution
             sprintf(cBuffer, "A%c B%c C%c D%c Q%c", v[0], v[1], v[2], v[3], v[4]);
+            lResult = true;
             break;
         }
         default:
             break;
     }
+    return lResult;
 }
 
 // process the output itself
