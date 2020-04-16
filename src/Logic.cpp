@@ -229,7 +229,7 @@ void Logic::processDiagnoseCommand(char* cBuffer) {
         }
         case 't': {
             // return internal time (might differ from external
-            sprintf(cBuffer, "%02d:%02d:%02d %02d.%02d", mDateTime.tm_hour, mDateTime.tm_min, mDateTime.tm_sec, mDateTime.tm_mday, mDateTime.tm_mon + 1);
+            sprintf(cBuffer, "%02d:%02d:%02d %02d.%02d", sDateTime.tm_hour, sDateTime.tm_min, sDateTime.tm_sec, sDateTime.tm_mday, sDateTime.tm_mon + 1);
             break;
         }
     }
