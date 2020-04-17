@@ -14,7 +14,7 @@ gegliedert, wobei die Logikkanäle wiederum in bis zu 80 Kanäle untergierdert s
 
 Im folgenden werden Änderungen an dem Dokument erfasst, damit man nicht immer das Gesamtdokument lesen muss, um Neuerungen zu erfahren.
 
-11.04.2020: Firmware 1.1.0, Applikation 1.4 - 1.7
+17.04.2020: Firmware 1.1.0, Applikation 1.4 - 1.7
 
 * neue Optionen bei 'Logik sendet ihren Wert weiter'
 * Ergänzung bei 'Wert vom Bus lesen'
