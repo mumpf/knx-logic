@@ -3,17 +3,47 @@
 
 class Logic
 {
-  private:
-    struct sTime {
+  public:
+    Logic();
+    ~Logic();
+
+    struct sTime
+    {
         uint8_t minute;
         uint8_t hour;
     };
 
-    struct sDay {
+    struct sDay
+    {
         uint8_t day;
         uint8_t month;
     };
 
+    enum eSunInfo
+    {
+        Sunrise,
+        Sunset
+    };
+
+    // static
+    static void onInputKoHandler(GroupObject &iKo);
+    static void onBeforeRestartHandler();
+    static void onBeforeTableUnloadHandler(TableObject & iTableObject, LoadState & iNewState);
+    static void onSafePinInterruptHandler();
+    static tm *getDateTime();
+    // instance
+    EepromManager *getEEPROM();
+    void writeAllInputsToEEPROMFacade();
+    void processAllInternalInputs(LogicChannel *iChannel, bool iValue);
+    void processInputKo(GroupObject &iKo);
+    void processInterrupt(bool iForce = false);
+    bool processDiagnoseCommand(char *iBuffer);
+    sTime *getSunInfo(uint8_t iSunInfo);
+    void debug();
+    void setup(bool iSaveSupported);
+    void loop();
+
+  private:
     static uint8_t sMagicWord[];
     static struct tm sDateTime;
     static uint8_t sTimeOk;
@@ -26,8 +56,8 @@ class Logic
     bool mIndicateTimerInput = false;
     EepromManager *mEEPROM;
     uint32_t mTimeDelay = 0;
-    int8_t mMinuteTick = -1; // timer evaluation is called each time the minute changes
-    int8_t mDayTick = -1; // sunrise/sunset calculation happens each time the day changes
+    int8_t mMinuteTick = -1;  // timer evaluation is called each time the minute changes
+    int8_t mDayTick = -1;     // sunrise/sunset calculation happens each time the day changes
     int16_t mEasterTick = -1; // easter calculation happens each time year changes
     sTime mSunrise;
     sTime mSunset;
@@ -42,30 +72,9 @@ class Logic
 
     void onSavePinInterruptHandler();
     void beforeRestartHandler();
-    void beforeTableUnloadHandler(TableObject & iTableObject, LoadState & iNewState);
+    void beforeTableUnloadHandler(TableObject &iTableObject, LoadState &iNewState);
 
     void processTime();
     void calculateSunriseSunset();
     void calculateEaster();
-
-  public:
-    Logic();
-    ~Logic();
-    
-    // static
-    static void onInputKoHandler(GroupObject &iKo);
-    static void onBeforeRestartHandler();
-    static void onBeforeTableUnloadHandler(TableObject & iTableObject, LoadState & iNewState);
-    static void onSafePinInterruptHandler();
-    static tm *getDateTime();
-    // instance
-    EepromManager *getEEPROM();
-    void writeAllInputsToEEPROMFacade();
-    void processAllInternalInputs(LogicChannel *iChannel, bool iValue);
-    void processInputKo(GroupObject &iKo);
-    void processInterrupt(bool iForce = false);
-    bool processDiagnoseCommand(char *iBuffer);
-    void debug();
-    void setup(bool iSaveSupported);
-    void loop();
 };

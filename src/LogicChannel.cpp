@@ -1460,8 +1460,28 @@ void LogicChannel::processTimerInput() {
                         lResult = checkPointInTime(lTimerIndex, lBitfield, lIsYearTimer);
                         break;
                     case VAL_Tim_Sunrise_Plus:
+                        lResult = checkSunAbs(SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, false);
+                        break;
+                    case VAL_Tim_Sunrise_Minus:
+                        lResult = checkSunAbs(SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, true);
+                        break;
+                    case VAL_Tim_Sunset_Plus:
+                        lResult = checkSunAbs(SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, false);
+                        break;
+                    case VAL_Tim_Sunset_Minus:
+                        lResult = checkSunAbs(SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, true);
+                        break;
+                    case VAL_Tim_Sunrise_Earliest:
+                        lResult = checkSunLimit(SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, false);
                         break;
                     case VAL_Tim_Sunrise_Latest:
+                        lResult = checkSunLimit(SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, true);
+                        break;
+                    case VAL_Tim_Sunset_Earliest:
+                        lResult = checkSunLimit(SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, false);
+                        break;
+                    case VAL_Tim_Sunset_Latest:
+                        lResult = checkSunLimit(SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, true);
                         break;
                     default:
                         break;
@@ -1526,23 +1546,57 @@ bool LogicChannel::checkWeekday(uint8_t iWeekday) {
     return iWeekday == sLogic->getDateTime()->tm_wday;
 }
 
-bool LogicChannel::checkPointInTime(uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday) {
+bool LogicChannel::checkTimerTime(uint8_t iTimerIndex, uint16_t iBitfield, uint8_t iHour, uint8_t iMinute, bool iSkipWeekday)
+{
     bool lResult = false;
-    
+
     // check correct timer index
-    if (iTimerIndex < 8) {
-        uint8_t lWeekday = iBitfield & 0x7;
-        if (iSkipWeekday || checkWeekday(lWeekday)) {
+    if (iTimerIndex < 8)
+    {
+        if (iSkipWeekday || checkWeekday(iBitfield & 0x7))
+        {
             // check hour
-            uint8_t lHour = (iBitfield & 0x3E00) >> 9;
-            if (lHour == 31 || lHour == sLogic->getDateTime()->tm_hour) {
+            if (iHour == 31 || iHour == sLogic->getDateTime()->tm_hour)
+            {
                 // check minute
-                uint8_t lMinute = (iBitfield & 0x01F8) >> 3;
-                if (lMinute == 63 || lMinute == sLogic->getDateTime()->tm_min) {
+                if (iMinute == 63 || iMinute == sLogic->getDateTime()->tm_min)
+                {
                     lResult = true;
                 }
             }
         }
     }
+    return lResult;
+}
+
+bool LogicChannel::checkPointInTime(uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday)
+{
+    uint8_t lHour = (iBitfield & 0x3E00) >> 9;
+    uint8_t lMinute = (iBitfield & 0x01F8) >> 3;
+    bool lResult = checkTimerTime(iTimerIndex, iBitfield, lHour, lMinute, iSkipWeekday);
+    return lResult;
+}
+
+bool LogicChannel::checkSunAbs(uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iMinus)
+{
+    int8_t lFactor = (iMinus) ? -1 : 1;
+    uint8_t lHour = (sLogic->getSunInfo(iSunInfo)->hour + ((iBitfield & 0x3E00) >> 9) * lFactor) % 24;
+    uint8_t lMinute = (sLogic->getSunInfo(iSunInfo)->minute + ((iBitfield & 0x01F8) >> 3) * lFactor) % 60;
+    bool lResult = checkTimerTime(iTimerIndex, iBitfield, lHour, lMinute, iSkipWeekday);
+    return lResult;
+}
+
+bool LogicChannel::checkSunLimit(uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iLatest)
+{
+    uint8_t lHour = ((iBitfield & 0x3E00) >> 9);
+    uint8_t lMinute = ((iBitfield & 0x01F8) >> 3);
+    int8_t lCompare = iLatest ? -1 : 1; // else case means "Earliest"
+    if ((sLogic->getSunInfo(iSunInfo)->hour - lHour) * lCompare > 0) {
+        lHour = sLogic->getSunInfo(iSunInfo)->hour;
+        lMinute = sLogic->getSunInfo(iSunInfo)->minute;
+    } else if (sLogic->getSunInfo(iSunInfo)->hour == lHour && (sLogic->getSunInfo(iSunInfo)->minute - lMinute) * lCompare > 0) {
+        lMinute = sLogic->getSunInfo(iSunInfo)->minute;
+    }
+    bool lResult = checkTimerTime(iTimerIndex, iBitfield, lHour, lMinute, iSkipWeekday);
     return lResult;
 }

@@ -118,6 +118,9 @@
 #define PIP_TIMER_INPUT 16384      // process timer as input signal
 #define PIP_RUNNING 32768          // is a currently running channel
 
+#define SUN_SUNRISE 0x00
+#define SUN_SUNSET 0x01
+
 #define TIMD_WEEKDAY_MASK 0x0007
 #define TIMD_WEEKDAY_SHIFT 0
 #define TIMD_MINUTE_MASK 0x01F8
@@ -250,7 +253,10 @@ class LogicChannel
     void processTimerInput();
     bool checkTimerToday(uint8_t iTimerIndex);
     bool checkWeekday(uint8_t iWeekday);
+    bool checkTimerTime(uint8_t iTimerIndex, uint16_t iBitfield, uint8_t iHour, uint8_t iMinute, bool iSkipWeekday);
     bool checkPointInTime(uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday);
+    bool checkSunAbs(uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iMinus);
+    bool checkSunLimit(uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iLatest);
 
   protected:
 

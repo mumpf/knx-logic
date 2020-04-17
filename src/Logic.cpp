@@ -43,6 +43,15 @@ tm* Logic::getDateTime() {
     return &sDateTime;
 }
 
+Logic::sTime *Logic::getSunInfo(uint8_t iSunInfo) {
+    if (iSunInfo == SUN_SUNRISE)
+        return &mSunrise;
+    else if (iSunInfo == SUN_SUNSET) 
+        return &mSunset;
+    else
+        return NULL;
+}
+
 Logic::Logic()
 {
     LogicChannel::sLogic = this;
