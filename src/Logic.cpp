@@ -187,9 +187,21 @@ void Logic::processInputKo(GroupObject &iKo)
         sTimeOk |= 1;
     } else if (iKo.asap() == LOG_KoDate) {
         struct tm lTmp = iKo.value(getDPT(VAL_DPT_11));
+        lTmp.tm_year -= 1900;
+        lTmp.tm_mon -= 1;
+        // we have to check, if some date dependant calculations have to be done
+        // in case of date changes
+        if (lTmp.tm_year != sDateTime.tm_year) {
+            mEasterTick = -1; // triggers easter calculation
+            mDayTick = -1; // triggers sunrise/sunset calculation
+        } else if (lTmp.tm_mon != sDateTime.tm_mon) {
+            mDayTick = -1; // triggers sunrise/sunset calculation
+        } else if (lTmp.tm_mday != sDateTime.tm_mday) {
+            mDayTick = -1; // triggers sunrise/sunset calculation
+        }
         sDateTime.tm_mday = lTmp.tm_mday;
-        sDateTime.tm_mon = lTmp.tm_mon - 1;
-        sDateTime.tm_year = lTmp.tm_year - 1900;
+        sDateTime.tm_mon = lTmp.tm_mon;
+        sDateTime.tm_year = lTmp.tm_year;
         mktime(&sDateTime);
         mTimeDelay = millis();
         sTimeOk |= 2;
@@ -236,26 +248,13 @@ bool Logic::processDiagnoseCommand(char* cBuffer) {
             break;
         }
         case 'r': {
-            double rise, set;
-            // sunrise/sunset calculation
-            uint8_t rs = sun_rise_set(sDateTime.tm_year + 1900, sDateTime.tm_mon + 1, sDateTime.tm_mday,
-                                      8.639751, 49.310209,
-                                      &rise, &set);
-            double lTmp;
-            uint8_t lRiseMinute = round(modf(rise, &lTmp) * 60.0);
-            uint8_t lRiseHour = lTmp + 2;
-            uint8_t lSetMinute = round(modf(set, &lTmp) * 60.0);
-            uint8_t lSetHour = lTmp + 2;
-            sprintf(cBuffer, "R%02d:%02d S%02d:%02d", lRiseHour, lRiseMinute, lSetHour, lSetMinute);
+            sprintf(cBuffer, "R%02d:%02d S%02d:%02d", mSunrise.hour, mSunrise.minute, mSunset.hour, mSunset.minute);
             lResult = true;
             break;
         }
         case 'o': {
             // calculate easter date
-            uint8_t lDay = 0;
-            uint8_t lMonth = 0;
-            getEaster(sDateTime.tm_year + 1900, &lDay, &lMonth);
-            sprintf(cBuffer, "O%02d.%02d", lDay, lMonth);
+            sprintf(cBuffer, "O%02d.%02d", mEaster.day, mEaster.month);
             lResult = true;
             break;
         }
@@ -351,17 +350,43 @@ void Logic::setup(bool iSaveSupported) {
 }
 
 void Logic::processTime() {
-    static int8_t lMinute = -1;
     if (delayCheck(mTimeDelay, 1000)) {
         mTimeDelay = millis();
         sDateTime.tm_sec += 1;
         mktime(&sDateTime);
-        if (lMinute != sDateTime.tm_min && sTimeOk == 3) {
-            mIndicateTimerInput = true;
-            // just call once a minute
-            lMinute = sDateTime.tm_min;
+        if (sTimeOk == 3) {
+            if (mMinuteTick != sDateTime.tm_min) {
+                mIndicateTimerInput = true;
+                // just call once a minute
+                mMinuteTick = sDateTime.tm_min;
+            }
+            if (mDayTick != sDateTime.tm_mday) {
+                calculateSunriseSunset();
+                mDayTick = sDateTime.tm_mday;
+            }
+            if (mEasterTick != sDateTime.tm_year) {
+                calculateEaster();
+                mEasterTick = sDateTime.tm_year;
+            }
         }
     }
+}
+
+void Logic::calculateSunriseSunset() {
+    double rise, set;
+    // sunrise/sunset calculation
+    sun_rise_set(sDateTime.tm_year + 1900, sDateTime.tm_mon + 1, sDateTime.tm_mday,
+                 8.639751, 49.310209,
+                 &rise, &set);
+    double lTmp;
+    mSunrise.minute = round(modf(rise, &lTmp) * 60.0);
+    mSunrise.hour = lTmp + 2;
+    mSunset.minute = round(modf(set, &lTmp) * 60.0);
+    mSunset.hour = lTmp + 2;
+}
+
+void Logic::calculateEaster() {
+    getEaster(sDateTime.tm_year + 1900, &mEaster.day, &mEaster.month);
 }
 
 void Logic::loop()

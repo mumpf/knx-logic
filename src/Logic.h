@@ -4,6 +4,16 @@
 class Logic
 {
   private:
+    struct sTime {
+        uint8_t minute;
+        uint8_t hour;
+    };
+
+    struct sDay {
+        uint8_t day;
+        uint8_t month;
+    };
+
     static uint8_t sMagicWord[];
     static struct tm sDateTime;
     static uint8_t sTimeOk;
@@ -16,6 +26,12 @@ class Logic
     bool mIndicateTimerInput = false;
     EepromManager *mEEPROM;
     uint32_t mTimeDelay = 0;
+    int8_t mMinuteTick = -1; // timer evaluation is called each time the minute changes
+    int8_t mDayTick = -1; // sunrise/sunset calculation happens each time the day changes
+    int16_t mEasterTick = -1; // easter calculation happens each time year changes
+    sTime mSunrise;
+    sTime mSunset;
+    sDay mEaster = {0, 0};
 
     LogicChannel *getChannel(uint8_t iChannelId);
     uint8_t getChannelId(LogicChannel *iChannel);
@@ -29,6 +45,8 @@ class Logic
     void beforeTableUnloadHandler(TableObject & iTableObject, LoadState & iNewState);
 
     void processTime();
+    void calculateSunriseSunset();
+    void calculateEaster();
 
   public:
     Logic();
