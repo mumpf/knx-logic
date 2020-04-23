@@ -37,15 +37,15 @@ class Logic
     static void onBeforeRestartHandler();
     static void onBeforeTableUnloadHandler(TableObject & iTableObject, LoadState & iNewState);
     static void onSafePinInterruptHandler();
-
+    tm *getDateTime();
     // instance
     EepromManager *getEEPROM();
     void writeAllInputsToEEPROMFacade();
     void processAllInternalInputs(LogicChannel *iChannel, bool iValue);
     void processInputKo(GroupObject &iKo);
     void processInterrupt(bool iForce = false);
+    bool processDiagnoseCommand(char *iBuffer);
     void debug();
     void setup(bool iSaveSupported);
     void loop();
 };
-
