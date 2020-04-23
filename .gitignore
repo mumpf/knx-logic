@@ -4,4 +4,4 @@
 .vscode/launch.json
 .vscode/ipch
 **/Logikmodul.knxprod
-src/Logikmodul.debug.xml
+**/*.debug.xml
