@@ -1,8 +1,11 @@
 #include "Logic.h"
 #include "Helper.h"
 #include "Hardware.h"
+#include "sun.h"
 
 uint8_t Logic::sMagicWord[] = {0xAE, 0x49, 0xD2, 0x9F};
+tm Logic::sDateTime = {0};
+uint8_t Logic::sTimeOk = 0;
 
 // callbacks have to be static members
 void Logic::onInputKoHandler(GroupObject &iKo) {
@@ -37,17 +40,26 @@ void Logic::onSafePinInterruptHandler()
 }
 
 tm* Logic::getDateTime() {
-    return &mDateTime;
+    return &sDateTime;
+}
+
+Logic::sTime *Logic::getSunInfo(uint8_t iSunInfo) {
+    if (iSunInfo == SUN_SUNRISE)
+        return &mSunrise;
+    else if (iSunInfo == SUN_SUNSET) 
+        return &mSunset;
+    else
+        return NULL;
 }
 
 Logic::Logic()
 {
     LogicChannel::sLogic = this;
-    mDateTime.tm_year = 120;
-    mDateTime.tm_mon = 0;
-    mDateTime.tm_mday = 1;
-    mDateTime.tm_wday = 3;
-    mktime(&mDateTime);
+    sDateTime.tm_year = 120;
+    sDateTime.tm_mon = 0;
+    sDateTime.tm_mday = 1;
+    sDateTime.tm_wday = 3;
+    mktime(&sDateTime);
     mTimeDelay = millis();
 }
 
@@ -176,18 +188,32 @@ void Logic::processInputKo(GroupObject &iKo)
 {
     if (iKo.asap() == LOG_KoTime) {
         struct tm lTmp = iKo.value(getDPT(VAL_DPT_10));
-        mDateTime.tm_sec = lTmp.tm_sec;
-        mDateTime.tm_min = lTmp.tm_min;
-        mDateTime.tm_hour = lTmp.tm_hour;
-        mktime(&mDateTime);
+        sDateTime.tm_sec = lTmp.tm_sec;
+        sDateTime.tm_min = lTmp.tm_min;
+        sDateTime.tm_hour = lTmp.tm_hour;
+        mktime(&sDateTime);
         mTimeDelay = millis();
+        sTimeOk |= 1;
     } else if (iKo.asap() == LOG_KoDate) {
         struct tm lTmp = iKo.value(getDPT(VAL_DPT_11));
-        mDateTime.tm_mday = lTmp.tm_mday;
-        mDateTime.tm_mon = lTmp.tm_mon - 1;
-        mDateTime.tm_year = lTmp.tm_year - 1900;
-        mktime(&mDateTime);
+        lTmp.tm_year -= 1900;
+        lTmp.tm_mon -= 1;
+        // we have to check, if some date dependant calculations have to be done
+        // in case of date changes
+        if (lTmp.tm_year != sDateTime.tm_year) {
+            mEasterTick = -1; // triggers easter calculation
+            mDayTick = -1; // triggers sunrise/sunset calculation
+        } else if (lTmp.tm_mon != sDateTime.tm_mon) {
+            mDayTick = -1; // triggers sunrise/sunset calculation
+        } else if (lTmp.tm_mday != sDateTime.tm_mday) {
+            mDayTick = -1; // triggers sunrise/sunset calculation
+        }
+        sDateTime.tm_mday = lTmp.tm_mday;
+        sDateTime.tm_mon = lTmp.tm_mon;
+        sDateTime.tm_year = lTmp.tm_year;
+        mktime(&sDateTime);
         mTimeDelay = millis();
+        sTimeOk |= 2;
     } else if (iKo.asap() >= LOG_KoOffset && iKo.asap() < LOG_KoOffset + mNumChannels * LOG_KoBlockSize) {
         uint16_t lKoNumber = iKo.asap() - LOG_KoOffset;
         uint8_t lChannelId = lKoNumber / LOG_KoBlockSize;
@@ -226,7 +252,18 @@ bool Logic::processDiagnoseCommand(char* cBuffer) {
         }
         case 't': {
             // return internal time (might differ from external
-            sprintf(cBuffer, "%02d:%02d:%02d %02d.%02d", mDateTime.tm_hour, mDateTime.tm_min, mDateTime.tm_sec, mDateTime.tm_mday, mDateTime.tm_mon + 1);
+            sprintf(cBuffer, "%02d:%02d:%02d %02d.%02d", sDateTime.tm_hour, sDateTime.tm_min, sDateTime.tm_sec, sDateTime.tm_mday, sDateTime.tm_mon + 1);
+            lResult = true;
+            break;
+        }
+        case 'r': {
+            sprintf(cBuffer, "R%02d:%02d S%02d:%02d", mSunrise.hour, mSunrise.minute, mSunset.hour, mSunset.minute);
+            lResult = true;
+            break;
+        }
+        case 'o': {
+            // calculate easter date
+            sprintf(cBuffer, "O%02d.%02d", mEaster.day, mEaster.month);
             lResult = true;
             break;
         }
@@ -266,7 +303,7 @@ void Logic::beforeTableUnloadHandler(TableObject & iTableObject, LoadState & iNe
 void Logic::debug() {
     printDebug("Logik-LOG_ChannelsFirmware (in Firmware): %d\n", LOG_ChannelsFirmware);
     printDebug("Logik-gNumChannels (in knxprod):  %d\n", mNumChannels);
-    printDebug("Aktuelle Zeit: %s", asctime(&mDateTime));
+    printDebug("Aktuelle Zeit: %s", asctime(&sDateTime));
     // Test i2c failure
     // we start an i2c read i.e. for EEPROM
     // prepareReadEEPROM(4711, 20);
@@ -323,10 +360,42 @@ void Logic::setup(bool iSaveSupported) {
 
 void Logic::processTime() {
     if (delayCheck(mTimeDelay, 1000)) {
-        mDateTime.tm_sec += 1;
-        mktime(&mDateTime);
         mTimeDelay = millis();
+        sDateTime.tm_sec += 1;
+        mktime(&sDateTime);
+        if (sTimeOk == 3) {
+            if (mMinuteTick != sDateTime.tm_min) {
+                mIndicateTimerInput = true;
+                // just call once a minute
+                mMinuteTick = sDateTime.tm_min;
+            }
+            if (mDayTick != sDateTime.tm_mday) {
+                calculateSunriseSunset();
+                mDayTick = sDateTime.tm_mday;
+            }
+            if (mEasterTick != sDateTime.tm_year) {
+                calculateEaster();
+                mEasterTick = sDateTime.tm_year;
+            }
+        }
     }
+}
+
+void Logic::calculateSunriseSunset() {
+    double rise, set;
+    // sunrise/sunset calculation
+    sun_rise_set(sDateTime.tm_year + 1900, sDateTime.tm_mon + 1, sDateTime.tm_mday,
+                 8.639751, 49.310209,
+                 &rise, &set);
+    double lTmp;
+    mSunrise.minute = round(modf(rise, &lTmp) * 60.0);
+    mSunrise.hour = lTmp + 2;
+    mSunset.minute = round(modf(set, &lTmp) * 60.0);
+    mSunset.hour = lTmp + 2;
+}
+
+void Logic::calculateEaster() {
+    getEaster(sDateTime.tm_year + 1900, &mEaster.day, &mEaster.month);
 }
 
 void Logic::loop()
@@ -341,9 +410,12 @@ void Logic::loop()
     for (uint8_t lIndex = 0; lIndex < mNumChannels; lIndex++)
     {
         LogicChannel *lChannel = mChannel[lIndex];
+        if (mIndicateTimerInput)
+            lChannel->startTimerInput();
         lChannel->loop();
         knx.loop();
     }
+    mIndicateTimerInput = false;
 }
 
 EepromManager *Logic::getEEPROM() {

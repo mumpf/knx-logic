@@ -57,6 +57,7 @@
 #define VAL_Logic_Or 2
 #define VAL_Logic_ExOr 3
 #define VAL_Logic_Gate 4
+#define VAL_Logic_Timer 5
 
 // enum delay extend
 #define VAL_Delay_Nothing 0
@@ -114,7 +115,69 @@
 #define PIP_OUTPUT_FILTER_OFF 2048 // Filter repeated signals
 #define PIP_ON_REPEAT 4096         // repeat on signal
 #define PIP_OFF_REPEAT 8192        // repeat off signal
+#define PIP_TIMER_INPUT 16384      // process timer as input signal
 #define PIP_RUNNING 32768          // is a currently running channel
+
+#define SUN_SUNRISE 0x00
+#define SUN_SUNSET 0x01
+
+#define TIMD_WEEKDAY_MASK 0x0007
+#define TIMD_WEEKDAY_SHIFT 0
+#define TIMD_MINUTE_MASK 0x01F8
+#define TIMD_MINUTE_SHIFT 3
+#define TIMD_HOUR_MASK 0x3E00
+#define TIMD_HOUR_SHIFT 9
+#define TIMD_VALUE_MASK 0x8000
+#define TIMD_VALUE_SHIFT 15
+
+#define TIMY_MONTH_MASK 0x00F8
+#define TIMY_MONTH_SHIFT 3
+#define TIMY_ISWEEKDAY_MASK 0x0100
+#define TIMY_ISWEEKDAY_SHIFT 8
+#define TIMY_DAY_MASK 0xFE00
+#define TIMY_DAY_SHIFT 9
+#define TIMY_MONDAY_MASK 0x8000
+#define TIMY_MONDAY_SHIFT 15
+#define TIMY_TUESDAY_MASK 0x4000
+#define TIMY_TUESDAY_SHIFT 14
+#define TIMY_WEDNESDAY_MASK 0x2000
+#define TIMY_WEDNESDAY_SHIFT 13
+#define TIMY_THURSDAY_MASK 0x1000
+#define TIMY_THURSDAY_SHIFT 12
+#define TIMY_FRIDAY_MASK 0x0800
+#define TIMY_FRIDAY_SHIFT 11
+#define TIMY_SATURDAY_MASK 0x0400
+#define TIMY_SATURDAY_SHIFT 10
+#define TIMY_SUNDAY_MASK 0x0200
+#define TIMY_SUNDAY_SHIFT 9
+
+#define VAL_Tim_Inactive 0
+#define VAL_Tim_PointInTime 1
+#define VAL_Tim_Sunrise_Plus 4
+#define VAL_Tim_Sunrise_Minus 5
+#define VAL_Tim_Sunrise_Earliest 6
+#define VAL_Tim_Sunrise_Latest 7
+#define VAL_Tim_Sunset_Plus 8
+#define VAL_Tim_Sunset_Minus 9
+#define VAL_Tim_Sunset_Earliest 10
+#define VAL_Tim_Sunset_Latest 11
+
+#define VAL_Tim_Restore_No 0
+#define VAL_Tim_Restore_Last 1
+#define VAL_Tim_Restore_Last2 2
+
+#define VAL_Tim_Holiday_Sunday 0
+#define VAL_Tim_Holiday_Skip 1
+
+#define VAL_Tim_Timer_Daily 0
+#define VAL_Tim_Timer_Yearly 1
+
+#define VAL_Tim_Every_Minute 63
+#define VAL_Tim_Every_Hour 31
+#define VAL_Tim_Every_Weekday 0
+#define VAL_Tim_Every_Day 0
+#define VAL_Tim_Every_Month 0
+#define VAL_Tim_Last_Day 32
 
 #ifdef __linux__
 extern KnxFacade<LinuxPlatform, Bau57B0> knx;
@@ -185,8 +248,31 @@ class LogicChannel
     void processOutput(bool iValue);
 
     bool readOneInputFromEEPROM(uint8_t iIOIndex);
-    
+
+    // Start of Timer implementation
+    void processTimerInput();
+    bool checkTimerToday(uint8_t iTimerIndex);
+    bool checkWeekday(uint8_t iWeekday);
+    bool checkTimerTime(uint8_t iTimerIndex, uint16_t iBitfield, uint8_t iHour, uint8_t iMinute, bool iSkipWeekday);
+    bool checkPointInTime(uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday);
+    bool checkSunAbs(uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iMinus);
+    bool checkSunLimit(uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iLatest);
+
   protected:
+
+    union uInputProcessing
+    {
+        struct
+        {
+            uint32_t repeatInput1Delay;
+            uint32_t repeatInput2Delay;
+        };
+        struct
+        {
+            uint8_t activeTimer;
+            uint8_t processedTimer;
+        };
+    };
 
     // static
 
@@ -196,9 +282,11 @@ class LogicChannel
     uint8_t pValidActiveIO;    // Bitfield: validity flags for input (0-3) values and active inputs (4-7)
     uint8_t pCurrentIO;        // Bitfield: current input (0-3), current output (4), first processing (5) and previous output (7) values
     uint16_t pCurrentPipeline; // Bitfield: indicator for current pipeline step
+
     uint8_t pCurrentIODebug;   // Bitfield: current input (0-3), current output (4), first processing (5) and previous output (7) values
-    uint32_t pRepeatInput1Delay;
-    uint32_t pRepeatInput2Delay;
+    // uint32_t pRepeatInput1Delay;  // used also for timer preparation
+    // uint32_t pRepeatInput2Delay;  // used also for timer processing
+    uInputProcessing pInputProcessing;
     uint32_t pStairlightDelay;
     uint32_t pBlinkDelay;
     uint32_t pOnDelay;
@@ -220,6 +308,7 @@ class LogicChannel
     void processInput(uint8_t iIOIndex);
     void processInternalInputs(uint8_t iChannelId, bool iValue);
     bool processDiagnoseCommand(char* cBuffer);
+    void startTimerInput();
     void writeSingleDptToEEPROM(uint8_t iIOIndex);
 
     bool prepareChannel();

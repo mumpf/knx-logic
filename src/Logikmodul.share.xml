@@ -39,11 +39,12 @@
               <!-- parameter types for logic module -->
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-Logic" Name="Logic">
                 <TypeRestriction Base="Value" SizeInBit="8">
-                  <Enumeration Text="aus / inaktiv" Value="0" Id="M-00FA_A-0001-01-0000_PT-Logic_EN-0" />
+                  <Enumeration Text="aus" Value="0" Id="M-00FA_A-0001-01-0000_PT-Logic_EN-0" />
                   <Enumeration Text="UND" Value="1" Id="M-00FA_A-0001-01-0000_PT-Logic_EN-1" />
                   <Enumeration Text="ODER" Value="2" Id="M-00FA_A-0001-01-0000_PT-Logic_EN-2" />
                   <Enumeration Text="EXCLUSIV-ODER" Value="3" Id="M-00FA_A-0001-01-0000_PT-Logic_EN-3" />
                   <Enumeration Text="TOR" Value="4" Id="M-00FA_A-0001-01-0000_PT-Logic_EN-4" />
+                  <Enumeration Text="ZEITSCHALTUHR" Value="5" Id="M-00FA_A-0001-01-0000_PT-Logic_EN-5" />
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-Calculate" Name="Calculate">
@@ -59,6 +60,14 @@
                   <Enumeration Text="nur bei geändertem Ergebnis, aber erstes Telegramm nicht senden" Value="16" Id="M-00FA_A-0001-01-0000_PT-Trigger_EN-3" />
                   <Enumeration Text="bei jedem Eingangstelegramm" Value="15" Id="M-00FA_A-0001-01-0000_PT-Trigger_EN-15" />
                   <Enumeration Text="bei folgenden Eingangstelegrammen" Value="1" Id="M-00FA_A-0001-01-0000_PT-Trigger_EN-1" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-TriggerTime" Name="TriggerTime">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="nur bei geändertem Ergebnis" Value="0" Id="M-00FA_A-0001-01-0000_PT-TriggerTime_EN-0" />
+                  <Enumeration Text="nur bei geändertem Ergebnis, aber erstes Telegramm immer senden" Value="32" Id="M-00FA_A-0001-01-0000_PT-TriggerTime_EN-2" />
+                  <Enumeration Text="nur bei geändertem Ergebnis, aber erstes Telegramm nicht senden" Value="16" Id="M-00FA_A-0001-01-0000_PT-TriggerTime_EN-3" />
+                  <Enumeration Text="bei jedem Eingangstelegramm" Value="15" Id="M-00FA_A-0001-01-0000_PT-TriggerTime_EN-15" />
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-GateTrigger" Name="GateTrigger">
@@ -400,31 +409,64 @@
                 <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="255" />
               </ParameterType>
               <!-- Ab hier Zeitschaltuhr -->
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-OnOff" Name="OnOff">
+                <TypeRestriction Base="Value" SizeInBit="1">
+                  <Enumeration Text="AUS" Value="0" Id="M-00FA_A-0001-01-0000_PT-OnOff_EN-0" />
+                  <Enumeration Text="EIN" Value="1" Id="M-00FA_A-0001-01-0000_PT-OnOff_EN-1" />
+                </TypeRestriction>
+              </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-YearDay" Name="YearDay">
                 <TypeRestriction Base="Value" SizeInBit="1">
-                  <Enumeration Text="Jahresschaltuhr" Value="0" Id="M-00FA_A-0001-01-0000_PT-YearDay_EN-0" />
-                  <Enumeration Text="Tagesschaltuhr" Value="1" Id="M-00FA_A-0001-01-0000_PT-YearDay_EN-1" />
+                  <Enumeration Text="Tagesschaltuhr" Value="0" Id="M-00FA_A-0001-01-0000_PT-YearDay_EN-0" />
+                  <Enumeration Text="Jahresschaltuhr" Value="1" Id="M-00FA_A-0001-01-0000_PT-YearDay_EN-1" />
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-Holiday" Name="Holiday">
                 <TypeRestriction Base="Value" SizeInBit="1">
-                  <Enumeration Text="An Feiertagen nicht schalten" Value="0" Id="M-00FA_A-0001-01-0000_PT-Holiday_EN-0" />
-                  <Enumeration Text="An Feiertagen wie am Wochenende schalten" Value="1" Id="M-00FA_A-0001-01-0000_PT-Holiday_EN-1" />
+                  <Enumeration Text="Feiertage wie Sonntage behandeln" Value="0" Id="M-00FA_A-0001-01-0000_PT-Holiday_EN-0" />
+                  <Enumeration Text="An Feiertagen nicht schalten" Value="1" Id="M-00FA_A-0001-01-0000_PT-Holiday_EN-1" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-IsWeekday" Name="IsWeekday">
+                <TypeRestriction Base="Value" SizeInBit="1">
+                  <Enumeration Text="Tag" Value="0" Id="M-00FA_A-0001-01-0000_PT-IsWeekday_EN-0" />
+                  <Enumeration Text="Wochentag" Value="1" Id="M-00FA_A-0001-01-0000_PT-IsWeekday_EN-1" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-RestoreState" Name="RestoreState">
+                <TypeRestriction Base="Value" SizeInBit="2">
+                  <Enumeration Text="Nein" Value="0" Id="M-00FA_A-0001-01-0000_PT-RestoreState_EN-0" />
+                  <Enumeration Text="Den letzten Schaltpunkt" Value="1" Id="M-00FA_A-0001-01-0000_PT-RestoreState_EN-1" />
+                  <Enumeration Text="Die letzten 2 Schaltpunkte" Value="2" Id="M-00FA_A-0001-01-0000_PT-RestoreState_EN-2" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-DuskDawn" Name="DuskDawn">
+                <TypeRestriction Base="Value" SizeInBit="4">
+                  <Enumeration Text="Schaltpunkt nicht aktiviert" Value="0" Id="M-00FA_A-0001-01-0000_PT-DuskDawn_EN-0" />
+                  <Enumeration Text="Zeitpunkt" Value="1" Id="M-00FA_A-0001-01-0000_PT-DuskDawn_EN-1" />
+                  <Enumeration Text="Sonnenaufgang: plus Zeitversatz" Value="4" Id="M-00FA_A-0001-01-0000_PT-DuskDawn_EN-4" />
+                  <Enumeration Text="Sonnenaufgang: minus Zeitversatz" Value="5" Id="M-00FA_A-0001-01-0000_PT-DuskDawn_EN-5" />
+                  <Enumeration Text="Sonnenaufgang: Frühestens um..." Value="6" Id="M-00FA_A-0001-01-0000_PT-DuskDawn_EN-6" />
+                  <Enumeration Text="Sonnenaufgang: Spätestens um..." Value="7" Id="M-00FA_A-0001-01-0000_PT-DuskDawn_EN-7" />
+                  <Enumeration Text="Sonnenuntergang: plus Zeitversatz" Value="8" Id="M-00FA_A-0001-01-0000_PT-DuskDawn_EN-8" />
+                  <Enumeration Text="Sonnenuntergang: minus Zeitversatz" Value="9" Id="M-00FA_A-0001-01-0000_PT-DuskDawn_EN-9" />
+                  <Enumeration Text="Sonnenuntergang: Frühestens um..." Value="10" Id="M-00FA_A-0001-01-0000_PT-DuskDawn_EN-10" />
+                  <Enumeration Text="Sonnenuntergang: Spätestens um..." Value="11" Id="M-00FA_A-0001-01-0000_PT-DuskDawn_EN-11" />
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-Minute" Name="Minute">
                 <TypeRestriction Base="Value" SizeInBit="6">
-                  <Enumeration Text="*" Value="63" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-63" />
-                  <Enumeration Text="0" Value="0" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-0" />
-                  <Enumeration Text="1" Value="1" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-1" />
-                  <Enumeration Text="2" Value="2" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-2" />
-                  <Enumeration Text="3" Value="3" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-3" />
-                  <Enumeration Text="4" Value="4" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-4" />
-                  <Enumeration Text="5" Value="5" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-5" />
-                  <Enumeration Text="6" Value="6" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-6" />
-                  <Enumeration Text="7" Value="7" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-7" />
-                  <Enumeration Text="8" Value="8" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-8" />
-                  <Enumeration Text="9" Value="9" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-9" />
+                  <Enumeration Text="jede" Value="63" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-63" />
+                  <Enumeration Text="00" Value="0" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-0" />
+                  <Enumeration Text="01" Value="1" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-1" />
+                  <Enumeration Text="02" Value="2" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-2" />
+                  <Enumeration Text="03" Value="3" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-3" />
+                  <Enumeration Text="04" Value="4" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-4" />
+                  <Enumeration Text="05" Value="5" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-5" />
+                  <Enumeration Text="06" Value="6" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-6" />
+                  <Enumeration Text="07" Value="7" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-7" />
+                  <Enumeration Text="08" Value="8" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-8" />
+                  <Enumeration Text="09" Value="9" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-9" />
                   <Enumeration Text="10" Value="10" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-10" />
                   <Enumeration Text="11" Value="11" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-11" />
                   <Enumeration Text="12" Value="12" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-12" />
@@ -477,19 +519,83 @@
                   <Enumeration Text="59" Value="59" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-59" />
                 </TypeRestriction>
               </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-MinuteRel" Name="MinuteRel">
+                <TypeRestriction Base="Value" SizeInBit="6">
+                  <Enumeration Text="00" Value="0" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-0" />
+                  <Enumeration Text="01" Value="1" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-1" />
+                  <Enumeration Text="02" Value="2" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-2" />
+                  <Enumeration Text="03" Value="3" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-3" />
+                  <Enumeration Text="04" Value="4" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-4" />
+                  <Enumeration Text="05" Value="5" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-5" />
+                  <Enumeration Text="06" Value="6" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-6" />
+                  <Enumeration Text="07" Value="7" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-7" />
+                  <Enumeration Text="08" Value="8" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-8" />
+                  <Enumeration Text="09" Value="9" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-9" />
+                  <Enumeration Text="10" Value="10" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-10" />
+                  <Enumeration Text="11" Value="11" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-11" />
+                  <Enumeration Text="12" Value="12" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-12" />
+                  <Enumeration Text="13" Value="13" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-13" />
+                  <Enumeration Text="14" Value="14" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-14" />
+                  <Enumeration Text="15" Value="15" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-15" />
+                  <Enumeration Text="16" Value="16" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-16" />
+                  <Enumeration Text="17" Value="17" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-17" />
+                  <Enumeration Text="18" Value="18" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-18" />
+                  <Enumeration Text="19" Value="19" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-19" />
+                  <Enumeration Text="20" Value="20" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-20" />
+                  <Enumeration Text="21" Value="21" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-21" />
+                  <Enumeration Text="22" Value="22" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-22" />
+                  <Enumeration Text="23" Value="23" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-23" />
+                  <Enumeration Text="24" Value="24" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-24" />
+                  <Enumeration Text="25" Value="25" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-25" />
+                  <Enumeration Text="26" Value="26" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-26" />
+                  <Enumeration Text="27" Value="27" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-27" />
+                  <Enumeration Text="28" Value="28" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-28" />
+                  <Enumeration Text="29" Value="29" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-29" />
+                  <Enumeration Text="30" Value="30" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-30" />
+                  <Enumeration Text="31" Value="31" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-31" />
+                  <Enumeration Text="32" Value="32" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-32" />
+                  <Enumeration Text="33" Value="33" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-33" />
+                  <Enumeration Text="34" Value="34" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-34" />
+                  <Enumeration Text="35" Value="35" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-35" />
+                  <Enumeration Text="36" Value="36" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-36" />
+                  <Enumeration Text="37" Value="37" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-37" />
+                  <Enumeration Text="38" Value="38" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-38" />
+                  <Enumeration Text="39" Value="39" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-39" />
+                  <Enumeration Text="40" Value="40" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-40" />
+                  <Enumeration Text="41" Value="41" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-41" />
+                  <Enumeration Text="42" Value="42" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-42" />
+                  <Enumeration Text="43" Value="43" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-43" />
+                  <Enumeration Text="44" Value="44" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-44" />
+                  <Enumeration Text="45" Value="45" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-45" />
+                  <Enumeration Text="46" Value="46" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-46" />
+                  <Enumeration Text="47" Value="47" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-47" />
+                  <Enumeration Text="48" Value="48" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-48" />
+                  <Enumeration Text="49" Value="49" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-49" />
+                  <Enumeration Text="50" Value="50" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-50" />
+                  <Enumeration Text="51" Value="51" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-51" />
+                  <Enumeration Text="52" Value="52" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-52" />
+                  <Enumeration Text="53" Value="53" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-53" />
+                  <Enumeration Text="54" Value="54" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-54" />
+                  <Enumeration Text="55" Value="55" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-55" />
+                  <Enumeration Text="56" Value="56" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-56" />
+                  <Enumeration Text="57" Value="57" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-57" />
+                  <Enumeration Text="58" Value="58" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-58" />
+                  <Enumeration Text="59" Value="59" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-59" />
+                </TypeRestriction>
+              </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-Hour" Name="Hour">
                 <TypeRestriction Base="Value" SizeInBit="5">
-                  <Enumeration Text="*" Value="31" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-31" />
-                  <Enumeration Text="0" Value="0" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-0" />
-                  <Enumeration Text="1" Value="1" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-1" />
-                  <Enumeration Text="2" Value="2" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-2" />
-                  <Enumeration Text="3" Value="3" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-3" />
-                  <Enumeration Text="4" Value="4" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-4" />
-                  <Enumeration Text="5" Value="5" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-5" />
-                  <Enumeration Text="6" Value="6" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-6" />
-                  <Enumeration Text="7" Value="7" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-7" />
-                  <Enumeration Text="8" Value="8" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-8" />
-                  <Enumeration Text="9" Value="9" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-9" />
+                  <Enumeration Text="jede" Value="31" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-31" />
+                  <Enumeration Text="00" Value="0" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-0" />
+                  <Enumeration Text="01" Value="1" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-1" />
+                  <Enumeration Text="02" Value="2" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-2" />
+                  <Enumeration Text="03" Value="3" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-3" />
+                  <Enumeration Text="04" Value="4" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-4" />
+                  <Enumeration Text="05" Value="5" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-5" />
+                  <Enumeration Text="06" Value="6" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-6" />
+                  <Enumeration Text="07" Value="7" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-7" />
+                  <Enumeration Text="08" Value="8" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-8" />
+                  <Enumeration Text="09" Value="9" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-9" />
                   <Enumeration Text="10" Value="10" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-10" />
                   <Enumeration Text="11" Value="11" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-11" />
                   <Enumeration Text="12" Value="12" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-12" />
@@ -506,18 +612,58 @@
                   <Enumeration Text="23" Value="23" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-23" />
                 </TypeRestriction>
               </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-HourRel" Name="HourRel">
+                <TypeRestriction Base="Value" SizeInBit="5">
+                  <Enumeration Text="00" Value="0" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-0" />
+                  <Enumeration Text="01" Value="1" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-1" />
+                  <Enumeration Text="02" Value="2" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-2" />
+                  <Enumeration Text="03" Value="3" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-3" />
+                  <Enumeration Text="04" Value="4" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-4" />
+                  <Enumeration Text="05" Value="5" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-5" />
+                  <Enumeration Text="06" Value="6" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-6" />
+                  <Enumeration Text="07" Value="7" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-7" />
+                  <Enumeration Text="08" Value="8" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-8" />
+                  <Enumeration Text="09" Value="9" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-9" />
+                  <Enumeration Text="10" Value="10" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-10" />
+                  <Enumeration Text="11" Value="11" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-11" />
+                  <Enumeration Text="12" Value="12" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-12" />
+                  <Enumeration Text="13" Value="13" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-13" />
+                  <Enumeration Text="14" Value="14" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-14" />
+                  <Enumeration Text="15" Value="15" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-15" />
+                  <Enumeration Text="16" Value="16" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-16" />
+                  <Enumeration Text="17" Value="17" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-17" />
+                  <Enumeration Text="18" Value="18" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-18" />
+                  <Enumeration Text="19" Value="19" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-19" />
+                  <Enumeration Text="20" Value="20" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-20" />
+                  <Enumeration Text="21" Value="21" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-21" />
+                  <Enumeration Text="22" Value="22" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-22" />
+                  <Enumeration Text="23" Value="23" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-23" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-Weekday" Name="Weekday">
+                <TypeRestriction Base="Value" SizeInBit="3">
+                  <Enumeration Text="jeder" Value="0" Id="M-00FA_A-0001-01-0000_PT-Weekday_EN-0" />
+                  <Enumeration Text="Montag" Value="1" Id="M-00FA_A-0001-01-0000_PT-Weekday_EN-1" />
+                  <Enumeration Text="Dienstag" Value="2" Id="M-00FA_A-0001-01-0000_PT-Weekday_EN-2" />
+                  <Enumeration Text="Mittwoch" Value="3" Id="M-00FA_A-0001-01-0000_PT-Weekday_EN-3" />
+                  <Enumeration Text="Donnerstag" Value="4" Id="M-00FA_A-0001-01-0000_PT-Weekday_EN-4" />
+                  <Enumeration Text="Freitag" Value="5" Id="M-00FA_A-0001-01-0000_PT-Weekday_EN-5" />
+                  <Enumeration Text="Samstag" Value="6" Id="M-00FA_A-0001-01-0000_PT-Weekday_EN-6" />
+                  <Enumeration Text="Sonntag" Value="7" Id="M-00FA_A-0001-01-0000_PT-Weekday_EN-7" />
+                </TypeRestriction>
+              </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-Day" Name="Day">
-                <TypeRestriction Base="Value" SizeInBit="6">
-                  <Enumeration Text="*" Value="0" Id="M-00FA_A-0001-01-0000_PT-Day_EN-0" />
-                  <Enumeration Text="1" Value="1" Id="M-00FA_A-0001-01-0000_PT-Day_EN-1" />
-                  <Enumeration Text="2" Value="2" Id="M-00FA_A-0001-01-0000_PT-Day_EN-2" />
-                  <Enumeration Text="3" Value="3" Id="M-00FA_A-0001-01-0000_PT-Day_EN-3" />
-                  <Enumeration Text="4" Value="4" Id="M-00FA_A-0001-01-0000_PT-Day_EN-4" />
-                  <Enumeration Text="5" Value="5" Id="M-00FA_A-0001-01-0000_PT-Day_EN-5" />
-                  <Enumeration Text="6" Value="6" Id="M-00FA_A-0001-01-0000_PT-Day_EN-6" />
-                  <Enumeration Text="7" Value="7" Id="M-00FA_A-0001-01-0000_PT-Day_EN-7" />
-                  <Enumeration Text="8" Value="8" Id="M-00FA_A-0001-01-0000_PT-Day_EN-8" />
-                  <Enumeration Text="9" Value="9" Id="M-00FA_A-0001-01-0000_PT-Day_EN-9" />
+                <TypeRestriction Base="Value" SizeInBit="7">
+                  <Enumeration Text="jeder" Value="0" Id="M-00FA_A-0001-01-0000_PT-Day_EN-0" />
+                  <Enumeration Text="01" Value="1" Id="M-00FA_A-0001-01-0000_PT-Day_EN-1" />
+                  <Enumeration Text="02" Value="2" Id="M-00FA_A-0001-01-0000_PT-Day_EN-2" />
+                  <Enumeration Text="03" Value="3" Id="M-00FA_A-0001-01-0000_PT-Day_EN-3" />
+                  <Enumeration Text="04" Value="4" Id="M-00FA_A-0001-01-0000_PT-Day_EN-4" />
+                  <Enumeration Text="05" Value="5" Id="M-00FA_A-0001-01-0000_PT-Day_EN-5" />
+                  <Enumeration Text="06" Value="6" Id="M-00FA_A-0001-01-0000_PT-Day_EN-6" />
+                  <Enumeration Text="07" Value="7" Id="M-00FA_A-0001-01-0000_PT-Day_EN-7" />
+                  <Enumeration Text="08" Value="8" Id="M-00FA_A-0001-01-0000_PT-Day_EN-8" />
+                  <Enumeration Text="09" Value="9" Id="M-00FA_A-0001-01-0000_PT-Day_EN-9" />
                   <Enumeration Text="10" Value="10" Id="M-00FA_A-0001-01-0000_PT-Day_EN-10" />
                   <Enumeration Text="11" Value="11" Id="M-00FA_A-0001-01-0000_PT-Day_EN-11" />
                   <Enumeration Text="12" Value="12" Id="M-00FA_A-0001-01-0000_PT-Day_EN-12" />
@@ -540,33 +686,24 @@
                   <Enumeration Text="29" Value="29" Id="M-00FA_A-0001-01-0000_PT-Day_EN-29" />
                   <Enumeration Text="30" Value="30" Id="M-00FA_A-0001-01-0000_PT-Day_EN-30" />
                   <Enumeration Text="31" Value="31" Id="M-00FA_A-0001-01-0000_PT-Day_EN-31" />
-                  <Enumeration Text="Letzter Tag im Monat" Value="32" Id="M-00FA_A-0001-01-0000_PT-Day_EN-32" />
-                  <Enumeration Text="Sonntag" Value="33" Id="M-00FA_A-0001-01-0000_PT-Day_EN-33" />
-                  <Enumeration Text="Montag" Value="34" Id="M-00FA_A-0001-01-0000_PT-Day_EN-34" />
-                  <Enumeration Text="Dienstag" Value="35" Id="M-00FA_A-0001-01-0000_PT-Day_EN-35" />
-                  <Enumeration Text="Mittwoch" Value="36" Id="M-00FA_A-0001-01-0000_PT-Day_EN-36" />
-                  <Enumeration Text="Donnerstag" Value="37" Id="M-00FA_A-0001-01-0000_PT-Day_EN-37" />
-                  <Enumeration Text="Freitag" Value="38" Id="M-00FA_A-0001-01-0000_PT-Day_EN-38" />
-                  <Enumeration Text="Samstag" Value="39" Id="M-00FA_A-0001-01-0000_PT-Day_EN-39" />
-                  <Enumeration Text="Werktag" Value="40" Id="M-00FA_A-0001-01-0000_PT-Day_EN-40" />
-                  <Enumeration Text="Wochenende" Value="41" Id="M-00FA_A-0001-01-0000_PT-Day_EN-41" />
+                  <Enumeration Text="ultimo" Value="32" Id="M-00FA_A-0001-01-0000_PT-Day_EN-32" />
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-Month" Name="Month">
                 <TypeRestriction Base="Value" SizeInBit="4">
-                  <Enumeration Text="*" Value="0" Id="M-00FA_A-0001-01-0000_PT-Month_EN-0" />
-                  <Enumeration Text="1" Value="1" Id="M-00FA_A-0001-01-0000_PT-Month_EN-1" />
-                  <Enumeration Text="2" Value="2" Id="M-00FA_A-0001-01-0000_PT-Month_EN-2" />
-                  <Enumeration Text="3" Value="3" Id="M-00FA_A-0001-01-0000_PT-Month_EN-3" />
-                  <Enumeration Text="4" Value="4" Id="M-00FA_A-0001-01-0000_PT-Month_EN-4" />
-                  <Enumeration Text="5" Value="5" Id="M-00FA_A-0001-01-0000_PT-Month_EN-5" />
-                  <Enumeration Text="6" Value="6" Id="M-00FA_A-0001-01-0000_PT-Month_EN-6" />
-                  <Enumeration Text="7" Value="7" Id="M-00FA_A-0001-01-0000_PT-Month_EN-7" />
-                  <Enumeration Text="8" Value="8" Id="M-00FA_A-0001-01-0000_PT-Month_EN-8" />
-                  <Enumeration Text="9" Value="9" Id="M-00FA_A-0001-01-0000_PT-Month_EN-9" />
-                  <Enumeration Text="10" Value="10" Id="M-00FA_A-0001-01-0000_PT-Month_EN-10" />
-                  <Enumeration Text="11" Value="11" Id="M-00FA_A-0001-01-0000_PT-Month_EN-11" />
-                  <Enumeration Text="12" Value="12" Id="M-00FA_A-0001-01-0000_PT-Month_EN-12" />
+                  <Enumeration Text="jeder" Value="0" Id="M-00FA_A-0001-01-0000_PT-Month_EN-0" />
+                  <Enumeration Text="Jan" Value="1" Id="M-00FA_A-0001-01-0000_PT-Month_EN-1" />
+                  <Enumeration Text="Feb" Value="2" Id="M-00FA_A-0001-01-0000_PT-Month_EN-2" />
+                  <Enumeration Text="Mär" Value="3" Id="M-00FA_A-0001-01-0000_PT-Month_EN-3" />
+                  <Enumeration Text="Apr" Value="4" Id="M-00FA_A-0001-01-0000_PT-Month_EN-4" />
+                  <Enumeration Text="Mai" Value="5" Id="M-00FA_A-0001-01-0000_PT-Month_EN-5" />
+                  <Enumeration Text="Jun" Value="6" Id="M-00FA_A-0001-01-0000_PT-Month_EN-6" />
+                  <Enumeration Text="Jul" Value="7" Id="M-00FA_A-0001-01-0000_PT-Month_EN-7" />
+                  <Enumeration Text="Aug" Value="8" Id="M-00FA_A-0001-01-0000_PT-Month_EN-8" />
+                  <Enumeration Text="Sep" Value="9" Id="M-00FA_A-0001-01-0000_PT-Month_EN-9" />
+                  <Enumeration Text="Okt" Value="10" Id="M-00FA_A-0001-01-0000_PT-Month_EN-10" />
+                  <Enumeration Text="Nov" Value="11" Id="M-00FA_A-0001-01-0000_PT-Month_EN-11" />
+                  <Enumeration Text="Dez" Value="12" Id="M-00FA_A-0001-01-0000_PT-Month_EN-12" />
                 </TypeRestriction>
               </ParameterType>
             </ParameterTypes>

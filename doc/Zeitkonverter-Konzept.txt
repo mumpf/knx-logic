@@ -11,56 +11,84 @@
 - Monat macht 4 Bit, 1-12 belegt, Wert 0 und 13-15 frei
 - Macht 21 Bit/Eintrag (mit alternative), somit 6 Zeitpunkte und 2 Bit verlust
 - Wahl von Tagesschaltpunkt oder Jahresschaltpunkt, dann pro Tag 14 Bit, somit 9 Zeitpunkte und auch 2 Bit verlust.
+- Aktuelle Idee: Tages- und Jahresschaltpunkt bekommen 1 Bit extra, um auch dynamische Schaltpunkte zu realisieren
+- Info ob Jahresschaltuhr oder Tagesschaltuhr und Feiertagsbehandlung kommen in ein extra Byte des Kanals
+- Wegen Veretzung von Bytegrenzen doch nur 4 Jahresschaltpunkte
+- Speicher wird bei Jahresschaltpunkten neu organisiert: 4 Tagesschaltpunkte en Block, dann die 4 Jahresinfos en Block
 
-
-Speicheraufteilung (128 Bit) für Jahresschaltuhr mit 5 Zeitpunkten
-Bit 0: 0=Jahresschaltuhr; 1=Tagesschaltuhr, hier also 0
+Extra Byte:
+Bit 0: 0=Jahresschaltuhr; 1=Tagesschaltuhr
 Bit 1: 0=An Feiertagen keine Schaltung ausführen; 1=Feiertage wie Sonntage behandeln
-Bit 2-25: Jahresschaltpunkt 1
-Bit 26-49: Jahresschaltpunkt 2
-Bit 50-73: Jahresschaltpunkt 3
-Bit 74-97: Jahresschaltpunkt 4
-Bit 98-121: Jahresschaltpunkt 5
+Bit 2-3: Beim Neustart Schaltzeiten nachholen? (0=Nein, 1=Den letzen Schaltpunkt, 2=Die letzten beiden Schaltpunkte)
+Bit 3-7: frei für Erweiterungen
 
-Speicheraufteilung (128 Bit) für Tagesschaltuhr mit 9 Zeitpunkten
-Bit 0: 0=Jahresschaltuhr; 1=Tagesschaltuhr, hier also 1
-Bit 1: 0=An Feiertagen keine Schaltung ausführen; 1=Feiertage wie Sonntage behandeln
-Bit 2-15: Tagesschaltpunkt 1
-Bit 16-29: Tagesschaltpunkt 2
-Bit 30-43: Tagesschaltpunkt 3
-Bit 44-57: Tagesschaltpunkt 4
-Bit 58-71: Tagesschaltpunkt 5
-Bit 72-85: Tagesschaltpunkt 6
-Bit 86-99: Tagesschaltpunkt 7
-Bit 100-113: Tagesschaltpunkt 8
-Bit 114-127: Tagesschaltpunkt 9
+Extra Long: Je 4 Bit pro Tabellenzeile für Zeitbezug
+0x0: inaktiv
+0x1: Zeitpunkt
+0x4: Sonnenaufgang +
+0x5: Sonnenaufgang -
+0x6: Sonnenuntergang +
+0x7: Sonnenuntergang -
+0x8-0x15: Zufall?
 
-Speicheraufteilung Jahresschaltpunkt:
+Speicheraufteilung (128 Bit) für Jahresschaltuhr mit 4 Zeitpunkten
+Bit 0-15: Jahresschaltpunkt 1 (Tagesanteil)
+Bit 16-31: Jahresschaltpunkt 2 (Tagesanteil)
+Bit 32-47: Jahresschaltpunkt 3 (Tagesanteil)
+Bit 48-63: Jahresschaltpunkt 4 (Tagesanteil)
+Bit 64-79: Jahresschaltpunkt 1 (Jahresanteil)
+Bit 80-95: Jahresschaltpunkt 2 (Jahresanteil)
+Bit 96-111: Jahresschaltpunkt 3 (Jahresanteil)
+Bit 112-127: Jahresschaltpunkt 4 (Jahresanteil)
+
+Speicheraufteilung (128 Bit) für Tagesschaltuhr mit 8 Zeitpunkten
+Bit 0-15: Tagesschaltpunkt 1
+Bit 16-31: Tagesschaltpunkt 2
+Bit 32-47: Tagesschaltpunkt 3
+Bit 48-63: Tagesschaltpunkt 4
+Bit 64-79: Tagesschaltpunkt 5
+Bit 80-95: Tagesschaltpunkt 6
+Bit 96-111: Tagesschaltpunkt 7
+Bit 112-127: Tagesschaltpunkt 8
+
+Speicheraufteilung Jahresschaltpunkt (2x16 Bit):
+Block 1:
+Bit 0-15: Wie Tagesschaltpunkt (wird auch technisch so verwendet) ohne Wochentag
 Bit 0: Schaltwert (0/1)
-Bit 1-6: Minute; Werte 0-59; Sonderwerte: 63=*
-Bit 7-11: Stunde; Werte 0-23; Sonderwerte: 31=*
-Bit 12: Wochentag Montag
-Bit 13: Wochentag Dienstag
-Bit 14: Wochentag Mittwoch
-Bit 15: Wochentag Donnerstag
-Bit 16: Wochentag Freitag
-Bit 17: Wochentag Samstag
-Bit 18: Wochentag Sonntag
-Bit 12-18: Interpretation als Tag; Werte 1-31; Sonderwerte: 0=*; 32=letzter Tag im Monat
-Bit 19: 0=Tag; 1=Wochentag; gibt die Interpretation der Bits 12-18 an
-Bit 20-23: Monat; Werte 1-12; Sonderwerte: 0=*
+Bit 1: ungenutzt
+Bit 2-6: Stunde; Werte 0-23; Sonderwerte: 31=*
+Bit 7-12: Minute; Werte 0-59; Sonderwerte: 63=*
+Bit 2-12: Alternativ relative Schaltzeit, siehe unten
+Bit 13-15: ungenutzt
 
-Speicheraufteilung Tagesschaltpunkt:
+Block 2:
+Bit 0: Wochentag Montag
+Bit 1: Wochentag Dienstag
+Bit 2: Wochentag Mittwoch
+Bit 3: Wochentag Donnerstag
+Bit 4: Wochentag Freitag
+Bit 5: Wochentag Samstag
+Bit 6: Wochentag Sonntag
+Bit 0-6: Interpretation als Tag; Werte 1-31; Sonderwerte: 0=*; 32=letzter Tag im Monat
+Bit 7: 0=Tag; 1=Wochentag; gibt die Interpretation der Bits 0-6 an
+Bit 8-11: Monat; Werte 1-12; Sonderwerte: 0=*
+Bit 12-15: ungenutzt
+
+Speicheraufteilung Tagesschaltpunkt absolut/relativ (16 Bit):
 Bit 0: Schaltwert (0/1)
-Bit 1-6: Minute; Werte 0-59; Sonderwerte: 63=*
-Bit 7-11: Stunde; Werte 0-23; Sonderwerte: 31=*
-Bit 12: Wochentag Montag
-Bit 13: Wochentag Dienstag
-Bit 14: Wochentag Mittwoch
-Bit 15: Wochentag Donnerstag
-Bit 16: Wochentag Freitag
-Bit 17: Wochentag Samstag
-Bit 18: Wochentag Sonntag
+Bit 1: ungenutzt
+Bit 2-6: Stunde; Werte 0-23; Sonderwerte: 31=*; bei relativer Schaltzeit kein * und nur 0-8 Stunden
+Bit 7-12: Minute; Werte 0-59; Sonderwerte: 63=*; bei relativer Schaltzeit kein *
+Bit 13-15: Wochentag; Werte 1-7 (Montag=1); Sonderwerte: 0=*
 
-Crontab-Ausdruck: Minuten Stunden Wochentag Monatstag Monat
-30 17 0 15 12
+Sortierbarer Zeitwert (Jahr nicht nötig):
+Bit 0-3: Monat (0-11), 12-15 ist frei
+Bit 4-8: Tag (0-30), 31 ist frei
+Bit 9-13: Stunde (0-23), 24-31 ist frei
+Bit 14-19: Minute (0-59), 60-63 ist frei
+=> Es werden mehr als 16 Bit gebraucht, dann also 32 Bit.
+Der Einfachhheit halber also 1 Byte pro Wert: 
+Byte 1: Monat
+Byte 2: Tag
+Byte 3: Stunde
+Byte 4: Minute
