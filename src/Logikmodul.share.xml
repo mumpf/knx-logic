@@ -422,9 +422,19 @@
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-Holiday" Name="Holiday">
-                <TypeRestriction Base="Value" SizeInBit="1">
-                  <Enumeration Text="Feiertage wie Sonntage behandeln" Value="0" Id="M-00FA_A-0001-01-0000_PT-Holiday_EN-0" />
+                <TypeRestriction Base="Value" SizeInBit="2">
+                  <Enumeration Text="Feiertage nicht beachten" Value="0" Id="M-00FA_A-0001-01-0000_PT-Holiday_EN-0" />
                   <Enumeration Text="An Feiertagen nicht schalten" Value="1" Id="M-00FA_A-0001-01-0000_PT-Holiday_EN-1" />
+                  <Enumeration Text="Nur an Feiertagen schalten" Value="2" Id="M-00FA_A-0001-01-0000_PT-Holiday_EN-2" />
+                  <Enumeration Text="Feiertage wie Sonntage behandeln" Value="3" Id="M-00FA_A-0001-01-0000_PT-Holiday_EN-3" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-Vacation" Name="Vacation">
+                <TypeRestriction Base="Value" SizeInBit="2">
+                  <Enumeration Text="Urlaub nicht beachten" Value="0" Id="M-00FA_A-0001-01-0000_PT-Vacation_EN-0" />
+                  <Enumeration Text="Bei Urlaub nicht schalten" Value="1" Id="M-00FA_A-0001-01-0000_PT-Vacation_EN-1" />
+                  <Enumeration Text="Nur bei Urlaub schalten" Value="2" Id="M-00FA_A-0001-01-0000_PT-Vacation_EN-2" />
+                  <Enumeration Text="Urlaub wie Sonntag behandeln" Value="3" Id="M-00FA_A-0001-01-0000_PT-Vacation_EN-3" />
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-IsWeekday" Name="IsWeekday">
@@ -725,6 +735,36 @@
                 <Parameter Id="M-00FA_A-0001-01-0000_UP-6" Name="LedInstalled" Offset="0" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Optischer Signalgeber vorhanden (RGB-LED)?" Value="1" />
                 <Parameter Id="M-00FA_A-0001-01-0000_UP-7" Name="EepromInstalled" Offset="0" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Nichtflüchtiger Speicher vorhanden (EEPROM)?" Value="1" />
                 <Parameter Id="M-00FA_A-0001-01-0000_UP-8" Name="NCN5130Installed" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Zusatzhardware abschaltbar (z.B. mit NCN5130)?" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-34" Name="VacationKo" Offset="0" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Urlaubsbehandlung aktivieren?" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-35" Name="HolidayKo" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Feiertage auf den Bus senden?" Value="0" />
+              </Union>
+              <Union SizeInBit="32">
+                <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="10" BitOffset="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-9" Name="Neujahr" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Neujahr" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-10" Name="DreiKoenige" Offset="0" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Hl. Drei Könige" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-11" Name="Weiberfastnacht" Offset="0" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Weiberfastnacht" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-12" Name="Rosenmontag" Offset="0" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Rosenmontag" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-13" Name="Fastnachtsdienstag" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Fastnachtsdienstag" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-14" Name="Aschermittwoch" Offset="0" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Aschermittwoch" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-15" Name="Gruendonnerstag" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Gründonnerstag" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-16" Name="Karfreitag" Offset="0" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Karfreitag" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-17" Name="Ostersonntag" Offset="1" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Ostersonntag" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-18" Name="Ostermontag" Offset="1" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Ostermontag" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-19" Name="TagDerArbeit" Offset="1" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Tag der Arbeit" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-20" Name="Himmelfahrt" Offset="1" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Christi Himmelfahrt" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-21" Name="Pfingstsonntag" Offset="1" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Pfingstsonntag" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-22" Name="Pfingstmontag" Offset="1" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Pfingstmontag" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-23" Name="Frohleichnam" Offset="1" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Frohleichnam" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-24" Name="Friedensfest" Offset="1" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Hohes Friedensfest" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-25" Name="MariaHimmelfahrt" Offset="2" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Mariä Himmelfahrt" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-26" Name="DeutscheEinheit" Offset="2" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Tag der Deutschen Einheit" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-27" Name="Reformationstag" Offset="2" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Reformationstag" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-28" Name="Allerheiligen" Offset="2" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Allerheiligen" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-29" Name="BussBettag" Offset="2" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Buß- und Bettag" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-30" Name="Heiligabend" Offset="2" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Heiligabend" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-31" Name="Weihnachtstag1" Offset="2" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Erster Weihnachtstag" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-32" Name="Weihnachtstag2" Offset="2" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Zweiter Weihnachtstag" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-33" Name="Silvester" Offset="3" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Silvester" Value="1" />
               </Union>
             </Parameters>
             <ParameterRefs>
@@ -733,16 +773,50 @@
               <ParameterRef Id="M-00FA_A-0001-01-0000_P-2_R-21" RefId="M-00FA_A-0001-01-0000_P-2" />
               <ParameterRef Id="M-00FA_A-0001-01-0000_P-3_R-31" RefId="M-00FA_A-0001-01-0000_P-3" />
               <ParameterRef Id="M-00FA_A-0001-01-0000_UP-4_R-41" RefId="M-00FA_A-0001-01-0000_UP-4" />
+              <!-- Parameter 5-8 are enabled on generic page of target application -->
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-9_R-91" RefId="M-00FA_A-0001-01-0000_UP-9" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-10_R-101" RefId="M-00FA_A-0001-01-0000_UP-10" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-11_R-111" RefId="M-00FA_A-0001-01-0000_UP-11" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-12_R-121" RefId="M-00FA_A-0001-01-0000_UP-12" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-13_R-131" RefId="M-00FA_A-0001-01-0000_UP-13" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-14_R-141" RefId="M-00FA_A-0001-01-0000_UP-14" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-15_R-151" RefId="M-00FA_A-0001-01-0000_UP-15" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-16_R-161" RefId="M-00FA_A-0001-01-0000_UP-16" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-17_R-171" RefId="M-00FA_A-0001-01-0000_UP-17" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-18_R-181" RefId="M-00FA_A-0001-01-0000_UP-18" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-19_R-191" RefId="M-00FA_A-0001-01-0000_UP-19" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-20_R-201" RefId="M-00FA_A-0001-01-0000_UP-20" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-21_R-211" RefId="M-00FA_A-0001-01-0000_UP-21" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-22_R-221" RefId="M-00FA_A-0001-01-0000_UP-22" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-23_R-231" RefId="M-00FA_A-0001-01-0000_UP-23" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-24_R-241" RefId="M-00FA_A-0001-01-0000_UP-24" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-25_R-251" RefId="M-00FA_A-0001-01-0000_UP-25" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-26_R-261" RefId="M-00FA_A-0001-01-0000_UP-26" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-27_R-271" RefId="M-00FA_A-0001-01-0000_UP-27" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-28_R-281" RefId="M-00FA_A-0001-01-0000_UP-28" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-29_R-291" RefId="M-00FA_A-0001-01-0000_UP-29" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-30_R-301" RefId="M-00FA_A-0001-01-0000_UP-30" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-31_R-311" RefId="M-00FA_A-0001-01-0000_UP-31" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-32_R-321" RefId="M-00FA_A-0001-01-0000_UP-32" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-33_R-331" RefId="M-00FA_A-0001-01-0000_UP-33" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-34_R-341" RefId="M-00FA_A-0001-01-0000_UP-34" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-35_R-351" RefId="M-00FA_A-0001-01-0000_UP-35" />
             </ParameterRefs>
             <ComObjectTable>
               <ComObject Id="M-00FA_A-0001-01-0000_O-1" Name="Heartbeat" Text="In Betieb" Number="1" FunctionText="Zyklisch" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-2" />
               <ComObject Id="M-00FA_A-0001-01-0000_O-2" Name="Time" Text="Uhrzeit" Number="2" FunctionText="Eingang" ObjectSize="3 Bytes" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" DatapointType="DPST-10-1" />
               <ComObject Id="M-00FA_A-0001-01-0000_O-3" Name="Date" Text="Datum" Number="3" FunctionText="Eingang" ObjectSize="3 Bytes" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" DatapointType="DPST-11-1" />
+              <ComObject Id="M-00FA_A-0001-01-0000_O-4" Name="Vacation" Text="Urlaub" Number="4" FunctionText="Eingang" ObjectSize="1 Bit" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />
+              <ComObject Id="M-00FA_A-0001-01-0000_O-5" Name="Holiday1" Text="Feiertag heute" Number="5" FunctionText="Ausgang" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />
+              <ComObject Id="M-00FA_A-0001-01-0000_O-6" Name="Holiday2" Text="Feiertag morgen" Number="6" FunctionText="Ausgang" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />
             </ComObjectTable>
             <ComObjectRefs>
               <ComObjectRef Id="M-00FA_A-0001-01-0000_O-1_R-11" RefId="M-00FA_A-0001-01-0000_O-1" />
               <ComObjectRef Id="M-00FA_A-0001-01-0000_O-2_R-21" RefId="M-00FA_A-0001-01-0000_O-2" />
               <ComObjectRef Id="M-00FA_A-0001-01-0000_O-3_R-31" RefId="M-00FA_A-0001-01-0000_O-3" />
+              <ComObjectRef Id="M-00FA_A-0001-01-0000_O-4_R-41" RefId="M-00FA_A-0001-01-0000_O-4" />
+              <ComObjectRef Id="M-00FA_A-0001-01-0000_O-5_R-51" RefId="M-00FA_A-0001-01-0000_O-5" />
+              <ComObjectRef Id="M-00FA_A-0001-01-0000_O-6_R-61" RefId="M-00FA_A-0001-01-0000_O-6" />
             </ComObjectRefs>
             <AddressTable MaxEntries="255" />
             <AssociationTable MaxEntries="255" />
@@ -789,7 +863,7 @@
               </ParameterBlock>
             </ChannelIndependentBlock>
             <Channel Id="M-00FA_A-0001-01-0000_CH-3" Name="Logik" Number="3" Text="Logikdokumentation">
-              <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-2" Name="Info" Text="Allgemein">
+              <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-2" Name="Info1" Text="Allgemein">
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-1" Text="Jeder Logikkanal dieses Moduls repräsentiert eine Logik. Die Logikverarbeitung ist intern immer Binär (DPT1). Jede Logik hat bis zu 4 Eingänge, Detais siehe bei der Doku der Eingänge." />
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-2" Text="Da das Logikmodul unterschiedliche DPT für Ein- und Ausgänge erlaubt, gibt es Funktionsblöcke (im folgendem FB), die einen DPTx zu DPT1 konvertieren (für Eingänge) und umgekehrt (für Ausgänge)." />
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-3" Text="In das Ein- und Ausgangssignal einer Logik können weitere FB eingefügt werden und so das Ein- bzw. das Ausgangssignal beeinflussen. Folgende Funktionsblöcke gibt es:" />
@@ -805,7 +879,7 @@
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-13" Text="Zyklisch senden: Für ein/aus einzeln einstellbar" />
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-14" Text="Ausgangs-Konverter: Kann in DPT 1,2,5,6,7,8,9,16,17,232 konvertieren, für an und aus in unterschiedliche Werte oder auch nichts tun (Wert unterdrücken)." />
               </ParameterBlock>
-              <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-3" Name="Info" Text="Eingänge">
+              <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-3" Name="Info2" Text="Eingänge">
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-15" Text="Es gibt bis zu 4 Eingänge, wobei maximal 2 Eingänge von außen (über ein KO) oder über einen Sensorwert versorgt werden können, und maximal 2 Eingänge mit dem Ausgang eines anderen Kanäls verbunden werden können." />
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-16" Text="Ist ein Eingang mit dem Bus verbunden (hat ein KO), kann er zyklisch Leseanforderungen auf dieses KO senden." />
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-17" Text="Ist ein Eingang ein Zahlenwert (DPT2 bis DPT9), muss ein Eingangs-Konverter gewählt werden, der den Wert in ein binären Wert (DPT1) konvertiert." />
@@ -824,7 +898,7 @@
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-30" Text="Ferner kann ein Eingang auch so eingestellt werden, dass er seinen Wert zyklisch alle n Sekunden vom Bus lesen soll." />
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-31" Text="Ein Eingang kann auch invertiert werden, allerdings passiert das als letzter FB, direkt am Logikeingang. Somit werden alle vorhergehenden FB (z.B. Initialisierung mit AUS) auch invertiert!" />
               </ParameterBlock>
-              <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-4" Name="Info" Text="Ausgänge">
+              <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-4" Name="Info3" Text="Ausgänge">
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-35" Text="Alle FB am Ausgang können einzeln zu- oder abgeschaltet, aber nicht in ihrer Reihenfolge geändert werden. Somit geht das Ergebnis eines FB direkt in den folgenden FB-Eingang ein." />
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-36" Text="Der Logik-Ausgangswert triggert weitere FB, sobald sich der Ausgangswert der Logik ändert, sobald sich irgendein Eingangswert ändert oder sobald irgendein Eingang einen Wert bekommen hat. Man kann auch bestimmte Eingänge auswählen." />
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-37" Text="Treppenlicht/Blinken: Normales Treppenlicht mit wählbarem Verlängern bzw. vorzeitig ausschalten. Während der Treppenlichtzeit kann man den FB-Ausgang mit einstellbaren Puls-/Pausenverhältnis ein- und ausschalten (blinken) lassen." />
@@ -838,6 +912,54 @@
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-43" Text="- Auf die Ausgangs-GA einen Read-Request senden" />
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-44" Text="- Ein KNX-Gerät zurücksetzen (Reset-Funktion der ETS)" />
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-45" Text="- Einen Ton Ein- bzw. Ausschalten (nur für Module mit Buzzer)" />
+              </ParameterBlock>
+            </Channel>
+            <Channel Id="M-00FA_A-0001-01-0000_CH-5" Name="Timer" Number="5" Text="Urlaub/Feiertage">
+              <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-nnn" Name="Holidays" Text="Urlaub/Feiertage">
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-50" Text="Urlaub" UIHint="Headline" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-51" Text="Zeitschaltuhren können auch Urlaubszeiten berücksichtigen. Damit das funktioniert, muss eine Urlaubszeit über das KO 4 dem Gerät mitgeteilt werden."/>
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-34_R-341" />
+                <choose ParamRefId="M-00FA_A-0001-01-0000_UP-34_R-341">
+                  <when test="1">
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-4_R-41" />
+                  </when>
+                </choose>
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-52" Text="" UIHint="HorizontalRuler" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-53" Text="Feiertage" UIHint="Headline" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-54" Text="Das Gerät kann die berechneten Feiertage auch auf den Bus senden. Über das KO 5 wird mitgeteilt, ob 'Heute' ein Feiertag ist, über KO 6 ob 'Morgen' ein Feiertag ist." />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-35_R-351" />
+                <choose ParamRefId="M-00FA_A-0001-01-0000_UP-35_R-351">
+                  <when test="1">
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-5_R-51" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-6_R-61" />
+                  </when>
+                </choose>
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-55" Text="Im folgendend kann bestimmt werden, welche Feiertage berechnet werden sollen. Diese Feiertage werden auch von den Zeitschaltuhren berücksichtigt." />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-9_R-91" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-10_R-101" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-11_R-111" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-12_R-121" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-13_R-131" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-14_R-141" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-15_R-151" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-16_R-161" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-17_R-171" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-18_R-181" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-19_R-191" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-20_R-201" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-21_R-211" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-22_R-221" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-23_R-231" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-24_R-241" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-25_R-251" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-26_R-261" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-27_R-271" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-28_R-281" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-29_R-291" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-30_R-301" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-31_R-311" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-32_R-321" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-33_R-331" />
               </ParameterBlock>
             </Channel>
           </Dynamic>

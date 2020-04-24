@@ -42,7 +42,6 @@
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%130" Name="f%C%E1DefaultEEPROM" Offset="0" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Eingangswert speichern und beim nächsten Neustart als Vorbelegung nutzen?" Value="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%164" Name="f%C%E1DefaultRepeat" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Nur so lange zyklisch lesen, bis erstes Telegramm eingeht" Value="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%272" Name="f%C%TYearDay" Offset="0" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-YearDay" Text="Typ der Zeitschaltuhr" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%273" Name="f%C%THoliday" Offset="0" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-Holiday" Text="Feiertagsbehandlung" Value="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%274" Name="f%C%TRestoreState" Offset="0" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-RestoreState" Text="Beim Neustart Schaltzeit nachholen" Value="0" />
     </Union>
     <Union SizeInBit="32">
@@ -62,6 +61,8 @@
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%046" Name="f%C%E2Default" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-InputDefault" Text="Falls Vorbelegung aus dem Speicher nicht möglich oder nicht gewünscht, dann vorbelegen mit" Value="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%131" Name="f%C%E2DefaultEEPROM" Offset="0" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Eingangswert speichern und beim nächsten Neustart als Vorbelegung nutzen" Value="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%165" Name="f%C%E2DefaultRepeat" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Nur so lange zyklisch lesen, bis erstes Telegramm eingeht" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%273" Name="f%C%THoliday" Offset="0" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-Holiday" Text="Feiertagsbehandlung" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%276" Name="f%C%TVacation" Offset="0" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-Vacation" Text="Urlaubsbehandlung" Value="0" />
     </Union>
     <Union SizeInBit="32">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="19" BitOffset="0" />
@@ -667,6 +668,7 @@
     <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%273_R-%C%2731" RefId="M-00FA_A-0001-01-0000_UP-%C%273" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%274_R-%C%2741" RefId="M-00FA_A-0001-01-0000_UP-%C%274" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%275_R-%C%2751" RefId="M-00FA_A-0001-01-0000_P-%C%275" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%276_R-%C%2761" RefId="M-00FA_A-0001-01-0000_UP-%C%276" />
   </ParameterRefs>
   <ComObjectTable>
     <ComObject Id="M-00FA_A-0001-01-0000_O-%K0%" Name="KOf%C%E1" Number="%K0%" Text="Eingang 1" FunctionText="Logik %C%, Eingang 1" ObjectSize="1 Bit" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" />
@@ -1601,6 +1603,7 @@
             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%275_R-%C%2751" />
             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%272_R-%C%2721" />
             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%273_R-%C%2731" />
+            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%276_R-%C%2761" />
             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%274_R-%C%2741" />
             <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="" UIHint="HorizontalRuler" />
             <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%272_R-%C%2721">
