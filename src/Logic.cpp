@@ -262,6 +262,7 @@ void Logic::debug() {
     printDebug("Logik-LOG_ChannelsFirmware (in Firmware): %d\n", LOG_ChannelsFirmware);
     printDebug("Logik-gNumChannels (in knxprod):  %d\n", mNumChannels);
     printDebug("Aktuelle Zeit: %s", sTimer.getTimeAsc());
+    sTimer.debugHolidays();
     // Test i2c failure
     // we start an i2c read i.e. for EEPROM
     // prepareReadEEPROM(4711, 20);
@@ -313,6 +314,8 @@ void Logic::setup(bool iSaveSupported) {
 #endif
         if (prepareChannels())
             writeAllDptToEEPROM();
+        // sTimer.setup(knx.paramInt(LOG_Neujahr));
+        sTimer.setup(8.639751, 49.310209, 1, true, 0xFFFFFFFF);
     }
 }
 

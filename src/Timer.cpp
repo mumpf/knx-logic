@@ -5,11 +5,11 @@
 
 Timer::Timer()
 {
-    mDateTime.tm_year = 120;
-    mDateTime.tm_mon = 0;
-    mDateTime.tm_mday = 1;
-    mDateTime.tm_wday = 3;
-    mktime(&mDateTime);
+    mNow.tm_year = 120;
+    mNow.tm_mon = 0;
+    mNow.tm_mday = 1;
+    mNow.tm_wday = 3;
+    mktime(&mNow);
     mTimeDelay = millis();
 }
 
@@ -22,8 +22,11 @@ Timer &Timer::instance() {
     return sInstance;
 }
 
-void Timer::setup(uint32_t iHolidayBitmask) {
+void Timer::setup(double iLongitude, double iLatitude, int8_t iTimezone, bool iUseSummertime, uint32_t iHolidayBitmask) {
 
+    mLongitude = iLongitude;
+    mLatitude = iLatitude;
+    mUseSummertime = iUseSummertime;
     // we delete all unnecessary holidays from holiday data
     for (uint8_t i = 0; i < 29; i++)
     {
@@ -37,26 +40,29 @@ void Timer::loop() {
     if (delayCheck(mTimeDelay, 1000))
     {
         mTimeDelay = millis();
-        mDateTime.tm_sec += 1;
-        mktime(&mDateTime);
+        mNow.tm_sec += 1;
+        mktime(&mNow);
         if (mTimeValid == tmValid)
         {
-            if (mMinuteTick != mDateTime.tm_min)
+            if (mMinuteTick != mNow.tm_min)
             {
                 mMinuteChanged = true;
                 // just call once a minute
-                mMinuteTick = mDateTime.tm_min;
+                mMinuteTick = mNow.tm_min;
+                if (mUseSummertime && (getMonth() == 3 || getMonth() == 10) && getHour() == 3 && getMinute() == 1)
+                    calculateSummertime();
             }
-            if (mDayTick != mDateTime.tm_mday)
+            if (mDayTick != mNow.tm_mday)
             {
                 calculateSunriseSunset();
-                mDayTick = mDateTime.tm_mday;
+                mDayTick = mNow.tm_mday;
             }
-            if (mEasterTick != mDateTime.tm_year)
+            if (mYearTick != mNow.tm_year)
             {
                 calculateEaster();
                 calculateAdvent();
-                mEasterTick = mDateTime.tm_year;
+                calculateSummertime(); // initial summertime calculation if year changes
+                mYearTick = mNow.tm_year;
             }
         }
     }
@@ -66,23 +72,22 @@ void Timer::calculateSunriseSunset()
 {
     double rise, set;
     // sunrise/sunset calculation
-    sun_rise_set(mDateTime.tm_year + 1900, mDateTime.tm_mon + 1, mDateTime.tm_mday,
-                 8.639751, 49.310209,
-                 &rise, &set);
+    sunRiseSet(getYear(), getMonth(), getDay(),
+                 mLongitude, mLatitude, 35.0 / 60.0, 1, &rise, &set);
     double lTmp;
     mSunrise.minute = round(modf(rise, &lTmp) * 60.0);
-    mSunrise.hour = lTmp + 2;
+    mSunrise.hour = lTmp + mTimezone + (mIsSummertime) ? 1 : 0;
     mSunset.minute = round(modf(set, &lTmp) * 60.0);
-    mSunset.hour = lTmp + 2;
+    mSunset.hour = lTmp + mTimezone + (mIsSummertime) ? 1 : 0;
 }
 
 void Timer::setTimeFromBus(tm *iTime) {
-    if (mDateTime.tm_min != iTime->tm_min || mDateTime.tm_hour != iTime->tm_hour)
+    if (mNow.tm_min != iTime->tm_min || mNow.tm_hour != iTime->tm_hour)
         mMinuteChanged = true;
-    mDateTime.tm_sec = iTime->tm_sec;
-    mDateTime.tm_min = iTime->tm_min;
-    mDateTime.tm_hour = iTime->tm_hour;
-    mktime(&mDateTime);
+    mNow.tm_sec = iTime->tm_sec;
+    mNow.tm_min = iTime->tm_min;
+    mNow.tm_hour = iTime->tm_hour;
+    mktime(&mNow);
     mTimeDelay = millis();
     mTimeValid = static_cast<eTimeValid>(mTimeValid | tmMinutesValid);
 }
@@ -92,7 +97,7 @@ void Timer::setDateFromBus(tm *iDate) {
     // in case of date changes
     if (iDate->tm_year != getYear())
     {
-        mEasterTick = -1; // triggers easter calculation
+        mYearTick = -1; // triggers easter calculation
         mDayTick = -1;    // triggers sunrise/sunset calculation
         mMinuteChanged = true;
     }
@@ -101,10 +106,10 @@ void Timer::setDateFromBus(tm *iDate) {
         mDayTick = -1; // triggers sunrise/sunset calculation
         mMinuteChanged = true;
     }
-    mDateTime.tm_mday = iDate->tm_mday;
-    mDateTime.tm_mon = iDate->tm_mon - 1;
-    mDateTime.tm_year = iDate->tm_year - 1900;
-    mktime(&mDateTime);
+    mNow.tm_mday = iDate->tm_mday;
+    mNow.tm_mon = iDate->tm_mon - 1;
+    mNow.tm_year = iDate->tm_year - 1900;
+    mktime(&mNow);
     mTimeDelay = millis();
     mTimeValid = static_cast<eTimeValid>(mTimeValid | tmDateValid);
 }
@@ -119,37 +124,37 @@ void Timer::clearMinuteChanged() {
 
 uint16_t Timer::getYear()
 {
-    return mDateTime.tm_year + 1900;
+    return mNow.tm_year + 1900;
 }
 
 uint8_t Timer::getMonth()
 {
-    return mDateTime.tm_mon + 1;
+    return mNow.tm_mon + 1;
 }
 
 uint8_t Timer::getDay()
 {
-    return mDateTime.tm_mday;
+    return mNow.tm_mday;
 }
 
 uint8_t Timer::getHour()
 {
-    return mDateTime.tm_hour;
+    return mNow.tm_hour;
 }
 
 uint8_t Timer::getMinute()
 {
-    return mDateTime.tm_min;
+    return mNow.tm_min;
 }
 
 uint8_t Timer::getSecond()
 {
-    return mDateTime.tm_sec;
+    return mNow.tm_sec;
 }
 
 uint8_t Timer::getWeekday()
 {
-    return mDateTime.tm_wday;
+    return mNow.tm_wday;
 }
 
 sTime *Timer::getSunInfo(uint8_t iSunInfo)
@@ -167,12 +172,59 @@ sDay *Timer::getEaster() {
 }
 
 char *Timer::getTimeAsc() {
-    return asctime(&mDateTime);
+    return asctime(&mNow);
+}
+
+uint8_t Timer::calculateLastSundayInMonth(uint8_t iMonth) {
+    mTimeHelper.tm_year = mNow.tm_year;
+    mTimeHelper.tm_mon = iMonth - 1;
+    mTimeHelper.tm_mday = 31;
+    mktime(&mTimeHelper);
+    return mTimeHelper.tm_mday - mTimeHelper.tm_wday;
+}
+
+// should be called only at 03:01 o'clock
+void Timer::calculateSummertime() {
+    // first we do easy win
+    mIsSummertime = false;
+    if (mUseSummertime) {
+      if (getMonth() == 3) {
+          // find last Sunday in March
+          uint8_t lLastSunday = calculateLastSundayInMonth(3);
+          if (lLastSunday == mNow.tm_mday) {
+              // we have to take time into account
+              mIsSummertime = (mNow.tm_hour > 3);
+          } else {
+              mIsSummertime = (lLastSunday < mNow.tm_mday);
+          }
+      } else if (getMonth() == 10) {
+          // find last Sunday in October
+          uint8_t lLastSunday = calculateLastSundayInMonth(10);
+          if (lLastSunday == mNow.tm_mday)
+          {
+              // we have to take time into account
+              // here might be a problem if called between 
+              // 2 and 3, because these times exist in both
+              // summer and wintertime. This is currently
+              // mitigated with the fact, that this routine
+              // is called only once at 03:01. Currently just used
+              // for sunrise/sunset calculation, so calling
+              // time is no problem.
+              mIsSummertime = (mNow.tm_hour < 3);
+          }
+          else
+          {
+              mIsSummertime = (lLastSunday > mNow.tm_mday);
+          }
+      } else {
+          mIsSummertime = (getMonth() > 3 && getMonth() < 10);
+      }
+    }
 }
 
 void Timer::calculateAdvent() {
     // calculates the 4th advent
-    mTimeHelper.tm_year = mDateTime.tm_year;
+    mTimeHelper.tm_year = mNow.tm_year;
     mTimeHelper.tm_mon = 11;
     mTimeHelper.tm_mday = 24;
     mTimeHelper.tm_hour = 12;
@@ -219,9 +271,18 @@ void Timer::calculateEaster()
     }
 }
 
-void Timer::calculateHolidays() {
+void Timer::debugHolidays()
+{
+    printDebug("\nJahr %d: ", getYear());
+    // calculateEaster();
+    // calculateAdvent();
+    calculateHolidays(true);
+    printDebug("\nEnd of holiday debug\n\n");
+}
+
+void Timer::calculateHolidays(bool iDebugOutput) {
     // check if today is a holiday
-    sDay lToday = {getDay(), getMonth()};
+    sDay lToday = {(int8_t)getDay(), (int8_t)getMonth()};
     sDay lTomorrow = getDayByOffset(1, lToday);
     mIsHolidayToday = false;
     mIsHolidayTomorrow = false;
@@ -246,11 +307,13 @@ void Timer::calculateHolidays() {
                 break;
         }
         if (lHoliday.month > REMOVED) {
+            if (iDebugOutput)
+                printDebug("%02d.%02d., ", lHoliday.day, lHoliday.month);
             if (isEqualDate(lHoliday, lToday))
                 mIsHolidayToday = true;
             if (isEqualDate(lHoliday, lTomorrow))
                 mIsHolidayTomorrow = true;
-            if (mIsHolidayToday && mIsHolidayTomorrow)
+            if (mIsHolidayToday && mIsHolidayTomorrow && !iDebugOutput)
                 break;
         }
     }
@@ -261,7 +324,7 @@ bool Timer::isEqualDate(sDay &iDate1, sDay &iDate2) {
 }
 
 sDay Timer::getDayByOffset(int8_t iOffset, sDay &iDate) {
-    mTimeHelper.tm_year = mDateTime.tm_year;
+    mTimeHelper.tm_year = mNow.tm_year;
     mTimeHelper.tm_mon = iDate.month - 1;
     mTimeHelper.tm_mday = iDate.day + iOffset;
     mTimeHelper.tm_hour = 12;
@@ -269,20 +332,16 @@ sDay Timer::getDayByOffset(int8_t iOffset, sDay &iDate) {
     mTimeHelper.tm_sec = 0;
 
     // save a little time, if we are for sure within same month
-    if (mTimeHelper.tm_mday > 0 && mTimeHelper.tm_mday < 29)
+    if (mTimeHelper.tm_mday < 1 || mTimeHelper.tm_mday > 28)
         mktime(&mTimeHelper); //   -timezone;
 
     //time_t nt_seconds = mktime(&mTimeHelper);     //   -timezone;
     // return gmtime(&nt_seconds);
 
-    sDay lResult = {mTimeHelper.tm_mday, mTimeHelper.tm_mon + 1};
+    sDay lResult = {(int8_t)mTimeHelper.tm_mday, (int8_t)(mTimeHelper.tm_mon + 1)};
     return lResult;
 }
 
-/* The "workhorse" function for sun rise/set times */
-
-int __sunriset__(int year, int month, int day, double lon, double lat,
-                 double altit, int upper_limb, double *trise, double *tset)
 /***************************************************************************/
 /* Note: year,month,date = calendar date, 1801-2099 only.             */
 /*       Eastern longitude positive, Western longitude negative       */
@@ -312,6 +371,8 @@ int __sunriset__(int year, int month, int day, double lon, double lat,
 /*                    both set to the time when the sun is at south.  */
 /*                                                                    */
 /**********************************************************************/
+int Timer::sunRiseSet(int year, int month, int day, double lon, double lat,
+                      double altit, int upper_limb, double *trise, double *tset)
 {
     double d,    /* Days since 2000 Jan 0.0 (negative before) */
         sr,      /* Solar distance, astronomical units */
@@ -331,7 +392,7 @@ int __sunriset__(int year, int month, int day, double lon, double lat,
     sidtime = revolution(GMST0(d) + 180.0 + lon);
 
     /* Compute Sun's RA, Decl and distance at this moment */
-    sun_RA_dec(d, &sRA, &sdec, &sr);
+    sunRadDec(d, &sRA, &sdec, &sr);
 
     /* Compute time when Sun is at south - in hours UT */
     tsouth = 12.0 - rev180(sidtime - sRA) / 15.0;
@@ -362,82 +423,15 @@ int __sunriset__(int year, int month, int day, double lon, double lat,
     *tset = tsouth + t;
 
     return rc;
-} /* __sunriset__ */
+}
 
-/* The "workhorse" function */
-
-double __daylen__(int year, int month, int day, double lon, double lat,
-                  double altit, int upper_limb)
-/**********************************************************************/
-/* Note: year,month,date = calendar date, 1801-2099 only.             */
-/*       Eastern longitude positive, Western longitude negative       */
-/*       Northern latitude positive, Southern latitude negative       */
-/*       The longitude value is not critical. Set it to the correct   */
-/*       longitude if you're picky, otherwise set to to, say, 0.0     */
-/*       The latitude however IS critical - be sure to get it correct */
-/*       altit = the altitude which the Sun should cross              */
-/*               Set to -35/60 degrees for rise/set, -6 degrees       */
-/*               for civil, -12 degrees for nautical and -18          */
-/*               degrees for astronomical twilight.                   */
-/*         upper_limb: non-zero -> upper limb, zero -> center         */
-/*               Set to non-zero (e.g. 1) when computing day length   */
-/*               and to zero when computing day+twilight length.      */
-/**********************************************************************/
-{
-    double d,      /* Days since 2000 Jan 0.0 (negative before) */
-        obl_ecl,   /* Obliquity (inclination) of Earth's axis */
-        sr,        /* Solar distance, astronomical units */
-        slon,      /* True solar longitude */
-        sin_sdecl, /* Sine of Sun's declination */
-        cos_sdecl, /* Cosine of Sun's declination */
-        sradius,   /* Sun's apparent radius */
-        t;         /* Diurnal arc */
-
-    /* Compute d of 12h local mean solar time */
-    d = days_since_2000_Jan_0(year, month, day) + 0.5 - lon / 360.0;
-
-    /* Compute obliquity of ecliptic (inclination of Earth's axis) */
-    obl_ecl = 23.4393 - 3.563E-7 * d;
-
-    /* Compute Sun's ecliptic longitude and distance */
-    sunpos(d, &slon, &sr);
-
-    /* Compute sine and cosine of Sun's declination */
-    sin_sdecl = sind(obl_ecl) * sind(slon);
-    cos_sdecl = sqrt(1.0 - sin_sdecl * sin_sdecl);
-
-    /* Compute the Sun's apparent radius, degrees */
-    sradius = 0.2666 / sr;
-
-    /* Do correction to upper limb, if necessary */
-    if (upper_limb)
-        altit -= sradius;
-
-    /* Compute the diurnal arc that the Sun traverses to reach */
-    /* the specified altitude altit: */
-    {
-        double cost;
-        cost = (sind(altit) - sind(lat) * sin_sdecl) /
-               (cosd(lat) * cos_sdecl);
-        if (cost >= 1.0)
-            t = 0.0; /* Sun always below altit */
-        else if (cost <= -1.0)
-            t = 24.0; /* Sun always above altit */
-        else
-            t = (2.0 / 15.0) * acosd(cost); /* The diurnal arc, hours */
-    }
-    return t;
-} /* __daylen__ */
-
-/* This function computes the Sun's position at any instant */
-
-void sunpos(double d, double *lon, double *r)
 /******************************************************/
 /* Computes the Sun's ecliptic longitude and distance */
 /* at an instant given in d, number of days since     */
 /* 2000 Jan 0.0.  The Sun's ecliptic latitude is not  */
 /* computed, since it's always very near 0.           */
 /******************************************************/
+void Timer::sunPos(double d, double *lon, double *r)
 {
     double M, /* Mean anomaly of the Sun */
         w,    /* Mean longitude of perihelion */
@@ -463,17 +457,17 @@ void sunpos(double d, double *lon, double *r)
         *lon -= 360.0; /* Make it 0..360 degrees */
 }
 
-void sun_RA_dec(double d, double *RA, double *dec, double *r)
 /******************************************************/
 /* Computes the Sun's equatorial coordinates RA, Decl */
 /* and also its distance, at an instant given in d,   */
 /* the number of days since 2000 Jan 0.0.             */
 /******************************************************/
+void Timer::sunRadDec(double d, double *RA, double *dec, double *r)
 {
     double lon, obl_ecl, x, y, z;
 
     /* Compute Sun's ecliptical coordinates */
-    sunpos(d, &lon, r);
+    sunPos(d, &lon, r);
 
     /* Compute ecliptic rectangular coordinates (z=0) */
     x = *r * cosd(lon);
@@ -490,7 +484,7 @@ void sun_RA_dec(double d, double *RA, double *dec, double *r)
     *RA = atan2d(y, x);
     *dec = atan2d(z, sqrt(x * x + y * y));
 
-} /* sun_RA_dec */
+}
 
 /******************************************************************/
 /* This function reduces any angle to within the first revolution */
@@ -500,21 +494,21 @@ void sun_RA_dec(double d, double *RA, double *dec, double *r)
 
 #define INV360 (1.0 / 360.0)
 
-double revolution(double x)
 /*****************************************/
 /* Reduce angle to within 0..360 degrees */
 /*****************************************/
+double Timer::revolution(double x)
 {
     return (x - 360.0 * floor(x * INV360));
-} /* revolution */
+}
 
-double rev180(double x)
 /*********************************************/
 /* Reduce angle to within +180..+180 degrees */
 /*********************************************/
+double Timer::rev180(double x)
 {
     return (x - 360.0 * floor(x * INV360 + 0.5));
-} /* revolution */
+}
 
 /*******************************************************************/
 /* This function computes GMST0, the Greenwich Mean Sidereal Time  */
@@ -542,7 +536,7 @@ double rev180(double x)
 /*                                                                 */
 /*******************************************************************/
 
-double GMST0(double d)
+double Timer::GMST0(double d)
 {
     double sidtim0;
     /* Sidtime at 0h UT = L (Sun's mean longitude) + 180.0 degr  */
@@ -554,66 +548,3 @@ double GMST0(double d)
                          (0.9856002585 + 4.70935E-5) * d);
     return sidtim0;
 } /* GMST0 */
-
-
-bool istEinSchaltjahr(const uint8_t iJahr)
-{
-    // Die Regel lautet: Alles, was durch 4 teilbar ist, ist ein Schaltjahr.
-    // Es sei denn, das Jahr ist durch 100 teilbar, dann ist es keins.
-    // Aber wenn es durch 400 teilbar ist, ist es doch wieder eins.
-
-    if ((iJahr % 400) == 0)
-        return true;
-    else if ((iJahr % 100) == 0)
-        return false;
-    else if ((iJahr % 4) == 0)
-        return true;
-
-    return false;
-}
-
-uint8_t getWochentag(const uint8_t iTag, const uint8_t iMonat, const uint16_t iJahr) {
-    //                                     Jan Feb Mrz Apr Mai Jun Jul Aug Sep Okt Nov Dez
-    const uint8_t cMonatsOffset[13] = {0,  0,  3,  3,  6,  1,  4,  6,  2,  5,  0,  3,  5};
-
-    uint8_t lResult = 0;
-
-    uint8_t lTagesziffer = (iTag % 7);
-    uint8_t lMonatsziffer = cMonatsOffset[iMonat];
-    uint8_t lJahresziffer = ((iJahr % 100) + ((iJahr % 100) / 4)) % 7;
-    uint8_t lJahrhundertziffer = (3 - ((iJahr / 100) % 4)) * 2;
-
-    // Schaltjahreskorrektur:
-    if ((iMonat <= 2) && (istEinSchaltjahr(iJahr)))
-        lTagesziffer += 6;
-  
-    lResult = (lTagesziffer + lMonatsziffer + lJahresziffer + lJahrhundertziffer) % 7;
-
-    // Ergebnis:
-    // 0 = Sonntag
-    // 1 = Montag
-    // 2 = Dienstag
-    // 3 = Mittwoch
-    // 4 = Donnerstag
-    // 5 = Freitag
-    // 6 = Samstag
-    return lResult;
-}
-
-void getFourthAdvent(const uint16_t iYear, uint8_t *eDay) {
-    uint8_t lTag = getWochentag(24, 12, iYear);
-    *eDay = 24 - lTag;
-}
-
-// Adjust date by a number of days +/-
-void datePlusDays(struct tm *date, int days)
-{
-    const time_t ONE_DAY = 24 * 60 * 60;
-
-    // Seconds since start of epoch
-    time_t date_seconds = mktime(date) + (days * ONE_DAY);
-
-    // Update caller's date
-    // Use localtime because mktime converts to UTC so may change date
-    *date = *localtime(&date_seconds);
-}
