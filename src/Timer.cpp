@@ -1,133 +1,283 @@
-/* +++Date last modified: 05-Jul-1997 */
-/* Updated comments, 05-Aug-2013 */
+#include "Timer.h"
+#include "Arduino.h"
+#include "Helper.h"
+#include <ctime>
 
-/*
+Timer::Timer()
+{
+    mDateTime.tm_year = 120;
+    mDateTime.tm_mon = 0;
+    mDateTime.tm_mday = 1;
+    mDateTime.tm_wday = 3;
+    mktime(&mDateTime);
+    mTimeDelay = millis();
+}
 
-SUNRISET.C - computes Sun rise/set times, start/end of twilight, and
-             the length of the day at any date and latitude
+Timer::~Timer()
+{
+}
 
-Written as DAYLEN.C, 1989-08-16
+Timer &Timer::instance() {
+    static Timer sInstance;
+    return sInstance;
+}
 
-Modified to SUNRISET.C, 1992-12-01
+void Timer::setup(uint32_t iHolidayBitmask) {
 
-(c) Paul Schlyter, 1989, 1992
+    // we delete all unnecessary holidays from holiday data
+    for (uint8_t i = 0; i < 29; i++)
+    {
+        if ((iHolidayBitmask & 0x80000000) == 0)
+            cHolidays[i].month = REMOVED;
+        iHolidayBitmask <<= 1;
+    }
+}
 
-Released to the public domain by Paul Schlyter, December 1992
+void Timer::loop() {
+    if (delayCheck(mTimeDelay, 1000))
+    {
+        mTimeDelay = millis();
+        mDateTime.tm_sec += 1;
+        mktime(&mDateTime);
+        if (mTimeValid == tmValid)
+        {
+            if (mMinuteTick != mDateTime.tm_min)
+            {
+                mMinuteChanged = true;
+                // just call once a minute
+                mMinuteTick = mDateTime.tm_min;
+            }
+            if (mDayTick != mDateTime.tm_mday)
+            {
+                calculateSunriseSunset();
+                mDayTick = mDateTime.tm_mday;
+            }
+            if (mEasterTick != mDateTime.tm_year)
+            {
+                calculateEaster();
+                calculateAdvent();
+                mEasterTick = mDateTime.tm_year;
+            }
+        }
+    }
+}
 
-*/
-#include "sun.h"
+void Timer::calculateSunriseSunset()
+{
+    double rise, set;
+    // sunrise/sunset calculation
+    sun_rise_set(mDateTime.tm_year + 1900, mDateTime.tm_mon + 1, mDateTime.tm_mday,
+                 8.639751, 49.310209,
+                 &rise, &set);
+    double lTmp;
+    mSunrise.minute = round(modf(rise, &lTmp) * 60.0);
+    mSunrise.hour = lTmp + 2;
+    mSunset.minute = round(modf(set, &lTmp) * 60.0);
+    mSunset.hour = lTmp + 2;
+}
 
-// /* A small test program */
+void Timer::setTimeFromBus(tm *iTime) {
+    if (mDateTime.tm_min != iTime->tm_min || mDateTime.tm_hour != iTime->tm_hour)
+        mMinuteChanged = true;
+    mDateTime.tm_sec = iTime->tm_sec;
+    mDateTime.tm_min = iTime->tm_min;
+    mDateTime.tm_hour = iTime->tm_hour;
+    mktime(&mDateTime);
+    mTimeDelay = millis();
+    mTimeValid = static_cast<eTimeValid>(mTimeValid | tmMinutesValid);
+}
 
-// main()
-// {
-//     int year, month, day;
-//     double lon, lat;
-//     double daylen, civlen, nautlen, astrlen;
-//     double rise, set, civ_start, civ_end, naut_start, naut_end,
-//         astr_start, astr_end;
-//     int rs, civ, naut, astr;
-//     char buf[80];
+void Timer::setDateFromBus(tm *iDate) {
+    // we have to check, if some date dependant calculations have to be done
+    // in case of date changes
+    if (iDate->tm_year != getYear())
+    {
+        mEasterTick = -1; // triggers easter calculation
+        mDayTick = -1;    // triggers sunrise/sunset calculation
+        mMinuteChanged = true;
+    }
+    else if (iDate->tm_mon != getMonth() || iDate->tm_mday != getDay())
+    {
+        mDayTick = -1; // triggers sunrise/sunset calculation
+        mMinuteChanged = true;
+    }
+    mDateTime.tm_mday = iDate->tm_mday;
+    mDateTime.tm_mon = iDate->tm_mon - 1;
+    mDateTime.tm_year = iDate->tm_year - 1900;
+    mktime(&mDateTime);
+    mTimeDelay = millis();
+    mTimeValid = static_cast<eTimeValid>(mTimeValid | tmDateValid);
+}
 
-//     printf("Longitude (+ is east) and latitude (+ is north) : ");
-//     fgets(buf, 80, stdin);
-//     sscanf(buf, "%lf %lf", &lon, &lat);
+bool Timer::minuteChanged() {
+    return mMinuteChanged;
+}
 
-//     for (;;)
-//     {
-//         printf("Input date ( yyyy mm dd ) (ctrl-C exits): ");
-//         fgets(buf, 80, stdin);
-//         sscanf(buf, "%d %d %d", &year, &month, &day);
+void Timer::clearMinuteChanged() {
+    mMinuteChanged = false;
+}
 
-//         daylen = day_length(year, month, day, lon, lat);
-//         civlen = day_civil_twilight_length(year, month, day, lon, lat);
-//         nautlen = day_nautical_twilight_length(year, month, day, lon, lat);
-//         astrlen = day_astronomical_twilight_length(year, month, day,
-//                                                    lon, lat);
+uint16_t Timer::getYear()
+{
+    return mDateTime.tm_year + 1900;
+}
 
-//         printf("Day length:                 %5.2f hours\n", daylen);
-//         printf("With civil twilight         %5.2f hours\n", civlen);
-//         printf("With nautical twilight      %5.2f hours\n", nautlen);
-//         printf("With astronomical twilight  %5.2f hours\n", astrlen);
-//         printf("Length of twilight: civil   %5.2f hours\n",
-//                (civlen - daylen) / 2.0);
-//         printf("                  nautical  %5.2f hours\n",
-//                (nautlen - daylen) / 2.0);
-//         printf("              astronomical  %5.2f hours\n",
-//                (astrlen - daylen) / 2.0);
+uint8_t Timer::getMonth()
+{
+    return mDateTime.tm_mon + 1;
+}
 
-//         rs = sun_rise_set(year, month, day, lon, lat,
-//                           &rise, &set);
-//         civ = civil_twilight(year, month, day, lon, lat,
-//                              &civ_start, &civ_end);
-//         naut = nautical_twilight(year, month, day, lon, lat,
-//                                  &naut_start, &naut_end);
-//         astr = astronomical_twilight(year, month, day, lon, lat,
-//                                      &astr_start, &astr_end);
+uint8_t Timer::getDay()
+{
+    return mDateTime.tm_mday;
+}
 
-//         printf("Sun at south %5.2fh UT\n", (rise + set) / 2.0);
+uint8_t Timer::getHour()
+{
+    return mDateTime.tm_hour;
+}
 
-//         switch (rs)
-//         {
-//             case 0:
-//                 printf("Sun rises %5.2fh UT, sets %5.2fh UT\n",
-//                        rise, set);
-//                 break;
-//             case +1:
-//                 printf("Sun above horizon\n");
-//                 break;
-//             case -1:
-//                 printf("Sun below horizon\n");
-//                 break;
-//         }
+uint8_t Timer::getMinute()
+{
+    return mDateTime.tm_min;
+}
 
-//         switch (civ)
-//         {
-//             case 0:
-//                 printf("Civil twilight starts %5.2fh, "
-//                        "ends %5.2fh UT\n",
-//                        civ_start, civ_end);
-//                 break;
-//             case +1:
-//                 printf("Never darker than civil twilight\n");
-//                 break;
-//             case -1:
-//                 printf("Never as bright as civil twilight\n");
-//                 break;
-//         }
+uint8_t Timer::getSecond()
+{
+    return mDateTime.tm_sec;
+}
 
-//         switch (naut)
-//         {
-//             case 0:
-//                 printf("Nautical twilight starts %5.2fh, "
-//                        "ends %5.2fh UT\n",
-//                        naut_start, naut_end);
-//                 break;
-//             case +1:
-//                 printf("Never darker than nautical twilight\n");
-//                 break;
-//             case -1:
-//                 printf("Never as bright as nautical twilight\n");
-//                 break;
-//         }
+uint8_t Timer::getWeekday()
+{
+    return mDateTime.tm_wday;
+}
 
-//         switch (astr)
-//         {
-//             case 0:
-//                 printf("Astronomical twilight starts %5.2fh, "
-//                        "ends %5.2fh UT\n",
-//                        astr_start, astr_end);
-//                 break;
-//             case +1:
-//                 printf("Never darker than astronomical twilight\n");
-//                 break;
-//             case -1:
-//                 printf("Never as bright as astronomical twilight\n");
-//                 break;
-//         }
-//         return 0;
-//     }
-// }
+sTime *Timer::getSunInfo(uint8_t iSunInfo)
+{
+    if (iSunInfo == SUN_SUNRISE)
+        return &mSunrise;
+    else if (iSunInfo == SUN_SUNSET)
+        return &mSunset;
+    else
+        return NULL;
+}
+
+sDay *Timer::getEaster() {
+    return &mEaster;
+}
+
+char *Timer::getTimeAsc() {
+    return asctime(&mDateTime);
+}
+
+void Timer::calculateAdvent() {
+    // calculates the 4th advent
+    mTimeHelper.tm_year = mDateTime.tm_year;
+    mTimeHelper.tm_mon = 11;
+    mTimeHelper.tm_mday = 24;
+    mTimeHelper.tm_hour = 12;
+    mTimeHelper.tm_min = 0;
+    mTimeHelper.tm_sec = 0;
+    mktime(&mTimeHelper); //   -timezone;
+    mAdvent.day = 24 - mTimeHelper.tm_wday;
+    mAdvent.month = 12;
+}
+
+void Timer::calculateEaster()
+{
+    uint16_t lYear = getYear();
+    uint8_t a = lYear % 19;
+    uint8_t b = lYear % 4;
+    uint8_t c = lYear % 7;
+
+    uint8_t k = lYear / 100;
+    uint8_t q = k / 4;
+    uint8_t p = ((8 * k) + 13) / 25;
+    uint8_t Egz = (38 - (k - q) + p) % 30; // Die Jahrhundertepakte
+    uint8_t M = (53 - Egz) % 30;
+    uint8_t N = (4 + k - q) % 7;
+
+    uint8_t d = ((19 * a) + M) % 30;
+    uint8_t e = ((2 * b) + (4 * c) + (6 * d) + N) % 7;
+
+    // Ausrechnen des Ostertermins:
+    if ((22 + d + e) <= 31)
+    {
+        mEaster.day = 22 + d + e;
+        mEaster.month = 3;
+    }
+    else
+    {
+        mEaster.day = d + e - 9;
+        mEaster.month = 4;
+
+        // Zwei Ausnahmen berücksichtigen:
+        if (mEaster.day == 26)
+            mEaster.day = 19;
+        else if ((mEaster.day == 25) && (d == 28) && (a > 10))
+            mEaster.day = 18;
+    }
+}
+
+void Timer::calculateHolidays() {
+    // check if today is a holiday
+    sDay lToday = {getDay(), getMonth()};
+    sDay lTomorrow = getDayByOffset(1, lToday);
+    mIsHolidayToday = false;
+    mIsHolidayTomorrow = false;
+    for (uint8_t i = 0; i < 29; i++)
+    {
+        sDay lHoliday = {REMOVED, REMOVED};
+        switch (cHolidays[i].month)
+        {
+            case REMOVED:
+                // do nothing
+                break;
+            case EASTER:
+                lHoliday = getDayByOffset(cHolidays[i].day, mEaster);
+                break;
+            case ADVENT:
+                lHoliday = getDayByOffset(cHolidays[i].day, mAdvent);
+                // do nothing
+                break;
+            default:
+                // constant holiday
+                lHoliday = cHolidays[i];
+                break;
+        }
+        if (lHoliday.month > REMOVED) {
+            if (isEqualDate(lHoliday, lToday))
+                mIsHolidayToday = true;
+            if (isEqualDate(lHoliday, lTomorrow))
+                mIsHolidayTomorrow = true;
+            if (mIsHolidayToday && mIsHolidayTomorrow)
+                break;
+        }
+    }
+}
+
+bool Timer::isEqualDate(sDay &iDate1, sDay &iDate2) {
+    return (iDate1.day == iDate2.day && iDate1.month == iDate2.month);
+}
+
+sDay Timer::getDayByOffset(int8_t iOffset, sDay &iDate) {
+    mTimeHelper.tm_year = mDateTime.tm_year;
+    mTimeHelper.tm_mon = iDate.month - 1;
+    mTimeHelper.tm_mday = iDate.day + iOffset;
+    mTimeHelper.tm_hour = 12;
+    mTimeHelper.tm_min = 0;
+    mTimeHelper.tm_sec = 0;
+
+    // save a little time, if we are for sure within same month
+    if (mTimeHelper.tm_mday > 0 && mTimeHelper.tm_mday < 29)
+        mktime(&mTimeHelper); //   -timezone;
+
+    //time_t nt_seconds = mktime(&mTimeHelper);     //   -timezone;
+    // return gmtime(&nt_seconds);
+
+    sDay lResult = {mTimeHelper.tm_mday, mTimeHelper.tm_mon + 1};
+    return lResult;
+}
 
 /* The "workhorse" function for sun rise/set times */
 
@@ -405,52 +555,65 @@ double GMST0(double d)
     return sidtim0;
 } /* GMST0 */
 
-void getEaster(const uint16_t iYear, uint8_t *eDay, uint8_t *eMonth)
+
+bool istEinSchaltjahr(const uint8_t iJahr)
 {
-    uint8_t a = iYear % 19;
-    uint8_t b = iYear % 4;
-    uint8_t c = iYear % 7;
+    // Die Regel lautet: Alles, was durch 4 teilbar ist, ist ein Schaltjahr.
+    // Es sei denn, das Jahr ist durch 100 teilbar, dann ist es keins.
+    // Aber wenn es durch 400 teilbar ist, ist es doch wieder eins.
 
-    uint8_t k = iYear / 100;
-    uint8_t q = k / 4;
-    uint8_t p = ((8 * k) + 13) / 25;
-    uint8_t Egz = (38 - (k - q) + p) % 30; // Die Jahrhundertepakte
-    uint8_t M = (53 - Egz) % 30;
-    uint8_t N = (4 + k - q) % 7;
+    if ((iJahr % 400) == 0)
+        return true;
+    else if ((iJahr % 100) == 0)
+        return false;
+    else if ((iJahr % 4) == 0)
+        return true;
 
-    uint8_t d = ((19 * a) + M) % 30;
-    uint8_t e = ((2 * b) + (4 * c) + (6 * d) + N) % 7;
+    return false;
+}
 
-    // Ausrechnen des Ostertermins:
-    if ((22 + d + e) <= 31)
-    {
-        *eDay = 22 + d + e;
-        *eMonth = 3;
-    }
-    else
-    {
-        *eDay = d + e - 9;
-        *eMonth = 4;
+uint8_t getWochentag(const uint8_t iTag, const uint8_t iMonat, const uint16_t iJahr) {
+    //                                     Jan Feb Mrz Apr Mai Jun Jul Aug Sep Okt Nov Dez
+    const uint8_t cMonatsOffset[13] = {0,  0,  3,  3,  6,  1,  4,  6,  2,  5,  0,  3,  5};
 
-        // Zwei Ausnahmen berücksichtigen:
-        if (*eDay == 26)
-            *eDay = 19;
-        else if ((*eDay == 25) && (d == 28) && (a > 10))
-            *eDay = 18;
-    }
+    uint8_t lResult = 0;
 
-    // Offsets für andere Feiertage:
+    uint8_t lTagesziffer = (iTag % 7);
+    uint8_t lMonatsziffer = cMonatsOffset[iMonat];
+    uint8_t lJahresziffer = ((iJahr % 100) + ((iJahr % 100) / 4)) % 7;
+    uint8_t lJahrhundertziffer = (3 - ((iJahr / 100) % 4)) * 2;
 
-    // Schwerdonnerstag / Weiberfastnacht -52
-    // Rosenmontag -48
-    // Fastnachtsdienstag -47
-    // Aschermittwoch -46
-    // Gründonnerstag -3
-    // Karfreitag -2
-    // Ostersonntag 0
-    // Ostermontag +1
-    // Christi Himmelfahrt +39
-    // Pfingstsonntag +49
-    // Pfingstmontag +50
-    // Fronleichnam +60
+    // Schaltjahreskorrektur:
+    if ((iMonat <= 2) && (istEinSchaltjahr(iJahr)))
+        lTagesziffer += 6;
+  
+    lResult = (lTagesziffer + lMonatsziffer + lJahresziffer + lJahrhundertziffer) % 7;
+
+    // Ergebnis:
+    // 0 = Sonntag
+    // 1 = Montag
+    // 2 = Dienstag
+    // 3 = Mittwoch
+    // 4 = Donnerstag
+    // 5 = Freitag
+    // 6 = Samstag
+    return lResult;
+}
+
+void getFourthAdvent(const uint16_t iYear, uint8_t *eDay) {
+    uint8_t lTag = getWochentag(24, 12, iYear);
+    *eDay = 24 - lTag;
+}
+
+// Adjust date by a number of days +/-
+void datePlusDays(struct tm *date, int days)
+{
+    const time_t ONE_DAY = 24 * 60 * 60;
+
+    // Seconds since start of epoch
+    time_t date_seconds = mktime(date) + (days * ONE_DAY);
+
+    // Update caller's date
+    // Use localtime because mktime converts to UTC so may change date
+    *date = *localtime(&date_seconds);
 }

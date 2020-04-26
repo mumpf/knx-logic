@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <Wire.h>
+#include "Timer.h"
 
 #define STR( x ) #x
 #define XSTR( x ) STR( x )
@@ -117,9 +118,6 @@
 #define PIP_OFF_REPEAT 8192        // repeat off signal
 #define PIP_TIMER_INPUT 16384      // process timer as input signal
 #define PIP_RUNNING 32768          // is a currently running channel
-
-#define SUN_SUNRISE 0x00
-#define SUN_SUNSET 0x01
 
 #define TIMD_WEEKDAY_MASK 0x0007
 #define TIMD_WEEKDAY_SHIFT 0
@@ -275,6 +273,7 @@ class LogicChannel
     };
 
     // static
+    static Timer &sTimer; 
 
     // instance
     /* Runtime information per channel */

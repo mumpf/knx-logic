@@ -5,6 +5,7 @@
 #include "PCA9632.h"
 
 Logic *LogicChannel::sLogic = nullptr;
+Timer &LogicChannel::sTimer = Timer::instance();
 
 /******************************
  * Constructors
@@ -1505,7 +1506,7 @@ bool LogicChannel::checkTimerToday(uint8_t iTimerIndex) {
     if (iTimerIndex < 4) {
         // now we check correct month
         uint8_t lMonth = (getByteParam(LOG_fTy1Month + 2 * iTimerIndex) >> 4) & 0xF;
-        if (lMonth == 0 || lMonth == sLogic->getDateTime()->tm_mon + 1) {
+        if (lMonth == 0 || lMonth == sTimer.getMonth()) {
             // we have the correct month, check correct day
             uint8_t lDayWeekday = (getByteParam(LOG_fTy1Day + 2 * iTimerIndex));
             if (lDayWeekday & 1) {
@@ -1527,7 +1528,7 @@ bool LogicChannel::checkTimerToday(uint8_t iTimerIndex) {
             } else {
                 // Tag
                 lDayWeekday >>= 1;
-                lResult = (lDayWeekday == 0) || (lDayWeekday == sLogic->getDateTime()->tm_mday);
+                lResult = (lDayWeekday == 0) || (lDayWeekday == sTimer.getDay());
             }
         }
     }
@@ -1543,7 +1544,7 @@ bool LogicChannel::checkWeekday(uint8_t iWeekday) {
     }
     if (iWeekday == 7)
         iWeekday = 0;
-    return iWeekday == sLogic->getDateTime()->tm_wday;
+    return iWeekday == sTimer.getWeekday();
 }
 
 bool LogicChannel::checkTimerTime(uint8_t iTimerIndex, uint16_t iBitfield, uint8_t iHour, uint8_t iMinute, bool iSkipWeekday)
@@ -1556,10 +1557,10 @@ bool LogicChannel::checkTimerTime(uint8_t iTimerIndex, uint16_t iBitfield, uint8
         if (iSkipWeekday || checkWeekday(iBitfield & 0x7))
         {
             // check hour
-            if (iHour == 31 || iHour == sLogic->getDateTime()->tm_hour)
+            if (iHour == 31 || iHour == sTimer.getHour())
             {
                 // check minute
-                if (iMinute == 63 || iMinute == sLogic->getDateTime()->tm_min)
+                if (iMinute == 63 || iMinute == sTimer.getMinute())
                 {
                     lResult = true;
                 }
@@ -1580,8 +1581,8 @@ bool LogicChannel::checkPointInTime(uint8_t iTimerIndex, uint16_t iBitfield, boo
 bool LogicChannel::checkSunAbs(uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iMinus)
 {
     int8_t lFactor = (iMinus) ? -1 : 1;
-    uint8_t lHour = (sLogic->getSunInfo(iSunInfo)->hour + ((iBitfield & 0x3E00) >> 9) * lFactor) % 24;
-    uint8_t lMinute = (sLogic->getSunInfo(iSunInfo)->minute + ((iBitfield & 0x01F8) >> 3) * lFactor) % 60;
+    uint8_t lHour = (sTimer.getSunInfo(iSunInfo)->hour + ((iBitfield & 0x3E00) >> 9) * lFactor) % 24;
+    uint8_t lMinute = (sTimer.getSunInfo(iSunInfo)->minute + ((iBitfield & 0x01F8) >> 3) * lFactor) % 60;
     bool lResult = checkTimerTime(iTimerIndex, iBitfield, lHour, lMinute, iSkipWeekday);
     return lResult;
 }
@@ -1591,11 +1592,14 @@ bool LogicChannel::checkSunLimit(uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t
     uint8_t lHour = ((iBitfield & 0x3E00) >> 9);
     uint8_t lMinute = ((iBitfield & 0x01F8) >> 3);
     int8_t lCompare = iLatest ? -1 : 1; // else case means "Earliest"
-    if ((sLogic->getSunInfo(iSunInfo)->hour - lHour) * lCompare > 0) {
-        lHour = sLogic->getSunInfo(iSunInfo)->hour;
-        lMinute = sLogic->getSunInfo(iSunInfo)->minute;
-    } else if (sLogic->getSunInfo(iSunInfo)->hour == lHour && (sLogic->getSunInfo(iSunInfo)->minute - lMinute) * lCompare > 0) {
-        lMinute = sLogic->getSunInfo(iSunInfo)->minute;
+    if ((sTimer.getSunInfo(iSunInfo)->hour - lHour) * lCompare > 0)
+    {
+        lHour = sTimer.getSunInfo(iSunInfo)->hour;
+        lMinute = sTimer.getSunInfo(iSunInfo)->minute;
+    }
+    else if (sTimer.getSunInfo(iSunInfo)->hour == lHour && (sTimer.getSunInfo(iSunInfo)->minute - lMinute) * lCompare > 0)
+    {
+        lMinute = sTimer.getSunInfo(iSunInfo)->minute;
     }
     bool lResult = checkTimerTime(iTimerIndex, iBitfield, lHour, lMinute, iSkipWeekday);
     return lResult;
