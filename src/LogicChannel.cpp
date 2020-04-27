@@ -5,6 +5,7 @@
 #include "PCA9632.h"
 
 Logic *LogicChannel::sLogic = nullptr;
+Timer &LogicChannel::sTimer = Timer::instance();
 
 /******************************
  * Constructors
@@ -1434,14 +1435,39 @@ void LogicChannel::startTimerInput() {
 
 // called every minute, finds the next timer to process and marks it
 void LogicChannel::processTimerInput() {
-    // first check, if any preparation is necessary
-    // if (pInputProcessing.activeTimer)
-    //     return;
     bool lIsYearTimer = (getByteParam(LOG_fTYearDay) & 0x10);
     uint8_t lNumTimer = lIsYearTimer ? 4 : 8; // there are 4 year timer or 8 day timer
     bool lToday; // if it is a day timer lToday=true
     bool lResult = false;
     bool lValue;
+    bool lEvaluate = false;
+    // first we process settings valid for whole timer
+    // vacation
+    bool lIsVacation = knx.getGroupObject(LOG_KoVacation).value(getDPT(VAL_DPT_1));
+    uint8_t lVacationSetting = (getByteParam(LOG_fTVacation) & 0x60) >> 5;
+    if (lVacationSetting == VAL_Tim_Special_No && lIsVacation)
+        lEvaluate = false;
+    if (lVacationSetting == VAL_Tim_Special_Skip || lVacationSetting == VAL_Tim_Special_Sunday)
+        lEvaluate = true;
+    if (lVacationSetting == VAL_Tim_Special_Only)
+        lEvaluate = lIsVacation;
+    if (!lEvaluate)
+        return;
+
+    // holiday
+    uint8_t lHolidaySetting = (getByteParam(LOG_fTHoliday) & 0x18) >> 3;
+    if (lHolidaySetting == VAL_Tim_Special_No && sTimer.isHolidayToday())
+        lEvaluate = false;
+    if (lHolidaySetting == VAL_Tim_Special_Skip || lHolidaySetting == VAL_Tim_Special_Sunday)
+        lEvaluate = true;
+    if (lHolidaySetting == VAL_Tim_Special_Only)
+        lEvaluate = sTimer.isHolidayToday();
+    if (!lEvaluate)
+        return;
+
+    bool lHandleAsSunday = (lHolidaySetting == VAL_Tim_Special_Sunday && sTimer.isHolidayToday()) ||
+                           (lVacationSetting == VAL_Tim_Special_Sunday && lIsVacation);
+
     // loop through all timer
     uint32_t lTimerFunctions = getIntParam(LOG_fTd1DuskDawn);
     for (uint8_t lTimerIndex = 0; lTimerIndex < lNumTimer; lTimerIndex++)
@@ -1450,38 +1476,38 @@ void LogicChannel::processTimerInput() {
         uint8_t lTimerFunction = (lTimerFunctions >> (28 - lTimerIndex * 4)) & 0xF;
         if (lTimerFunction) {
             // timer function is active
-            lToday = !lIsYearTimer || checkTimerToday(lTimerIndex);
+            lToday = !lIsYearTimer || checkTimerToday(lTimerIndex, lHandleAsSunday);
             if (lToday) {
                 uint16_t lBitfield = getWordParam(LOG_fTd1Value + 2 * lTimerIndex);
                 lValue = lBitfield & 0x8000;
                 switch (lTimerFunction)
                 {
                     case VAL_Tim_PointInTime:
-                        lResult = checkPointInTime(lTimerIndex, lBitfield, lIsYearTimer);
+                        lResult = checkPointInTime(lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday);
                         break;
                     case VAL_Tim_Sunrise_Plus:
-                        lResult = checkSunAbs(SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, false);
+                        lResult = checkSunAbs(SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
                         break;
                     case VAL_Tim_Sunrise_Minus:
-                        lResult = checkSunAbs(SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, true);
+                        lResult = checkSunAbs(SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
                         break;
                     case VAL_Tim_Sunset_Plus:
-                        lResult = checkSunAbs(SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, false);
+                        lResult = checkSunAbs(SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
                         break;
                     case VAL_Tim_Sunset_Minus:
-                        lResult = checkSunAbs(SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, true);
+                        lResult = checkSunAbs(SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
                         break;
                     case VAL_Tim_Sunrise_Earliest:
-                        lResult = checkSunLimit(SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, false);
+                        lResult = checkSunLimit(SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
                         break;
                     case VAL_Tim_Sunrise_Latest:
-                        lResult = checkSunLimit(SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, true);
+                        lResult = checkSunLimit(SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
                         break;
                     case VAL_Tim_Sunset_Earliest:
-                        lResult = checkSunLimit(SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, false);
+                        lResult = checkSunLimit(SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
                         break;
                     case VAL_Tim_Sunset_Latest:
-                        lResult = checkSunLimit(SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, true);
+                        lResult = checkSunLimit(SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
                         break;
                     default:
                         break;
@@ -1499,13 +1525,13 @@ void LogicChannel::processTimerInput() {
 
 // checks if timer is valid today
 // just called for year timer
-bool LogicChannel::checkTimerToday(uint8_t iTimerIndex) {
+bool LogicChannel::checkTimerToday(uint8_t iTimerIndex, bool iHandleAsSunday) {
     bool lResult = false;
     // check for valid index
     if (iTimerIndex < 4) {
         // now we check correct month
         uint8_t lMonth = (getByteParam(LOG_fTy1Month + 2 * iTimerIndex) >> 4) & 0xF;
-        if (lMonth == 0 || lMonth == sLogic->getDateTime()->tm_mon + 1) {
+        if (lMonth == 0 || lMonth == sTimer.getMonth()) {
             // we have the correct month, check correct day
             uint8_t lDayWeekday = (getByteParam(LOG_fTy1Day + 2 * iTimerIndex));
             if (lDayWeekday & 1) {
@@ -1517,7 +1543,7 @@ bool LogicChannel::checkTimerToday(uint8_t iTimerIndex) {
                     for (uint8_t lWeekday = 1; lWeekday < 8; lWeekday++)
                     {
                         if (lDayWeekday & 0x80) {
-                            lResult = checkWeekday(lWeekday);
+                            lResult = checkWeekday(lWeekday, iHandleAsSunday);
                             if (lResult)
                                 break;
                         };
@@ -1527,7 +1553,7 @@ bool LogicChannel::checkTimerToday(uint8_t iTimerIndex) {
             } else {
                 // Tag
                 lDayWeekday >>= 1;
-                lResult = (lDayWeekday == 0) || (lDayWeekday == sLogic->getDateTime()->tm_mday);
+                lResult = (lDayWeekday == 0) || (lDayWeekday == sTimer.getDay());
             }
         }
     }
@@ -1535,31 +1561,34 @@ bool LogicChannel::checkTimerToday(uint8_t iTimerIndex) {
 }
 
 // iWeekday is in our format (1=Monday, ..., 7 = Sunday, 0=any)
-bool LogicChannel::checkWeekday(uint8_t iWeekday) {
+bool LogicChannel::checkWeekday(uint8_t iWeekday, bool iHandleAsSunday) {
     if (iWeekday > 7)
         return false;
     if (iWeekday == 0) {
         return true;
     }
-    if (iWeekday == 7)
+    if (iWeekday == 7) {
         iWeekday = 0;
-    return iWeekday == sLogic->getDateTime()->tm_wday;
+        if (iHandleAsSunday)
+            return true;
+    }
+    return iWeekday == sTimer.getWeekday();
 }
 
-bool LogicChannel::checkTimerTime(uint8_t iTimerIndex, uint16_t iBitfield, uint8_t iHour, uint8_t iMinute, bool iSkipWeekday)
+bool LogicChannel::checkTimerTime(uint8_t iTimerIndex, uint16_t iBitfield, uint8_t iHour, uint8_t iMinute, bool iSkipWeekday, bool iHandleAsSunday)
 {
     bool lResult = false;
 
     // check correct timer index
     if (iTimerIndex < 8)
     {
-        if (iSkipWeekday || checkWeekday(iBitfield & 0x7))
+        if (iSkipWeekday || checkWeekday(iBitfield & 0x7, iHandleAsSunday))
         {
             // check hour
-            if (iHour == 31 || iHour == sLogic->getDateTime()->tm_hour)
+            if (iHour == 31 || iHour == sTimer.getHour())
             {
                 // check minute
-                if (iMinute == 63 || iMinute == sLogic->getDateTime()->tm_min)
+                if (iMinute == 63 || iMinute == sTimer.getMinute())
                 {
                     lResult = true;
                 }
@@ -1569,34 +1598,37 @@ bool LogicChannel::checkTimerTime(uint8_t iTimerIndex, uint16_t iBitfield, uint8
     return lResult;
 }
 
-bool LogicChannel::checkPointInTime(uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday)
+bool LogicChannel::checkPointInTime(uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iHandleAsSunday)
 {
     uint8_t lHour = (iBitfield & 0x3E00) >> 9;
     uint8_t lMinute = (iBitfield & 0x01F8) >> 3;
-    bool lResult = checkTimerTime(iTimerIndex, iBitfield, lHour, lMinute, iSkipWeekday);
+    bool lResult = checkTimerTime(iTimerIndex, iBitfield, lHour, lMinute, iSkipWeekday, iHandleAsSunday);
     return lResult;
 }
 
-bool LogicChannel::checkSunAbs(uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iMinus)
+bool LogicChannel::checkSunAbs(uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iHandleAsSunday, bool iMinus)
 {
     int8_t lFactor = (iMinus) ? -1 : 1;
-    uint8_t lHour = (sLogic->getSunInfo(iSunInfo)->hour + ((iBitfield & 0x3E00) >> 9) * lFactor) % 24;
-    uint8_t lMinute = (sLogic->getSunInfo(iSunInfo)->minute + ((iBitfield & 0x01F8) >> 3) * lFactor) % 60;
-    bool lResult = checkTimerTime(iTimerIndex, iBitfield, lHour, lMinute, iSkipWeekday);
+    uint8_t lHour = (sTimer.getSunInfo(iSunInfo)->hour + ((iBitfield & 0x3E00) >> 9) * lFactor) % 24;
+    uint8_t lMinute = (sTimer.getSunInfo(iSunInfo)->minute + ((iBitfield & 0x01F8) >> 3) * lFactor) % 60;
+    bool lResult = checkTimerTime(iTimerIndex, iBitfield, lHour, lMinute, iSkipWeekday, iHandleAsSunday);
     return lResult;
 }
 
-bool LogicChannel::checkSunLimit(uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iLatest)
+bool LogicChannel::checkSunLimit(uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iHandleAsSunday, bool iLatest)
 {
     uint8_t lHour = ((iBitfield & 0x3E00) >> 9);
     uint8_t lMinute = ((iBitfield & 0x01F8) >> 3);
     int8_t lCompare = iLatest ? -1 : 1; // else case means "Earliest"
-    if ((sLogic->getSunInfo(iSunInfo)->hour - lHour) * lCompare > 0) {
-        lHour = sLogic->getSunInfo(iSunInfo)->hour;
-        lMinute = sLogic->getSunInfo(iSunInfo)->minute;
-    } else if (sLogic->getSunInfo(iSunInfo)->hour == lHour && (sLogic->getSunInfo(iSunInfo)->minute - lMinute) * lCompare > 0) {
-        lMinute = sLogic->getSunInfo(iSunInfo)->minute;
+    if ((sTimer.getSunInfo(iSunInfo)->hour - lHour) * lCompare > 0)
+    {
+        lHour = sTimer.getSunInfo(iSunInfo)->hour;
+        lMinute = sTimer.getSunInfo(iSunInfo)->minute;
     }
-    bool lResult = checkTimerTime(iTimerIndex, iBitfield, lHour, lMinute, iSkipWeekday);
+    else if (sTimer.getSunInfo(iSunInfo)->hour == lHour && (sTimer.getSunInfo(iSunInfo)->minute - lMinute) * lCompare > 0)
+    {
+        lMinute = sTimer.getSunInfo(iSunInfo)->minute;
+    }
+    bool lResult = checkTimerTime(iTimerIndex, iBitfield, lHour, lMinute, iSkipWeekday, iHandleAsSunday);
     return lResult;
 }

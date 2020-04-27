@@ -10,9 +10,46 @@
 #define LOG_LedInstalled               9      // 1 Bit, Bit 5
 #define LOG_EepromInstalled            9      // 1 Bit, Bit 4
 #define LOG_NCN5130Installed           9      // 1 Bit, Bit 3
+#define LOG_VacationKo                 9      // 1 Bit, Bit 2
+#define LOG_HolidayKo                  9      // 1 Bit, Bit 1
+#define LOG_VacationRead               9      // 1 Bit, Bit 1
+#define LOG_HolidaySend               10      // 1 Bit, Bit 7
+#define LOG_Timezone                  10      // 2 Bits, Bit 6-5
+#define LOG_UseSummertime             12      // 1 Bit, Bit 6
+#define LOG_Neujahr                   11      // 1 Bit, Bit 7
+#define LOG_DreiKoenige               11      // 1 Bit, Bit 6
+#define LOG_Weiberfastnacht           11      // 1 Bit, Bit 5
+#define LOG_Rosenmontag               11      // 1 Bit, Bit 4
+#define LOG_Fastnachtsdienstag        11      // 1 Bit, Bit 3
+#define LOG_Aschermittwoch            11      // 1 Bit, Bit 2
+#define LOG_Gruendonnerstag           11      // 1 Bit, Bit 1
+#define LOG_Karfreitag                11      // 1 Bit, Bit 0
+#define LOG_Ostersonntag              12      // 1 Bit, Bit 7
+#define LOG_Ostermontag               12      // 1 Bit, Bit 6
+#define LOG_TagDerArbeit              12      // 1 Bit, Bit 5
+#define LOG_Himmelfahrt               12      // 1 Bit, Bit 4
+#define LOG_Pfingstsonntag            12      // 1 Bit, Bit 3
+#define LOG_Pfingstmontag             12      // 1 Bit, Bit 2
+#define LOG_Frohleichnam              12      // 1 Bit, Bit 1
+#define LOG_Friedensfest              12      // 1 Bit, Bit 0
+#define LOG_MariaHimmelfahrt          13      // 1 Bit, Bit 7
+#define LOG_DeutscheEinheit           13      // 1 Bit, Bit 6
+#define LOG_Reformationstag           13      // 1 Bit, Bit 5
+#define LOG_Allerheiligen             13      // 1 Bit, Bit 4
+#define LOG_BussBettag                13      // 1 Bit, Bit 3
+#define LOG_Advent1                   13      // 1 Bit, Bit 2
+#define LOG_Advent2                   13      // 1 Bit, Bit 1
+#define LOG_Advent3                   13      // 1 Bit, Bit 0
+#define LOG_Advent4                   14      // 1 Bit, Bit 7
+#define LOG_Heiligabend               14      // 1 Bit, Bit 6
+#define LOG_Weihnachtstag1            14      // 1 Bit, Bit 5
+#define LOG_Weihnachtstag2            14      // 1 Bit, Bit 4
+#define LOG_Silvester                 14      // 1 Bit, Bit 3
+#define LOG_Latitude                  15      // float
+#define LOG_Longitude                 19      // float
 
 // Parameter per channel
-#define LOG_ParamBlockOffset 10
+#define LOG_ParamBlockOffset 23
 #define LOG_ParamBlockSize 100
 #define LOG_fChannelDelay              0      // int32_t
 #define LOG_fLogic                     4      // 8 Bits, Bit 7-0
@@ -33,7 +70,6 @@
 #define LOG_fE1DefaultEEPROM          11      // 1 Bit, Bit 2
 #define LOG_fE1DefaultRepeat          11      // 1 Bit, Bit 3
 #define LOG_fTYearDay                 11      // 1 Bit, Bit 4
-#define LOG_fTHoliday                 11      // 1 Bit, Bit 5
 #define LOG_fTRestoreState            11      // 2 Bits, Bit 6-5
 #define LOG_fE1Repeat                 12      // int32_t
 #define LOG_fE2                       16      // 4 Bits, Bit 3-0
@@ -42,6 +78,8 @@
 #define LOG_fE2Default                18      // 2 Bits, Bit 1-0
 #define LOG_fE2DefaultEEPROM          18      // 1 Bit, Bit 2
 #define LOG_fE2DefaultRepeat          18      // 1 Bit, Bit 3
+#define LOG_fTHoliday                 18      // 2 Bits, Bit 4-3
+#define LOG_fTVacation                18      // 2 Bits, Bit 6-5
 #define LOG_fE2Repeat                 19      // int32_t
 #define LOG_fTd1DuskDawn              19      // 4 Bits, Bit 7-4
 #define LOG_fTd2DuskDawn              19      // 4 Bits, Bit 3-0
@@ -267,4 +305,7 @@
 #define LOG_KoHeartbeat 1
 #define LOG_KoTime 2
 #define LOG_KoDate 3
+#define LOG_KoVacation 4
+#define LOG_KoHoliday1 5
+#define LOG_KoHoliday2 6
 

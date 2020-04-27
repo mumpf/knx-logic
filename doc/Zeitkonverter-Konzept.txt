@@ -18,18 +18,30 @@
 
 Extra Byte:
 Bit 0: 0=Jahresschaltuhr; 1=Tagesschaltuhr
-Bit 1: 0=An Feiertagen keine Schaltung ausführen; 1=Feiertage wie Sonntage behandeln
-Bit 2-3: Beim Neustart Schaltzeiten nachholen? (0=Nein, 1=Den letzen Schaltpunkt, 2=Die letzten beiden Schaltpunkte)
-Bit 3-7: frei für Erweiterungen
+Bit 1-2: Feiertagsbehandlung:
+    00=Feiertage nicht beachten 
+    01=An Feiertagen nicht schalten
+    10=Nur an Feiertagen schalten
+    11=Feiertage wie Sonntage behandeln
+Bit 3-4: Urlaubsbehandlung
+    00=Urlaub nicht beachten
+    01=Bei Urlaub nicht schalten
+    10=Nur bei Urlaub schalten
+    11=Urlaub wie Sonntag behandeln
+Bit 5-6: Beim Neustart Schaltzeiten nachholen? (0=Nein, 1=Den letzen Schaltpunkt, 2=Die letzten beiden Schaltpunkte)
+Bit 7: frei für Erweiterungen
 
 Extra Long: Je 4 Bit pro Tabellenzeile für Zeitbezug
 0x0: inaktiv
 0x1: Zeitpunkt
 0x4: Sonnenaufgang +
 0x5: Sonnenaufgang -
-0x6: Sonnenuntergang +
-0x7: Sonnenuntergang -
-0x8-0x15: Zufall?
+0x6: Sonnenaufgang frühestens
+0x7: Sonnenaufgang spätestens
+0x8: Sonnenuntergang +
+0x9: Sonnenuntergang -
+0xA: Sonnenuntergang frühestens
+0xB: Sonnenuntergang spätestens
 
 Speicheraufteilung (128 Bit) für Jahresschaltuhr mit 4 Zeitpunkten
 Bit 0-15: Jahresschaltpunkt 1 (Tagesanteil)
