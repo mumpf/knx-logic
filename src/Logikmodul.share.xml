@@ -409,6 +409,12 @@
                 <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="255" />
               </ParameterType>
               <!-- Ab hier Zeitschaltuhr -->
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-Latitude" Name="Latitude">
+                <TypeFloat Encoding="IEEE-754 Single" minInclusive="-90" maxInclusive="90" />
+              </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-Longitude" Name="Longitude">
+                <TypeFloat Encoding="IEEE-754 Single" minInclusive="-180" maxInclusive="180" />
+              </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-OnOff" Name="OnOff">
                 <TypeRestriction Base="Value" SizeInBit="1">
                   <Enumeration Text="AUS" Value="0" Id="M-00FA_A-0001-01-0000_PT-OnOff_EN-0" />
@@ -716,6 +722,14 @@
                   <Enumeration Text="Dez" Value="12" Id="M-00FA_A-0001-01-0000_PT-Month_EN-12" />
                 </TypeRestriction>
               </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-Timezone" Name="Timezone">
+                <TypeRestriction Base="Value" SizeInBit="2">
+                  <Enumeration Text="London (+0 Stunden)" Value="0" Id="M-00FA_A-0001-01-0000_PT-Timezone_EN-0" />
+                  <Enumeration Text="Berlin (+1 Stunde)" Value="1" Id="M-00FA_A-0001-01-0000_PT-Timezone_EN-1" />
+                  <Enumeration Text="Athen (+2)" Value="2" Id="M-00FA_A-0001-01-0000_PT-Timezone_EN-2" />
+                  <Enumeration Text="Moskau (+3)" Value="3" Id="M-00FA_A-0001-01-0000_PT-Timezone_EN-3" />
+                </TypeRestriction>
+              </ParameterType>
             </ParameterTypes>
             <Parameters>
               <!-- Standard parameter in any of our devices -->
@@ -736,9 +750,11 @@
                 <Parameter Id="M-00FA_A-0001-01-0000_UP-7" Name="EepromInstalled" Offset="0" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Nichtflüchtiger Speicher vorhanden (EEPROM)?" Value="1" />
                 <Parameter Id="M-00FA_A-0001-01-0000_UP-8" Name="NCN5130Installed" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Zusatzhardware abschaltbar (z.B. mit NCN5130)?" Value="1" />
                 <Parameter Id="M-00FA_A-0001-01-0000_UP-38" Name="VacationKo" Offset="0" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Urlaubsbehandlung aktivieren?" Value="0" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-39" Name="HolidayKo" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Feiertage auf den Bus senden?" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-39" Name="HolidayKo" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Feiertage auf dem Bus verfügbar machen?" Value="0" />
                 <Parameter Id="M-00FA_A-0001-01-0000_UP-40" Name="VacationRead" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Nach Neustart Urlaubsinfo lesen?" Value="0" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-41" Name="HolidaySend" Offset="1" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Nach Neustart Feiertagsinfo senden?" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-41" Name="HolidaySend" Offset="1" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Nach Neuberechnung Feiertagsinfo senden?" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-44" Name="Timezone" Offset="1" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-Timezone" Text="Zeitzone" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-45" Name="UseSummertime" Offset="3" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Sommerzeit berücksichtigen" Value="1" />
               </Union>
               <Union SizeInBit="32">
                 <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="11" BitOffset="0" />
@@ -771,6 +787,11 @@
                 <Parameter Id="M-00FA_A-0001-01-0000_UP-35" Name="Weihnachtstag1" Offset="3" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Erster Weihnachtstag" Value="1" SuffixText="25. Dezember" />
                 <Parameter Id="M-00FA_A-0001-01-0000_UP-36" Name="Weihnachtstag2" Offset="3" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Zweiter Weihnachtstag" Value="1" SuffixText="26. Dezember" />
                 <Parameter Id="M-00FA_A-0001-01-0000_UP-37" Name="Silvester" Offset="3" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Silvester" Value="1" SuffixText="31. Dezember" />
+              </Union>
+              <Union SizeInBit="64">
+                <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="15" BitOffset="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-42" Name="Latitude" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-Latitude" Text="Breitengrad" Value="50.115377" SuffixText="Lat" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-43" Name="Longitude" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-Longitude" Text="Längengrad" Value="8.683764" SuffixText="Long"/>
               </Union>
             </Parameters>
             <ParameterRefs>
@@ -813,6 +834,10 @@
               <ParameterRef Id="M-00FA_A-0001-01-0000_UP-39_R-391" RefId="M-00FA_A-0001-01-0000_UP-39" />
               <ParameterRef Id="M-00FA_A-0001-01-0000_UP-40_R-401" RefId="M-00FA_A-0001-01-0000_UP-40" />
               <ParameterRef Id="M-00FA_A-0001-01-0000_UP-41_R-411" RefId="M-00FA_A-0001-01-0000_UP-41" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-42_R-421" RefId="M-00FA_A-0001-01-0000_UP-42" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-43_R-431" RefId="M-00FA_A-0001-01-0000_UP-43" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-44_R-441" RefId="M-00FA_A-0001-01-0000_UP-44" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-45_R-451" RefId="M-00FA_A-0001-01-0000_UP-45" />
             </ParameterRefs>
             <ComObjectTable>
               <ComObject Id="M-00FA_A-0001-01-0000_O-1" Name="Heartbeat" Text="In Betieb" Number="1" FunctionText="Zyklisch" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-2" />
@@ -874,6 +899,14 @@
                 </choose>
               </ParameterBlock>
               <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-nnn" Name="Holidays" Text="Urlaub/Feiertage">
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-49" Text="Zeit" UIHint="Headline" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-47" Text="Damit der Sonnenauf- und Untergang korrekt berechnet werden kann, muss man genaue Geokoordinaten des Standorts angeben. Standardwert ist Frankfurt/Main." />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-42_R-421" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-43_R-431" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-46" Text="Ferner wird die Zeitzone des Ortes benötigt und ob die Zeit auf dem Bus auch die Sommerzeit berücksichtigt." />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-44_R-441" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-45_R-451" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-48" Text="" UIHint="HorizontalRuler" />
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-50" Text="Urlaub" UIHint="Headline" />
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-51" Text="Zeitschaltuhren können auch Urlaubszeiten berücksichtigen. Damit das funktioniert, muss eine Urlaubszeit über das KO 4 dem Gerät mitgeteilt werden." />
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-38_R-381" />

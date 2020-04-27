@@ -17,6 +17,7 @@ class Logic
     EepromManager *getEEPROM();
     void writeAllInputsToEEPROMFacade();
     void processAllInternalInputs(LogicChannel *iChannel, bool iValue);
+    void processReadRequests();
     void processInputKo(GroupObject &iKo);
     void processInterrupt(bool iForce = false);
     bool processDiagnoseCommand(char *iBuffer);
@@ -49,4 +50,6 @@ class Logic
     void processTime();
     void calculateSunriseSunset();
     void calculateEaster();
+
+    void sendHoliday();
 };

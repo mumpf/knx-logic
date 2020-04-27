@@ -84,6 +84,21 @@ void Logic::processAllInternalInputs(LogicChannel *iChannel, bool iValue)
     }
 }
 
+void Logic::processReadRequests() {
+    static bool sCalled = false;
+    // the following code should be called only once after initial startup delay 
+    if (!sCalled) {
+        if (knx.paramByte(LOG_ReadTimeDate) & 0x80) {
+            knx.getGroupObject(LOG_KoTime).requestObjectRead();
+            knx.getGroupObject(LOG_KoDate).requestObjectRead();
+        }
+        if (knx.paramByte(LOG_VacationRead) & 2) {
+            knx.getGroupObject(LOG_KoVacation).requestObjectRead();
+        }
+        sCalled = true;
+    }
+}
+
 // EEPROM handling
 // We assume at max 128 channels, each channel 2 inputs, each input max 4 bytes (value) and 1 byte (DPT) = 128 * 2 * (4 + 1) = 1280 bytes to write
 // So we use 40 Pages for data and one (first) page for aditional information (metadata).
@@ -314,8 +329,10 @@ void Logic::setup(bool iSaveSupported) {
 #endif
         if (prepareChannels())
             writeAllDptToEEPROM();
-        // sTimer.setup(knx.paramInt(LOG_Neujahr));
-        sTimer.setup(8.639751, 49.310209, 1, true, 0xFFFFFFFF);
+        // sTimer.setup(8.639751, 49.310209, 1, true, 0xFFFFFFFF);
+        float lLat = LogicChannel::getFloat(knx.paramData(LOG_Latitude));
+        float lLon = LogicChannel::getFloat(knx.paramData(LOG_Longitude));
+        sTimer.setup(lLon, lLat, knx.paramByte(LOG_Timezone), knx.paramByte(LOG_UseSummertime), knx.paramInt(LOG_Neujahr));
     }
 }
 
@@ -325,7 +342,7 @@ void Logic::loop()
         return;
 
     processInterrupt();
-    sTimer.loop();
+    sTimer.loop(); // clock and timer async methods
 
     // we loop on all channels an execute pipeline
     for (uint8_t lIndex = 0; lIndex < mNumChannels; lIndex++)
@@ -336,9 +353,30 @@ void Logic::loop()
         lChannel->loop();
         knx.loop();
     }
-    sTimer.clearMinuteChanged();
+    if (sTimer.minuteChanged()) {
+        sendHoliday();
+        sTimer.clearMinuteChanged();
+    }
 }
 
 EepromManager *Logic::getEEPROM() {
     return mEEPROM;
+}
+
+// start timer implementation
+
+// send holiday information on bus
+void Logic::sendHoliday() {
+    if (sTimer.holidayChanged())
+    {
+        // write the newly calculated holiday information into KO (can be read externally)
+        knx.getGroupObject(LOG_KoHoliday1).valueNoSend(sTimer.isHolidayToday(), getDPT(VAL_DPT_1));
+        knx.getGroupObject(LOG_KoHoliday2).valueNoSend(sTimer.isHolidayTomorrow(), getDPT(VAL_DPT_1));
+        sTimer.clearHolidayChanged();
+        if (knx.paramByte(LOG_HolidaySend & 1)) {
+            // and send it, if requested by application setting
+            knx.getGroupObject(LOG_KoHoliday1).objectWritten();
+            knx.getGroupObject(LOG_KoHoliday2).objectWritten();
+        }
+    }
 }

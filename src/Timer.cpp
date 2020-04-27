@@ -22,7 +22,7 @@ Timer &Timer::instance() {
     return sInstance;
 }
 
-void Timer::setup(double iLongitude, double iLatitude, int8_t iTimezone, bool iUseSummertime, uint32_t iHolidayBitmask) {
+void Timer::setup(float iLongitude, float iLatitude, int8_t iTimezone, bool iUseSummertime, uint32_t iHolidayBitmask) {
 
     mLongitude = iLongitude;
     mLatitude = iLatitude;
@@ -55,6 +55,7 @@ void Timer::loop() {
             if (mDayTick != mNow.tm_mday)
             {
                 calculateSunriseSunset();
+                calculateHolidays();
                 mDayTick = mNow.tm_mday;
             }
             if (mYearTick != mNow.tm_year)
@@ -62,6 +63,7 @@ void Timer::loop() {
                 calculateEaster();
                 calculateAdvent();
                 calculateSummertime(); // initial summertime calculation if year changes
+                if (!mHolidayChanged) calculateHolidays();
                 mYearTick = mNow.tm_year;
             }
         }
@@ -175,6 +177,22 @@ char *Timer::getTimeAsc() {
     return asctime(&mNow);
 }
 
+bool Timer::isHolidayToday() {
+    return mIsHolidayToday;
+}
+
+bool Timer::isHolidayTomorrow() {
+    return mIsHolidayTomorrow;
+}
+
+bool Timer::holidayChanged() {
+    return mHolidayChanged;
+}
+
+void Timer::clearHolidayChanged() {
+    mHolidayChanged = false;
+}
+
 uint8_t Timer::calculateLastSundayInMonth(uint8_t iMonth) {
     mTimeHelper.tm_year = mNow.tm_year;
     mTimeHelper.tm_mon = iMonth - 1;
@@ -284,8 +302,7 @@ void Timer::calculateHolidays(bool iDebugOutput) {
     // check if today is a holiday
     sDay lToday = {(int8_t)getDay(), (int8_t)getMonth()};
     sDay lTomorrow = getDayByOffset(1, lToday);
-    mIsHolidayToday = false;
-    mIsHolidayTomorrow = false;
+    mHolidayChanged = true;
     for (uint8_t i = 0; i < 29; i++)
     {
         sDay lHoliday = {REMOVED, REMOVED};

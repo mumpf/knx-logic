@@ -14,6 +14,8 @@
 #define LOG_HolidayKo                  9      // 1 Bit, Bit 1
 #define LOG_VacationRead               9      // 1 Bit, Bit 1
 #define LOG_HolidaySend               10      // 1 Bit, Bit 7
+#define LOG_Timezone                  10      // 2 Bits, Bit 6-5
+#define LOG_UseSummertime             12      // 1 Bit, Bit 6
 #define LOG_Neujahr                   11      // 1 Bit, Bit 7
 #define LOG_DreiKoenige               11      // 1 Bit, Bit 6
 #define LOG_Weiberfastnacht           11      // 1 Bit, Bit 5
@@ -43,9 +45,11 @@
 #define LOG_Weihnachtstag1            14      // 1 Bit, Bit 5
 #define LOG_Weihnachtstag2            14      // 1 Bit, Bit 4
 #define LOG_Silvester                 14      // 1 Bit, Bit 3
+#define LOG_Latitude                  15      // float
+#define LOG_Longitude                 19      // float
 
 // Parameter per channel
-#define LOG_ParamBlockOffset 15
+#define LOG_ParamBlockOffset 23
 #define LOG_ParamBlockSize 100
 #define LOG_fChannelDelay              0      // int32_t
 #define LOG_fLogic                     4      // 8 Bits, Bit 7-0

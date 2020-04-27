@@ -164,8 +164,10 @@
 #define VAL_Tim_Restore_Last 1
 #define VAL_Tim_Restore_Last2 2
 
-#define VAL_Tim_Holiday_Sunday 0
-#define VAL_Tim_Holiday_Skip 1
+#define VAL_Tim_Special_Skip 0
+#define VAL_Tim_Special_No 1
+#define VAL_Tim_Special_Only 2
+#define VAL_Tim_Special_Sunday 3
 
 #define VAL_Tim_Timer_Daily 0
 #define VAL_Tim_Timer_Yearly 1
@@ -193,7 +195,6 @@ class LogicChannel
     uint8_t mChannelId;
     uint32_t calcParamIndex(uint16_t iParamIndex);
     uint16_t calcKoNumber(uint8_t iIOIndex);
-    float getFloat(uint8_t *data);
     uint8_t getByteParam(uint16_t iParamIndex);
     int8_t getSByteParam(uint16_t iParamIndex);
     uint16_t getWordParam(uint16_t iParamIndex);
@@ -249,12 +250,12 @@ class LogicChannel
 
     // Start of Timer implementation
     void processTimerInput();
-    bool checkTimerToday(uint8_t iTimerIndex);
-    bool checkWeekday(uint8_t iWeekday);
-    bool checkTimerTime(uint8_t iTimerIndex, uint16_t iBitfield, uint8_t iHour, uint8_t iMinute, bool iSkipWeekday);
-    bool checkPointInTime(uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday);
-    bool checkSunAbs(uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iMinus);
-    bool checkSunLimit(uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iLatest);
+    bool checkTimerToday(uint8_t iTimerIndex, bool iHandleAsSunday);
+    bool checkWeekday(uint8_t iWeekday, bool iHandleAsSunday);
+    bool checkTimerTime(uint8_t iTimerIndex, uint16_t iBitfield, uint8_t iHour, uint8_t iMinute, bool iSkipWeekday, bool iHandleAsSunday);
+    bool checkPointInTime(uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iHandleAsSunday);
+    bool checkSunAbs(uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iHandleAsSunday, bool iMinus);
+    bool checkSunLimit(uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iHandleAsSunday, bool iLatest);
 
   protected:
 
@@ -301,6 +302,7 @@ class LogicChannel
     static Logic *sLogic;
     static uint16_t calcKoNumber(uint8_t iIOIndex, uint8_t iChannelId);
     static GroupObject *getKoForChannel(uint8_t iIOIndex, uint8_t iChannelId);
+    static float getFloat(uint8_t *data);
 
     // instance
     bool checkDpt(uint8_t iIOIndex, uint8_t iDpt);
