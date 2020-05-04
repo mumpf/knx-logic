@@ -869,7 +869,7 @@
           </Static>
           <Dynamic>
             <ChannelIndependentBlock>
-              <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-1" Name="General" Text="Allgemeine Parameter">
+              <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-1" Name="General" Text="Allgemeine Parameter" >
                 <!-- the following parameter is read only and necessary (number of logik channels used in knxdprod) -->
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-1_R-11" />
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-2_R-21" />
@@ -897,6 +897,58 @@
                     <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-1_R-11" />
                   </when>
                 </choose>
+              </ParameterBlock>
+            </ChannelIndependentBlock>
+            <Channel Id="M-00FA_A-0001-01-0000_CH-1" Name="Logik" Number="1">
+              <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-2" Name="Doku" Text="Logikdokumentation">
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-1" Text="Jeder Logikkanal dieses Moduls repräsentiert eine Logik. Die Logikverarbeitung ist intern immer Binär (DPT1). Jede Logik hat bis zu 4 Eingänge, Detais siehe bei der Doku der Eingänge." />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-2" Text="Da das Logikmodul unterschiedliche DPT für Ein- und Ausgänge erlaubt, gibt es Funktionsblöcke (im folgendem FB), die einen DPTx zu DPT1 konvertieren (für Eingänge) und umgekehrt (für Ausgänge)." />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-3" Text="In das Ein- und Ausgangssignal einer Logik können weitere FB eingefügt werden und so das Ein- bzw. das Ausgangssignal beeinflussen. Folgende Funktionsblöcke gibt es:" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-4" Text="Eingangs-Konverter (konvertiert Eingangs-DPT nach binär DPT1)" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-5" Text="Eingang vorbelegen mit einem bestimmten (DPT1) Wert" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-6" Text="Eingang zyklisch lesen alle n Sekunden" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-7" Text="Eingang invertieren" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-8" Text="Logik selbst (UND, ODER, EXKLUSIV-ODER, TOR), wobei bei TOR Ex- und Interner Eingang 1 über ein ODER zum Dateneingang zusammengefasst werden, Ex- und Interner Eingang 2 zum Toreingang." />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-9" Text="Logikauswertung: Normal kann die Logik erst ausgewertet werden, wenn alle Eingänge einen gültigen Wert haben. Man kann auch bereits auswerten, sobald das erstbeste Signal ankommt. Die ungültigen Eingänge werden dann wie inaktive Eingänge behandelt." />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-10" Text="Logik-Ausgangswert: Der Ausgang kann seinen Wert weiterleiten, sobald sich der Ausgangswert ändert, sobald sich irgendein Eingangswert ändert oder sobald irgendein Eingang einen Wert bekommen hat. Man kann auch bestimmte Eingänge auswählen." />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-11" Text="Treppenlicht/Blinken: Normales Treppenlicht mit wählbarem Verlängern bzw. vorzeitig ausschalten. Während der Treppenlichtzeit kann man den FB-Ausgang ein- und ausschalten (blinken) lassen." />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-12" Text="Ein/Ausschaltverzögerung: Für ein/aus einzeln einstellbar" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-13" Text="Zyklisch senden: Für ein/aus einzeln einstellbar" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-14" Text="Ausgangs-Konverter: Kann in DPT 1,2,5,6,7,8,9,16,17,232 konvertieren, für an und aus in unterschiedliche Werte oder auch nichts tun (Wert unterdrücken)." />
+                <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-3" Name="Info2" Text="Eingänge">
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-15" Text="Es gibt bis zu 4 Eingänge, wobei maximal 2 Eingänge von außen (über ein KO) oder über einen Sensorwert versorgt werden können, und maximal 2 Eingänge mit dem Ausgang eines anderen Kanäls verbunden werden können." />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-16" Text="Ist ein Eingang mit dem Bus verbunden (hat ein KO), kann er zyklisch Leseanforderungen auf dieses KO senden." />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-17" Text="Ist ein Eingang ein Zahlenwert (DPT2 bis DPT9), muss ein Eingangs-Konverter gewählt werden, der den Wert in ein binären Wert (DPT1) konvertiert." />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-18" Text="Als Eingangs-Konverter kann man einen der folgenden Funktionsblöcke (FB) nutzen:" />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-19" Text="- Werteintervall: FB wird wahr, wenn der Eingangswert zwischen einem Von- und einem Bis-Wert liegt, sonst falsch" />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-20" Text="- Differenzintervall: FB wird wahr, wenn die Differenz von 2 Eingangswerten zwischen einem Von- und einem Bis-Wert liegt, sonst falsch" />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-21" Text="- Hysterese: FB wird wahr, wenn der Eingangswert einen oberen Grenzwert überschreitet. FB wird falsch, wenn der Eingangswert einen unteren Grenzwert unterschreitet" />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-22" Text="- Differenzhysterese: Es wird die Differenz zweier Eingänge gebildet. FB wird wahr, wenn die Differenz einen oberen Grenzwert überschreitet. FB eird falsch, wenn die Differenz einen unteren Grenzwert unterschreitet" />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-23" Text="- Zwangsführung: FB wird wahr, wenn einer von 4 möglichen Zwangsführungswerten am Eingang anliegt, sonst falsch" />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-24" Text="- Szenen: FB wird wahr, wenn eine von 8 möglichen Szenen am Eingang anliegt, sonst falsch" />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-25" Text="Für die FB Differenzintervall und Differenzhysterese wird auch der Wert des anderen Eingang herangezogen." />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-26" Text="Ein Eingang kann auch seinen Wert im EEPROM speichern und sich nach einem Neustart daraus initialisieren. Falls das nicht gewünscht ist oder kein gültiber Wert im EEPROM steht, kann man noch folgende Initialisierungen wählen:" />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-27" Text="- Initialisierung durch Lesen des Wertes vom Bus" />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-28" Text="- Initialisierung mit EIN" />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-29" Text="- Initialisierung mit AUS" />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-30" Text="Ferner kann ein Eingang auch so eingestellt werden, dass er seinen Wert zyklisch alle n Sekunden vom Bus lesen soll." />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-31" Text="Ein Eingang kann auch invertiert werden, allerdings passiert das als letzter FB, direkt am Logikeingang. Somit werden alle vorhergehenden FB (z.B. Initialisierung mit AUS) auch invertiert!" />
+                </ParameterBlock>
+                <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-4" Name="Info3" Text="Ausgänge">
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-35" Text="Alle FB am Ausgang können einzeln zu- oder abgeschaltet, aber nicht in ihrer Reihenfolge geändert werden. Somit geht das Ergebnis eines FB direkt in den folgenden FB-Eingang ein." />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-36" Text="Der Logik-Ausgangswert triggert weitere FB, sobald sich der Ausgangswert der Logik ändert, sobald sich irgendein Eingangswert ändert oder sobald irgendein Eingang einen Wert bekommen hat. Man kann auch bestimmte Eingänge auswählen." />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-37" Text="Treppenlicht/Blinken: Normales Treppenlicht mit wählbarem Verlängern bzw. vorzeitig ausschalten. Während der Treppenlichtzeit kann man den FB-Ausgang mit einstellbaren Puls-/Pausenverhältnis ein- und ausschalten (blinken) lassen." />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-38" Text="Ein/Ausschaltverzögerung: Für ein/aus einzeln einstellbar, und mit wählbaren Verhalten, wenn mehrere EIN- oder AUS-Signale nacheinander kommen." />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-39" Text="Wiederholungsfilter: Aufeinanderfolgende EIN- bzw. AUS-Signale können unterdürckt oder durchgelassen werden (muss natürich vor dem zyklischen Senden eingestellt werden)" />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-32" Text="Zyklisch senden: Für ein/aus einzeln einstellbar" />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-33" Text="Der Ausgangs-Konverter kann in DPT 1,2,5,6,7,8,9,16,17,232 konvertieren, man kann für EIN und AUS unterschiedliche Einstellungen vornehmen:" />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-40" Text="- Wert nicht senden (unterdrücken)" />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-41" Text="- Konstanten Wert senden" />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-42" Text="- Den Wert eines Eingangs senden, wobei in den passenden Ausgangs-DPT konvertiert wird" />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-43" Text="- Auf die Ausgangs-GA einen Read-Request senden" />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-44" Text="- Ein KNX-Gerät zurücksetzen (Reset-Funktion der ETS)" />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-45" Text="- Einen Ton Ein- bzw. Ausschalten (nur für Module mit Buzzer)" />
+                </ParameterBlock>
               </ParameterBlock>
               <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-nnn" Name="Holidays" Text="Urlaub/Feiertage">
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-49" Text="Zeit" UIHint="Headline" />
@@ -958,61 +1010,7 @@
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-36_R-361" />
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-37_R-371" />
               </ParameterBlock>
-            </ChannelIndependentBlock>
-            <Channel Id="M-00FA_A-0001-01-0000_CH-3" Name="Logik" Number="3" Text="Logikdokumentation">
-              <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-2" Name="Info1" Text="Allgemein">
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-1" Text="Jeder Logikkanal dieses Moduls repräsentiert eine Logik. Die Logikverarbeitung ist intern immer Binär (DPT1). Jede Logik hat bis zu 4 Eingänge, Detais siehe bei der Doku der Eingänge." />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-2" Text="Da das Logikmodul unterschiedliche DPT für Ein- und Ausgänge erlaubt, gibt es Funktionsblöcke (im folgendem FB), die einen DPTx zu DPT1 konvertieren (für Eingänge) und umgekehrt (für Ausgänge)." />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-3" Text="In das Ein- und Ausgangssignal einer Logik können weitere FB eingefügt werden und so das Ein- bzw. das Ausgangssignal beeinflussen. Folgende Funktionsblöcke gibt es:" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-4" Text="Eingangs-Konverter (konvertiert Eingangs-DPT nach binär DPT1)" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-5" Text="Eingang vorbelegen mit einem bestimmten (DPT1) Wert" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-6" Text="Eingang zyklisch lesen alle n Sekunden" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-7" Text="Eingang invertieren" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-8" Text="Logik selbst (UND, ODER, EXKLUSIV-ODER, TOR), wobei bei TOR Ex- und Interner Eingang 1 über ein ODER zum Dateneingang zusammengefasst werden, Ex- und Interner Eingang 2 zum Toreingang." />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-9" Text="Logikauswertung: Normal kann die Logik erst ausgewertet werden, wenn alle Eingänge einen gültigen Wert haben. Man kann auch bereits auswerten, sobald das erstbeste Signal ankommt. Die ungültigen Eingänge werden dann wie inaktive Eingänge behandelt." />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-10" Text="Logik-Ausgangswert: Der Ausgang kann seinen Wert weiterleiten, sobald sich der Ausgangswert ändert, sobald sich irgendein Eingangswert ändert oder sobald irgendein Eingang einen Wert bekommen hat. Man kann auch bestimmte Eingänge auswählen." />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-11" Text="Treppenlicht/Blinken: Normales Treppenlicht mit wählbarem Verlängern bzw. vorzeitig ausschalten. Während der Treppenlichtzeit kann man den FB-Ausgang ein- und ausschalten (blinken) lassen." />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-12" Text="Ein/Ausschaltverzögerung: Für ein/aus einzeln einstellbar" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-13" Text="Zyklisch senden: Für ein/aus einzeln einstellbar" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-14" Text="Ausgangs-Konverter: Kann in DPT 1,2,5,6,7,8,9,16,17,232 konvertieren, für an und aus in unterschiedliche Werte oder auch nichts tun (Wert unterdrücken)." />
-              </ParameterBlock>
-              <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-3" Name="Info2" Text="Eingänge">
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-15" Text="Es gibt bis zu 4 Eingänge, wobei maximal 2 Eingänge von außen (über ein KO) oder über einen Sensorwert versorgt werden können, und maximal 2 Eingänge mit dem Ausgang eines anderen Kanäls verbunden werden können." />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-16" Text="Ist ein Eingang mit dem Bus verbunden (hat ein KO), kann er zyklisch Leseanforderungen auf dieses KO senden." />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-17" Text="Ist ein Eingang ein Zahlenwert (DPT2 bis DPT9), muss ein Eingangs-Konverter gewählt werden, der den Wert in ein binären Wert (DPT1) konvertiert." />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-18" Text="Als Eingangs-Konverter kann man einen der folgenden Funktionsblöcke (FB) nutzen:" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-19" Text="- Werteintervall: FB wird wahr, wenn der Eingangswert zwischen einem Von- und einem Bis-Wert liegt, sonst falsch" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-20" Text="- Differenzintervall: FB wird wahr, wenn die Differenz von 2 Eingangswerten zwischen einem Von- und einem Bis-Wert liegt, sonst falsch" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-21" Text="- Hysterese: FB wird wahr, wenn der Eingangswert einen oberen Grenzwert überschreitet. FB wird falsch, wenn der Eingangswert einen unteren Grenzwert unterschreitet" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-22" Text="- Differenzhysterese: Es wird die Differenz zweier Eingänge gebildet. FB wird wahr, wenn die Differenz einen oberen Grenzwert überschreitet. FB eird falsch, wenn die Differenz einen unteren Grenzwert unterschreitet" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-23" Text="- Zwangsführung: FB wird wahr, wenn einer von 4 möglichen Zwangsführungswerten am Eingang anliegt, sonst falsch" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-24" Text="- Szenen: FB wird wahr, wenn eine von 8 möglichen Szenen am Eingang anliegt, sonst falsch" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-25" Text="Für die FB Differenzintervall und Differenzhysterese wird auch der Wert des anderen Eingang herangezogen." />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-26" Text="Ein Eingang kann auch seinen Wert im EEPROM speichern und sich nach einem Neustart daraus initialisieren. Falls das nicht gewünscht ist oder kein gültiber Wert im EEPROM steht, kann man noch folgende Initialisierungen wählen:" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-27" Text="- Initialisierung durch Lesen des Wertes vom Bus" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-28" Text="- Initialisierung mit EIN" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-29" Text="- Initialisierung mit AUS" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-30" Text="Ferner kann ein Eingang auch so eingestellt werden, dass er seinen Wert zyklisch alle n Sekunden vom Bus lesen soll." />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-31" Text="Ein Eingang kann auch invertiert werden, allerdings passiert das als letzter FB, direkt am Logikeingang. Somit werden alle vorhergehenden FB (z.B. Initialisierung mit AUS) auch invertiert!" />
-              </ParameterBlock>
-              <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-4" Name="Info3" Text="Ausgänge">
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-35" Text="Alle FB am Ausgang können einzeln zu- oder abgeschaltet, aber nicht in ihrer Reihenfolge geändert werden. Somit geht das Ergebnis eines FB direkt in den folgenden FB-Eingang ein." />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-36" Text="Der Logik-Ausgangswert triggert weitere FB, sobald sich der Ausgangswert der Logik ändert, sobald sich irgendein Eingangswert ändert oder sobald irgendein Eingang einen Wert bekommen hat. Man kann auch bestimmte Eingänge auswählen." />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-37" Text="Treppenlicht/Blinken: Normales Treppenlicht mit wählbarem Verlängern bzw. vorzeitig ausschalten. Während der Treppenlichtzeit kann man den FB-Ausgang mit einstellbaren Puls-/Pausenverhältnis ein- und ausschalten (blinken) lassen." />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-38" Text="Ein/Ausschaltverzögerung: Für ein/aus einzeln einstellbar, und mit wählbaren Verhalten, wenn mehrere EIN- oder AUS-Signale nacheinander kommen." />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-39" Text="Wiederholungsfilter: Aufeinanderfolgende EIN- bzw. AUS-Signale können unterdürckt oder durchgelassen werden (muss natürich vor dem zyklischen Senden eingestellt werden)" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-32" Text="Zyklisch senden: Für ein/aus einzeln einstellbar" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-33" Text="Der Ausgangs-Konverter kann in DPT 1,2,5,6,7,8,9,16,17,232 konvertieren, man kann für EIN und AUS unterschiedliche Einstellungen vornehmen:" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-40" Text="- Wert nicht senden (unterdrücken)" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-41" Text="- Konstanten Wert senden" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-42" Text="- Den Wert eines Eingangs senden, wobei in den passenden Ausgangs-DPT konvertiert wird" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-43" Text="- Auf die Ausgangs-GA einen Read-Request senden" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-44" Text="- Ein KNX-Gerät zurücksetzen (Reset-Funktion der ETS)" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-45" Text="- Einen Ton Ein- bzw. Ausschalten (nur für Module mit Buzzer)" />
-              </ParameterBlock>
             </Channel>
-            <!-- <Channel Id="M-00FA_A-0001-01-0000_CH-5" Name="Timer" Number="5" Text="Urlaub/Feiertage">
-            </Channel> -->
           </Dynamic>
         </ApplicationProgram>
       </ApplicationPrograms>

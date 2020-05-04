@@ -2,34 +2,18 @@
 #include "Hardware.h"
 #include "Logic.h"
 
+const uint8_t cFirmwareMajor = 2;    // 0-31
+const uint8_t cFirmwareMinor = 0;    // 0-31
+const uint8_t cFirmwareRevision = 0; // 0-63
+
 struct sRuntimeInfo
 {
-    uint16_t currentPipeline;
     unsigned long startupDelay;
     unsigned long heartbeatDelay;
 };
 
 sRuntimeInfo gRuntimeData;
 Logic gLogic;
-
-// true solgange der Start des gesamten Moduls verzögert werden soll
-bool startupDelay()
-{
-    return !delayCheck(gRuntimeData.startupDelay, knx.paramInt(LOG_StartupDelay) * 1000);
-}
-
-void ProcessReadRequests() {
-    // this method is called after startup delay and executes read requests, which should just happen once after startup
-    static bool sCalled = false;
-
-    if (!sCalled) {
-        if (knx.paramByte(LOG_ReadTimeDate) & 0x80) {
-            knx.getGroupObject(LOG_KoTime).requestObjectRead();
-            knx.getGroupObject(LOG_KoDate).requestObjectRead();
-        }
-        sCalled = true;
-    }
-}
 
 void ProcessHeartbeat()
 {
@@ -39,9 +23,24 @@ void ProcessHeartbeat()
         // we waited enough, let's send a heartbeat signal
         knx.getGroupObject(LOG_KoHeartbeat).value(true, getDPT(VAL_DPT_1));
         gRuntimeData.heartbeatDelay = millis();
-        // debug-helper for logic module, just a test
+        // debug-helper for logic module
         gLogic.debug();
     }
+}
+
+void ProcessReadRequests() {
+    // this method is called after startup delay and executes read requests, which should just happen once after startup
+    static bool sCalled = false;
+    if (!sCalled) {
+        gLogic.processReadRequests();
+        sCalled = true;
+    }
+}
+
+// true solgange der Start des gesamten Moduls verzögert werden soll
+bool startupDelay()
+{
+    return !delayCheck(gRuntimeData.startupDelay, knx.paramInt(LOG_StartupDelay) * 1000);
 }
 
 void appLoop()
@@ -62,16 +61,21 @@ void appLoop()
 
 void appSetup(bool iSaveSupported)
 {
-
     // try to get rid of occasional I2C lock...
     // savePower();
+    digitalWrite(PROG_LED_PIN, HIGH);
+    digitalWrite(LED_YELLOW_PIN, HIGH);
     // delay(100);
     // restorePower();
     // check hardware availability
     boardCheck();
+    digitalWrite(PROG_LED_PIN, LOW);
+    digitalWrite(LED_YELLOW_PIN, LOW);
 
     if (knx.configured())
     {
+        // 5 bit major, 5 bit minor, 6 bit revision
+        knx.bau().deviceObject().version(cFirmwareMajor << 11 | cFirmwareMinor << 6 | cFirmwareRevision);
         gRuntimeData.startupDelay = millis();
         gRuntimeData.heartbeatDelay = 0;
         gLogic.setup(iSaveSupported);

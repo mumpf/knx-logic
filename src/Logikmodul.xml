@@ -53,8 +53,11 @@
             <Options />
           </Static>
           <Dynamic>
-            <mc:include href="Logikmodul.share.xml" xpath="//Dynamic/*" prefix="LOG" />
-            <Channel Id="M-00FA_A-0001-01-0000_CH-4" Name="Logikkanaele" Number="4" Text="Logikkanäle">
+            <ChannelIndependentBlock>
+              <mc:include href="Logikmodul.share.xml" xpath="//Dynamic/ChannelIndependentBlock/*" prefix="LOG" />
+            </ChannelIndependentBlock>
+            <Channel Id="M-00FA_A-0001-01-0000_CH-1" Name="Logik" Number="1" Text="Logik">
+              <mc:include href="Logikmodul.share.xml" xpath="//Dynamic/Channel/*" prefix="LOG" />
               <mc:include href="Logikmodul.templ.xml" xpath="//Dynamic/*" header="Logikmodul.h" prefix="LOG" />
             </Channel>
           </Dynamic>
