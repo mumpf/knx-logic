@@ -15,7 +15,8 @@
 #define LOG_VacationRead               9      // 1 Bit, Bit 1
 #define LOG_HolidaySend               10      // 1 Bit, Bit 7
 #define LOG_Timezone                  10      // 2 Bits, Bit 6-5
-#define LOG_UseSummertime             12      // 1 Bit, Bit 6
+#define LOG_UseSummertime             10      // 1 Bit, Bit 4
+#define LOG_Diagnose                  10      // 1 Bit, Bit 3
 #define LOG_Neujahr                   11      // 1 Bit, Bit 7
 #define LOG_DreiKoenige               11      // 1 Bit, Bit 6
 #define LOG_Weiberfastnacht           11      // 1 Bit, Bit 5
@@ -295,7 +296,7 @@
 #define LOG_fOOffPADevice             87      // uint8_t
 
 // Communication objects per channel (multiple occurance)
-#define LOG_KoOffset 10
+#define LOG_KoOffset 20
 #define LOG_KoBlockSize 3
 #define LOG_KoKOfE1 0
 #define LOG_KoKOfE2 1
@@ -308,4 +309,5 @@
 #define LOG_KoVacation 4
 #define LOG_KoHoliday1 5
 #define LOG_KoHoliday2 6
+#define LOG_KoDiagnose 7
 
