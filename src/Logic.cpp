@@ -5,6 +5,7 @@
 
 uint8_t Logic::sMagicWord[] = {0xAE, 0x49, 0xD2, 0x9F};
 Timer &Logic::sTimer = Timer::instance();
+char Logic::sDiagnoseBuffer[16] = {0};
 
 // callbacks have to be static members
 void Logic::onInputKoHandler(GroupObject &iKo) {
@@ -187,6 +188,8 @@ void Logic::processInputKo(GroupObject &iKo)
     } else if (iKo.asap() == LOG_KoDate) {
         struct tm lTmp = iKo.value(getDPT(VAL_DPT_11));
         sTimer.setDateFromBus(&lTmp);
+    } else if (iKo.asap() == LOG_Diagnose) {
+        processDiagnoseCommand(iKo);
     } else if (iKo.asap() >= LOG_KoOffset && iKo.asap() < LOG_KoOffset + mNumChannels * LOG_KoBlockSize) {
         uint16_t lKoNumber = iKo.asap() - LOG_KoOffset;
         uint8_t lChannelId = lKoNumber / LOG_KoBlockSize;
@@ -203,8 +206,8 @@ void Logic::processInterrupt(bool iForce)
         if (!iForce) printDebug("Logic: SAVE-Interrupt processing started after %lu ms\n", millis() - mSaveInterruptTimestamp);
         mSaveInterruptTimestamp = millis();
         // If Interrupt happens during i2c read we try to finish last read first
-        while (Wire.available())
-            Wire.read();
+        // while (Wire.available())
+        //     Wire.read();
         // now we write everything to EEPROM
         writeAllInputsToEEPROM();
         printDebug("Logic: SAVE-Interrupt processing duration %lu ms\n", millis() - mSaveInterruptTimestamp);
@@ -212,31 +215,47 @@ void Logic::processInterrupt(bool iForce)
     }
 }
 
-bool Logic::processDiagnoseCommand(char* cBuffer) {
+char *Logic::initDiagnose(GroupObject &iKo) {
+    memcpy(sDiagnoseBuffer, iKo.valueRef(), 14);
+    return sDiagnoseBuffer;
+}
+
+char *Logic::getDiagnoseBuffer() {
+    return sDiagnoseBuffer;
+}
+
+bool Logic::processDiagnoseCommand() {
     bool lResult = false;
     //diagnose is interactive and reacts on commands
-    switch (cBuffer[0]) {
+    switch (sDiagnoseBuffer[0]) {
+        case 's': {
+            // Command s: Number of save-Interupts (= false-save)
+            sprintf(sDiagnoseBuffer, "SAVE %5d", mSaveInterruptCount);
+            lResult = true;
+            break;
+        }
         case 'l': {
             // Command l<nn>: Logic inputs and output of last execution
             // find channel and dispatch
-            uint8_t lIndex = (cBuffer[1] - '0') * 10 + cBuffer[2] - '0' - 1;
-            lResult = mChannel[lIndex]->processDiagnoseCommand(cBuffer);
+            uint8_t lIndex = (sDiagnoseBuffer[1] - '0') * 10 + sDiagnoseBuffer[2] - '0' - 1;
+            lResult = mChannel[lIndex]->processDiagnoseCommand(sDiagnoseBuffer);
             break;
         }
         case 't': {
             // return internal time (might differ from external
-            sprintf(cBuffer, "%02d:%02d:%02d %02d.%02d", sTimer.getHour(), sTimer.getMinute(), sTimer.getSecond(), sTimer.getDay(), sTimer.getMonth());
+            sprintf(sDiagnoseBuffer, "%02d:%02d:%02d %02d.%02d", sTimer.getHour(), sTimer.getMinute(), sTimer.getSecond(), sTimer.getDay(), sTimer.getMonth());
             lResult = true;
             break;
         }
         case 'r': {
-            sprintf(cBuffer, "R%02d:%02d S%02d:%02d", sTimer.getSunInfo(SUN_SUNRISE)->hour, sTimer.getSunInfo(SUN_SUNRISE)->minute, sTimer.getSunInfo(SUN_SUNSET)->hour, sTimer.getSunInfo(SUN_SUNSET)->minute);
+            // return sunrise and sunset
+            sprintf(sDiagnoseBuffer, "R%02d:%02d S%02d:%02d", sTimer.getSunInfo(SUN_SUNRISE)->hour, sTimer.getSunInfo(SUN_SUNRISE)->minute, sTimer.getSunInfo(SUN_SUNSET)->hour, sTimer.getSunInfo(SUN_SUNSET)->minute);
             lResult = true;
             break;
         }
         case 'o': {
             // calculate easter date
-            sprintf(cBuffer, "O%02d.%02d", sTimer.getEaster()->day, sTimer.getEaster()->month);
+            sprintf(sDiagnoseBuffer, "O%02d.%02d", sTimer.getEaster()->day, sTimer.getEaster()->month);
             lResult = true;
             break;
         }
@@ -247,7 +266,32 @@ bool Logic::processDiagnoseCommand(char* cBuffer) {
     return lResult;
 }
 
+void Logic::processDiagnoseCommand(GroupObject &iKo) {
+    // this method is called as soon as iKo is changed
+    // an external change is expected
+    // because this iKo also is changed within this method,
+    // the method is called again. This might result in
+    // an endless loop. This is prevented by the isCalled pattern.
+    static bool sIsCalled = false;
+    if (!sIsCalled)
+    {
+        sIsCalled = true;
+        //diagnose is interactive and reacts on commands
+        initDiagnose(iKo);
+        if (processDiagnoseCommand())
+            outputDiagnose(iKo);
+        sIsCalled = false;
+    }
+};
+
+void Logic::outputDiagnose(GroupObject &iKo) {
+    sDiagnoseBuffer[15] = 0;
+    iKo.value(sDiagnoseBuffer, getDPT(VAL_DPT_16));
+    printDebug("Diagnose: %s\n", sDiagnoseBuffer);
+}
+
 void Logic::onSavePinInterruptHandler() {
+    mSaveInterruptCount += 1;
     mSaveInterruptTimestamp = millis();
 }
 
