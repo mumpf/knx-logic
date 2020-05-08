@@ -13,7 +13,7 @@
             <Code>
               <RelativeSegment Id="M-00FA_A-0001-01-0000_RS-04-00000" Name="Parameters" Offset="0" Size="0" LoadStateMachine="4" />
             </Code>
-            <mc:define prefix="LOG" NumChannels="100" KoOffset="20" />
+            <mc:define prefix="LOG" header="Logikmodul.h" NumChannels="100" KoOffset="20" />
             <ParameterTypes>
               <!-- generic parameter types for any device -->
               <mc:include href="Logikmodul.share.xml" xpath="//ParameterTypes/ParameterType" prefix="LOG" />
@@ -21,20 +21,20 @@
             <Parameters>
               <!-- Standard parameter in any of our devices -->
               <mc:include href="Logikmodul.share.xml" xpath="//Parameters/Parameter|//Parameters/Union" prefix="LOG" />
-              <mc:include href="Logikmodul.templ.xml" xpath="//Parameters/Parameter|//Parameters/Union" header="Logikmodul.h" prefix="LOG" />
+              <mc:include href="Logikmodul.templ.xml" xpath="//Parameters/Parameter|//Parameters/Union" type="template" prefix="LOG" />
             </Parameters>
             <ParameterRefs>
               <!-- General -->
               <mc:include href="Logikmodul.share.xml" xpath="//ParameterRefs/ParameterRef" prefix="LOG" />
-              <mc:include href="Logikmodul.templ.xml" xpath="//ParameterRefs/ParameterRef" header="Logikmodul.h" prefix="LOG" />
+              <mc:include href="Logikmodul.templ.xml" xpath="//ParameterRefs/ParameterRef" type="template" prefix="LOG" />
             </ParameterRefs>
             <ComObjectTable>
               <mc:include href="Logikmodul.share.xml" xpath="//ComObjectTable/ComObject" prefix="LOG" />
-              <mc:include href="Logikmodul.templ.xml" xpath="//ComObjectTable/ComObject" header="Logikmodul.h" prefix="LOG" />
+              <mc:include href="Logikmodul.templ.xml" xpath="//ComObjectTable/ComObject" type="template" prefix="LOG" />
             </ComObjectTable>
             <ComObjectRefs>
               <mc:include href="Logikmodul.share.xml" xpath="//ComObjectRefs/ComObjectRef" prefix="LOG" />
-              <mc:include href="Logikmodul.templ.xml" xpath="//ComObjectRefs/ComObjectRef" header="Logikmodul.h" prefix="LOG" />
+              <mc:include href="Logikmodul.templ.xml" xpath="//ComObjectRefs/ComObjectRef" type="template" prefix="LOG" />
             </ComObjectRefs>
             <AddressTable MaxEntries="65535" />
             <AssociationTable MaxEntries="65535" />
