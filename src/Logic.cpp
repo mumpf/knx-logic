@@ -230,7 +230,7 @@ bool Logic::processDiagnoseCommand() {
     switch (sDiagnoseBuffer[0]) {
         case 's': {
             // Command s: Number of save-Interupts (= false-save)
-            sprintf(sDiagnoseBuffer, "SAVE %5d", mSaveInterruptCount);
+            snprintf(sDiagnoseBuffer, 15, "SAVE %5d", mSaveInterruptCount);
             lResult = true;
             break;
         }
@@ -243,19 +243,30 @@ bool Logic::processDiagnoseCommand() {
         }
         case 't': {
             // return internal time (might differ from external
-            sprintf(sDiagnoseBuffer, "%02d:%02d:%02d %02d.%02d", sTimer.getHour(), sTimer.getMinute(), sTimer.getSecond(), sTimer.getDay(), sTimer.getMonth());
+            uint8_t lHour = sTimer.getHour();
+            uint8_t lMinute = sTimer.getMinute();
+            uint8_t lSecond = sTimer.getSecond();
+            uint8_t lDay = sTimer.getDay();
+            uint8_t lMonth = sTimer.getMonth();
+            // this if prevents stupid warnings
+            if (lHour < 24 && lMinute < 60 && lSecond < 60 && lDay < 32 && lMonth < 13)
+                snprintf(sDiagnoseBuffer, 15, "%02d:%02d:%02d %02d.%02d", lHour, lMinute, lSecond, lDay, lMonth);
             lResult = true;
             break;
         }
         case 'r': {
             // return sunrise and sunset
-            sprintf(sDiagnoseBuffer, "R%02d:%02d S%02d:%02d", sTimer.getSunInfo(SUN_SUNRISE)->hour, sTimer.getSunInfo(SUN_SUNRISE)->minute, sTimer.getSunInfo(SUN_SUNSET)->hour, sTimer.getSunInfo(SUN_SUNSET)->minute);
+            sTime *lSunrise = sTimer.getSunInfo(SUN_SUNRISE);
+            sTime *lSunset = sTimer.getSunInfo(SUN_SUNSET);
+            // this if prevents stupid warnings
+            if (lSunrise->hour < 24 && lSunrise->minute < 60 && lSunset->hour < 24 && lSunset->minute < 60)
+                snprintf(sDiagnoseBuffer, 15, "R%02d:%02d S%02d:%02d", lSunrise->hour, lSunrise->minute, lSunset->hour, lSunset->minute);
             lResult = true;
             break;
         }
         case 'o': {
             // calculate easter date
-            sprintf(sDiagnoseBuffer, "O%02d.%02d", sTimer.getEaster()->day, sTimer.getEaster()->month);
+            snprintf(sDiagnoseBuffer, 15, "O%02d.%02d", sTimer.getEaster()->day, sTimer.getEaster()->month);
             lResult = true;
             break;
         }
