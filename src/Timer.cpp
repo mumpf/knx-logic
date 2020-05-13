@@ -299,10 +299,14 @@ void Timer::debugHolidays()
 }
 
 void Timer::calculateHolidays(bool iDebugOutput) {
-    // check if today is a holiday
+    // we check only if date is valid
+    if (mTimeValid < tmDateValid)
+        return;
+    // check if today or tomorrow is a holiday
     sDay lToday = {(int8_t)getDay(), (int8_t)getMonth()};
     sDay lTomorrow = getDayByOffset(1, lToday);
-    mHolidayChanged = true;
+    bool lIsHolidayToday = false;
+    bool lIsHolidayTomorrow = false;
     for (uint8_t i = 0; i < 29; i++)
     {
         sDay lHoliday = {REMOVED, REMOVED};
@@ -327,12 +331,20 @@ void Timer::calculateHolidays(bool iDebugOutput) {
             if (iDebugOutput)
                 printDebug("%02d.%02d., ", lHoliday.day, lHoliday.month);
             if (isEqualDate(lHoliday, lToday))
-                mIsHolidayToday = true;
+                lIsHolidayToday = true;
             if (isEqualDate(lHoliday, lTomorrow))
-                mIsHolidayTomorrow = true;
-            if (mIsHolidayToday && mIsHolidayTomorrow && !iDebugOutput)
+                lIsHolidayTomorrow = true;
+            if (lIsHolidayToday && lIsHolidayTomorrow && !iDebugOutput)
                 break;
         }
+    }
+    if (lIsHolidayToday != mIsHolidayToday) {
+        mIsHolidayToday = lIsHolidayToday;
+        mHolidayChanged = true;
+    }
+    if (lIsHolidayTomorrow != mIsHolidayTomorrow) {
+        mIsHolidayTomorrow = lIsHolidayTomorrow;
+        mHolidayChanged = true;
     }
 }
 
