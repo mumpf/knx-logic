@@ -43,8 +43,8 @@ class Timer
     sDay cHolidays[29] = {{1, 1}, {6, 1}, {-52, EASTER}, {-48, EASTER}, {-47, EASTER}, {-46, EASTER}, {-3, EASTER}, {-2, EASTER}, {0, EASTER}, {1, EASTER}, {1, 5}, {39, EASTER}, {49, EASTER}, {50, EASTER}, {60, EASTER}, {8, 8}, {15, 8}, {3, 10}, {31, 10}, {1, 11}, {-32, ADVENT}, {-21, ADVENT}, {-14, ADVENT}, {-7, ADVENT}, {0, ADVENT}, {24, 12}, {25, 12}, {26, 12}, {31, 12}};
     struct tm mNow;
     struct tm mTimeHelper;
-    float mLongitude;
-    float mLatitude;
+    double mLongitude;
+    double mLatitude;
     int8_t mTimezone;
     bool mUseSummertime;
     bool mIsSummertime;
@@ -88,9 +88,9 @@ class Timer
     // singleton!
     static Timer &instance();
 
-    void setup(float iLongitude, float iLatitude, int8_t iTimezone, bool iUseSummertime, uint32_t iHolidayBitmask);
+    void setup(double iLongitude, double iLatitude, int8_t iTimezone, bool iUseSummertime, uint32_t iHolidayBitmask);
     void loop();
-    void debugHolidays();
+    void debug();
 
     
     uint8_t getDay();

@@ -22,10 +22,11 @@ Timer &Timer::instance() {
     return sInstance;
 }
 
-void Timer::setup(float iLongitude, float iLatitude, int8_t iTimezone, bool iUseSummertime, uint32_t iHolidayBitmask) {
+void Timer::setup(double iLongitude, double iLatitude, int8_t iTimezone, bool iUseSummertime, uint32_t iHolidayBitmask) {
 
     mLongitude = iLongitude;
     mLatitude = iLatitude;
+    mTimezone = iTimezone;
     mUseSummertime = iUseSummertime;
     // we delete all unnecessary holidays from holiday data
     for (uint8_t i = 0; i < 29; i++)
@@ -52,19 +53,21 @@ void Timer::loop() {
                 if (mUseSummertime && (getMonth() == 3 || getMonth() == 10) && getHour() == 3 && getMinute() == 1)
                     calculateSummertime();
             }
-            if (mDayTick != mNow.tm_mday)
-            {
-                calculateSunriseSunset();
-                calculateHolidays();
-                mDayTick = mNow.tm_mday;
-            }
             if (mYearTick != mNow.tm_year)
             {
                 calculateEaster();
                 calculateAdvent();
                 calculateSummertime(); // initial summertime calculation if year changes
-                if (!mHolidayChanged) calculateHolidays();
+                calculateHolidays();
                 mYearTick = mNow.tm_year;
+            }
+            // important: Day calculations AFTER year calculations
+            if (mDayTick != mNow.tm_mday)
+            {
+                calculateSunriseSunset();
+                if (!mHolidayChanged)
+                    calculateHolidays();
+                mDayTick = mNow.tm_mday;
             }
         }
     }
@@ -75,12 +78,12 @@ void Timer::calculateSunriseSunset()
     double rise, set;
     // sunrise/sunset calculation
     sunRiseSet(getYear(), getMonth(), getDay(),
-                 mLongitude, mLatitude, 35.0 / 60.0, 1, &rise, &set);
+               mLongitude, mLatitude, 35.0 / 60.0, 1, &rise, &set);
     double lTmp;
     mSunrise.minute = round(modf(rise, &lTmp) * 60.0);
-    mSunrise.hour = lTmp + mTimezone + (mIsSummertime) ? 1 : 0;
+    mSunrise.hour = lTmp + mTimezone + (mIsSummertime ? 1 : 0);
     mSunset.minute = round(modf(set, &lTmp) * 60.0);
-    mSunset.hour = lTmp + mTimezone + (mIsSummertime) ? 1 : 0;
+    mSunset.hour = lTmp + mTimezone + (mIsSummertime ? 1 : 0);
 }
 
 void Timer::setTimeFromBus(tm *iTime) {
@@ -289,13 +292,17 @@ void Timer::calculateEaster()
     }
 }
 
-void Timer::debugHolidays()
+void Timer::debug()
 {
-    printDebug("\nJahr %d: ", getYear());
-    // calculateEaster();
-    // calculateAdvent();
-    calculateHolidays(true);
-    printDebug("\nEnd of holiday debug\n\n");
+    if (mTimeValid & tmMinutesValid) {
+        printDebug("Aktuelle Zeit: %s", getTimeAsc());
+    }
+    if (mTimeValid & tmDateValid) {
+        printDebug("\nFeiertage %d: ", getYear());
+        calculateHolidays(true);
+        printDebug("\nEnd of holiday debug\n");
+        printDebug("Sonnenaufgang: %02d:%02d, Sonnenuntergang: %02d:%02d\n\n", mSunrise.hour, mSunrise.minute, mSunset.hour, mSunset.minute);
+    }
 }
 
 void Timer::calculateHolidays(bool iDebugOutput) {

@@ -331,8 +331,8 @@ void Logic::beforeTableUnloadHandler(TableObject & iTableObject, LoadState & iNe
 void Logic::debug() {
     printDebug("Logik-LOG_ChannelsFirmware (in Firmware): %d\n", LOG_ChannelsFirmware);
     printDebug("Logik-gNumChannels (in knxprod):  %d\n", mNumChannels);
-    printDebug("Aktuelle Zeit: %s", sTimer.getTimeAsc());
-    sTimer.debugHolidays();
+    sTimer.debug();
+
     // Test i2c failure
     // we start an i2c read i.e. for EEPROM
     // prepareReadEEPROM(4711, 20);
@@ -385,9 +385,9 @@ void Logic::setup(bool iSaveSupported) {
         if (prepareChannels())
             writeAllDptToEEPROM();
         // sTimer.setup(8.639751, 49.310209, 1, true, 0xFFFFFFFF);
-        float lLat = LogicChannel::getFloat(knx.paramData(LOG_Latitude));
-        float lLon = LogicChannel::getFloat(knx.paramData(LOG_Longitude));
-        sTimer.setup(lLon, lLat, knx.paramByte(LOG_Timezone), knx.paramByte(LOG_UseSummertime), knx.paramInt(LOG_Neujahr));
+        double lLat = 49.31209; // LogicChannel::getFloat(knx.paramData(LOG_Latitude));
+        double lLon = 8.639751; // LogicChannel::getFloat(knx.paramData(LOG_Longitude));
+        sTimer.setup(lLon, lLat, ((knx.paramByte(LOG_Timezone) & 0x60) >> 5), knx.paramByte(LOG_UseSummertime) & 0x10, knx.paramInt(LOG_Neujahr));
     }
 }
 
