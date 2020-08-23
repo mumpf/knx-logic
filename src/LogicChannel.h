@@ -102,22 +102,23 @@
 #define IO_Output 3
 
 // pipeline steps
-#define PIP_STARTUP 1              // startup delay for each channel
-#define PIP_REPEAT_INPUT1 2        // send read requests for input 1
-#define PIP_REPEAT_INPUT2 4        // send read requests for input 2
-#define PIP_CONVERT_INPUT1 8       // convert input value 1 to bool
-#define PIP_CONVERT_INPUT2 16      // convert input value 2 to bool
-#define PIP_LOGIC_EXECUTE 32       // do logical step
-#define PIP_STAIRLIGHT 64          // do stairlight delay
-#define PIP_BLINK 128              // do blinking during stairlight
-#define PIP_ON_DELAY 256           // delay on signal
-#define PIP_OFF_DELAY 512          // delay off signal
-#define PIP_OUTPUT_FILTER_ON 1024  // Filter repeated signals
-#define PIP_OUTPUT_FILTER_OFF 2048 // Filter repeated signals
-#define PIP_ON_REPEAT 4096         // repeat on signal
-#define PIP_OFF_REPEAT 8192        // repeat off signal
-#define PIP_TIMER_INPUT 16384      // process timer as input signal
-#define PIP_RUNNING 32768          // is a currently running channel
+#define PIP_STARTUP 1                     // startup delay for each channel
+#define PIP_REPEAT_INPUT1 2               // send read requests for input 1
+#define PIP_REPEAT_INPUT2 4               // send read requests for input 2
+#define PIP_CONVERT_INPUT1 8              // convert input value 1 to bool
+#define PIP_CONVERT_INPUT2 16             // convert input value 2 to bool
+#define PIP_LOGIC_EXECUTE 32              // do logical step
+#define PIP_STAIRLIGHT 64                 // do stairlight delay
+#define PIP_BLINK 128                     // do blinking during stairlight
+#define PIP_ON_DELAY 256                  // delay on signal
+#define PIP_OFF_DELAY 512                 // delay off signal
+#define PIP_OUTPUT_FILTER_ON 1024         // Filter repeated signals
+#define PIP_OUTPUT_FILTER_OFF 2048        // Filter repeated signals
+#define PIP_ON_REPEAT 4096                // repeat on signal
+#define PIP_OFF_REPEAT 8192               // repeat off signal
+#define PIP_TIMER_INPUT 16384             // process timer as input signal
+#define PIP_RUNNING 32768                 // is a currently running channel
+#define PIP_TIMER_RESTORE_STATE 65536     // timer restore is active for this channel
 
 #define TIMD_WEEKDAY_MASK 0x0007
 #define TIMD_WEEKDAY_SHIFT 0
@@ -256,6 +257,10 @@ class LogicChannel
     bool checkPointInTime(uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iHandleAsSunday);
     bool checkSunAbs(uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iHandleAsSunday, bool iMinus);
     bool checkSunLimit(uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iHandleAsSunday, bool iLatest);
+    uint8_t getTimerIndexOfLatestRule(bool iHandleAsSunday);
+    uint32_t getTimerefNow(bool iMidnight);
+    uint32_t calcTimerToday(uint8_t iTimerIndex, bool iHandleAsSunday);
+    void processTimerRestoreState(uint16_t iDayOffset);
 
   protected:
 
@@ -281,7 +286,7 @@ class LogicChannel
     uint8_t pTriggerIO;        // Bitfield: Which input (0-3) triggered processing, output (4) is triggering further processing
     uint8_t pValidActiveIO;    // Bitfield: validity flags for input (0-3) values and active inputs (4-7)
     uint8_t pCurrentIO;        // Bitfield: current input (0-3), current output (4), first processing (5) and previous output (7) values
-    uint16_t pCurrentPipeline; // Bitfield: indicator for current pipeline step
+    uint32_t pCurrentPipeline; // Bitfield: indicator for current pipeline step
 
     uint8_t pCurrentIODebug;   // Bitfield: current input (0-3), current output (4), first processing (5) and previous output (7) values
     // uint32_t pRepeatInput1Delay;  // used also for timer preparation
@@ -310,6 +315,7 @@ class LogicChannel
     void processInternalInputs(uint8_t iChannelId, bool iValue);
     bool processDiagnoseCommand(char* cBuffer);
     void startTimerInput();
+    void startTimerRestoreState();
     void writeSingleDptToEEPROM(uint8_t iIOIndex);
 
     bool prepareChannel();
