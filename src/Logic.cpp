@@ -2,9 +2,12 @@
 #include "Helper.h"
 #include "Hardware.h"
 #include "Timer.h"
+#include "TimerRestore.h"
 
 uint8_t Logic::sMagicWord[] = {0xAE, 0x49, 0xD2, 0x9F};
-Timer &Logic::sTimer = Timer::instance();
+Timer &Logic::sTimer = Timer::instance(); // singleton
+TimerRestore &Logic::sTimerRestore = TimerRestore::instance(); // singleton
+
 char Logic::sDiagnoseBuffer[16] = {0};
 
 // callbacks have to be static members
@@ -373,10 +376,16 @@ void Logic::setup(bool iSaveSupported) {
 #endif
         if (prepareChannels())
             writeAllDptToEEPROM();
-        // sTimer.setup(8.639751, 49.310209, 1, true, 0xFFFFFFFF);
         float lLat = LogicChannel::getFloat(knx.paramData(LOG_Latitude));
         float lLon = LogicChannel::getFloat(knx.paramData(LOG_Longitude));
+        // sTimer.setup(8.639751, 49.310209, 1, true, 0xFFFFFFFF);
         sTimer.setup(lLon, lLat, knx.paramByte(LOG_Timezone), knx.paramByte(LOG_UseSummertime), knx.paramInt(LOG_Neujahr));
+        // for TimerRestore we prepare all Timer channels
+        for (uint8_t lIndex = 0; lIndex < mNumChannels; lIndex++)
+        {
+            LogicChannel *lChannel = mChannel[lIndex];
+            lChannel->startTimerRestoreState();
+        }
     }
 }
 
@@ -388,7 +397,7 @@ void Logic::loop()
     processInterrupt();
     sTimer.loop(); // clock and timer async methods
 
-    // we loop on all channels an execute pipeline
+    // we loop on all channels and execute pipeline
     for (uint8_t lIndex = 0; lIndex < mNumChannels; lIndex++)
     {
         LogicChannel *lChannel = mChannel[lIndex];
@@ -399,6 +408,7 @@ void Logic::loop()
     }
     if (sTimer.minuteChanged()) {
         sendHoliday();
+        startTimerRestore();
         sTimer.clearMinuteChanged();
     }
 }
@@ -408,6 +418,17 @@ EepromManager *Logic::getEEPROM() {
 }
 
 // start timer implementation
+void Logic::startTimerRestore() {
+    static uint16_t sDayOffset = 0;
+    if (sDayOffset < 366) {
+        if (sDayOffset == 0) {
+            // initialize RestoreTimer
+            sTimerRestore.setup(sTimer);
+        }
+        sDayOffset += 1;
+        sTimerRestore.decreaseDay();
+    }
+}
 
 // send holiday information on bus
 void Logic::sendHoliday() {

@@ -205,7 +205,7 @@ Das nach dem Sendefilter ermittelte Signal steht für die internen Eingänge der
 
 Jeder Logikkanal kann statt interner oder externer Eingänge als Zeitschaltuhr-Kanal definiert werden. Dabei kann ein EIN- oder AUS-Signal anhand von bestimmten Zeitangaben erzeugt werden.
 
-Es können bis zu 4 Jahreszeitpunkte (Tag/Monat/Stunde/Minute) oder 8 Tageszeitpunkte (Wochentag/Stunde/Minute) pro Logikkanal definiert werden.
+Es können bis zu 4 Jahresschaltpunkte (Tag/Monat/Stunde/Minute) oder 8 Tagesschaltpunkte (Wochentag/Stunde/Minute) pro Logikkanal definiert werden.
 
 Folgende Zeitangaben sind möglich:
 
@@ -743,10 +743,10 @@ Diese Feld erlaubt eine kurze Beschreibung, wozu diese Zeitschaltuhr verwendet w
 
 Es werden genau 2 Typen von Zeitschaltuhren unterstützt:
 
-* Tageschaltuhr: Erlaubt die Angabe von Wochentag, Stunde und Minute und ist somit für tägliche/wöchentliche Schaltungen gedacht. Diese Schaltuhr erlaubt 8 Schaltzeiten zu definieren.
+* Tagesschaltuhr: Erlaubt die Angabe von Wochentag, Stunde und Minute und ist somit für tägliche/wöchentliche Schaltungen gedacht. Diese Schaltuhr erlaubt 8 Schaltzeiten zu definieren.
 * Jahresschaltuhr: Erlaubt die Angabe von Monat, Tag, Wochentag, Stunde und Minute und ist somit für seltener im Jahr/Monat vorkommende Schaltungen gedacht. Diese Schaltuhr erlaubt 4 Schaltzeiten zu definieren.
 
-Sollten die Schaltzeiten einer Zeitschaltuhr nicht ausreichen, dann man mehrere Kanäle als Zeitschaltuhr definieren und diese dann per ODER verknüpfen.
+Sollten die Schaltzeiten einer Zeitschaltuhr nicht ausreichen, kann man mehrere Kanäle als Zeitschaltuhr definieren und diese dann per ODER verknüpfen.
 
 ### Feiertagsbehandlung
 
@@ -754,7 +754,7 @@ Sollten die Schaltzeiten einer Zeitschaltuhr nicht ausreichen, dann man mehrere 
 
 #### Feiertage nicht beachten
 
-Ein Feiertag wird nicht beachtet, die Schaltzeitpunkte werden normal ausgeführt.
+Für diese Zeitschaltuhr ist die Feiertagsinformation nicht relevant. Ein Feiertag wird nicht beachtet, die Schaltzeitpunkte werden normal ausgeführt.
 
 #### An Feiertagen nicht schalten
 
@@ -766,7 +766,7 @@ Diese Zeitschaltuhr wird nur an einem Feiertag ausgeführt und nicht an anderen 
 
 #### Feiertage wie Sonntage behandeln
 
-Bei dieser Zeitschaltuhr werden die Schaltzeiten normal behandelt, an einem Feiertag werden aber die Schaltzeiten für einen Sonntag ausgeführt, unabhängig von den Wochentag des Feiertages.
+Bei dieser Zeitschaltuhr werden die Schaltzeiten normal behandelt, an einem Feiertag werden aber die Schaltzeiten für einen Sonntag ausgeführt, unabhängig von dem Wochentag des Feiertages.
 
 ### Urlaubsbehandlung
 
@@ -774,7 +774,7 @@ Bei dieser Zeitschaltuhr werden die Schaltzeiten normal behandelt, an einem Feie
 
 #### Urlaub nicht beachten
 
-Ein Urlaubstag wird nicht beachtet, die Schaltzeitpunkte werden normal ausgeführt.
+Für diese Zeitschaltuhr ist die Urlaubsinformation nicht relevant. Ein Urlaubstag wird nicht beachtet, die Schaltzeitpunkte werden normal ausgeführt.
 
 #### Bei Urlaub nicht schalten
 
@@ -792,10 +792,21 @@ Bei dieser Zeitschaltuhr werden die Schaltzeiten normal behandelt, an einem Urla
 
 Nach einem Neustart des Moduls kann die letzte Schaltzeit erneut ausgeführt werden. Sobald das Datum und die Uhrzeit erstmals über den Bus gesetzt worden sind, wird nach der spätesten Schaltzeit gesucht, die noch vor dem aktuellen Datum/Uhrzeit liegt. Dieser Schaltzeitpunkt wird dann ausgeführt.
 
+Da eine Nachberechnung aller Schaltzeiten für bis zu 80 Zeitschaltuhren inklusive Feiertagsbehandlung direkt nach dem ersten Setzen der Zeit über den Bus sehr lange dauern würde und in dieser Zeit (mehrere Sekunden) die funktion des Moduls gestört wäre, wird die Nachberechnung der Schaltzeiten durch einen Nebenprozess während der normalen Funktion des Moduls durchgeführt. Der Nebenprozess funktioniert in kleinen Schritten, die wenig Rechenzeit kosten und die Normalfunktion nicht behindern. Als konsequenz kann es etwas dauern, bis der entsprechende nachberechnete Zeitschaltpunkt nachgeholt wird.
+
+Wie lange es dauert, bis ein nachberechneter Zeitschaltpunkt nachgeholt wird, hängt widerum vom Zeitschaltpunkt selbst ab.
+
+Der Nebenprozess wird pro Sekunde genau einmal aufgerufen und geht dabei jeweils einen weiteren Tag zurück, berechnet für diesen Tag die Feiertage und prüft für jede Zeitschaltuhr, die bisher noch keinen definierten Ausgangswert hat (sie könnte ja schon von sich aus im Rahmen der Normalfunktion geschaltet haben), ob diese Zeitschaltuhr an diesem Tag schalten sollte. Wenn ja, dann schaltet diese Zeitschaltuhr mit dem für diesen Tag zeitlich spätesten Wert. Damit ist der zeitlich späteste Schaltpunkt vor dem Modulneustart gegeben.
+
+Da der Nebenprozess pro Sekunde einen Tag zurückgeht, wird der späteste Schaltzeitpunt, der nachberechnet wurde, 365 (oder im Schaltjahr 366) Sekunden nach dem ersten setzen der Zeit über den Bus erreicht, also etwas 6 Minuten nach dem Neustart. Dies ist ein theoretischer Wert, da in diesem Fall der Schaltzeitpunkt vor einem Jahr liegen müsste und sich zwischendurch nicht geändert hat. Da man meistens aber einen Schaltzeitpunkt für EIN und einen für AUS definiert, wird bei Jahresschaltzeiten wahrscheinlich einer der Schaltzeitpunkte bereits früher erreichet.
+
+Der Nebenprozess beendet sich selbst, sobald alle Zeitschaltuhren einen definierten Ausgangswert haben.
+
+**Achtung:** Zeitschaltuhren, die Urlaubstage berücksichtigen, können bei der Nachberechnung der Zeitschaltpunkte nicht berücksichtigt werden, da die Information "Urlaubstag" per KO von extern dem Modul über den Bus gemeldet wird und somit nicht für die (historische) Nachberechnung zur Verfügung steht. Somit werden bei der Nachberechnung alle Zeitschaltuhren mit einer anderen Angabe als "Urlaub nicht beachten" ignoriert.
+
 ## Einstellung von Schaltpunkten (tabellarisch)
 
-Schaltpunkte werden in einer Tabelle definiert, eine Zeile per Schaltpunkt. Im folgenden werden nur d
-ie Eingaben einer Zeile erklärt, da alle Zeilen gleich definiert werden.
+Schaltpunkte werden in einer Tabelle definiert, eine Zeile per Schaltpunkt. Im folgenden werden nur die Eingaben einer Zeile erklärt, da alle Zeilen gleich definiert werden.
 
 Im folgenden werden die Spalten der Tagesschaltuhr beschrieben.
 
@@ -803,7 +814,7 @@ Im folgenden werden die Spalten der Tagesschaltuhr beschrieben.
 
 ### Spalte: Zeitbezug
 
-Ist sowohl bei Tagesschaltuhr und Jahresschaltuhr vorhanden. 
+Ist sowohl bei Tagesschaltuhr und Jahresschaltuhr vorhanden.
 
 Hier wird angegeben, wie eine Zeitangabe interpretiert werden soll. Je nach Einstellung dieses Feldes wirken sich Zeitangaben in den Spalten Stunde und Minute unterschiedlich aus.
 

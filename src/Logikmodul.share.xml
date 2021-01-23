@@ -453,7 +453,6 @@
                 <TypeRestriction Base="Value" SizeInBit="2">
                   <Enumeration Text="Nein" Value="0" Id="M-00FA_A-0001-01-0000_PT-RestoreState_EN-0" />
                   <Enumeration Text="Den letzten Schaltpunkt" Value="1" Id="M-00FA_A-0001-01-0000_PT-RestoreState_EN-1" />
-                  <Enumeration Text="Die letzten 2 Schaltpunkte" Value="2" Id="M-00FA_A-0001-01-0000_PT-RestoreState_EN-2" />
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-DuskDawn" Name="DuskDawn">

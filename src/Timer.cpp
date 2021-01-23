@@ -119,7 +119,7 @@ void Timer::setDateFromBus(tm *iDate) {
 }
 
 bool Timer::minuteChanged() {
-    return mMinuteChanged;
+    return mMinuteChanged && mTimeValid == tmValid;
 }
 
 void Timer::clearMinuteChanged() {
@@ -193,6 +193,10 @@ bool Timer::holidayChanged() {
 
 void Timer::clearHolidayChanged() {
     mHolidayChanged = false;
+}
+
+eTimeValid Timer::isTimerValid() {
+    return mTimeValid;
 }
 
 uint8_t Timer::calculateLastSundayInMonth(uint8_t iMonth) {

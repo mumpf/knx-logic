@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <Wire.h>
 #include "Timer.h"
+#include "TimerRestore.h"
 
 #define STR( x ) #x
 #define XSTR( x ) STR( x )
@@ -180,6 +181,9 @@
 #define VAL_Tim_Every_Month 0
 #define VAL_Tim_Last_Day 32
 
+#define VAL_Tim_YearTimerCount 4
+#define VAL_Tim_DayTimerCount 8
+
 #ifdef __linux__
 extern KnxFacade<LinuxPlatform, Bau57B0> knx;
 #endif
@@ -251,16 +255,18 @@ class LogicChannel
 
     // Start of Timer implementation
     void processTimerInput();
-    bool checkTimerToday(uint8_t iTimerIndex, bool iHandleAsSunday);
-    bool checkWeekday(uint8_t iWeekday, bool iHandleAsSunday);
-    bool checkTimerTime(uint8_t iTimerIndex, uint16_t iBitfield, uint8_t iHour, uint8_t iMinute, bool iSkipWeekday, bool iHandleAsSunday);
-    bool checkPointInTime(uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iHandleAsSunday);
-    bool checkSunAbs(uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iHandleAsSunday, bool iMinus);
-    bool checkSunLimit(uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iHandleAsSunday, bool iLatest);
-    uint8_t getTimerIndexOfLatestRule(bool iHandleAsSunday);
-    uint32_t getTimerefNow(bool iMidnight);
-    uint32_t calcTimerToday(uint8_t iTimerIndex, bool iHandleAsSunday);
-    void processTimerRestoreState(uint16_t iDayOffset);
+    bool checkTimerToday(Timer &iTimer, uint8_t iTimerIndex, bool iHandleAsSunday);
+    bool checkWeekday(Timer &iTimer, uint8_t iWeekday, bool iHandleAsSunday);
+    bool checkTimerTime(Timer &iTimer, uint8_t iTimerIndex, uint16_t iBitfield, uint8_t iHour, uint8_t iMinute, bool iSkipWeekday, bool iHandleAsSunday);
+    bool checkPointInTime(Timer &iTimer, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iHandleAsSunday);
+    bool checkSunAbs(Timer &iTimer, uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iHandleAsSunday, bool iMinus);
+    bool checkSunLimit(Timer &iTimer, uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iHandleAsSunday, bool iLatest);
+    int16_t getTimerTime(Timer &iTimer, uint8_t iTimerIndex, uint16_t iBitfield, uint8_t iHour, uint8_t iMinute, bool iSkipWeekday, bool iHandleAsSunday);
+    int16_t getPointInTime(Timer &iTimer, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iHandleAsSunday);
+    int16_t getSunAbs(Timer &iTimer, uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iHandleAsSunday, bool iMinus);
+    int16_t getSunLimit(Timer &iTimer, uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iHandleAsSunday, bool iLatest);
+    uint32_t getTimerNow(bool iMidnight);
+    void processTimerRestoreState(Timer &iTimer);
 
   protected:
 
@@ -279,7 +285,8 @@ class LogicChannel
     };
 
     // static
-    static Timer &sTimer; 
+    static Timer &sTimer;
+    static TimerRestore &sTimerRestore;
 
     // instance
     /* Runtime information per channel */
