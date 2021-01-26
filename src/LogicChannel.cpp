@@ -1711,103 +1711,156 @@ void LogicChannel::startTimerRestoreState()
     if (lLogicFunction == VAL_Logic_Timer)
     {
         bool lShouldRestoreState = ((getByteParam(LOG_fTRestoreState) & LOG_fTRestoreStateMask) >> LOG_fTRestoreStateShift);
-        if (lShouldRestoreState) {
+        if (lShouldRestoreState == 1) {
             // Timers with vacation handling cannot be restored
             bool lIsUsingVacation = ((getByteParam(LOG_fTVacation) & LOG_fTVacationMask) >> LOG_fTVacationShift) <= VAL_Tim_Special_No;
-            if (lIsUsingVacation) pCurrentPipeline |= PIP_TIMER_RESTORE_STATE;
+            if (lIsUsingVacation) {
+                pCurrentPipeline |= PIP_TIMER_RESTORE_STATE;
+                pCurrentPipeline &= ~PIP_TIMER_RESTORE_STEP; // ensure first processing step is set to 1
+            }
+            printDebug("TimerRestore activated for channel %d\n", mChannelId);
         }
     }
 }
 
-// Restores the value for this timer, if the day fits
-void LogicChannel::processTimerRestoreState(Timer &iTimer)
+// remove timer restore flag
+void LogicChannel::stopTimerRestoreState()
 {
-        bool lIsYearTimer = (getByteParam(LOG_fTYearDay) & LOG_fTYearDayMask);
-        uint8_t lCountTimer = lIsYearTimer ? 4 : 8; // there are 4 year timer or 8 day timer
-        bool lToday;                              // if it is a day timer lToday=true
-        int16_t lResult = -1;
-        bool lValue;
-        bool lEvaluate = false;
+    pCurrentPipeline &= ~(PIP_TIMER_RESTORE_STATE | PIP_TIMER_RESTORE_STEP);
+}
 
-        // first we process settings valid for whole timer
-        // vacation is not processed (always skipped)
+// Restores the value for this timer, if the day fits
+void LogicChannel::processTimerRestoreState(TimerRestore &iTimer)
+{
+    bool lIsYearTimer = (getByteParam(LOG_fTYearDay) & LOG_fTYearDayMask);
+    uint8_t lCountTimer = lIsYearTimer ? 4 : 8; // there are 4 year timer or 8 day timer
+    bool lToday;                              // if it is a day timer lToday=true
+    int16_t lResult = -1;
+    bool lValue = false;
+    bool lEvaluate = false;
 
-        // holiday
-        uint8_t lHolidaySetting = (getByteParam(LOG_fTHoliday) & LOG_fTHolidayMask) >> LOG_fTHolidayShift;
-        if (lHolidaySetting == VAL_Tim_Special_No && iTimer.isHolidayToday())
-            lEvaluate = false;
-        if (lHolidaySetting == VAL_Tim_Special_Skip || lHolidaySetting == VAL_Tim_Special_Sunday)
-            lEvaluate = true;
-        if (lHolidaySetting == VAL_Tim_Special_Only)
-            lEvaluate = iTimer.isHolidayToday();
-        if (!lEvaluate)
-            return;
+    if (iTimer.isTimerValid() != tmValid) return;
 
-        bool lHandleAsSunday = (lHolidaySetting == VAL_Tim_Special_Sunday && iTimer.isHolidayToday());
+    // ensure, that this is just executed once per restore day
+    // we flag the execution according to the last bit of iteration counter
+    // as long as this is equal, the restore was already executed
+    bool lStepMarker = (pCurrentPipeline & PIP_TIMER_RESTORE_STEP);
+    bool lIterationIndicator = (iTimer.getDayIteration() & 1);
+    if (lStepMarker == lIterationIndicator)
+        return;
 
-        // loop through all timer
-        uint32_t lTimerFunctions = getIntParam(LOG_fTd1DuskDawn);
-        for (uint8_t lTimerIndex = 0; lTimerIndex < lCountTimer; lTimerIndex++)
+    // toggle restore step bit to indicate, that this timer was checked for this day
+    pCurrentPipeline &= ~PIP_TIMER_RESTORE_STEP;
+    if (lIterationIndicator)
+        pCurrentPipeline |= PIP_TIMER_RESTORE_STEP;
+
+    int16_t lDayTime = iTimer.getHour() * 100 + iTimer.getMinute();
+
+    printDebug("Processing TimerRestore on Channel %d for Day %02d.%02d.%02d\n", mChannelId, iTimer.getDay(), iTimer.getMonth(), iTimer.getYear());
+    // first we process settings valid for whole timer
+    // vacation is not processed (always skipped)
+
+    // holiday
+    uint8_t lHolidaySetting = (getByteParam(LOG_fTHoliday) & LOG_fTHolidayMask) >> LOG_fTHolidayShift;
+    if (lHolidaySetting == VAL_Tim_Special_No && iTimer.isHolidayToday())
+        lEvaluate = false;
+    if (lHolidaySetting == VAL_Tim_Special_Skip || lHolidaySetting == VAL_Tim_Special_Sunday)
+        lEvaluate = true;
+    if (lHolidaySetting == VAL_Tim_Special_Only)
+        lEvaluate = iTimer.isHolidayToday();
+    if (!lEvaluate)
+        return;
+
+    bool lHandleAsSunday = (lHolidaySetting == VAL_Tim_Special_Sunday && iTimer.isHolidayToday());
+
+    // loop through all timer
+    uint32_t lTimerFunctions = getIntParam(LOG_fTd1DuskDawn);
+    for (uint8_t lTimerIndex = 0; lTimerIndex < lCountTimer; lTimerIndex++)
+    {
+        // get timer function code
+        uint8_t lTimerFunction = (lTimerFunctions >> (28 - lTimerIndex * 4)) & 0xF;
+        if (lTimerFunction)
         {
-            // get timer function code
-            uint8_t lTimerFunction = (lTimerFunctions >> (28 - lTimerIndex * 4)) & 0xF;
-            if (lTimerFunction)
+            // timer function is active
+            lToday = !lIsYearTimer || checkTimerToday(iTimer, lTimerIndex, lHandleAsSunday);
+            if (lToday)
             {
-                // timer function is active
-                lToday = !lIsYearTimer || checkTimerToday(iTimer, lTimerIndex, lHandleAsSunday);
-                if (lToday)
-                {
-                    uint16_t lBitfield = getWordParam(LOG_fTd1Value + 2 * lTimerIndex);
-                    bool lCurrentValue = lBitfield & 0x8000;
-                    int16_t lCurrentResult = -1;
+                uint16_t lBitfield = getWordParam(LOG_fTd1Value + 2 * lTimerIndex);
+                bool lCurrentValue = lBitfield & 0x8000;
+                int16_t lCurrentResult = -1;
 
-                    // at this point we know, that this timer is valid for this day
-                    // now we get the right swith time for that day
-                     
-                    switch (lTimerFunction)
-                    {
-                        case VAL_Tim_PointInTime:
-                            lCurrentResult = getPointInTime(iTimer, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday);
-                            break;
-                        case VAL_Tim_Sunrise_Plus:
-                            lCurrentResult = getSunAbs(iTimer, SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
-                            break;
-                        case VAL_Tim_Sunrise_Minus:
-                            lCurrentResult = getSunAbs(iTimer, SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
-                            break;
-                        case VAL_Tim_Sunset_Plus:
-                            lCurrentResult = getSunAbs(iTimer, SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
-                            break;
-                        case VAL_Tim_Sunset_Minus:
-                            lCurrentResult = getSunAbs(iTimer, SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
-                            break;
-                        case VAL_Tim_Sunrise_Earliest:
-                            lCurrentResult = getSunLimit(iTimer, SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
-                            break;
-                        case VAL_Tim_Sunrise_Latest:
-                            lCurrentResult = getSunLimit(iTimer, SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
-                            break;
-                        case VAL_Tim_Sunset_Earliest:
-                            lCurrentResult = getSunLimit(iTimer, SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
-                            break;
-                        case VAL_Tim_Sunset_Latest:
-                            lCurrentResult = getSunLimit(iTimer, SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
-                            break;
-                        default:
-                            break;
-                    }
-                    if (lCurrentResult > lResult) {
-                        lResult = lCurrentResult;
-                        lValue = lCurrentValue;
-                    }
+                // at this point we know, that this timer is valid for this day
+                // now we get the right swith time for that day
+                    
+                switch (lTimerFunction)
+                {
+                    case VAL_Tim_PointInTime:
+                        lCurrentResult = getPointInTime(iTimer, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday);
+                        if (lCurrentResult > -1)
+                            printDebug("TimerRestore: Found PointInTime %04d with value %d\n", lCurrentResult, lCurrentValue);
+                        break;
+                    case VAL_Tim_Sunrise_Plus:
+                        lCurrentResult = getSunAbs(iTimer, SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
+                        if (lCurrentResult > -1)
+                            printDebug("TimerRestore: Found SunrisePlus %04d with value %d\n", lCurrentResult, lCurrentValue);
+                        break;
+                    case VAL_Tim_Sunrise_Minus:
+                        lCurrentResult = getSunAbs(iTimer, SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
+                        if (lCurrentResult > -1)
+                            printDebug("TimerRestore: Found SunriseMinus %04d with value %d\n", lCurrentResult, lCurrentValue);
+                        break;
+                    case VAL_Tim_Sunset_Plus:
+                        lCurrentResult = getSunAbs(iTimer, SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
+                        if (lCurrentResult > -1)
+                            printDebug("TimerRestore: Found SunsetPlus %04d with value %d\n", lCurrentResult, lCurrentValue);
+                        break;
+                    case VAL_Tim_Sunset_Minus:
+                        lCurrentResult = getSunAbs(iTimer, SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
+                        if (lCurrentResult > -1)
+                            printDebug("TimerRestore: Found SunsetMinus %04d with value %d\n", lCurrentResult, lCurrentValue);
+                        break;
+                    case VAL_Tim_Sunrise_Earliest:
+                        lCurrentResult = getSunLimit(iTimer, SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
+                        if (lCurrentResult > -1)
+                            printDebug("TimerRestore: Found SunriseEarliest %04d with value %d\n", lCurrentResult, lCurrentValue);
+                        break;
+                    case VAL_Tim_Sunrise_Latest:
+                        lCurrentResult = getSunLimit(iTimer, SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
+                        if (lCurrentResult > -1)
+                            printDebug("TimerRestore: Found SunriseLatest %04d with value %d\n", lCurrentResult, lCurrentValue);
+                        break;
+                    case VAL_Tim_Sunset_Earliest:
+                        lCurrentResult = getSunLimit(iTimer, SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
+                        if (lCurrentResult > -1)
+                            printDebug("TimerRestore: Found SunsetEarliest %04d with value %d\n", lCurrentResult, lCurrentValue);
+                        break;
+                    case VAL_Tim_Sunset_Latest:
+                        lCurrentResult = getSunLimit(iTimer, SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
+                        if (lCurrentResult > -1)
+                            printDebug("TimerRestore: Found SunsetLatest %04d with value %d\n", lCurrentResult, lCurrentValue);
+                        break;
+                    default:
+                        break;
+                }
+                // the time found in timer is taken, if
+                //   it is greater than the last found time
+                //   and smaller that the time of the processed day
+                // important: lDayTime is for today the current time, for any older day 2359 (End-Of-Day)
+                if (lCurrentResult > lResult && lCurrentResult <= lDayTime) {
+                    lResult = lCurrentResult;
+                    lValue = lCurrentValue;
                 }
             }
         }
-        if (lResult > -1)
-        {
-            startLogic(BIT_EXT_INPUT_2, lValue);
-        }
-    pCurrentPipeline &= ~PIP_TIMER_RESTORE_STATE;
+    }
+    if (lResult > -1)
+    {
+        printDebug("TimerRestore: Found timer %04d with value %d, starting processing\n", lResult, lValue);
+        startLogic(BIT_EXT_INPUT_2, lValue);
+        stopTimerRestoreState();
+    } else {
+        printDebug("TimerRestore: There are no timers for this day\n");
+    }
 }
 
 int16_t LogicChannel::getTimerTime(Timer &iTimer, uint8_t iTimerIndex, uint16_t iBitfield, uint8_t iHour, uint8_t iMinute, bool iSkipWeekday, bool iHandleAsSunday)
@@ -1820,9 +1873,9 @@ int16_t LogicChannel::getTimerTime(Timer &iTimer, uint8_t iTimerIndex, uint16_t 
         if (iSkipWeekday || checkWeekday(iTimer, iBitfield & 0x7, iHandleAsSunday))
         {
             if (iHour == 31)
-                iHour = 23;
+                iHour = iTimer.getHour();
             if (iMinute == 63)
-                iMinute = 59;
+                iMinute = iTimer.getMinute();
             lResult = iHour * 100 + iMinute;
         }
     }

@@ -62,5 +62,5 @@ class Logic
     void calculateEaster();
 
     void sendHoliday();
-    void startTimerRestore();
+    void processTimerRestore();
 };

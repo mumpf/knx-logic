@@ -379,7 +379,9 @@ void Logic::setup(bool iSaveSupported) {
         float lLat = LogicChannel::getFloat(knx.paramData(LOG_Latitude));
         float lLon = LogicChannel::getFloat(knx.paramData(LOG_Longitude));
         // sTimer.setup(8.639751, 49.310209, 1, true, 0xFFFFFFFF);
-        sTimer.setup(lLon, lLat, knx.paramByte(LOG_Timezone), knx.paramByte(LOG_UseSummertime), knx.paramInt(LOG_Neujahr));
+        uint8_t lTimezone = (knx.paramByte(LOG_Timezone) & LOG_TimezoneMask) >> LOG_TimezoneShift;
+        bool lUseSummertime = (knx.paramByte(LOG_UseSummertime) & LOG_UseSummertimeMask) >> LOG_UseSummertimeShift;
+        sTimer.setup(lLon, lLat, lTimezone, lUseSummertime, knx.paramInt(LOG_Neujahr));
         // for TimerRestore we prepare all Timer channels
         for (uint8_t lIndex = 0; lIndex < mNumChannels; lIndex++)
         {
@@ -408,9 +410,9 @@ void Logic::loop()
     }
     if (sTimer.minuteChanged()) {
         sendHoliday();
-        startTimerRestore();
         sTimer.clearMinuteChanged();
     }
+    processTimerRestore();
 }
 
 EepromManager *Logic::getEEPROM() {
@@ -418,15 +420,34 @@ EepromManager *Logic::getEEPROM() {
 }
 
 // start timer implementation
-void Logic::startTimerRestore() {
-    static uint16_t sDayOffset = 0;
-    if (sDayOffset < 366) {
-        if (sDayOffset == 0) {
-            // initialize RestoreTimer
-            sTimerRestore.setup(sTimer);
+void Logic::processTimerRestore() {
+    static uint32_t sTimerRestoreDelay = 1;
+    if (sTimerRestoreDelay == 0)
+        return;
+    if (sTimer.isTimerValid() == tmValid && delayCheck(sTimerRestoreDelay, 500)) {
+        sTimerRestoreDelay = millis();
+        if (sTimerRestoreDelay == 0)
+            sTimerRestoreDelay = 1; // prevent set to 0 in case of timer overflow
+        if (sTimerRestore.getDayIteration() < 365) {
+            if (sTimerRestore.getDayIteration() == 0)
+            {
+                // initialize RestoreTimer
+                sTimerRestore.setup(sTimer);
+            }
+            else
+            {
+                sTimerRestore.decreaseDay();
+            }
+        } else {
+            // stop timer restore processing in logic...
+            sTimerRestoreDelay = 0;
+            // ... and in each channel
+            for (uint8_t lIndex = 0; lIndex < mNumChannels; lIndex++)
+            {
+                LogicChannel *lChannel = mChannel[lIndex];
+                lChannel->stopTimerRestoreState();
+            }
         }
-        sDayOffset += 1;
-        sTimerRestore.decreaseDay();
     }
 }
 

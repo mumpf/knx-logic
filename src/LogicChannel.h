@@ -120,6 +120,7 @@
 #define PIP_TIMER_INPUT 16384             // process timer as input signal
 #define PIP_RUNNING 32768                 // is a currently running channel
 #define PIP_TIMER_RESTORE_STATE 65536     // timer restore is active for this channel
+#define PIP_TIMER_RESTORE_STEP 131072     // timer restore for this channel was processed an other day back
 
 #define TIMD_WEEKDAY_MASK 0x0007
 #define TIMD_WEEKDAY_SHIFT 0
@@ -266,7 +267,7 @@ class LogicChannel
     int16_t getSunAbs(Timer &iTimer, uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iHandleAsSunday, bool iMinus);
     int16_t getSunLimit(Timer &iTimer, uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iHandleAsSunday, bool iLatest);
     uint32_t getTimerNow(bool iMidnight);
-    void processTimerRestoreState(Timer &iTimer);
+    void processTimerRestoreState(TimerRestore &iTimer);
 
   protected:
 
@@ -323,6 +324,7 @@ class LogicChannel
     bool processDiagnoseCommand(char* cBuffer);
     void startTimerInput();
     void startTimerRestoreState();
+    void stopTimerRestoreState();
     void writeSingleDptToEEPROM(uint8_t iIOIndex);
 
     bool prepareChannel();

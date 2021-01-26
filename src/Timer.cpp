@@ -29,6 +29,7 @@ void Timer::setup(float iLongitude, float iLatitude, int8_t iTimezone, bool iUse
     mLongitude = iLongitude;
     mLatitude = iLatitude;
     mUseSummertime = iUseSummertime;
+    mTimezone = iTimezone;
     // we delete all unnecessary holidays from holiday data
     for (uint8_t i = 0; i < 29; i++)
     {
@@ -80,9 +81,9 @@ void Timer::calculateSunriseSunset()
                  mLongitude, mLatitude, 35.0 / 60.0, 1, &rise, &set);
     double lTmp;
     mSunrise.minute = round(modf(rise, &lTmp) * 60.0);
-    mSunrise.hour = lTmp + mTimezone + (mIsSummertime) ? 1 : 0;
+    mSunrise.hour = lTmp + mTimezone + ((mIsSummertime) ? 1 : 0);
     mSunset.minute = round(modf(set, &lTmp) * 60.0);
-    mSunset.hour = lTmp + mTimezone + (mIsSummertime) ? 1 : 0;
+    mSunset.hour = lTmp + mTimezone + ((mIsSummertime) ? 1 : 0);
 }
 
 void Timer::setTimeFromBus(tm *iTime) {
