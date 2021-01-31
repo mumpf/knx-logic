@@ -90,19 +90,29 @@ void Logic::processAllInternalInputs(LogicChannel *iChannel, bool iValue)
 
 void Logic::processReadRequests() {
     static bool sCalled = false;
+    static uint32_t sDelay = 19000;
+
     // the following code should be called only once after initial startup delay 
     if (!sCalled) {
-        if (knx.paramByte(LOG_ReadTimeDate) & 0x80) {
-            knx.getGroupObject(LOG_KoTime).requestObjectRead();
-            knx.getGroupObject(LOG_KoDate).requestObjectRead();
-        }
         if (knx.paramByte(LOG_VacationRead) & 2) {
             knx.getGroupObject(LOG_KoVacation).requestObjectRead();
         }
         sCalled = true;
     }
+    // date and time are red from bus every minute until a response is received
+    if ((knx.paramByte(LOG_ReadTimeDate) & 0x80))
+    {
+        eTimeValid lValid = sTimer.isTimerValid();
+        if (delayCheck(sDelay, 30000) && lValid != tmValid)
+        {
+            sDelay = millis();
+            if (lValid != tmMinutesValid)
+                knx.getGroupObject(LOG_KoTime).requestObjectRead();
+            if (lValid != tmDateValid)
+                knx.getGroupObject(LOG_KoDate).requestObjectRead();
+        }
+    }
 }
-
 // EEPROM handling
 // We assume at max 128 channels, each channel 2 inputs, each input max 4 bytes (value) and 1 byte (DPT) = 128 * 2 * (4 + 1) = 1280 bytes to write
 // So we use 40 Pages for data and one (first) page for aditional information (metadata).
@@ -324,7 +334,7 @@ void Logic::debug() {
     printDebug("Logik-LOG_ChannelsFirmware (in Firmware): %d\n", LOG_ChannelsFirmware);
     printDebug("Logik-gNumChannels (in knxprod):  %d\n", mNumChannels);
     printDebug("Aktuelle Zeit: %s", sTimer.getTimeAsc());
-    sTimer.debugHolidays();
+    // sTimer.debugHolidays();
     // Test i2c failure
     // we start an i2c read i.e. for EEPROM
     // prepareReadEEPROM(4711, 20);

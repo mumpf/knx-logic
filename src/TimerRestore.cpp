@@ -47,7 +47,7 @@ void TimerRestore::doDayCalculations() {
     uint16_t lYear = mNow.tm_year;
     mktime(&mNow);
     mDayIteration += 1;
-//    printDebug("TimerRestore: Day %02d.%02d.%02d\n", this->getDay(), this->getMonth(), this->getYear());
+    // printDebug("TimerRestore: Day %02d.%02d.%02d\n", this->getDay(), this->getMonth(), this->getYear());
     calculateSummertime(); // initial summertime calculation if year changes
     calculateSunriseSunset();
     if (lYear != mNow.tm_year) {

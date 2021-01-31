@@ -1427,6 +1427,8 @@ void LogicChannel::loop()
 
     if (pCurrentPipeline & PIP_STARTUP)
         processStartup();
+    if (pCurrentPipeline & PIP_TIMER_RESTORE_STATE)
+        processTimerRestoreState(sTimerRestore);
 
     // do no further processing until channel passed its startup time
     if (pCurrentPipeline & PIP_RUNNING)
@@ -1467,8 +1469,6 @@ void LogicChannel::loop()
             processRepeatInput2();
         if (pCurrentPipeline & PIP_TIMER_INPUT)
             processTimerInput();
-        if (pCurrentPipeline & PIP_TIMER_RESTORE_STATE)
-            processTimerRestoreState(sTimerRestore);
         }
 }
 
