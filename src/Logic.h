@@ -1,6 +1,7 @@
 #pragma once
 #include "LogicChannel.h"
 #include "Timer.h"
+#include "TimerRestore.h"
 
 class Logic
 {
@@ -32,6 +33,7 @@ class Logic
   private:
     static uint8_t sMagicWord[];
     static Timer &sTimer;
+    static TimerRestore &sTimerRestore;
     static char sDiagnoseBuffer[16];
 
     LogicChannel *mChannel[LOG_ChannelsFirmware];
@@ -60,4 +62,5 @@ class Logic
     void calculateEaster();
 
     void sendHoliday();
+    void processTimerRestore();
 };

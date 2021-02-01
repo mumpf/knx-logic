@@ -3,6 +3,8 @@
 #include "Helper.h"
 #include <ctime>
 
+sDay Timer::cHolidays[29] = {{1, 1}, {6, 1}, {-52, EASTER}, {-48, EASTER}, {-47, EASTER}, {-46, EASTER}, {-3, EASTER}, {-2, EASTER}, {0, EASTER}, {1, EASTER}, {1, 5}, {39, EASTER}, {49, EASTER}, {50, EASTER}, {60, EASTER}, {8, 8}, {15, 8}, {3, 10}, {31, 10}, {1, 11}, {-32, ADVENT}, {-21, ADVENT}, {-14, ADVENT}, {-7, ADVENT}, {0, ADVENT}, {24, 12}, {25, 12}, {26, 12}, {31, 12}};
+
 Timer::Timer()
 {
     mNow.tm_year = 120;
@@ -28,6 +30,7 @@ void Timer::setup(double iLongitude, double iLatitude, int8_t iTimezone, bool iU
     mLatitude = iLatitude;
     mTimezone = iTimezone;
     mUseSummertime = iUseSummertime;
+    mTimezone = iTimezone;
     // we delete all unnecessary holidays from holiday data
     for (uint8_t i = 0; i < 29; i++)
     {
@@ -81,9 +84,9 @@ void Timer::calculateSunriseSunset()
                mLongitude, mLatitude, 35.0 / 60.0, 1, &rise, &set);
     double lTmp;
     mSunrise.minute = round(modf(rise, &lTmp) * 60.0);
-    mSunrise.hour = lTmp + mTimezone + (mIsSummertime ? 1 : 0);
+    mSunrise.hour = lTmp + mTimezone + ((mIsSummertime) ? 1 : 0);
     mSunset.minute = round(modf(set, &lTmp) * 60.0);
-    mSunset.hour = lTmp + mTimezone + (mIsSummertime ? 1 : 0);
+    mSunset.hour = lTmp + mTimezone + ((mIsSummertime) ? 1 : 0);
 }
 
 void Timer::setTimeFromBus(tm *iTime) {
@@ -120,7 +123,7 @@ void Timer::setDateFromBus(tm *iDate) {
 }
 
 bool Timer::minuteChanged() {
-    return mMinuteChanged;
+    return mMinuteChanged && mTimeValid == tmValid;
 }
 
 void Timer::clearMinuteChanged() {
@@ -194,6 +197,10 @@ bool Timer::holidayChanged() {
 
 void Timer::clearHolidayChanged() {
     mHolidayChanged = false;
+}
+
+eTimeValid Timer::isTimerValid() {
+    return mTimeValid;
 }
 
 uint8_t Timer::calculateLastSundayInMonth(uint8_t iMonth) {

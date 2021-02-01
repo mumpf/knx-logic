@@ -39,13 +39,13 @@ enum eTimeValid
 
 class Timer
 {
-  private:
-    sDay cHolidays[29] = {{1, 1}, {6, 1}, {-52, EASTER}, {-48, EASTER}, {-47, EASTER}, {-46, EASTER}, {-3, EASTER}, {-2, EASTER}, {0, EASTER}, {1, EASTER}, {1, 5}, {39, EASTER}, {49, EASTER}, {50, EASTER}, {60, EASTER}, {8, 8}, {15, 8}, {3, 10}, {31, 10}, {1, 11}, {-32, ADVENT}, {-21, ADVENT}, {-14, ADVENT}, {-7, ADVENT}, {0, ADVENT}, {24, 12}, {25, 12}, {26, 12}, {31, 12}};
-    struct tm mNow;
+  protected:
+    // sDay cHolidays[29] = {{1, 1}, {6, 1}, {-52, EASTER}, {-48, EASTER}, {-47, EASTER}, {-46, EASTER}, {-3, EASTER}, {-2, EASTER}, {0, EASTER}, {1, EASTER}, {1, 5}, {39, EASTER}, {49, EASTER}, {50, EASTER}, {60, EASTER}, {8, 8}, {15, 8}, {3, 10}, {31, 10}, {1, 11}, {-32, ADVENT}, {-21, ADVENT}, {-14, ADVENT}, {-7, ADVENT}, {0, ADVENT}, {24, 12}, {25, 12}, {26, 12}, {31, 12}};
+    static sDay cHolidays[29];
     struct tm mTimeHelper;
-    double mLongitude;
-    double mLatitude;
-    int8_t mTimezone;
+    // double mLongitude;
+    // double mLatitude;
+    // int8_t mTimezone;
     bool mUseSummertime;
     bool mIsSummertime;
     eTimeValid mTimeValid = tmInvalid;
@@ -87,6 +87,10 @@ class Timer
   public:
     // singleton!
     static Timer &instance();
+    struct tm mNow;
+    float mLongitude;
+    float mLatitude;
+    int8_t mTimezone;
 
     void setup(double iLongitude, double iLatitude, int8_t iTimezone, bool iUseSummertime, uint32_t iHolidayBitmask);
     void loop();
@@ -111,6 +115,7 @@ class Timer
     bool isHolidayTomorrow();
     bool holidayChanged();
     void clearHolidayChanged();
+    eTimeValid isTimerValid();
 };
 
 /* A macro to compute the number of days elapsed since 2000 Jan 0.0 */

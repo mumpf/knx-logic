@@ -2,9 +2,12 @@
 #include "Helper.h"
 #include "Hardware.h"
 #include "Timer.h"
+#include "TimerRestore.h"
 
 uint8_t Logic::sMagicWord[] = {0xAE, 0x49, 0xD2, 0x9F};
-Timer &Logic::sTimer = Timer::instance();
+Timer &Logic::sTimer = Timer::instance(); // singleton
+TimerRestore &Logic::sTimerRestore = TimerRestore::instance(); // singleton
+
 char Logic::sDiagnoseBuffer[16] = {0};
 
 // callbacks have to be static members
@@ -87,19 +90,29 @@ void Logic::processAllInternalInputs(LogicChannel *iChannel, bool iValue)
 
 void Logic::processReadRequests() {
     static bool sCalled = false;
+    static uint32_t sDelay = 19000;
+
     // the following code should be called only once after initial startup delay 
     if (!sCalled) {
-        if (knx.paramByte(LOG_ReadTimeDate) & 0x80) {
-            knx.getGroupObject(LOG_KoTime).requestObjectRead();
-            knx.getGroupObject(LOG_KoDate).requestObjectRead();
-        }
         if (knx.paramByte(LOG_VacationRead) & 2) {
             knx.getGroupObject(LOG_KoVacation).requestObjectRead();
         }
         sCalled = true;
     }
+    // date and time are red from bus every minute until a response is received
+    if ((knx.paramByte(LOG_ReadTimeDate) & 0x80))
+    {
+        eTimeValid lValid = sTimer.isTimerValid();
+        if (delayCheck(sDelay, 30000) && lValid != tmValid)
+        {
+            sDelay = millis();
+            if (lValid != tmMinutesValid)
+                knx.getGroupObject(LOG_KoTime).requestObjectRead();
+            if (lValid != tmDateValid)
+                knx.getGroupObject(LOG_KoDate).requestObjectRead();
+        }
+    }
 }
-
 // EEPROM handling
 // We assume at max 128 channels, each channel 2 inputs, each input max 4 bytes (value) and 1 byte (DPT) = 128 * 2 * (4 + 1) = 1280 bytes to write
 // So we use 40 Pages for data and one (first) page for aditional information (metadata).
@@ -331,8 +344,10 @@ void Logic::beforeTableUnloadHandler(TableObject & iTableObject, LoadState & iNe
 void Logic::debug() {
     printDebug("Logik-LOG_ChannelsFirmware (in Firmware): %d\n", LOG_ChannelsFirmware);
     printDebug("Logik-gNumChannels (in knxprod):  %d\n", mNumChannels);
-    sTimer.debug();
 
+    // printDebug("Aktuelle Zeit: %s", sTimer.getTimeAsc());
+    sTimer.debug();
+    // sTimer.debugHolidays();
     // Test i2c failure
     // we start an i2c read i.e. for EEPROM
     // prepareReadEEPROM(4711, 20);
@@ -384,10 +399,18 @@ void Logic::setup(bool iSaveSupported) {
 #endif
         if (prepareChannels())
             writeAllDptToEEPROM();
+        float lLat = LogicChannel::getFloat(knx.paramData(LOG_Latitude));
+        float lLon = LogicChannel::getFloat(knx.paramData(LOG_Longitude));
         // sTimer.setup(8.639751, 49.310209, 1, true, 0xFFFFFFFF);
-        double lLat = 49.31209; // LogicChannel::getFloat(knx.paramData(LOG_Latitude));
-        double lLon = 8.639751; // LogicChannel::getFloat(knx.paramData(LOG_Longitude));
-        sTimer.setup(lLon, lLat, ((knx.paramByte(LOG_Timezone) & 0x60) >> 5), knx.paramByte(LOG_UseSummertime) & 0x10, knx.paramInt(LOG_Neujahr));
+        uint8_t lTimezone = (knx.paramByte(LOG_Timezone) & LOG_TimezoneMask) >> LOG_TimezoneShift;
+        bool lUseSummertime = (knx.paramByte(LOG_UseSummertime) & LOG_UseSummertimeMask) >> LOG_UseSummertimeShift;
+        sTimer.setup(lLon, lLat, lTimezone, lUseSummertime, knx.paramInt(LOG_Neujahr));
+        // for TimerRestore we prepare all Timer channels
+        for (uint8_t lIndex = 0; lIndex < mNumChannels; lIndex++)
+        {
+            LogicChannel *lChannel = mChannel[lIndex];
+            lChannel->startTimerRestoreState();
+        }
     }
 }
 
@@ -399,7 +422,7 @@ void Logic::loop()
     processInterrupt();
     sTimer.loop(); // clock and timer async methods
 
-    // we loop on all channels an execute pipeline
+    // we loop on all channels and execute pipeline
     for (uint8_t lIndex = 0; lIndex < mNumChannels; lIndex++)
     {
         LogicChannel *lChannel = mChannel[lIndex];
@@ -412,6 +435,7 @@ void Logic::loop()
         sendHoliday();
         sTimer.clearMinuteChanged();
     }
+    processTimerRestore();
 }
 
 EepromManager *Logic::getEEPROM() {
@@ -419,6 +443,36 @@ EepromManager *Logic::getEEPROM() {
 }
 
 // start timer implementation
+void Logic::processTimerRestore() {
+    static uint32_t sTimerRestoreDelay = 1;
+    if (sTimerRestoreDelay == 0)
+        return;
+    if (sTimer.isTimerValid() == tmValid && delayCheck(sTimerRestoreDelay, 500)) {
+        sTimerRestoreDelay = millis();
+        if (sTimerRestoreDelay == 0)
+            sTimerRestoreDelay = 1; // prevent set to 0 in case of timer overflow
+        if (sTimerRestore.getDayIteration() < 365) {
+            if (sTimerRestore.getDayIteration() == 0)
+            {
+                // initialize RestoreTimer
+                sTimerRestore.setup(sTimer);
+            }
+            else
+            {
+                sTimerRestore.decreaseDay();
+            }
+        } else {
+            // stop timer restore processing in logic...
+            sTimerRestoreDelay = 0;
+            // ... and in each channel
+            for (uint8_t lIndex = 0; lIndex < mNumChannels; lIndex++)
+            {
+                LogicChannel *lChannel = mChannel[lIndex];
+                lChannel->stopTimerRestoreState();
+            }
+        }
+    }
+}
 
 // send holiday information on bus
 void Logic::sendHoliday() {
