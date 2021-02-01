@@ -1366,10 +1366,10 @@ Das Gerät hat ein Funktionsmodul DPT-Konverter eingebaut, dass parameterlos fun
 
 Der DPT konverter konvertiert einen Von-DPT in einen Nach-DPT und wird implizt an Stellen aufgerufen, an den das notwendig ist, wenn also für Berechnungen oder Zuweisungen unterschiedliche DPT vorliegen.
 
-Derzeit passiert das
+Derzeit passiert das...
 
-* bei einem Differenzkonverter, wenn die beiden Eingänge unterschiedliche DPT haben. Hier ist der Nach-DPT immer der DPT, den der Eingang besitzt, der den Differenzkonverter nutzt. Der Von-DPT ist der DPT des "anderen" Eingangs.
-* Bei einem Ausgang, wenn dieser den Wert eines Eingangs senden soll und die unterschiedliche DPT haben. Hier ist der Von-DPT immer der Eingangs-DPT und der Nach-DPT der Ausgangs-DPT.
+* ... bei einem Differenzkonverter, wenn die beiden Eingänge unterschiedliche DPT haben. Hier ist der Nach-DPT immer der DPT, den der Eingang besitzt, der den Differenzkonverter nutzt. Der Von-DPT ist der DPT des "anderen" Eingangs.
+* ... bei einem Ausgang, wenn dieser den Wert eines Eingangs senden soll und die unterschiedliche DPT haben. Hier ist der Von-DPT immer der Eingangs-DPT und der Nach-DPT der Ausgangs-DPT.
 
 Da die Konvertierung nicht parametrierbar ist, erfolgt sie nach einfachen (generischen) Regeln. Auch wenn prinzipiell von jedem Von-DPT zu jedem Nach-DPT konvertiert werden kann, müssen für einige Konvertierungen die Rahmenbedingungen bekannt sein, vor allem wie in Grenzfällen verfahren wird. Es ist z.B. offensichtlich, dass ein 2-Byte-Wert 365 nicht verlustfrei in einen 1-Byte-Wert (Wertebereich 0-255) konvertiert werden kann.
 
@@ -1460,6 +1460,8 @@ RGB-LED
 
 ## Übersicht der vorhandenen Kommunikationsobjekte
 
+Hier werden nur Kommunikationsobjekte (KO) des Logikmoduls beschrieben, die KO anderer Module sind in der jeweiligen Applikationsbeschreibung dokumentiert.
+
 KO | Name | DPT | Bedeutung
 :---:|:---|---:|:--
 1 | in Betrieb | 1.002 | Meldet zyklisch auf den Bus, dass das Gerät noch funktioniert. Das KO steht nicht zur Verfügung, wenn kein Sendezyklus eingestellt wurde.
@@ -1467,7 +1469,8 @@ KO | Name | DPT | Bedeutung
 3 | Datum | 11.001 | Eingang zum empfangen des Datums
 4 | Urlaub | 1.001 | Eingang: Information über Urlaub
 5 | Feiertag heute | 1.001 | Ausgang: Information, dass der aktuelle Tag ein Feiertag ist
-6 | Feiertag morgen | 1.001 | Ausgang: Information, dass der morgige Tag ein Feiertag ist
+6 | Feiertag 
+morgen | 1.001 | Ausgang: Information, dass der morgige Tag ein Feiertag ist
 7 | Diagnoseobjekt | 16.001 | Ein-/Ausgang für Diagnoseinformationen
 n | Eingang 1 | *) | Eingang 1 für einen Logikkanal
 n+1 | Eingang 2 | *) | Eingang 2 für einen Logikkanal
