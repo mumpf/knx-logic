@@ -1,7 +1,7 @@
 #include <knx.h>
 #include "Hardware.h"
 
-void appSetup(uint8_t iSavePin);
+void appSetup(bool iSaveSupported);
 void appLoop();
 
 void setup()

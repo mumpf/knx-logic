@@ -5,6 +5,8 @@
 #include "PCA9632.h"
 
 Logic *LogicChannel::sLogic = nullptr;
+Timer &LogicChannel::sTimer = Timer::instance();
+TimerRestore &LogicChannel::sTimerRestore = TimerRestore::instance(); // singleton
 
 /******************************
  * Constructors
@@ -112,11 +114,13 @@ GroupObject *LogicChannel::getKoForChannel(uint8_t iIOIndex, uint8_t iChannelId)
     return &knx.getGroupObject(calcKoNumber(iIOIndex, iChannelId));
 }
 
-uint16_t LogicChannel::calcKoNumber(uint8_t iIOIndex) {
+uint16_t LogicChannel::calcKoNumber(uint8_t iIOIndex)
+{
     return LogicChannel::calcKoNumber(iIOIndex, mChannelId);
 }
 
-GroupObject *LogicChannel::getKo(uint8_t iIOIndex) {
+GroupObject *LogicChannel::getKo(uint8_t iIOIndex)
+{
     return LogicChannel::getKoForChannel(iIOIndex, mChannelId);
 }
 
@@ -204,26 +208,26 @@ void LogicChannel::setRGBColor(uint16_t iParamIndex)
 #endif
 }
 
-// turn on/off Buzzer 
+// turn on/off Buzzer
 void LogicChannel::setBuzzer(uint16_t iParamIndex)
 {
 #ifdef BUZZER_PIN
     switch (getByteParam(iParamIndex))
     {
-    case 0:
-        noTone(BUZZER_PIN);
-        break;
-    case 1:
-        tone(BUZZER_PIN, BUZZER_FREQ_LOUD);
-        break;
-    case 2:
-        tone(BUZZER_PIN, BUZZER_FREQ_SILENT);
-        break;
-    case 3:
-        tone(BUZZER_PIN, BUZZER_FREQ_NORMAL);
-        break;
-    default:
-        break;
+        case 0:
+            noTone(BUZZER_PIN);
+            break;
+        case 1:
+            tone(BUZZER_PIN, BUZZER_FREQ_LOUD);
+            break;
+        case 2:
+            tone(BUZZER_PIN, BUZZER_FREQ_SILENT);
+            break;
+        case 3:
+            tone(BUZZER_PIN, BUZZER_FREQ_NORMAL);
+            break;
+        default:
+            break;
     }
 #endif
 }
@@ -466,7 +470,8 @@ void LogicChannel::writeParameterValue(uint8_t iIOIndex)
 /********************************
  * Logic functions
  *******************************/
-bool LogicChannel::isInputActive(uint8_t iIOIndex) {
+bool LogicChannel::isInputActive(uint8_t iIOIndex)
+{
     uint8_t lIsActive = getByteParam((iIOIndex == IO_Input1) ? LOG_fE1 : LOG_fE2) & BIT_INPUT_MASK;
     if (lIsActive == 0)
     {
@@ -475,7 +480,6 @@ bool LogicChannel::isInputActive(uint8_t iIOIndex) {
     }
     return (lIsActive > 0);
 }
-
 
 // channel startup delay
 void LogicChannel::startStartup()
@@ -495,7 +499,8 @@ void LogicChannel::processStartup()
     }
 }
 
-void LogicChannel::processInput(uint8_t iIOIndex) {
+void LogicChannel::processInput(uint8_t iIOIndex)
+{
     if (iIOIndex == 0)
         return;
     uint16_t lParamBase = (iIOIndex == 1) ? LOG_fE1 : LOG_fE2;
@@ -515,35 +520,38 @@ void LogicChannel::processInput(uint8_t iIOIndex) {
 }
 
 // we send an ReadRequest if reading from input 1 should be repeated
-void LogicChannel::processRepeatInput1() {
+void LogicChannel::processRepeatInput1()
+{
     uint32_t lRepeatTime = getIntParam(LOG_fE1Repeat) * 1000;
 
-    if (delayCheck(pRepeatInput1Delay, lRepeatTime))
+    if (delayCheck(pInputProcessing.repeatInput1Delay, lRepeatTime))
     {
         knxRead(IO_Input1);
-        pRepeatInput1Delay = millis();
+        pInputProcessing.repeatInput1Delay = millis();
         if (lRepeatTime == 0)
             pCurrentPipeline &= ~PIP_REPEAT_INPUT1;
     }
 }
 
 // we send an ReadRequest if reading from input 1 should be repeated
-void LogicChannel::processRepeatInput2() {
+void LogicChannel::processRepeatInput2()
+{
     uint32_t lRepeatTime = getIntParam(LOG_fE2Repeat) * 1000;
 
-    if (delayCheck(pRepeatInput2Delay, lRepeatTime))
+    if (delayCheck(pInputProcessing.repeatInput2Delay, lRepeatTime))
     {
         knxRead(IO_Input2);
-        pRepeatInput2Delay = millis();
+        pInputProcessing.repeatInput2Delay = millis();
         if (lRepeatTime == 0)
             pCurrentPipeline &= ~PIP_REPEAT_INPUT2;
     }
 }
 
-void LogicChannel::stopRepeatInput(uint8_t iIOIndex) {
+void LogicChannel::stopRepeatInput(uint8_t iIOIndex)
+{
     // repeated read on an input KO is stopped in following cases:
     // 1. There is one single read on startup and this read was executed (is solved in processRepeatInputX())
-    // 2. There is one single read on startup, the read was not yet executed (channel is not running) but 
+    // 2. There is one single read on startup, the read was not yet executed (channel is not running) but
     //    nevertheless the telegram was received (i.E. through an other read of a running channel)
     // 3. There is a continious read with condition "until telegram received"
     uint16_t lRepeatInputBit;
@@ -568,18 +576,21 @@ void LogicChannel::stopRepeatInput(uint8_t iIOIndex) {
     }
     // if (!lJustOneTelegram || (pCurrentPipeline & PIP_RUNNING))
     //     return;
-    if (pCurrentPipeline & lRepeatInputBit) {
+    if (pCurrentPipeline & lRepeatInputBit)
+    {
         if (lRepeatTime == 0 || lJustOneTelegram)
             pCurrentPipeline &= ~lRepeatInputBit;
     }
 }
 
-void LogicChannel::startConvert(uint8_t iIOIndex){
+void LogicChannel::startConvert(uint8_t iIOIndex)
+{
     pCurrentPipeline |= (iIOIndex == 1) ? PIP_CONVERT_INPUT1 : PIP_CONVERT_INPUT2;
     stopRepeatInput(iIOIndex);
 }
 
-void LogicChannel::processConvertInput(uint8_t iIOIndex) {
+void LogicChannel::processConvertInput(uint8_t iIOIndex)
+{
     uint16_t lParamBase = (iIOIndex == 1) ? LOG_fE1 : LOG_fE2;
     uint16_t lParamLow = (iIOIndex == 1) ? LOG_fE1LowDelta : LOG_fE2LowDelta;
     uint8_t lConvert = getByteParam(lParamBase) >> 4;
@@ -657,7 +668,8 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex) {
     startLogic(iIOIndex, lValueOut);
 }
 
-void LogicChannel::startLogic(uint8_t iIOIndex, bool iValue) {
+void LogicChannel::startLogic(uint8_t iIOIndex, bool iValue)
+{
     // invert input
     bool lValue = iValue;
     uint16_t lParamBase = (iIOIndex == BIT_EXT_INPUT_1) ? LOG_fE1 : (iIOIndex == BIT_EXT_INPUT_2) ? LOG_fE2 : (iIOIndex == BIT_INT_INPUT_1) ? LOG_fI1 : LOG_fI2;
@@ -678,7 +690,8 @@ void LogicChannel::startLogic(uint8_t iIOIndex, bool iValue) {
 }
 
 // Processing parametrized logic
-void LogicChannel::processLogic() {
+void LogicChannel::processLogic()
+{
     /* Logic execution bit is set from any method which changes input values */
     uint8_t lValidInputs = pValidActiveIO & BIT_INPUT_MASK;
     uint8_t lActiveInputs = (pValidActiveIO >> 4) & BIT_INPUT_MASK;
@@ -693,7 +706,7 @@ void LogicChannel::processLogic() {
     if ((getByteParam(LOG_fCalculate) & 3) == 0 || lValidInputs == lActiveInputs)
     {
         // we process only if all inputs are valid or the user requested invalid evaluation
-        uint8_t lLogic = getByteParam(LOG_fLogic);
+        uint8_t lLogic = (getByteParam(LOG_fDisable) & 4) ? 0 : getByteParam(LOG_fLogic);
         uint8_t lOnes = 0;
         switch (lLogic)
         {
@@ -705,7 +718,7 @@ void LogicChannel::processLogic() {
                 break;
             case VAL_Logic_Or:
                 // Check if any bit is set -> logical OR of all input bits
-                lNewOutput = (lCurrentInputs > 0); 
+                lNewOutput = (lCurrentInputs > 0);
                 lValidOutput = true;
                 break;
             case VAL_Logic_ExOr:
@@ -714,7 +727,7 @@ void LogicChannel::processLogic() {
                 for (size_t lBit = 1; lBit < BIT_INPUT_MASK; lBit <<= 1)
                     lOnes += (lCurrentInputs & lBit) > 0;
                 // Check if we have an odd number of bits -> logical EXOR of all input bits
-                lNewOutput = (lOnes % 2 == 1); 
+                lNewOutput = (lOnes % 2 == 1);
                 lValidOutput = true;
                 break;
             case VAL_Logic_Gate:
@@ -728,9 +741,12 @@ void LogicChannel::processLogic() {
                 uint8_t lValue;
                 lValue = ((lCurrentInputs & (BIT_EXT_INPUT_1 | BIT_INT_INPUT_1)) > 0);
                 if (lGate)
-                    lNewOutput = lValue; 
+                    lNewOutput = lValue;
                 lValidOutput = lGate;
                 break;
+            case VAL_Logic_Timer:
+                lNewOutput = (lCurrentInputs & BIT_EXT_INPUT_2);
+                lValidOutput = true;
             default:
                 break;
         }
@@ -744,8 +760,8 @@ void LogicChannel::processLogic() {
             lTrigger &= BIT_INPUT_MASK;
             if (lHandleFirstProcessing == 0)
                 pCurrentIO |= BIT_FIRST_PROCESSING;
-            if ((lTrigger == 0 && lNewOutput != lCurrentOuput) || /* Just Changes  */
-                (lTrigger & pTriggerIO) > 0 || /* each telegram on specific input */
+            if ((lTrigger == 0 && lNewOutput != lCurrentOuput) ||                         /* Just Changes  */
+                (lTrigger & pTriggerIO) > 0 ||                                            /* each telegram on specific input */
                 (lHandleFirstProcessing > 0 && (pCurrentIO & BIT_FIRST_PROCESSING) == 0)) /* first processing */
             {
                 // set the output value (first delete BIT_OUTPUT and then set the value
@@ -764,12 +780,14 @@ void LogicChannel::processLogic() {
             }
         }
     }
+    pCurrentIODebug = pCurrentIO;
     // we have to delete all trigger if output pipeline is not started
     if (!lOutputSent)
         pTriggerIO = 0;
 }
 
-void LogicChannel::startStairlight(bool iOutput) {
+void LogicChannel::startStairlight(bool iOutput)
+{
     if (getByteParam(LOG_fOStair) & 128)
     {
         if (iOutput)
@@ -814,7 +832,8 @@ void LogicChannel::startStairlight(bool iOutput) {
     }
 }
 
-void LogicChannel::processStairlight() {
+void LogicChannel::processStairlight()
+{
     uint8_t lStairTimeBase = getByteParam(LOG_fOTimeBase);
     uint32_t lStairTime = getIntParam(LOG_fOTime);
     uint32_t lTime = lStairTime * cTimeFactors[lStairTimeBase];
@@ -828,7 +847,8 @@ void LogicChannel::processStairlight() {
     }
 }
 
-void LogicChannel::startBlink() {
+void LogicChannel::startBlink()
+{
     uint32_t lBlinkTime = getIntParam(LOG_fOBlink);
     if (lBlinkTime > 0)
     {
@@ -838,7 +858,8 @@ void LogicChannel::startBlink() {
     }
 }
 
-void LogicChannel::processBlink() {
+void LogicChannel::processBlink()
+{
     uint32_t lBlinkTime = getIntParam(LOG_fOBlink) * 100;
     if (delayCheck(pBlinkDelay, lBlinkTime))
     {
@@ -858,7 +879,8 @@ void LogicChannel::processBlink() {
 }
 
 // delays the on signal by defined druation
-void LogicChannel::startOnDelay() {
+void LogicChannel::startOnDelay()
+{
     // if on delay is already running, there are options:
     //    1. second on switches immediately on
     //    2. second on restarts delay time
@@ -896,7 +918,8 @@ void LogicChannel::startOnDelay() {
     }
 }
 
-void LogicChannel::processOnDelay() {
+void LogicChannel::processOnDelay()
+{
     uint32_t lOnDelay = getIntParam(LOG_fODelayOn) * 100;
     if (delayCheck(pOnDelay, lOnDelay))
     {
@@ -908,7 +931,8 @@ void LogicChannel::processOnDelay() {
 }
 
 // delays the off signal by defined druation
-void LogicChannel::startOffDelay() {
+void LogicChannel::startOffDelay()
+{
     // if off delay is already running, there are options:
     //    1. second off switches immediately off
     //    2. second off restarts delay time
@@ -946,7 +970,8 @@ void LogicChannel::startOffDelay() {
     }
 }
 
-void LogicChannel::processOffDelay() {
+void LogicChannel::processOffDelay()
+{
     uint32_t lOffDelay = getIntParam(LOG_fODelayOff) * 100;
     if (delayCheck(pOffDelay, lOffDelay))
     {
@@ -958,7 +983,8 @@ void LogicChannel::processOffDelay() {
 }
 
 // Output filter prevents repetition of 0 or 1 values
-void LogicChannel::startOutputFilter(bool iOutput) {
+void LogicChannel::startOutputFilter(bool iOutput)
+{
     uint8_t lAllow = (getByteParam(LOG_fOOutputFilter) & 12) >> 2;
     bool lLastOutput = (pCurrentIO & BIT_LAST_OUTPUT) > 0;
     bool lContinue = false;
@@ -986,7 +1012,8 @@ void LogicChannel::startOutputFilter(bool iOutput) {
             pCurrentIO |= BIT_LAST_OUTPUT;
     }
 }
-void LogicChannel::processOutputFilter() {
+void LogicChannel::processOutputFilter()
+{
     if (pCurrentPipeline & PIP_OUTPUT_FILTER_ON)
     {
         startOnOffRepeat(true);
@@ -999,7 +1026,8 @@ void LogicChannel::processOutputFilter() {
 }
 
 // starts On-Off-Repeat
-void LogicChannel::startOnOffRepeat(bool iOutput) {
+void LogicChannel::startOnOffRepeat(bool iOutput)
+{
     // with repeat, we first process the ouptut and then we repeat the signal
     // if repeat is already active, we wait until next cycle
     if (iOutput)
@@ -1026,11 +1054,12 @@ void LogicChannel::startOnOffRepeat(bool iOutput) {
     }
 }
 
-void LogicChannel::processOnOffRepeat() {
+void LogicChannel::processOnOffRepeat()
+{
     uint32_t lRepeat = 0;
     bool lValue;
 
-    // we can handle On/Off repeat in one method, because they are alternative and never 
+    // we can handle On/Off repeat in one method, because they are alternative and never
     // set both in parallel
     if (pCurrentPipeline & PIP_ON_REPEAT)
     {
@@ -1075,8 +1104,55 @@ void LogicChannel::processInternalInputs(uint8_t iChannelId, bool iValue)
     }
 }
 
+bool LogicChannel::processDiagnoseCommand(char *cBuffer)
+{
+    bool lResult = false;
+    switch (cBuffer[0])
+    {
+        case 'l': {
+            char v[5];
+            // here we find the last IO state
+            uint8_t lValidInput = pValidActiveIO & BIT_INPUT_MASK;
+            uint8_t lCurrentIO = pCurrentIODebug & 0x1F;
+            // input values
+            for (uint8_t i = 0; i < 4; i++)
+            {
+                if (lValidInput & 1)
+                {
+                    //input is valid, we present its value
+                    v[i] = (lCurrentIO & 1) ? '1' : '0';
+                }
+                else
+                {
+                    // invalid input
+                    v[i] = 'x';
+                }
+                lValidInput >>= 1;
+                lCurrentIO >>= 1;
+            }
+            // output value
+            if ((pCurrentPipeline & PIP_RUNNING) && (pCurrentIO & BIT_FIRST_PROCESSING))
+            {
+                v[4] = (lCurrentIO & 1) ? '1' : '0';
+            }
+            else
+            {
+                v[4] = 'x';
+            }
+            // list state of logic of last execution
+            sprintf(cBuffer, "A%c B%c C%c D%c Q%c", v[0], v[1], v[2], v[3], v[4]);
+            lResult = true;
+            break;
+        }
+        default:
+            break;
+    }
+    return lResult;
+}
+
 // process the output itself
-void LogicChannel::processOutput(bool iValue) {
+void LogicChannel::processOutput(bool iValue)
+{
     LogicChannel::sLogic->processAllInternalInputs(this, iValue);
     if (iValue)
     {
@@ -1144,22 +1220,23 @@ void LogicChannel::processOutput(bool iValue) {
     pTriggerIO = 0;
 }
 
-bool LogicChannel::checkDpt(uint8_t iIOIndex, uint8_t iDpt) {
+bool LogicChannel::checkDpt(uint8_t iIOIndex, uint8_t iDpt)
+{
     uint16_t lParam;
     switch (iIOIndex)
     {
-    case IO_Input1:
-        lParam = LOG_fE1Dpt;
-        break;
-    case IO_Input2:
-        lParam = LOG_fE2Dpt;
-        break;
-    case IO_Output:
-        lParam = LOG_fODpt;
-        break;
-    default:
-        return false;
-        break;
+        case IO_Input1:
+            lParam = LOG_fE1Dpt;
+            break;
+        case IO_Input2:
+            lParam = LOG_fE2Dpt;
+            break;
+        case IO_Output:
+            lParam = LOG_fODpt;
+            break;
+        default:
+            return false;
+            break;
     }
     uint8_t lDpt = getByteParam(lParam);
     return lDpt == iDpt;
@@ -1176,7 +1253,8 @@ bool LogicChannel::readOneInputFromEEPROM(uint8_t iIOIndex)
     uint16_t lAddress = (SAVE_BUFFER_START_PAGE + 1) * 32 + mChannelId * 2 + iIOIndex - 1;
     lEEPROM->prepareRead(lAddress, 1);
     uint8_t lSavedDpt = Wire.read();
-    if (!checkDpt(iIOIndex, lSavedDpt)) return false;
+    if (!checkDpt(iIOIndex, lSavedDpt))
+        return false;
 
     // if the dpt is ok, we get the ko value
     lAddress = (SAVE_BUFFER_START_PAGE + 9) * 32 + mChannelId * 8 + (iIOIndex - 1) * 4;
@@ -1188,13 +1266,15 @@ bool LogicChannel::readOneInputFromEEPROM(uint8_t iIOIndex)
     return true;
 }
 
-void LogicChannel::writeSingleDptToEEPROM(uint8_t iIOIndex) {
+void LogicChannel::writeSingleDptToEEPROM(uint8_t iIOIndex)
+{
     uint8_t lDpt = 0xFF;
     if (isInputActive(iIOIndex))
     {
         // now get input default value
         uint8_t lParInput = getByteParam(iIOIndex == 1 ? LOG_fE1Default : LOG_fE2Default);
-        if (lParInput & VAL_InputDefault_EEPROM) {
+        if (lParInput & VAL_InputDefault_EEPROM)
+        {
             // if the default is EEPROM, we get correct dpt
             lDpt = getByteParam(iIOIndex == 1 ? LOG_fE1Dpt : LOG_fE2Dpt);
         }
@@ -1202,13 +1282,22 @@ void LogicChannel::writeSingleDptToEEPROM(uint8_t iIOIndex) {
     Wire.write(lDpt);
 }
 
-// retutns true, if any DPT from EEPROM does not fit to according input DPT. 
+// retutns true, if any DPT from EEPROM does not fit to according input DPT.
 // in such a case the DPTs have to be written to EEPROM again
-bool LogicChannel::prepareChannel() {
+bool LogicChannel::prepareChannel()
+{
     bool lResult = false;
     bool lInput1EEPROM = false;
     bool lInput2EEPROM = false;
-    if (getByteParam(LOG_fLogic) > 0)
+    uint8_t lLogicFunction = (getByteParam(LOG_fDisable) & 4) ? 0 : getByteParam(LOG_fLogic);
+
+    if (lLogicFunction == 5)
+    {
+        // timer implementation, timer is on ext input 2
+        pValidActiveIO |= BIT_EXT_INPUT_2 >> 4;
+        startStartup();
+    }
+    else if (lLogicFunction > 0)
     {
         // function is active, we process input presets
         // external input 1
@@ -1217,17 +1306,20 @@ bool LogicChannel::prepareChannel() {
             // input is active, we set according flag
             pValidActiveIO |= BIT_EXT_INPUT_1 << 4;
             // prepare input for cyclic read
-            pRepeatInput1Delay = getIntParam(LOG_fE1Repeat);
-            if (pRepeatInput1Delay) {
-                pRepeatInput1Delay = millis();
+            pInputProcessing.repeatInput1Delay = getIntParam(LOG_fE1Repeat);
+            if (pInputProcessing.repeatInput1Delay)
+            {
+                pInputProcessing.repeatInput1Delay = millis();
                 pCurrentPipeline |= PIP_REPEAT_INPUT1;
             }
             // now set input default value
             uint8_t lParInput = getByteParam(LOG_fE1Default);
             // shoud default be fetched from EEPROM
-            if (lParInput & VAL_InputDefault_EEPROM) {
+            if (lParInput & VAL_InputDefault_EEPROM)
+            {
                 lInput1EEPROM = readOneInputFromEEPROM(IO_Input1);
-                if (!lInput1EEPROM) {
+                if (!lInput1EEPROM)
+                {
                     lParInput &= ~VAL_InputDefault_EEPROM;
                     lResult = true;
                 }
@@ -1236,7 +1328,7 @@ bool LogicChannel::prepareChannel() {
             {
                 case VAL_InputDefault_Read:
                     /* to read immediately we activate repeated read pipeline with 0 delay */
-                    pRepeatInput1Delay = 0;
+                    pInputProcessing.repeatInput1Delay = 0;
                     pCurrentPipeline |= PIP_REPEAT_INPUT1;
                     break;
 
@@ -1261,17 +1353,19 @@ bool LogicChannel::prepareChannel() {
             // input is active, we set according flag
             pValidActiveIO |= BIT_EXT_INPUT_2 << 4;
             // prepare input for cyclic read
-            pRepeatInput2Delay = getIntParam(LOG_fE2Repeat);
-            if (pRepeatInput2Delay)
+            pInputProcessing.repeatInput2Delay = getIntParam(LOG_fE2Repeat);
+            if (pInputProcessing.repeatInput2Delay)
             {
-                pRepeatInput2Delay = millis();
+                pInputProcessing.repeatInput2Delay = millis();
                 pCurrentPipeline |= PIP_REPEAT_INPUT2;
             }
             uint8_t lParInput = getByteParam(LOG_fE2Default);
             // shoud default be fetched from EEPROM
-            if (lParInput & VAL_InputDefault_EEPROM) {
+            if (lParInput & VAL_InputDefault_EEPROM)
+            {
                 lInput2EEPROM = readOneInputFromEEPROM(IO_Input2);
-                if (!lInput2EEPROM) {
+                if (!lInput2EEPROM)
+                {
                     lParInput &= ~VAL_InputDefault_EEPROM;
                     lResult = true;
                 }
@@ -1280,7 +1374,7 @@ bool LogicChannel::prepareChannel() {
             {
                 case VAL_InputDefault_Read:
                     /* to read immediately we activate repeated read pipeline with 0 delay */
-                    pRepeatInput2Delay = 0;
+                    pInputProcessing.repeatInput2Delay = 0;
                     pCurrentPipeline |= PIP_REPEAT_INPUT2;
                     break;
 
@@ -1318,8 +1412,10 @@ bool LogicChannel::prepareChannel() {
         // we set the startup delay
         startStartup();
         // we trigger input processing, if there are values from EEPROM
-        if (lInput1EEPROM) processInput(IO_Input1);
-        if (lInput2EEPROM) processInput(IO_Input2);
+        if (lInput1EEPROM)
+            processInput(IO_Input1);
+        if (lInput2EEPROM)
+            processInput(IO_Input2);
     }
     return lResult;
 }
@@ -1331,9 +1427,12 @@ void LogicChannel::loop()
 
     if (pCurrentPipeline & PIP_STARTUP)
         processStartup();
+    if (pCurrentPipeline & PIP_TIMER_RESTORE_STATE)
+        processTimerRestoreState(sTimerRestore);
 
     // do no further processing until channel passed its startup time
-    if (pCurrentPipeline & PIP_RUNNING) {
+    if (pCurrentPipeline & PIP_RUNNING)
+    {
         // we revert the processing order for pipeline events
         // this reduces the chance to have a long running
         // sequence of funtions because of according pipeline settings
@@ -1368,5 +1467,453 @@ void LogicChannel::loop()
             processRepeatInput1();
         if (pCurrentPipeline & PIP_REPEAT_INPUT2)
             processRepeatInput2();
+        if (pCurrentPipeline & PIP_TIMER_INPUT)
+            processTimerInput();
+        }
+}
+
+// Start of Timer implementation
+void LogicChannel::startTimerInput()
+{
+    uint8_t lLogicFunction = (getByteParam(LOG_fDisable) & LOG_fDisableMask) ? 0 : getByteParam(LOG_fLogic);
+    if (lLogicFunction == VAL_Logic_Timer && sTimer.isTimerValid())
+    {
+        pCurrentPipeline |= PIP_TIMER_INPUT;
     }
 }
+
+// called every minute, finds the next timer to process and marks it
+void LogicChannel::processTimerInput()
+{
+    bool lIsYearTimer = (getByteParam(LOG_fTYearDay) & LOG_fTYearDayMask);
+    uint8_t lCountTimer = lIsYearTimer ? VAL_Tim_YearTimerCount : VAL_Tim_DayTimerCount; // there are 4 year timer or 8 day timer
+    bool lToday;                              // if it is a day timer lToday=true
+    bool lResult = false;
+    bool lValue;
+    bool lEvaluate = false;
+    // first we process settings valid for whole timer
+    // vacation
+    bool lIsVacation = knx.getGroupObject(LOG_KoVacation).value(getDPT(VAL_DPT_1));
+    uint8_t lVacationSetting = (getByteParam(LOG_fTVacation) & LOG_fTVacationMask) >> LOG_fTVacationShift;
+    if (lVacationSetting == VAL_Tim_Special_No && lIsVacation)
+        lEvaluate = false;
+    if (lVacationSetting == VAL_Tim_Special_Skip || lVacationSetting == VAL_Tim_Special_Sunday)
+        lEvaluate = true;
+    if (lVacationSetting == VAL_Tim_Special_Only)
+        lEvaluate = lIsVacation;
+    if (!lEvaluate)
+        return;
+
+    // holiday
+    uint8_t lHolidaySetting = (getByteParam(LOG_fTHoliday) & LOG_fTHolidayMask) >> LOG_fTHolidayShift;
+    if (lHolidaySetting == VAL_Tim_Special_No && sTimer.isHolidayToday())
+        lEvaluate = false;
+    if (lHolidaySetting == VAL_Tim_Special_Skip || lHolidaySetting == VAL_Tim_Special_Sunday)
+        lEvaluate = true;
+    if (lHolidaySetting == VAL_Tim_Special_Only)
+        lEvaluate = sTimer.isHolidayToday();
+    if (!lEvaluate)
+        return;
+
+    bool lHandleAsSunday = (lHolidaySetting == VAL_Tim_Special_Sunday && sTimer.isHolidayToday()) ||
+                           (lVacationSetting == VAL_Tim_Special_Sunday && lIsVacation);
+
+    // loop through all timer
+    uint32_t lTimerFunctions = getIntParam(LOG_fTd1DuskDawn);
+    for (uint8_t lTimerIndex = 0; lTimerIndex < lCountTimer; lTimerIndex++)
+    {
+        // get timer function code
+        uint8_t lTimerFunction = (lTimerFunctions >> (28 - lTimerIndex * 4)) & 0xF;
+        if (lTimerFunction)
+        {
+            // timer function is active
+            lToday = !lIsYearTimer || checkTimerToday(sTimer, lTimerIndex, lHandleAsSunday);
+            if (lToday)
+            {
+                uint16_t lBitfield = getWordParam(LOG_fTd1Value + 2 * lTimerIndex);
+                lValue = lBitfield & 0x8000;
+                switch (lTimerFunction)
+                {
+                    case VAL_Tim_PointInTime:
+                        lResult = checkPointInTime(sTimer, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday);
+                        break;
+                    case VAL_Tim_Sunrise_Plus:
+                        lResult = checkSunAbs(sTimer, SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
+                        break;
+                    case VAL_Tim_Sunrise_Minus:
+                        lResult = checkSunAbs(sTimer, SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
+                        break;
+                    case VAL_Tim_Sunset_Plus:
+                        lResult = checkSunAbs(sTimer, SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
+                        break;
+                    case VAL_Tim_Sunset_Minus:
+                        lResult = checkSunAbs(sTimer, SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
+                        break;
+                    case VAL_Tim_Sunrise_Earliest:
+                        lResult = checkSunLimit(sTimer, SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
+                        break;
+                    case VAL_Tim_Sunrise_Latest:
+                        lResult = checkSunLimit(sTimer, SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
+                        break;
+                    case VAL_Tim_Sunset_Earliest:
+                        lResult = checkSunLimit(sTimer, SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
+                        break;
+                    case VAL_Tim_Sunset_Latest:
+                        lResult = checkSunLimit(sTimer, SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        if (lResult)
+            break;
+    }
+    if (lResult)
+    {
+        startLogic(BIT_EXT_INPUT_2, lValue);
+        // if a timer is executed, it has not to be restored anymore
+        pCurrentPipeline &= ~PIP_TIMER_RESTORE_STATE;
+    }
+    // we wait for next timer execution
+    pCurrentPipeline &= ~PIP_TIMER_INPUT;
+}
+
+// checks if timer is valid today
+// just called for year timer
+bool LogicChannel::checkTimerToday(Timer &iTimer, uint8_t iTimerIndex, bool iHandleAsSunday)
+{
+    bool lResult = false;
+    // check for valid index
+    if (iTimerIndex < 4)
+    {
+        // now we check correct month
+        uint8_t lMonth = (getByteParam(LOG_fTy1Month + 2 * iTimerIndex) >> 4) & 0xF;
+        if (lMonth == 0 || lMonth == iTimer.getMonth())
+        {
+            // we have the correct month, check correct day
+            uint8_t lDayWeekday = (getByteParam(LOG_fTy1Day + 2 * iTimerIndex));
+            if (lDayWeekday & 1)
+            {
+                // Wochentag
+                if (lDayWeekday == 0xFF)
+                {
+                    // shortcut for 'every day'
+                    lResult = true;
+                }
+                else if (lDayWeekday > 1)
+                {
+                    for (uint8_t lWeekday = 1; lWeekday < 8; lWeekday++)
+                    {
+                        if (lDayWeekday & 0x80)
+                        {
+                            lResult = checkWeekday(iTimer, lWeekday, iHandleAsSunday);
+                            if (lResult)
+                                break;
+                        };
+                        lDayWeekday <<= 1;
+                    }
+                }
+            }
+            else
+            {
+                // Tag
+                lDayWeekday >>= 1;
+                lResult = (lDayWeekday == 0) || (lDayWeekday == iTimer.getDay());
+            }
+        }
+    }
+    return lResult;
+}
+
+// iWeekday is in our format (1=Monday, ..., 7 = Sunday, 0=any)
+bool LogicChannel::checkWeekday(Timer &iTimer, uint8_t iWeekday, bool iHandleAsSunday)
+{
+    if (iWeekday > 7)
+        return false;
+    if (iWeekday == 0)
+    {
+        return true;
+    }
+    if (iWeekday == 7)
+    {
+        iWeekday = 0;
+        if (iHandleAsSunday)
+            return true;
+    }
+    return iWeekday == iTimer.getWeekday();
+}
+
+bool LogicChannel::checkTimerTime(Timer &iTimer, uint8_t iTimerIndex, uint16_t iBitfield, uint8_t iHour, uint8_t iMinute, bool iSkipWeekday, bool iHandleAsSunday)
+{
+    bool lResult = false;
+
+    // check correct timer index
+    if (iTimerIndex < 8)
+    {
+        if (iSkipWeekday || checkWeekday(iTimer, iBitfield & 0x7, iHandleAsSunday))
+        {
+            // check hour
+            if (iHour == 31 || iHour == iTimer.getHour())
+            {
+                // check minute
+                if (iMinute == 63 || iMinute == iTimer.getMinute())
+                {
+                    lResult = true;
+                }
+            }
+        }
+    }
+    return lResult;
+}
+
+bool LogicChannel::checkPointInTime(Timer &iTimer, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iHandleAsSunday)
+{
+    uint8_t lHour = (iBitfield & 0x3E00) >> 9;
+    uint8_t lMinute = (iBitfield & 0x01F8) >> 3;
+    bool lResult = checkTimerTime(iTimer, iTimerIndex, iBitfield, lHour, lMinute, iSkipWeekday, iHandleAsSunday);
+    return lResult;
+}
+
+bool LogicChannel::checkSunAbs(Timer &iTimer, uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iHandleAsSunday, bool iMinus)
+{
+    int8_t lFactor = (iMinus) ? -1 : 1;
+    uint8_t lHour = (iTimer.getSunInfo(iSunInfo)->hour + ((iBitfield & 0x3E00) >> 9) * lFactor) % 24;
+    uint8_t lMinute = (iTimer.getSunInfo(iSunInfo)->minute + ((iBitfield & 0x01F8) >> 3) * lFactor) % 60;
+    bool lResult = checkTimerTime(iTimer, iTimerIndex, iBitfield, lHour, lMinute, iSkipWeekday, iHandleAsSunday);
+    return lResult;
+}
+
+bool LogicChannel::checkSunLimit(Timer &iTimer, uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iHandleAsSunday, bool iLatest)
+{
+    uint8_t lHour = ((iBitfield & 0x3E00) >> 9);
+    uint8_t lMinute = ((iBitfield & 0x01F8) >> 3);
+    int8_t lCompare = iLatest ? -1 : 1; // else case means "Earliest"
+    if ((iTimer.getSunInfo(iSunInfo)->hour - lHour) * lCompare > 0)
+    {
+        lHour = iTimer.getSunInfo(iSunInfo)->hour;
+        lMinute = iTimer.getSunInfo(iSunInfo)->minute;
+    }
+    else if (iTimer.getSunInfo(iSunInfo)->hour == lHour && (iTimer.getSunInfo(iSunInfo)->minute - lMinute) * lCompare > 0)
+    {
+        lMinute = iTimer.getSunInfo(iSunInfo)->minute;
+    }
+    bool lResult = checkTimerTime(iTimer, iTimerIndex, iBitfield, lHour, lMinute, iSkipWeekday, iHandleAsSunday);
+    return lResult;
+}
+
+
+// implementing timer startup, especially rerun of missed timers (called timer restore state)
+void LogicChannel::startTimerRestoreState()
+{
+    // check if current logik channel is a timer channel
+    uint8_t lLogicFunction = (getByteParam(LOG_fDisable) & LOG_fDisableMask) ? 0 : getByteParam(LOG_fLogic);
+    if (lLogicFunction == VAL_Logic_Timer)
+    {
+        bool lShouldRestoreState = ((getByteParam(LOG_fTRestoreState) & LOG_fTRestoreStateMask) >> LOG_fTRestoreStateShift);
+        if (lShouldRestoreState == 1) {
+            // Timers with vacation handling cannot be restored
+            bool lIsUsingVacation = ((getByteParam(LOG_fTVacation) & LOG_fTVacationMask) >> LOG_fTVacationShift) <= VAL_Tim_Special_No;
+            if (lIsUsingVacation) {
+                pCurrentPipeline |= PIP_TIMER_RESTORE_STATE;
+                pCurrentPipeline &= ~PIP_TIMER_RESTORE_STEP; // ensure first processing step is set to 1
+            }
+            printDebug("TimerRestore activated for channel %d\n", mChannelId);
+        }
+    }
+}
+
+// remove timer restore flag
+void LogicChannel::stopTimerRestoreState()
+{
+    pCurrentPipeline &= ~(PIP_TIMER_RESTORE_STATE | PIP_TIMER_RESTORE_STEP);
+}
+
+// Restores the value for this timer, if the day fits
+void LogicChannel::processTimerRestoreState(TimerRestore &iTimer)
+{
+    bool lIsYearTimer = (getByteParam(LOG_fTYearDay) & LOG_fTYearDayMask);
+    uint8_t lCountTimer = lIsYearTimer ? 4 : 8; // there are 4 year timer or 8 day timer
+    bool lToday;                              // if it is a day timer lToday=true
+    int16_t lResult = -1;
+    bool lValue = false;
+    bool lEvaluate = false;
+
+    if (iTimer.isTimerValid() != tmValid) return;
+
+    // ensure, that this is just executed once per restore day
+    // we flag the execution according to the last bit of iteration counter
+    // as long as this is equal, the restore was already executed
+    bool lStepMarker = (pCurrentPipeline & PIP_TIMER_RESTORE_STEP);
+    bool lIterationIndicator = (iTimer.getDayIteration() & 1);
+    if (lStepMarker == lIterationIndicator)
+        return;
+
+    // toggle restore step bit to indicate, that this timer was checked for this day
+    pCurrentPipeline &= ~PIP_TIMER_RESTORE_STEP;
+    if (lIterationIndicator)
+        pCurrentPipeline |= PIP_TIMER_RESTORE_STEP;
+
+    int16_t lDayTime = iTimer.getHour() * 100 + iTimer.getMinute();
+
+    printDebug("Processing TimerRestore on Channel %d for Day %02d.%02d.%02d\n", mChannelId, iTimer.getDay(), iTimer.getMonth(), iTimer.getYear());
+    // first we process settings valid for whole timer
+    // vacation is not processed (always skipped)
+
+    // holiday
+    uint8_t lHolidaySetting = (getByteParam(LOG_fTHoliday) & LOG_fTHolidayMask) >> LOG_fTHolidayShift;
+    if (lHolidaySetting == VAL_Tim_Special_No && iTimer.isHolidayToday())
+        lEvaluate = false;
+    if (lHolidaySetting == VAL_Tim_Special_Skip || lHolidaySetting == VAL_Tim_Special_Sunday)
+        lEvaluate = true;
+    if (lHolidaySetting == VAL_Tim_Special_Only)
+        lEvaluate = iTimer.isHolidayToday();
+    if (!lEvaluate)
+        return;
+
+    bool lHandleAsSunday = (lHolidaySetting == VAL_Tim_Special_Sunday && iTimer.isHolidayToday());
+
+    // loop through all timer
+    uint32_t lTimerFunctions = getIntParam(LOG_fTd1DuskDawn);
+    for (uint8_t lTimerIndex = 0; lTimerIndex < lCountTimer; lTimerIndex++)
+    {
+        // get timer function code
+        uint8_t lTimerFunction = (lTimerFunctions >> (28 - lTimerIndex * 4)) & 0xF;
+        if (lTimerFunction)
+        {
+            // timer function is active
+            lToday = !lIsYearTimer || checkTimerToday(iTimer, lTimerIndex, lHandleAsSunday);
+            if (lToday)
+            {
+                uint16_t lBitfield = getWordParam(LOG_fTd1Value + 2 * lTimerIndex);
+                bool lCurrentValue = lBitfield & 0x8000;
+                int16_t lCurrentResult = -1;
+
+                // at this point we know, that this timer is valid for this day
+                // now we get the right swith time for that day
+                    
+                switch (lTimerFunction)
+                {
+                    case VAL_Tim_PointInTime:
+                        lCurrentResult = getPointInTime(iTimer, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday);
+                        if (lCurrentResult > -1)
+                            printDebug("TimerRestore: Found PointInTime %04d with value %d\n", lCurrentResult, lCurrentValue);
+                        break;
+                    case VAL_Tim_Sunrise_Plus:
+                        lCurrentResult = getSunAbs(iTimer, SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
+                        if (lCurrentResult > -1)
+                            printDebug("TimerRestore: Found SunrisePlus %04d with value %d\n", lCurrentResult, lCurrentValue);
+                        break;
+                    case VAL_Tim_Sunrise_Minus:
+                        lCurrentResult = getSunAbs(iTimer, SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
+                        if (lCurrentResult > -1)
+                            printDebug("TimerRestore: Found SunriseMinus %04d with value %d\n", lCurrentResult, lCurrentValue);
+                        break;
+                    case VAL_Tim_Sunset_Plus:
+                        lCurrentResult = getSunAbs(iTimer, SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
+                        if (lCurrentResult > -1)
+                            printDebug("TimerRestore: Found SunsetPlus %04d with value %d\n", lCurrentResult, lCurrentValue);
+                        break;
+                    case VAL_Tim_Sunset_Minus:
+                        lCurrentResult = getSunAbs(iTimer, SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
+                        if (lCurrentResult > -1)
+                            printDebug("TimerRestore: Found SunsetMinus %04d with value %d\n", lCurrentResult, lCurrentValue);
+                        break;
+                    case VAL_Tim_Sunrise_Earliest:
+                        lCurrentResult = getSunLimit(iTimer, SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
+                        if (lCurrentResult > -1)
+                            printDebug("TimerRestore: Found SunriseEarliest %04d with value %d\n", lCurrentResult, lCurrentValue);
+                        break;
+                    case VAL_Tim_Sunrise_Latest:
+                        lCurrentResult = getSunLimit(iTimer, SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
+                        if (lCurrentResult > -1)
+                            printDebug("TimerRestore: Found SunriseLatest %04d with value %d\n", lCurrentResult, lCurrentValue);
+                        break;
+                    case VAL_Tim_Sunset_Earliest:
+                        lCurrentResult = getSunLimit(iTimer, SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
+                        if (lCurrentResult > -1)
+                            printDebug("TimerRestore: Found SunsetEarliest %04d with value %d\n", lCurrentResult, lCurrentValue);
+                        break;
+                    case VAL_Tim_Sunset_Latest:
+                        lCurrentResult = getSunLimit(iTimer, SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
+                        if (lCurrentResult > -1)
+                            printDebug("TimerRestore: Found SunsetLatest %04d with value %d\n", lCurrentResult, lCurrentValue);
+                        break;
+                    default:
+                        break;
+                }
+                // the time found in timer is taken, if
+                //   it is greater than the last found time
+                //   and smaller that the time of the processed day
+                // important: lDayTime is for today the current time, for any older day 2359 (End-Of-Day)
+                if (lCurrentResult > lResult && lCurrentResult <= lDayTime) {
+                    lResult = lCurrentResult;
+                    lValue = lCurrentValue;
+                }
+            }
+        }
+    }
+    if (lResult > -1)
+    {
+        printDebug("TimerRestore: Found timer %04d with value %d, starting processing\n", lResult, lValue);
+        startLogic(BIT_EXT_INPUT_2, lValue);
+        stopTimerRestoreState();
+    } else {
+        printDebug("TimerRestore: There are no timers for this day\n");
+    }
+}
+
+int16_t LogicChannel::getTimerTime(Timer &iTimer, uint8_t iTimerIndex, uint16_t iBitfield, uint8_t iHour, uint8_t iMinute, bool iSkipWeekday, bool iHandleAsSunday)
+{
+    int16_t lResult = -1;
+
+    // check correct timer index
+    if (iTimerIndex < 8)
+    {
+        if (iSkipWeekday || checkWeekday(iTimer, iBitfield & 0x7, iHandleAsSunday))
+        {
+            if (iHour == 31)
+                iHour = iTimer.getHour();
+            if (iMinute == 63)
+                iMinute = iTimer.getMinute();
+            lResult = iHour * 100 + iMinute;
+        }
+    }
+    return lResult;
+}
+
+int16_t LogicChannel::getPointInTime(Timer &iTimer, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iHandleAsSunday)
+{
+    uint8_t lHour = (iBitfield & 0x3E00) >> 9;
+    uint8_t lMinute = (iBitfield & 0x01F8) >> 3;
+    int16_t lResult = getTimerTime(iTimer, iTimerIndex, iBitfield, lHour, lMinute, iSkipWeekday, iHandleAsSunday);
+    return lResult;
+}
+
+int16_t LogicChannel::getSunAbs(Timer &iTimer, uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iHandleAsSunday, bool iMinus)
+{
+    int8_t lFactor = (iMinus) ? -1 : 1;
+    uint8_t lHour = (iTimer.getSunInfo(iSunInfo)->hour + ((iBitfield & 0x3E00) >> 9) * lFactor) % 24;
+    uint8_t lMinute = (iTimer.getSunInfo(iSunInfo)->minute + ((iBitfield & 0x01F8) >> 3) * lFactor) % 60;
+    int16_t lResult = getTimerTime(iTimer, iTimerIndex, iBitfield, lHour, lMinute, iSkipWeekday, iHandleAsSunday);
+    return lResult;
+}
+
+int16_t LogicChannel::getSunLimit(Timer &iTimer, uint8_t iSunInfo, uint8_t iTimerIndex, uint16_t iBitfield, bool iSkipWeekday, bool iHandleAsSunday, bool iLatest)
+{
+    uint8_t lHour = ((iBitfield & 0x3E00) >> 9);
+    uint8_t lMinute = ((iBitfield & 0x01F8) >> 3);
+    int8_t lCompare = iLatest ? -1 : 1; // else case means "Earliest"
+    if ((iTimer.getSunInfo(iSunInfo)->hour - lHour) * lCompare > 0)
+    {
+        lHour = iTimer.getSunInfo(iSunInfo)->hour;
+        lMinute = iTimer.getSunInfo(iSunInfo)->minute;
+    }
+    else if (iTimer.getSunInfo(iSunInfo)->hour == lHour && (iTimer.getSunInfo(iSunInfo)->minute - lMinute) * lCompare > 0)
+    {
+        lMinute = iTimer.getSunInfo(iSunInfo)->minute;
+    }
+    int16_t lResult = getTimerTime(iTimer, iTimerIndex, iBitfield, lHour, lMinute, iSkipWeekday, iHandleAsSunday);
+    return lResult;
+}
+

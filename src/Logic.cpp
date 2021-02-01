@@ -1,8 +1,14 @@
 #include "Logic.h"
 #include "Helper.h"
 #include "Hardware.h"
+#include "Timer.h"
+#include "TimerRestore.h"
 
 uint8_t Logic::sMagicWord[] = {0xAE, 0x49, 0xD2, 0x9F};
+Timer &Logic::sTimer = Timer::instance(); // singleton
+TimerRestore &Logic::sTimerRestore = TimerRestore::instance(); // singleton
+
+char Logic::sDiagnoseBuffer[16] = {0};
 
 // callbacks have to be static members
 void Logic::onInputKoHandler(GroupObject &iKo) {
@@ -39,12 +45,6 @@ void Logic::onSafePinInterruptHandler()
 Logic::Logic()
 {
     LogicChannel::sLogic = this;
-    mDateTime.tm_year = 120;
-    mDateTime.tm_mon = 0;
-    mDateTime.tm_mday = 1;
-    mDateTime.tm_wday = 3;
-    mktime(&mDateTime);
-    mTimeDelay = millis();
 }
 
 Logic::~Logic()
@@ -88,6 +88,31 @@ void Logic::processAllInternalInputs(LogicChannel *iChannel, bool iValue)
     }
 }
 
+void Logic::processReadRequests() {
+    static bool sCalled = false;
+    static uint32_t sDelay = 19000;
+
+    // the following code should be called only once after initial startup delay 
+    if (!sCalled) {
+        if (knx.paramByte(LOG_VacationRead) & 2) {
+            knx.getGroupObject(LOG_KoVacation).requestObjectRead();
+        }
+        sCalled = true;
+    }
+    // date and time are red from bus every minute until a response is received
+    if ((knx.paramByte(LOG_ReadTimeDate) & 0x80))
+    {
+        eTimeValid lValid = sTimer.isTimerValid();
+        if (delayCheck(sDelay, 30000) && lValid != tmValid)
+        {
+            sDelay = millis();
+            if (lValid != tmMinutesValid)
+                knx.getGroupObject(LOG_KoTime).requestObjectRead();
+            if (lValid != tmDateValid)
+                knx.getGroupObject(LOG_KoDate).requestObjectRead();
+        }
+    }
+}
 // EEPROM handling
 // We assume at max 128 channels, each channel 2 inputs, each input max 4 bytes (value) and 1 byte (DPT) = 128 * 2 * (4 + 1) = 1280 bytes to write
 // So we use 40 Pages for data and one (first) page for aditional information (metadata).
@@ -172,18 +197,12 @@ void Logic::processInputKo(GroupObject &iKo)
 {
     if (iKo.asap() == LOG_KoTime) {
         struct tm lTmp = iKo.value(getDPT(VAL_DPT_10));
-        mDateTime.tm_sec = lTmp.tm_sec;
-        mDateTime.tm_min = lTmp.tm_min;
-        mDateTime.tm_hour = lTmp.tm_hour;
-        mktime(&mDateTime);
-        mTimeDelay = millis();
+        sTimer.setTimeFromBus(&lTmp);
     } else if (iKo.asap() == LOG_KoDate) {
         struct tm lTmp = iKo.value(getDPT(VAL_DPT_11));
-        mDateTime.tm_mday = lTmp.tm_mday;
-        mDateTime.tm_mon = lTmp.tm_mon - 1;
-        mDateTime.tm_year = lTmp.tm_year - 1900;
-        mktime(&mDateTime);
-        mTimeDelay = millis();
+        sTimer.setDateFromBus(&lTmp);
+    } else if (iKo.asap() == LOG_Diagnose) {
+        processDiagnoseCommand(iKo);
     } else if (iKo.asap() >= LOG_KoOffset && iKo.asap() < LOG_KoOffset + mNumChannels * LOG_KoBlockSize) {
         uint16_t lKoNumber = iKo.asap() - LOG_KoOffset;
         uint8_t lChannelId = lKoNumber / LOG_KoBlockSize;
@@ -200,8 +219,8 @@ void Logic::processInterrupt(bool iForce)
         if (!iForce) printDebug("Logic: SAVE-Interrupt processing started after %lu ms\n", millis() - mSaveInterruptTimestamp);
         mSaveInterruptTimestamp = millis();
         // If Interrupt happens during i2c read we try to finish last read first
-        while (Wire.available())
-            Wire.read();
+        // while (Wire.available())
+        //     Wire.read();
         // now we write everything to EEPROM
         writeAllInputsToEEPROM();
         printDebug("Logic: SAVE-Interrupt processing duration %lu ms\n", millis() - mSaveInterruptTimestamp);
@@ -209,7 +228,83 @@ void Logic::processInterrupt(bool iForce)
     }
 }
 
+char *Logic::initDiagnose(GroupObject &iKo) {
+    memcpy(sDiagnoseBuffer, iKo.valueRef(), 14);
+    return sDiagnoseBuffer;
+}
+
+char *Logic::getDiagnoseBuffer() {
+    return sDiagnoseBuffer;
+}
+
+bool Logic::processDiagnoseCommand() {
+    bool lResult = false;
+    //diagnose is interactive and reacts on commands
+    switch (sDiagnoseBuffer[0]) {
+        case 's': {
+            // Command s: Number of save-Interupts (= false-save)
+            sprintf(sDiagnoseBuffer, "SAVE %5d", mSaveInterruptCount);
+            lResult = true;
+            break;
+        }
+        case 'l': {
+            // Command l<nn>: Logic inputs and output of last execution
+            // find channel and dispatch
+            uint8_t lIndex = (sDiagnoseBuffer[1] - '0') * 10 + sDiagnoseBuffer[2] - '0' - 1;
+            lResult = mChannel[lIndex]->processDiagnoseCommand(sDiagnoseBuffer);
+            break;
+        }
+        case 't': {
+            // return internal time (might differ from external
+            sprintf(sDiagnoseBuffer, "%02d:%02d:%02d %02d.%02d", sTimer.getHour(), sTimer.getMinute(), sTimer.getSecond(), sTimer.getDay(), sTimer.getMonth());
+            lResult = true;
+            break;
+        }
+        case 'r': {
+            // return sunrise and sunset
+            sprintf(sDiagnoseBuffer, "R%02d:%02d S%02d:%02d", sTimer.getSunInfo(SUN_SUNRISE)->hour, sTimer.getSunInfo(SUN_SUNRISE)->minute, sTimer.getSunInfo(SUN_SUNSET)->hour, sTimer.getSunInfo(SUN_SUNSET)->minute);
+            lResult = true;
+            break;
+        }
+        case 'o': {
+            // calculate easter date
+            sprintf(sDiagnoseBuffer, "O%02d.%02d", sTimer.getEaster()->day, sTimer.getEaster()->month);
+            lResult = true;
+            break;
+        }
+        default:
+            lResult = false;
+            break;
+    }
+    return lResult;
+}
+
+void Logic::processDiagnoseCommand(GroupObject &iKo) {
+    // this method is called as soon as iKo is changed
+    // an external change is expected
+    // because this iKo also is changed within this method,
+    // the method is called again. This might result in
+    // an endless loop. This is prevented by the isCalled pattern.
+    static bool sIsCalled = false;
+    if (!sIsCalled)
+    {
+        sIsCalled = true;
+        //diagnose is interactive and reacts on commands
+        initDiagnose(iKo);
+        if (processDiagnoseCommand())
+            outputDiagnose(iKo);
+        sIsCalled = false;
+    }
+};
+
+void Logic::outputDiagnose(GroupObject &iKo) {
+    sDiagnoseBuffer[15] = 0;
+    iKo.value(sDiagnoseBuffer, getDPT(VAL_DPT_16));
+    printDebug("Diagnose: %s\n", sDiagnoseBuffer);
+}
+
 void Logic::onSavePinInterruptHandler() {
+    mSaveInterruptCount += 1;
     mSaveInterruptTimestamp = millis();
 }
 
@@ -238,7 +333,8 @@ void Logic::beforeTableUnloadHandler(TableObject & iTableObject, LoadState & iNe
 void Logic::debug() {
     printDebug("Logik-LOG_ChannelsFirmware (in Firmware): %d\n", LOG_ChannelsFirmware);
     printDebug("Logik-gNumChannels (in knxprod):  %d\n", mNumChannels);
-    printDebug("Aktuelle Zeit: %s", asctime(&mDateTime));
+    printDebug("Aktuelle Zeit: %s", sTimer.getTimeAsc());
+    // sTimer.debugHolidays();
     // Test i2c failure
     // we start an i2c read i.e. for EEPROM
     // prepareReadEEPROM(4711, 20);
@@ -290,14 +386,18 @@ void Logic::setup(bool iSaveSupported) {
 #endif
         if (prepareChannels())
             writeAllDptToEEPROM();
-    }
-}
-
-void Logic::processTime() {
-    if (delayCheck(mTimeDelay, 1000)) {
-        mDateTime.tm_sec += 1;
-        mktime(&mDateTime);
-        mTimeDelay = millis();
+        float lLat = LogicChannel::getFloat(knx.paramData(LOG_Latitude));
+        float lLon = LogicChannel::getFloat(knx.paramData(LOG_Longitude));
+        // sTimer.setup(8.639751, 49.310209, 1, true, 0xFFFFFFFF);
+        uint8_t lTimezone = (knx.paramByte(LOG_Timezone) & LOG_TimezoneMask) >> LOG_TimezoneShift;
+        bool lUseSummertime = (knx.paramByte(LOG_UseSummertime) & LOG_UseSummertimeMask) >> LOG_UseSummertimeShift;
+        sTimer.setup(lLon, lLat, lTimezone, lUseSummertime, knx.paramInt(LOG_Neujahr));
+        // for TimerRestore we prepare all Timer channels
+        for (uint8_t lIndex = 0; lIndex < mNumChannels; lIndex++)
+        {
+            LogicChannel *lChannel = mChannel[lIndex];
+            lChannel->startTimerRestoreState();
+        }
     }
 }
 
@@ -307,17 +407,72 @@ void Logic::loop()
         return;
 
     processInterrupt();
-    processTime();
+    sTimer.loop(); // clock and timer async methods
 
-    // we loop on all channels an execute pipeline
+    // we loop on all channels and execute pipeline
     for (uint8_t lIndex = 0; lIndex < mNumChannels; lIndex++)
     {
         LogicChannel *lChannel = mChannel[lIndex];
+        if (sTimer.minuteChanged())
+            lChannel->startTimerInput();
         lChannel->loop();
         knx.loop();
     }
+    if (sTimer.minuteChanged()) {
+        sendHoliday();
+        sTimer.clearMinuteChanged();
+    }
+    processTimerRestore();
 }
 
 EepromManager *Logic::getEEPROM() {
     return mEEPROM;
+}
+
+// start timer implementation
+void Logic::processTimerRestore() {
+    static uint32_t sTimerRestoreDelay = 1;
+    if (sTimerRestoreDelay == 0)
+        return;
+    if (sTimer.isTimerValid() == tmValid && delayCheck(sTimerRestoreDelay, 500)) {
+        sTimerRestoreDelay = millis();
+        if (sTimerRestoreDelay == 0)
+            sTimerRestoreDelay = 1; // prevent set to 0 in case of timer overflow
+        if (sTimerRestore.getDayIteration() < 365) {
+            if (sTimerRestore.getDayIteration() == 0)
+            {
+                // initialize RestoreTimer
+                sTimerRestore.setup(sTimer);
+            }
+            else
+            {
+                sTimerRestore.decreaseDay();
+            }
+        } else {
+            // stop timer restore processing in logic...
+            sTimerRestoreDelay = 0;
+            // ... and in each channel
+            for (uint8_t lIndex = 0; lIndex < mNumChannels; lIndex++)
+            {
+                LogicChannel *lChannel = mChannel[lIndex];
+                lChannel->stopTimerRestoreState();
+            }
+        }
+    }
+}
+
+// send holiday information on bus
+void Logic::sendHoliday() {
+    if (sTimer.holidayChanged())
+    {
+        // write the newly calculated holiday information into KO (can be read externally)
+        knx.getGroupObject(LOG_KoHoliday1).valueNoSend(sTimer.isHolidayToday(), getDPT(VAL_DPT_1));
+        knx.getGroupObject(LOG_KoHoliday2).valueNoSend(sTimer.isHolidayTomorrow(), getDPT(VAL_DPT_1));
+        sTimer.clearHolidayChanged();
+        if (knx.paramByte(LOG_HolidaySend & 1)) {
+            // and send it, if requested by application setting
+            knx.getGroupObject(LOG_KoHoliday1).objectWritten();
+            knx.getGroupObject(LOG_KoHoliday2).objectWritten();
+        }
+    }
 }

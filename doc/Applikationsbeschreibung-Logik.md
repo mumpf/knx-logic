@@ -23,6 +23,14 @@ Im folgenden werden Änderungen an dem Dokument erfasst, damit man nicht immer d
 * Ergänzung bei 'Ja - Tonwiedergabe (Buzzer)'
 * **inkompatible Änderung**: Beim Update der Applikation werden für die KO der Logikkanäle die bereits zugeordneten GA nicht übernommen. Alle Parameter bleiben erhalten.
 
+01.02.2021: Firmware 2.0.0, Applikation 2.0 - 2.3
+
+* **inkompatible Änderung**: Einige Paraemter und fast alle Kommunikationsobjekte sind anders belegt. Es gibt ein neues Kapitel 'Update der Applikation', das alle notwendigen neuen Einstellungen nach dem Update beschreibt.
+* Neues Kapitel 'Zeitschaltuhren'
+* Anpassung im Kapitel 'Uhrzeit und Datum nach einem Neustart vom Bus lesen'
+
+<div style="page-break-after: always;"></div>
+
 ## Allgemeine Parameter
 
 ![Allgemeine Parameter](AllgemeineParameter.png)
@@ -50,7 +58,7 @@ Sollte hier eine 0 angegeben werden, wird kein "In Betrieb"-Signal gesendet und 
 
 Dieses Gerät kann Uhrzeit und Datum vom Bus empfangen. Nach einem Neustart können Uhrzeit und Datum auch aktiv über Lesetelegramme abgefragt werden. Mit diesem Parameter wird bestimmt, ob Uhrzeit und Datum nach einem Neustart aktiv gelesen werden.
 
-Derzeit werden die Informationen über Uhrzeit und Datum noch nicht verarbeitet. Sie sind für zukünftige Erweiterungen vorgesehen, vor allem für eine Zeitschaltuhrfunktion.
+Wenn dieser Parameter gesetzt ist, wird die Uhrzeit und das Datum alle 20-30 Sekunden über ein Lesetelegramm vom Bus gelesen, bis eine entsprechende Antwort kommt. Falls keine Uhr im KNX-System vorhanden ist oder die Uhr nicht auf Leseanfragen antworten kann, sollte dieser Parameter auf "Nein" gesetzt werden.
 
 ### Vorhandene Hardware
 
@@ -84,6 +92,12 @@ Die Firmware unterstützt aber eine Abschaltung der Zusatzhardware, falls der St
 Ist keine Möglichkeit zur Abschaltung vorhanden, wird die Speicherung ins EEPROM unterbunden. Die Applikation wird dann alle Einstellungen, die ein Speichern erlauben, nicht anbieten. In einem solchen Fall erscheint die folgende Information:
 ![Info Stromabschaltung](InfoPower.png)
 
+#### Diagnoseobjekt anzeigen
+
+Man kann mit dem Logikmodul ein Diagnoseobjekt (KO 7) einschalten. Dieses Diagnoseobjekt ist primär für Debugzwecke vorhanden, kann aber auch einem User bei einigen Fragen weiter helfen.
+
+Die Grundidee vom Diagnoseobjekt: Man sendet mit der ETS Kommandos an das KO 7 und bekommt eine entsprechende Antwort. Derzeit sind nur wenige Kommandos für die Nutzung durch den Enduser geeignet, allerdings werden im Laufe der Zeit immer weitere Kommandos hinzukommen und werden im Kapitel Diagnoseobjekt beschrieben.
+
 ## Logikdokumentation
 
 Eine stichwortartige Abhandlung dieser Dokumentation ist auch in der Applikation enthalten und auf 3 Unterseiten aufgeteilt.
@@ -100,11 +114,94 @@ Hier werden die Funktionsmodule für die Eingänge beschrieben.
 
 Hier werden die Funktionsmodule für die Ausgänge beschrieben.
 
+## Urlaub/Feiertage
+
+Das Logikmodul hat eine Zeitschaltuhr-Funktion, die einige globale Einstellungen erfordert.
+
+### Zeit
+
+![Zeitangaben](Zeit.png)
+
+Für die korrekte Berechnung der Zeit für Sonnenauf- und -untergang werden die genauen Koordinaten des Standorts benötigt sowie auch die Zeitzone und die Information, ob eine Sommerzeitumschaltung intern vorgenommen werden soll.
+
+Die Geokoordinaten können bei Google Maps nachgeschaut werden, indem man mit der rechten Maustaste auf das Objekt klickt und die unten erscheinenden Koordinaten benutzt.
+
+Die Standard-Koordinaten stehen für Frankfurt am Main, Innenstadt.
+
+#### Breitengrad
+
+In dem Feld wird der Breitengrad des Standortes eingegeben.
+
+#### Längengrad
+
+In dem Feld wird der Längengrad des Standortes eingegeben.
+
+#### Zeitzone
+
+Für die korrekte Berechnung der Zeit wird die Zeitzone des Standortes benötigt. Es werden nur Zeitzonen für Europa angeboten.
+
+#### Sommerzeit berücksichtigen
+
+Mit einem "Ja" wird angegeben, dass die Umschaltung der Sommerzeit nicht vom Modul vorgenommen werden soll, sondern über den Bus auf dem KO 2 (Zeit) übertragen wird. Ein "Nein" führt zur internen Berechnung der Sommerzeit, das Modul geht davon aus, dass die Zeit auf dem Bus nicht die Sommerzeitverschiebung mitmacht (eher unüblich).
+
+Wichtig: Für alle Schaltvorgänge wird die Uhrzeit vom Bus genommen, diese sollte somit in Lokalzeit vorliegen und idealerweise auch die Sommerzeitverschiebung beinhalten. Die Angaben für Zeitzone und Sommerzeit werden benötigt, um die Berechnung der Sonnenauf- und Untergangszeit anzupassen, da diese normalerweise immer in UTC erfolgen.
+
+Wichtig: Sprünge in der von außen (über den Bus) vorgegebenen Zeit können vom Modul nicht erkannt und in irgendeiner Form berücksichtigt werden. Sollten also Modulzeit und Buszeit auseinanderlaufen (indem z.B. die Buszeit nur einmal pro Woche auf dem Bus ausgegeben wird), könnte es passieren, dass die Modulzeit z.B. um 10 Minuten zurückgesetzt wird. Schaltvorgänge, die in dieser Zeit erfolgt sind, werden dann erneut ausgeführt. Falls um 10 Minuten nach vorne gesprungen wird, werden die Zeiten übersprungen und nicht ausgeführt.
+
+Das eben gesagte macht sich besonders bei der Sommerzeitumstellung bemerkbar, da dabei gewollt um eine Stunde gesprungen wird!
+
+Empfehlung: Um solche "Sprung-" bzw. "Wiederholungseffekte" zu vermeiden, sollte man mindestens einmal pro Tag die Uhrzeit auf dem Bus ausgeben und an den Tagen der Sommerzeitumschaltung zwischen 2 und 3 Uhr morgens keine Schaltzeiten definieren.
+
+### Urlaub
+
+![Urlaubsangaben](Urlaub.png)
+
+Zeitschaltuhren können Urlaubstage berücksichtigen, sofern diese Information vorliegt. Diese Information kann über ein Kommunikationsobjekt dem Modul mitgeteilt werden.
+
+#### Urlaubsbehandlung aktivieren?
+
+Mit einem "Ja" wird ein Kommunikationsobjekt freigeschaltet, über das ein Uralubstag dem Modul mitgeteilt werden kann. Ein "EIN" besagt, dass der aktuelle Tag ein Urlaubstag ist.
+
+#### Nach Neustart Urlaubsinfo lesen?
+
+Erscheit nur, wenn "Urlaubsbehandlung aktivieren?" auf "Ja" steht.
+
+Hier kann angegeben werden, ob nach einem Neustart des Moduls die Information, ob der aktuelle Tag ein Urlaubstag ist, vom Bus gelesen werden soll.
+
+### Feiertage
+
+Für die Zeitschaltuhren wird vom Modul eine Berechnung der Feiertage vorgenommen, inklusive einiger regionaler Feiertage.
+
+![Feiertagsangaben](Feiertage.png)
+
+#### Feiertage auf dem Bus verfügbar machen?
+
+Ein "Ja" bei dieser Einstellung schaltet 2 Kommunikationsobjekte frei.
+
+* KO 5 (Feiertag heute) wird "EIN", wenn der aktuelle Tag ein Feiertag ist,
+* KO 6 (Feiertag morgen) wird "EIN", wenn der nächste Tag ein Feiertag ist.
+
+Beide Kommunikationsobjekte (5 und 6) werden immer kurz nach Mitternacht (aber nicht exakt um Mitternacht) neu berechnet.
+
+#### Nach Neuberechnung Feiertagsinfo senden?
+
+Erscheit nur, wenn "Feiertage auf dem Bus verfügbar machen?" auf "Ja" steht.
+
+Hier kann angegeben werden, ob ein neuer Feiertag aktiv auf den Bus gesendet wird. Fall "Nein" eingestellt ist, wird der Feiertag trotzdem berechnet, muss aber mit einem Lese-Request aktiv vom KO gelesen werden.
+
+#### Auswahlfelder für Feiertage
+
+Es folgt eine Liste der dem Modul bekannten Feiertage. Durch Auswahlfelder kann bestimmt werden, ob dieser Feiertag bei der Feiertagsinfo und bei den Zeitschaltuhren berücksichtigt werden soll.
+
+Es ist nicht möglich, eigene Feiertage in diese Liste aufzunehmen. Deswegen enthält die Liste auch eher unübliche Feiertage wie Rosenmontag oder 1 Advent, da diese Tage beweglich sind und somit berechnet weren müssen.
+
+Man kann aber eine (oder mehrere) Jahresschaltuhren dafür verwenden, weitere Feiertage zu definieren und das Ergebnis dieser Zeitschaltuhr auf die Feiertags-GA zu senden.
+
 ## Logikkanäle
 
 Im Folgenden werden die generellen Konzepte und die grobe Funktion eines Logikkanals beschrieben. Die Parameter eines jeden Kanals werden später im Detail beschrieben.
 
-Jeder Logikkanal, von denen bis zu 80 zur Verfügung stehen, ist identisch aufgebaut. Es stehen immer 2 externe Eingänge, 2 interne Eingänge und ein Ausgang zur Verfügung.
+Jeder Logikkanal, von denen bis zu 80 zur Verfügung stehen, ist identisch aufgebaut. Es stehen immer 2 externe Eingänge, 2 interne Eingänge und ein Ausgang zur Verfügung. Alternativ kann als Eingang der Funktionsblock "Zeitschaltuhr" genutzt werden.
 
 Zwischen die Eingänge und den Ausgang können verschiedene Funktionsblöcke geschaltet werden, die die Eingangssignale beeinflussen und Verknüpfen können und so ein Ausgangssignal erzeugen.
 
@@ -112,7 +209,7 @@ Alle Funktionsblöcke kann man sich wie an einer Perlenschnur aufgereiht hintere
 
 ![Übersicht](Uebersicht.png)
 
-Jeder Funktionsblock arbeitet rein binär, also nur mit den Werten 0 oder 1 (DPT 1). Damit auch andere DPT möglich sind, besitzen externe Eingänge Konverter-Funktionsblöcke, die von einem beliebigen DPT nach DPT 1 konvertieren. Derzeit sind Schwellwertschalter und Vergleicher als Konverterfunktionen implementert. Interne Eingänge benötigen keinen Konverter, da sie rein binär funktionieren.
+Jeder Funktionsblock arbeitet rein binär, also nur mit den Werten 0 oder 1 (DPT 1). Damit auch andere DPT möglich sind, besitzen externe Eingänge Konverter-Funktionsblöcke, die von einem beliebigen DPT nach DPT 1 konvertieren. Derzeit sind Schwellwertschalter und Vergleicher als Konverterfunktionen implementert. Interne Eingänge und die Zeitschaltuhr benötigen keinen Konverter, da sie rein binär funktionieren.
 
 Die binäre Signalverarbeitung beginnt mit einer logischen Verknüpfung, die alle Eingänge zusammenbringt, gefolgt von
 
@@ -125,6 +222,38 @@ Die binäre Signalverarbeitung beginnt mit einer logischen Verknüpfung, die all
 Wird ein Funktionsblock nicht genutzt (nicht parametrisiert), gibt er seine Eingabe unverändert als Ergebnis an den nächsten Funktionsblock weiter.
 
 Das nach dem Sendefilter ermittelte Signal steht für die internen Eingänge der anderen Kanäle zur Verfügung. Ferner steht es auch einem Ausgangskonverter zur Verfügung, der als Wertwandler ausgelegt ist und den ermittelten Wert als einen anderen DPT ausgeben kann. Dabei können die Ausgbewerte festgelegt werden (Konstanten) oder ein am Eingang 1 oder Eingang 2 vorliegender Wert in den Ausgangs-DPT konvertiert werden.
+
+### Zeitschaltuhren
+
+Jeder Logikkanal kann statt interner oder externer Eingänge als Zeitschaltuhr-Kanal definiert werden. Dabei kann ein EIN- oder AUS-Signal anhand von bestimmten Zeitangaben erzeugt werden.
+
+Es können bis zu 4 Jahresschaltpunkte (Tag/Monat/Stunde/Minute) oder 8 Tagesschaltpunkte (Wochentag/Stunde/Minute) pro Logikkanal definiert werden.
+
+Folgende Zeitangaben sind möglich:
+
+* Zeitpunkt (bis auf die Minute genau)
+* Zeitpunkte an bestimmten Wochentagen
+* Bestimmte Minuten jede Stunde
+* Jede Minute zu bestimmten Stunden
+
+Neben absoluten Zeitpunkten sind auch relative Zeitpunkte möglich:
+
+* Zeitversatz (Stunde:Minute) relativ zum Sonnenauf-/-untergang
+* Sonnenauf-/-untergang, aber frühstens um Zeitpunkt (Stunde:Minute)
+* Sonnenauf-/-untergang, aber spätestens um Zeitpunkt (Stunde:Minute)
+
+Für die korrekte Berechnung von Sonnenauf- und Untergangszeit muss das Modul die korrekten Geokoordinaten (Standort) des Hauses wissen, wie auch die Zeitzone und ob es an diesem Ort eine Sommerzeitumschaltung gibt. Diese Informationen muss man für die korrekte Funktion einstellen.
+
+Ferner können Feiertage und Urlaubstage bei den Zeitpunkten berücksichtigt werden. Dabei kann bestimmt werden, ob die Schaltzeitpunkte:
+
+* Urlaub/Feiertage nicht beachten sollen
+* Bei Urlaub/Feiertag nicht schalten sollen
+* Nur bei Urlaub/Feiertag schalten sollen
+* Einen Urlaub/Feiertag wie Sonntag behandeln sollen
+
+Dies erlaubt sehr flexible Zeitschaltuhren für Urlaub/Feiertage.
+
+Zeitschaltuhren beginnen mit ihrer Funktion erst, nachdem mindestens einmal über den Bus Zeit und Datum gesetzt worden sind.
 
 ### Startverhalten
 
@@ -151,6 +280,8 @@ Hier sind 2 Möglichkeiten implementiert (und somit parametrisierbar):
 1. Die Verknüpfung soll erst durchgeführt werden, wenn alle Eingänge definierte Werte haben. Bevor dies nicht eintritt, passiert am Ausgang einfach nichts.
 2. Die Verknüpfung soll bereits beim Eintreffen des ersten Signals reagieren. Ist dann der andere Eingang noch undefiniert, kann man für diesen vernünftigerweise weder ein EIN noch ein AUS annehmen. Der undefinierte Eingang wird dann als nicht existent behandelt und die Verknüpfung nur für die definierten Engänge durchgeführt. Beispiel: Ein UND mit 3 Eingängen, von denen 2 auf EIN und einer auf undefiniert stehen, würde wie ein UND mit 2 Eingängen behandelt werden und ein EIN liefern.
 
+Bei Zeitschaltuhren sind keine weiteren Eingänge vorhanden, somit kann nach einem Neustart nur die Zeitschaltuhr für einen definierten Eingang sorgen. Dies geschieht automatisch mit dem Erreichen des nächsten Schaltpunkts. Eine weitere Möglichkeit ist die Einstellung "Beim Neustart letzte Schaltzeit nachholen". Diese Einstellung führt dazu, dass der Schaltzeitpunkt erneut ausgeführt wird, der direkt vor dem "jetzt"-Zeitpunkt liegt. Damit hat der Eingang dann einen definierten Zustand.
+
 Durch die dezidierten Einstellungsmölgichkeiten des Startverhaltens pro Kanal kann man sein KNX-System sehr detailiert bezüglich des Systemstart steuern. Da genau dieses Startverhalten von vielen KNX-Geräten eher stiefmütterlich behandelt wird, hat man mit diesem Logikmodul viele Möglichkeiten, hier einzugreifen und Unzulänglichkeiten auszugleichen.
 
 ### Zusammenfassung
@@ -171,6 +302,7 @@ Die hier für jeden Kanal zur Verfügung stehenden Möglichkeiten der Beeinfluss
 * Vervielfache ein Signal auf verschiedene GA
 * Konvertiere ein DPT in einen anderen
 * Verzögere ein Signal
+* Zeitschaltuhr-Funktionen
 * tbc
 
 ## Logik n: unbenannt
@@ -195,13 +327,17 @@ Neben dem "Allgemeine Parameter -> Zeit bis das Gerät nach einem Neustart aktiv
 
 Die Verzögerungszeit wird in Sekunden angegeben.
 
-### Logische Operation
-
-Mittels der Auswahlliste kann eine logische Operation und damit die Art der Verknüpfung der Eingänge dieses Logikkanals ausgewählt werden. Es stehen folgende Operationen zur Verfügung:
-
-#### aus / inaktiv
+### Kanal deaktivieren (zu Testzwecken)
 
 Dieser Logikkanal ist außer Funktion. Er kann vollständig definiert sein und keine Einstellung geht verloren, aber der Ausgang wird kein Telegramm senden. Dies bietet die Möglichkeit, zu Testzwecken einen bereits parametrierten Logikkanal inaktiv zu setzen, um zu schauen, ob er die Ursache für eventuelles Fehlverhalten im Haus ist. Kann zur Fehlersuche hilfreich sein.
+
+### Logik-Operation
+
+Mittels der Auswahlliste kann eine Operation und damit die Art der Verknüpfung der Eingänge dieses Logikkanals ausgewählt werden. Es stehen folgende Operationen zur Verfügung:
+
+#### aus
+
+Dieser Logikkanal nicht definiert und nicht aktiv. Es stehen keine Eingänge und kein Ausgang zur Verfügung. Alle entsprechenden KO sind ausgeblendet.
 
 #### UND
 
@@ -217,7 +353,8 @@ Alle Eingänge werden über ein logisches Exklusiv-ODER verknüpft. Das Ergebnis
 
 #### TOR
 
-Ein Tor hat normalerweise einen Dateneingang, Datenausgang und einen Toreingang. Wird das Tor über ein Signal am Toreingang geöffnet, können Daten vom Dateneingang zum Datenausgang fließen. Wird das Tor geschlossen, dann fließen keine Daten zwischen Dateneingang und Datenausgang.
+Ein Tor hat normalerweise einen Dateneingang, Datenausgang und einen Toreingang. Wird das Tor über ein Signal am Toreingang geöffnet, könne
+n Daten vom Dateneingang zum Datenausgang fließen. Wird das Tor geschlossen, dann fließen keine Daten zwischen Dateneingang und Datenausgang.
 
 Wir das Signal am Toreingang invertiert (negiert), dann sprechen wir von einer Sperre.
 
@@ -228,7 +365,13 @@ Da ein Logikkanal 4 Eingänge hat, ist bei einem Tor
 
 (in Worten: Jeweils ein externer und ein interner Eingang werden über ein ODER verknüpft und bilden den entsprechenden Eingang der TOR-Verknüpfung).
 
+#### ZEITSCHALTUHR
+
+Dieser Logikkanal hat keine Eingänge, sondern repräsentiert eine Zeitschaltuhr. Der Âusgang wird somit durch entsprechende Zeitschaltpunkte geschaltet. Der Ausgang kann immer noch passende Funktionsmodule enthalten.
+
 ### Eingang 1, Eingang 2
+
+Erscheint nur, wenn die Logik-Operation nicht auf "ZEITSCHALTUHR" gestellt wurde.
 
 Jeder Eingang kann durch die Auswahlfelder deaktiviert bzw. normal oder invertiert (negiert) aktiviert werden.
 
@@ -246,6 +389,8 @@ Für diesen Eingang erscheint ein Kommunikationsobjekt. Detailangaben zu diesem 
 
 ### Kanalausgang X, Kanalausgang Y
 
+Erscheint nur, wenn die Logik-Operation nicht auf ZEITSCHALTUHR gestellt wurde.
+
 Auch wenn der Name es anders vermuten läßt, handelt es sich um interne Eingänge, die mit einem Ausgang eines anderen Kanals verbunden sind. Jeder interne Eingang kann durch die Auswahlfelder deaktiviert bzw. normal oder invertiert (negiert) aktiviert werden.
 
 #### inaktiv
@@ -262,6 +407,8 @@ Es erscheint eine eigene Seite für die Verknüpfung dieses Eingangs mit einem a
 
 ### Logik auswerten
 
+Erscheint nur, wenn die Logik-Operation nicht auf ZEITSCHALTUHR gestellt wurde.
+
 Wie bereits in "Logikkanäle -> Startverhalten" beschrieben, ist es notwendig, einer Logikverknüpfung zu sagen, wie sie mit undefinierten Eingängen umgehen soll.
 
 #### auch wenn noch nicht alle Werte gültig sind
@@ -276,7 +423,7 @@ Die logische Verknüpfung wird erst dann einen Wert ermitteln, wenn an allen Ein
 
 ### Beim schließen vom Tor wird
 
-Das Auswahlfeld erscheint nur, wenn als logische Operation TOR gewählt wurde.
+Das Auswahlfeld erscheint nur, wenn als Logik-Operation TOR gewählt wurde.
 
 Mit dem Auswahlfeld kann man einstellen, ob das Tor zusätzliche Telegramme verschicken soll, wenn es gerade geschlossen wird (Toreingang geht auf AUS).
 
@@ -346,7 +493,7 @@ Sobald ein neues Eingangstelegramm eintrifft, wird das Ergebnis der logischen Ve
 
 Es erscheint eine Liste mit allen aktiven Eingängen. Man kann die Eingänge ankreuzen, auf die die Logikauswertung reagieren soll. Nur wenn ein Telgramm von einem dieser Eingänge kommt, wird die Logikauswertung angestoßen und das Ergebnis ermittelt und an den nächsten Funktionsblock weitergeleitet.
 
-## Eingang 1: Wert / Eingang 2: Wert
+## Eingang 1: unbenannt / Eingang 2: unbenannt
 
 Sobald für einen Logikkanal ein externer Eingang aktiviert wurde, erscheint für jeden Eingang eine Seite.
 
@@ -360,7 +507,7 @@ Jeder Eingang kann mit Hilfe der folgenden Einstellungen konfiguriert werden. Im
 
 Dieses Feld hat keine funktionale Auswirkung. Es erlaubt den Eingang zu benennen und diesen so leichter wiederzufinden, erhöht somit die Übersichtlichkeit.
 
-Der hier angegebene Text erscheint in der Seitenbeschreibung "Eingang n: Wert" statt dem Wort "Wert" und als Name des Kommunikationsobjektes, das zu diesem Eingang gehört.
+Der hier angegebene Text erscheint in der Seitenbeschreibung "Eingang n: unbenannt" statt dem Wort "unbenannt" und als Name des Kommunikationsobjektes, das zu diesem Eingang gehört.
 
 ### DPT für Eingang n
 
@@ -604,9 +751,210 @@ Als Eingabe wird hier die Nummer der Logik erwartet, deren Ausgang als interner 
 Es kann auch der Ausgang des aktuellen Kanals als interner Eingang verwendet werden. Da dies aber schwer abzusehende Seiteneffekte haben kann, die im Falle einer Schleife auch den Bus mit vielen Telegrammen fluten können, erscheint in einem solchen Fall eine Warnung:
 ![Warnung Rueckkopplung](Rueckkopplung.png)
 
+## Schaltzeiten: unbenannt
+
+Erscheint nur, wenn die Logik-Operation auf ZEITSCHALTUHR gestellt wurde.
+
+Auf dieser Seite können die Schaltpunkte für eine Zeitschaltuhr eingegeben werden. Die Einstellmöglichkeiten sind bei jedem Logikkanal gleich, so dann nur ein Kanal beschrieben wird.
+
+![Schaltuhr](Schaltuhr.png)
+
+### Beschreibung der Zeitschaltuhr
+
+Diese Feld erlaubt eine kurze Beschreibung, wozu diese Zeitschaltuhr verwendet wird. Es hat keinen Einfluß auf die Funktion und dient rein zu Dokumentationszwecken. Der Text wird in der Seitenbeschreibung statt dem Wort "unbenannt" genommen und erlaub so ein einfacheres wiederfinden der Zeitschaltuhr.
+
+### Typ der Zeitschaltuhr
+
+Es werden genau 2 Typen von Zeitschaltuhren unterstützt:
+
+* Tagesschaltuhr: Erlaubt die Angabe von Wochentag, Stunde und Minute und ist somit für tägliche/wöchentliche Schaltungen gedacht. Diese Schaltuhr erlaubt 8 Schaltzeiten zu definieren.
+* Jahresschaltuhr: Erlaubt die Angabe von Monat, Tag, Wochentag, Stunde und Minute und ist somit für seltener im Jahr/Monat vorkommende Schaltungen gedacht. Diese Schaltuhr erlaubt 4 Schaltzeiten zu definieren.
+
+Sollten die Schaltzeiten einer Zeitschaltuhr nicht ausreichen, kann man mehrere Kanäle als Zeitschaltuhr definieren und diese dann per ODER verknüpfen.
+
+### Feiertagsbehandlung
+
+Über dieses Auswahnfeld kann man definieren, wie sich die Zeischaltuhr (also alle Schaltpunkte) bei einem Feiertag verhalten.
+
+#### Feiertage nicht beachten
+
+Für diese Zeitschaltuhr ist die Feiertagsinformation nicht relevant. Ein Feiertag wird nicht beachtet, die Schaltzeitpunkte werden normal ausgeführt.
+
+#### An Feiertagen nicht schalten
+
+An einem Feiertag wird diese Zeitschaltuhr ignoriert und nicht ausgeführt. Dies ist dann eine Zeitschaltur für "normale" Tage.
+
+#### Nur an Feiertagen schalten
+
+Diese Zeitschaltuhr wird nur an einem Feiertag ausgeführt und nicht an anderen Tagen. Somit ist dies eine Zeitschaltuhr für reine Feiertage.
+
+#### Feiertage wie Sonntage behandeln
+
+Bei dieser Zeitschaltuhr werden die Schaltzeiten normal behandelt, an einem Feiertag werden aber die Schaltzeiten für einen Sonntag ausgeführt, unabhängig von dem Wochentag des Feiertages.
+
+### Urlaubsbehandlung
+
+Über dieses Auswahnfeld kann man definieren, wie sich die Zeischaltuhr (also alle Schaltpunkte) bei einem Urlaubstag verhalten. Ein Urlaubstag muss dem Modul extern über das KO 4 mitgeteilt werden.
+
+#### Urlaub nicht beachten
+
+Für diese Zeitschaltuhr ist die Urlaubsinformation nicht relevant. Ein Urlaubstag wird nicht beachtet, die Schaltzeitpunkte werden normal ausgeführt.
+
+#### Bei Urlaub nicht schalten
+
+An einem Urlaubstag wird diese Zeitschaltuhr ignoriert und nicht ausgeführt. Dies ist dann eine Zeitschaltur für "normale" Tage.
+
+#### Nur bei Urlaub schalten
+
+Diese Zeitschaltuhr wird nur an einem Urlaubstag ausgeführt und nicht an anderen Tagen. Somit ist dies eine Zeitschaltuhr für reine Urlaubstage.
+
+#### Urlaub wie Sonntag behandeln
+
+Bei dieser Zeitschaltuhr werden die Schaltzeiten normal behandelt, an einem Urlaubstag werden aber die Schaltzeiten für einen Sonntag ausgeführt, unabhängig von den Wochentag des Urlaubstages.
+
+### Bei Neustart letzte Schaltzeit nachholen
+
+Nach einem Neustart des Moduls kann die letzte Schaltzeit erneut ausgeführt werden. Sobald das Datum und die Uhrzeit erstmals über den Bus gesetzt worden sind, wird nach der spätesten Schaltzeit gesucht, die noch vor dem aktuellen Datum/Uhrzeit liegt. Dieser Schaltzeitpunkt wird dann ausgeführt.
+
+Da eine Nachberechnung aller Schaltzeiten für bis zu 80 Zeitschaltuhren inklusive Feiertagsbehandlung direkt nach dem ersten Setzen der Zeit über den Bus sehr lange dauern würde und in dieser Zeit (mehrere Sekunden) die funktion des Moduls gestört wäre, wird die Nachberechnung der Schaltzeiten durch einen Nebenprozess während der normalen Funktion des Moduls durchgeführt. Der Nebenprozess funktioniert in kleinen Schritten, die wenig Rechenzeit kosten und die Normalfunktion nicht behindern. Als konsequenz kann es etwas dauern, bis der entsprechende nachberechnete Zeitschaltpunkt nachgeholt wird.
+
+Wie lange es dauert, bis ein nachberechneter Zeitschaltpunkt nachgeholt wird, hängt widerum vom Zeitschaltpunkt selbst ab.
+
+Der Nebenprozess wird pro Sekunde zweimal aufgerufen und geht dabei jeweils einen weiteren Tag zurück, berechnet für diesen Tag die Feiertage und prüft für jede Zeitschaltuhr, die bisher noch keinen definierten Ausgangswert hat (sie könnte ja schon von sich aus im Rahmen der Normalfunktion geschaltet haben), ob diese Zeitschaltuhr an diesem Tag schalten sollte. Wenn ja, dann schaltet diese Zeitschaltuhr mit dem für diesen Tag zeitlich spätesten Wert. Damit ist der zeitlich späteste Schaltpunkt vor dem Modulneustart gegeben.
+
+Obiges bedeutet, dass der Nebenprozess für Tagesschaltuhren, die auch Wochentage enthalten können, bis zu 3 Sekunden benötigen kann, um eine (Tages-)Schaltzeit nachzuholen, da er 2 Tage pro Sekunde zurückgeht.
+
+Bei Jahresschaltuhren wird der späteste Schaltzeitpunt, der nachberechnet wurde, 366 / 2 = 183 Sekunden nach dem ersten setzen der Zeit über den Bus erreicht, also etwa 3 Minuten nach dem Neustart. Dies ist ein theoretischer Wert, da in diesem Fall der Schaltzeitpunkt vor einem Jahr liegen müsste und sich zwischendurch nicht geändert hat. Da man meistens aber einen Schaltzeitpunkt für EIN und einen für AUS definiert, wird bei Jahresschaltzeiten wahrscheinlich einer der Schaltzeitpunkte bereits früher erreichet.
+
+Der Nebenprozess beendet sich selbst, sobald alle Zeitschaltuhren einen definierten Ausgangswert haben.
+
+**Achtung:** Zeitschaltuhren, die Urlaubstage berücksichtigen, können bei der Nachberechnung der Zeitschaltpunkte nicht berücksichtigt werden, da die Information "Urlaubstag" per KO von extern dem Modul über den Bus gemeldet wird und somit nicht für die (historische) Nachberechnung zur Verfügung steht. Somit werden bei der Nachberechnung alle Zeitschaltuhren mit einer anderen Angabe als "Urlaub nicht beachten" ignoriert.
+
+## Einstellung von Schaltpunkten (tabellarisch)
+
+Schaltpunkte werden in einer Tabelle definiert, eine Zeile per Schaltpunkt. Im folgenden werden nur die Eingaben einer Zeile erklärt, da alle Zeilen gleich definiert werden.
+
+Im folgenden werden die Spalten der Tagesschaltuhr beschrieben.
+
+![Tagesschaltuhr](Tagesschaltuhr.png)
+
+### Spalte: Zeitbezug
+
+Ist sowohl bei Tagesschaltuhr und Jahresschaltuhr vorhanden.
+
+Hier wird angegeben, wie eine Zeitangabe interpretiert werden soll. Je nach Einstellung dieses Feldes wirken sich Zeitangaben in den Spalten Stunde und Minute unterschiedlich aus.
+
+#### Schaltpunkt nicht aktiviert
+
+Dieser Schaltpunkt ist nicht aktiv und wird nicht ausgewertet.
+
+#### Zeitpunkt
+
+Es wird ein Zeitpunkt bestimmt, zu dem geschaltet werden soll. Die Angabe des Zeitpunktes erfolgt über die Spalten Stunde und Minute.
+
+#### Sonnenaufgang: plus Zeitversatz
+
+Der Schaltzeitpunkt ist der Sonnenaufgang, zu dem die Zeitangabe, die in den Spalten Stunde und Minute steht, hinzuaddiert wird. Es wird somit um die angegebenen Stunden und Minuten nach Sonnenaufgang geschaltet.
+
+#### Sonnenaufgang: minus Zeitversatz
+
+Der Schaltzeitpunkt ist der Sonnenaufgang, von dem die Zeitangabe, die in den Spalten Stunde und Minute steht, abgezogen wird. Es wird somit um die angegebenen Stunden und Minuten vor Sonnenaufgang geschaltet.
+
+#### Sonnenaufgang: Frühestens um...
+
+Der Schaltzeitpunkt ist der Sonnenaufgang oder die Uhrzeit, die in den Spalten Stunde und Minute steht. Geht die Sonne vor der angegebenen Uhrzeit auf, wird erst um die angegebene Uhrzeit geschaltet, sonst erst beim Sonnenaufgang. Es wird somit beim Sonnenaufgang, aber nicht früher als die angegebene Uhrzeit geschaltet.
+
+#### Sonnenaufgang: Spätestens um...
+
+Der Schaltzeitpunkt ist der Sonnenaufgang oder die Uhrzeit, die in den Spalten Stunde und Minute steht. Geht die Sonne nach der angegebenen Uhrzeit auf, wird bereits um die angegebene Uhrzeit geschaltet, sonst schon beim Sonnenaufgang. Es wird somit beim Sonnenaufgang, aber nicht später als die angegebene Uhrzeit geschaltet.
+
+#### Sonnenuntergang: plus Zeitversatz
+
+Der Schaltzeitpunkt ist der Sonnenuntergang, zu dem die Zeitangabe, die in den Spalten Stunde und Minute steht, hinzuaddiert wird. Es wird somit um die angegebenen Stunden und Minuten nach Sonnenuntergang geschaltet.
+
+#### Sonnenuntergang: minus Zeitversatz
+
+Der Schaltzeitpunkt ist der Sonnenuntergang, von dem die Zeitangabe, die in den Spalten Stunde und Minute steht, abgezogen wird. Es wird somit um die angegebenen Stunden und Minuten vor Sonnenuntergang geschaltet.
+
+#### Sonnenuntergang: Frühestens um...
+
+Der Schaltzeitpunkt ist der Sonnenuntergang oder die Uhrzeit, die in den Spalten Stunde und Minute steht. Geht die Sonne vor der angegebenen Uhrzeit unter, wird erst um die angegebene Uhrzeit geschaltet, sonst erst beim Sonnenuntergang. Es wird somit beim Sonnenuntergang, aber nicht früher als die angegebene Uhrzeit geschaltet.
+
+#### Sonnenuntergang: Spätestens um...
+
+Der Schaltzeitpunkt ist der Sonnenuntergang oder die Uhrzeit, die in den Spalten Stunde und Minute steht. Geht die Sonne nach der angegebenen Uhrzeit unter, wird bereits um die angegebene Uhrzeit geschaltet, sonst schon beim Sonnenuntergang. Es wird somit beim Sonnenuntergang, aber nicht später als die angegebene Uhrzeit geschaltet.
+
+### Spalte: Stunde
+
+Ist sowohl bei Tagesschaltuhr und Jahresschaltuhr vorhanden.
+
+In dieser Spalte werden Stunden eingestellt, entweder als absolute Uhrzeit oder als Versatz zum Sonnenauf- oder -untergang.
+
+Wird hier der Wert "jede" ausgewählt, wird der Schaltpunkt jede Stunde ausgeführt, natürlich unter Berücksichtigung der angegebenen Minuten. So kann man stündlich wiederkehrende Aktionen definieren. Der Wert "jede" steht nur zur Verfügung, wenn der Zeitbezug auf "Zeitpunkt" steht.
+
+### Spalte: Minute
+
+Ist sowohl bei Tagesschaltuhr und Jahresschaltuhr vorhanden.
+
+In dieser Spalte werden Minuten eingestellt, entweder als absolute Uhrzeit oder als Versatz zum Sonnenauf- oder -untergang.
+
+Wird hier der Wert "jede" ausgewählt, wird der Schaltpunkt jede Minute ausgeführt, natürlich unter Berücksichtigung der angegebenen Stunde. So kann man minütlich wiederkehrende Aktionen definieren. Der Wert "jede" steht nur zur Verfügung, wenn der Zeitbezug auf "Zeitpunkt" steht.
+
+### Spalte: Wert
+
+Ist sowohl bei Tagesschaltuhr und Jahresschaltuhr vorhanden.
+
+In dieser Spalte wird der Wert eingestellt, den der Schaltpunkt senden soll. Dieser (rein boolesche) Wert durchläuft dann das normale Ausgangs-Processing des Logikkanals und steht am Ausgangs-KO zur Verfügung.
+
+### Spalte: Wochentag
+
+Ist nur bei der Tagesschaltuhr vorhanden.
+
+In dieser Spalte wird der Wochentag eingestellt, an dem der Schaltpunkt ausgeführt werden soll. Es kann nur genau ein Wochentag ausgewählt werden.
+
+Wird hier der Wert "jeder" ausgewählt, wird der Schaltpunkt an jedem Wochentag ausgeführt, natürlich unter Berücksichtigung der restlichen Angaben. So kann man täglich wiederkehrende Aktionen definieren.
+
+Im folgenden werden die Spalten der Jahresschaltuhr beschrieben.
+
+![Jahresschaltuhr](Jahresschaltuhr.png)
+
+Bei der Jahresschaltuhr sind fast alle Spalten der Tagesschaltuhr vorhanden
+
+### Spalte: Typ
+
+Ist nur bei der Jahresschaltuhr vorhanden.
+
+Bestimmt, ob der Schaltpunkt an einem bestimmten Tag erfolgt, oder ob mehrere Wochentage angegeben werden können. Wird "Tag" ausgewählt, kann man in der Spalte Tag einen bestimmten Tag angeben. Wird "Wochentag" ausgewählt, kann man in den Spalten "Mo" (Montag) bis "So" (Sonntag) die Wochentage auswählen, an den geschaltet wird.
+
+### Spalten: Mo, Di, Mi, Do, Fr, Sa, So
+
+Sind nur bei der Jahresschaltuhr vorhanden.
+
+Die Spalten sind nur eingabebereit, wenn in der Spalte Typ der Wert "Wochentag" ausgewählt wurde.
+
+Man kann die Wochentage auswählen, an den für diesen Schaltpunkt geschaltet werden soll, natürlich unter Berücksichtigung der restlichen Angaben. So kann man Aktionen an bestimmten Wochentagen definieren.
+
+### Spalte: Tag
+
+Ist nur bei der Jahresschaltuhr vorhanden.
+
+Die Spalte ist nur eingabebereit, wenn in der Spalte Typ der Wert "Tag" ausgewählt wurde.
+
+In dieser Spalte wird der Tag eingestellt, an dem geschaltet werden soll.
+
+Wird hier der Wert "jeder" ausgewählt, wird der Schaltpunkt jeden Tag ausgeführt, natürlich unter Berücksichtigung des angegebenen Monats. So kann man täglich wiederkehrende Aktionen definieren.
+
+### Spalte: Monat
+
+Ist nur bei der Jahresschaltuhr vorhanden.
+
+In dieser Spalte wird der Monat eingestellt, an dem geschaltet werden soll.
+
+Wird hier der Wert "jeder" ausgewählt, wird der Schaltpunkt jeden Monat ausgeführt, natürlich unter Berücksichtigung des angegebenen Tages. So kann man Monatlich wiederkehrende Aktionen definieren.
+
 ## Ausgang
 
-Zwischen dem Ausgang der logischen Operation und dem physikalischen Ausgang des Logikkanals (als Kommunikationsobjekt, um KNX-Telegramme zu verschicken) können Funktionsblöcke aktiviert werden (dargestellt im Kapitel Logikblöcke), die das Aussgangssignal beeinflussen.
+Zwischen dem Ausgang der Logik-Operation und dem physikalischen Ausgang des Logikkanals (als Kommunikationsobjekt, um KNX-Telegramme zu verschicken) können Funktionsblöcke aktiviert werden (dargestellt im Kapitel Logikblöcke), die das Aussgangssignal beeinflussen.
 
 ![Ausgang](Ausgang.png)
 In der Grundeinstellung sind alle Funktionsblöcke deaktiviert und die Signale der logischen Operation gelangen direkt zum physikalischen Ausgang.
@@ -974,6 +1322,44 @@ Hier wird die Farbe der LED bestimmt, in der sie leuchten soll. Wird die Farbe S
 
 Diese Option kann nur funktionieren, wenn das Gerät, auf dem die Applikation Logik läuft, auch eine RGB-LED verbaut hat.
 
+## Diagnoseobjekt
+
+### Kommando 't' - interne Zeit
+
+Gibt die interne Zeit aus. Eine Zeit kann jederzeit von außen über die KO 2 (Uhrzeit) und KO 3 (Datum) gesetzt werden und läuft dann intern weiter. Die genauigkeit der internen Uhr ist nicht besonders hoch, ein erneutes senden der Uhrzeit auf KO 2 korrigiert die interne Uhrzeit wieder. Die interne Uhrzeit kann mit diesem Kommando abgefragt werden.
+
+Auf KO 7 (Diagnoseobjekt) muss der Buchstabe 't' (klein) gesendet werden. Die Antwort erfolgt auf KO 7 (Diagnoseobjekt) im Format 'HH:MM:SS DD.MM', also als 'Stunden:Minuten:Sekunden Tag.Monat'.
+
+### Kommando 'r' - Sonnenauf-/-untergang
+
+Gibt die intern berechneten Zeiten für Sonnenauf- und -untergang aus. Die Zeiten werden erst berechnet, nachdem mindestens einmal das Datum auf KO 3 gesetzt worden ist, dann bei jedem Datumswechsel, egal ob dieser Wechsel intern ermittelt oder durch ein neues von extern gesetztes Datum erfolgt. Die korrekte Berechnung von Zeiten für den Sonnenauf- und -untergang hängt auch von der korrekten Angabe der Geokoordinaten für den Standort ab.
+
+Auf KO 7 (Diagnoseobjekt) muss der Buchstabe 'r' (klein) gesendet werden. Die Antwort erfolgt auf KO 7 (Diagnoseobjekt) im Format 'RHH:MM SHH:MM'. Dabei bedeutet "R" den Sonnenaufgang (Sun**R**ise), gefolgt von Stunden:Minuten, und "S" den Sonnenuntergang (Sun**S**et), gefolgt von Stunden:Minuten.
+
+### Kommando 'o' - Ostern
+
+Gibt das intern berechnete Datum für den Ostersonntag aus. Das Datum wird erst berechnet, nachdem mindestens einmal das Datum auf KO 3 gesetzt worden ist, dann bei jedem Jahreswechsel, egal ob dieser Wechsel intern ermittelt oder durch ein neues von extern gesetztes Datum erfolgt.
+
+Auf KO 7 (Diagnoseobjekt) muss der Buchstabe 'o' (klein) gesendet werden. Die Antwort efolgt auf KO 7 (Diagnoseobjekt) im Format 'ODD.MM'. Dabei steht "O" für **O**stern, gefolgt von Tag.Monat. Alle anderen Feiertage, die von Ostern abhängig sind, werden in Abhängigkeit von diesem Datum errechnet.
+
+### Kommando 'l\<nn>' - interner Zustand vom Logikkanal \<nn>
+
+Gibt den internen Zustand des Logikkanals \<nn> aus. Konkret geht es um die Werte, die am Eingang des Funktionsblocks "Logische Verknüpfung" liegen und dessen Ausgang. Da die Werte am Eingang durch die Konverter-Funktionsblöcke erzeugt werden, ist es im Fehlerfalle interessant, die Eingangswerte zu kennen. Ebenso ist der Ausgangswert interessant, da dieser durch die Einstellungen des Funktionsblocks "Logische Verknüpfung" bestimmt wird.
+
+Auf KO 7 (Diagnoseobjekt) muss der Buchstabe 'l' (klein) gefolgt von der Nummer des Kanals (ohne Leerzeichen dazwischen) gesendet werden (z.B. l01). Die Antwort erfolgt auf KO 7 (Diagnoseobjekt) im Format 'Aa Bb Cc Dd Qq', wobei
+
+* A der Eingang 1
+* B der Eingang 2
+* C der interne Eingang 1
+* D der interne Eingang 2
+* Q der Ausgang
+
+ist. Die möglichen Werte a, b, c, d und q sind:
+
+* 0 für den logischen Wert AUS
+* 1 für den logischen Wert EIN
+* X für den Wert "undefiniert" bzw. "undefiniert"
+
 ## DPT Konverter
 
 Das Gerät hat ein Funktionsmodul DPT-Konverter eingebaut, dass parameterlos funktioniert (deswegen wird es auch generischer Konverter bezeichnet).
@@ -1023,7 +1409,6 @@ T<sub>Z</sub> | Text (von Zwang) | Wie G<sub>Z</sub>, nur werden die Zahlen als 
 Z |Zwang | Wert wird in eine Ganzzahl gewandelt. Falls negativ, wird das Vorzeichen entfernt (mit -1 multipliziert). Anschließend werden die letzten beiden Bit (Bit0 und Bit1) genommen. Resultat sind die Werte 0 bis 3.
 Z<sub>B</sub> |Zwang (von Binär) | Ein AUS wird nach "normal aus" (00) konvertiert, EIN nach "normal ein" (01). Die Werte "priorität aus" (10) und "priorität ein" sind nicht möglich.
 
-
 ----
 
 ## Beispiele
@@ -1044,6 +1429,24 @@ Die Beispiele müssen noch ausgearbeitet werden. Die gegebenen Überschriften ze
 
 ----
 
+## Update der Applikation
+
+TODO: Hier das allgemeine Verfahren zum Update wiederholen (derzeit nur im Sensormodul beschrieben)
+
+### Inkompatibilitäten beim Update
+
+Trotz intensiver Versuche, eine updatefähige Applikation zu erzeugen zeigt es sich, dass durch Erweiterungen, Benutzerwünsche und teilweises Unverständnis über die Updatefunktion der ETS es nicht möglich ist, immer ein Update ohne manuellen Eingriff anzubieten.
+
+Um trotzdem ein Update für den User möglichst einfach zu gestalten, werden im folgenden alle inkompatiblen Änderungen beschrieben, so dass man klar erkennen kann, wo manuelle Eingriffe notwendig sind.
+
+#### Inkompatibilität beim Übergang von Version 1.x auf Version 2.x
+
+* Bis auf die KO 1 bis KO 3 (In Betrieb, Uhrzeit, Datum) ist es erforderlich, alle Gruppenadressen neu zuzuordnen. Der Grund ist ein technischer: Alle KO-Nummern mussten in einen anderen Nummernbereich verschoben werden.
+
+* Das Diagnoseobjekt ist neu (aus Sicht der Logik, früher gab es das schon in Sensormodul, das ist von dort in die Logik "gewandert") und muss somit über einen neuen eigenen Parameter Eingeschaltet werden. Da das Diagnoseobjekt neue Funktionen bereit hällt, wird es in einem eigenen Kapitel hier in der Applikationsbeschreibung beschrieben.
+
+* Bisher war ein Logikkanal mit der Logik-Operation "keine" dazu gedacht, den Logikkanal zu deaktivieren und alle Parameter und Kommunikationsobjekte zu erhalten. Dies führte zu Mißverständnissen und zu Rückfragen, warum die Logik denn nicht funktioniert. Ab der Version 2.0 gibt es den Parameter "Kanal deaktivieren (zu Testzwecken)", der einfach die Funktion eines Logikkanals unterdrückt. Wird die Logk-Operation auf "keine" gestellt, werden die entsrpechenden KO für Eingänge und Ausgang nicht mehr angeboten (der Kanal ist dann nicht nur deaktiviert, sondern nicht vorhanden).
+
 ## Hardware
 
 Dieses Kapital beschreibt die von dieser Firmware unterstützte Hardware
@@ -1062,6 +1465,10 @@ KO | Name | DPT | Bedeutung
 1 | in Betrieb | 1.002 | Meldet zyklisch auf den Bus, dass das Gerät noch funktioniert. Das KO steht nicht zur Verfügung, wenn kein Sendezyklus eingestellt wurde.
 2 | Uhrzeit | 10.001 | Eingnang zum empfangen der Uhrzeit
 3 | Datum | 11.001 | Eingang zum empfangen des Datums
+4 | Urlaub | 1.001 | Eingang: Information über Urlaub
+5 | Feiertag heute | 1.001 | Ausgang: Information, dass der aktuelle Tag ein Feiertag ist
+6 | Feiertag morgen | 1.001 | Ausgang: Information, dass der morgige Tag ein Feiertag ist
+7 | Diagnoseobjekt | 16.001 | Ein-/Ausgang für Diagnoseinformationen
 n | Eingang 1 | *) | Eingang 1 für einen Logikkanal
 n+1 | Eingang 2 | *) | Eingang 2 für einen Logikkanal
 n+2 | Ausgang | **) | Ausgang eines Logikkanals
@@ -1074,5 +1481,6 @@ Jeder Logikkanal hat genau 3 aufeinanderfolgende Kommunikationsobjekte. Wenn n d
 
 n für Kanal 1 ist von dem Gerät abhängig, auf dem die Applikation Logik läuft:
 
-* Für das Logikmodul ist n=10, somit ist das letzte belegte KO 249.
-* Für das Sensormodul ist n=50, somit ist das letzte belegte KO 289.
+* Für das Logikmodul ist n=20, somit ist das letzte belegte KO 259.
+* Für das Sensormodul ist n=125, somit ist das letzte belegte KO 364.
+* Für das Wiregateway ist n=150, somit ist das letzte belegte KO 389.

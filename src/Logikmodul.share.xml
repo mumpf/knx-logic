@@ -19,7 +19,7 @@
                 <TypeText SizeInBit="320" />
               </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-NumChannels" Name="NumChannels">
-                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="%N%" maxInclusive="127" />
+                <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="%N%" maxInclusive="%N%" />
               </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-DelaySeconds" Name="DelaySeconds">
                 <TypeNumber SizeInBit="32" Type="signedInt" minInclusive="0" maxInclusive="86400" />
@@ -39,11 +39,12 @@
               <!-- parameter types for logic module -->
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-Logic" Name="Logic">
                 <TypeRestriction Base="Value" SizeInBit="8">
-                  <Enumeration Text="aus / inaktiv" Value="0" Id="M-00FA_A-0001-01-0000_PT-Logic_EN-0" />
+                  <Enumeration Text="aus" Value="0" Id="M-00FA_A-0001-01-0000_PT-Logic_EN-0" />
                   <Enumeration Text="UND" Value="1" Id="M-00FA_A-0001-01-0000_PT-Logic_EN-1" />
                   <Enumeration Text="ODER" Value="2" Id="M-00FA_A-0001-01-0000_PT-Logic_EN-2" />
                   <Enumeration Text="EXCLUSIV-ODER" Value="3" Id="M-00FA_A-0001-01-0000_PT-Logic_EN-3" />
                   <Enumeration Text="TOR" Value="4" Id="M-00FA_A-0001-01-0000_PT-Logic_EN-4" />
+                  <Enumeration Text="ZEITSCHALTUHR" Value="5" Id="M-00FA_A-0001-01-0000_PT-Logic_EN-5" />
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-Calculate" Name="Calculate">
@@ -59,6 +60,14 @@
                   <Enumeration Text="nur bei geändertem Ergebnis, aber erstes Telegramm nicht senden" Value="16" Id="M-00FA_A-0001-01-0000_PT-Trigger_EN-3" />
                   <Enumeration Text="bei jedem Eingangstelegramm" Value="15" Id="M-00FA_A-0001-01-0000_PT-Trigger_EN-15" />
                   <Enumeration Text="bei folgenden Eingangstelegrammen" Value="1" Id="M-00FA_A-0001-01-0000_PT-Trigger_EN-1" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-TriggerTime" Name="TriggerTime">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="nur bei geändertem Ergebnis" Value="0" Id="M-00FA_A-0001-01-0000_PT-TriggerTime_EN-0" />
+                  <Enumeration Text="nur bei geändertem Ergebnis, aber erstes Telegramm immer senden" Value="32" Id="M-00FA_A-0001-01-0000_PT-TriggerTime_EN-2" />
+                  <Enumeration Text="nur bei geändertem Ergebnis, aber erstes Telegramm nicht senden" Value="16" Id="M-00FA_A-0001-01-0000_PT-TriggerTime_EN-3" />
+                  <Enumeration Text="bei jedem Eingangstelegramm" Value="15" Id="M-00FA_A-0001-01-0000_PT-TriggerTime_EN-15" />
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-GateTrigger" Name="GateTrigger">
@@ -400,31 +409,80 @@
                 <TypeNumber SizeInBit="8" Type="unsignedInt" minInclusive="0" maxInclusive="255" />
               </ParameterType>
               <!-- Ab hier Zeitschaltuhr -->
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-Latitude" Name="Latitude">
+                <TypeFloat Encoding="IEEE-754 Single" minInclusive="-90" maxInclusive="90" />
+              </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-Longitude" Name="Longitude">
+                <TypeFloat Encoding="IEEE-754 Single" minInclusive="-180" maxInclusive="180" />
+              </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-OnOff" Name="OnOff">
+                <TypeRestriction Base="Value" SizeInBit="1">
+                  <Enumeration Text="AUS" Value="0" Id="M-00FA_A-0001-01-0000_PT-OnOff_EN-0" />
+                  <Enumeration Text="EIN" Value="1" Id="M-00FA_A-0001-01-0000_PT-OnOff_EN-1" />
+                </TypeRestriction>
+              </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-YearDay" Name="YearDay">
                 <TypeRestriction Base="Value" SizeInBit="1">
-                  <Enumeration Text="Jahresschaltuhr" Value="0" Id="M-00FA_A-0001-01-0000_PT-YearDay_EN-0" />
-                  <Enumeration Text="Tagesschaltuhr" Value="1" Id="M-00FA_A-0001-01-0000_PT-YearDay_EN-1" />
+                  <Enumeration Text="Tagesschaltuhr" Value="0" Id="M-00FA_A-0001-01-0000_PT-YearDay_EN-0" />
+                  <Enumeration Text="Jahresschaltuhr" Value="1" Id="M-00FA_A-0001-01-0000_PT-YearDay_EN-1" />
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-Holiday" Name="Holiday">
+                <TypeRestriction Base="Value" SizeInBit="2">
+                  <Enumeration Text="Feiertage nicht beachten" Value="0" Id="M-00FA_A-0001-01-0000_PT-Holiday_EN-0" />
+                  <Enumeration Text="An Feiertagen nicht schalten" Value="1" Id="M-00FA_A-0001-01-0000_PT-Holiday_EN-1" />
+                  <Enumeration Text="Nur an Feiertagen schalten" Value="2" Id="M-00FA_A-0001-01-0000_PT-Holiday_EN-2" />
+                  <Enumeration Text="Feiertage wie Sonntage behandeln" Value="3" Id="M-00FA_A-0001-01-0000_PT-Holiday_EN-3" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-Vacation" Name="Vacation">
+                <TypeRestriction Base="Value" SizeInBit="2">
+                  <Enumeration Text="Urlaub nicht beachten" Value="0" Id="M-00FA_A-0001-01-0000_PT-Vacation_EN-0" />
+                  <Enumeration Text="Bei Urlaub nicht schalten" Value="1" Id="M-00FA_A-0001-01-0000_PT-Vacation_EN-1" />
+                  <Enumeration Text="Nur bei Urlaub schalten" Value="2" Id="M-00FA_A-0001-01-0000_PT-Vacation_EN-2" />
+                  <Enumeration Text="Urlaub wie Sonntag behandeln" Value="3" Id="M-00FA_A-0001-01-0000_PT-Vacation_EN-3" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-IsWeekday" Name="IsWeekday">
                 <TypeRestriction Base="Value" SizeInBit="1">
-                  <Enumeration Text="An Feiertagen nicht schalten" Value="0" Id="M-00FA_A-0001-01-0000_PT-Holiday_EN-0" />
-                  <Enumeration Text="An Feiertagen wie am Wochenende schalten" Value="1" Id="M-00FA_A-0001-01-0000_PT-Holiday_EN-1" />
+                  <Enumeration Text="Tag" Value="0" Id="M-00FA_A-0001-01-0000_PT-IsWeekday_EN-0" />
+                  <Enumeration Text="Wochentag" Value="1" Id="M-00FA_A-0001-01-0000_PT-IsWeekday_EN-1" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-RestoreState" Name="RestoreState">
+                <TypeRestriction Base="Value" SizeInBit="2">
+                  <Enumeration Text="Nein" Value="0" Id="M-00FA_A-0001-01-0000_PT-RestoreState_EN-0" />
+                  <Enumeration Text="Den letzten Schaltpunkt berechnen" Value="1" Id="M-00FA_A-0001-01-0000_PT-RestoreState_EN-1" />
+                  <!-- <Enumeration Text="Den letzten Schaltpunkt aus dem Speicher holen" Value="2" Id="M-00FA_A-0001-01-0000_PT-RestoreState_EN-2" /> -->
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-DuskDawn" Name="DuskDawn">
+                <TypeRestriction Base="Value" SizeInBit="4">
+                  <Enumeration Text="Schaltpunkt nicht aktiviert" Value="0" Id="M-00FA_A-0001-01-0000_PT-DuskDawn_EN-0" />
+                  <Enumeration Text="Zeitpunkt" Value="1" Id="M-00FA_A-0001-01-0000_PT-DuskDawn_EN-1" />
+                  <Enumeration Text="Sonnenaufgang: plus Zeitversatz" Value="4" Id="M-00FA_A-0001-01-0000_PT-DuskDawn_EN-4" />
+                  <Enumeration Text="Sonnenaufgang: minus Zeitversatz" Value="5" Id="M-00FA_A-0001-01-0000_PT-DuskDawn_EN-5" />
+                  <Enumeration Text="Sonnenaufgang: Frühestens um..." Value="6" Id="M-00FA_A-0001-01-0000_PT-DuskDawn_EN-6" />
+                  <Enumeration Text="Sonnenaufgang: Spätestens um..." Value="7" Id="M-00FA_A-0001-01-0000_PT-DuskDawn_EN-7" />
+                  <Enumeration Text="Sonnenuntergang: plus Zeitversatz" Value="8" Id="M-00FA_A-0001-01-0000_PT-DuskDawn_EN-8" />
+                  <Enumeration Text="Sonnenuntergang: minus Zeitversatz" Value="9" Id="M-00FA_A-0001-01-0000_PT-DuskDawn_EN-9" />
+                  <Enumeration Text="Sonnenuntergang: Frühestens um..." Value="10" Id="M-00FA_A-0001-01-0000_PT-DuskDawn_EN-10" />
+                  <Enumeration Text="Sonnenuntergang: Spätestens um..." Value="11" Id="M-00FA_A-0001-01-0000_PT-DuskDawn_EN-11" />
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-Minute" Name="Minute">
                 <TypeRestriction Base="Value" SizeInBit="6">
-                  <Enumeration Text="*" Value="63" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-63" />
-                  <Enumeration Text="0" Value="0" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-0" />
-                  <Enumeration Text="1" Value="1" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-1" />
-                  <Enumeration Text="2" Value="2" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-2" />
-                  <Enumeration Text="3" Value="3" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-3" />
-                  <Enumeration Text="4" Value="4" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-4" />
-                  <Enumeration Text="5" Value="5" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-5" />
-                  <Enumeration Text="6" Value="6" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-6" />
-                  <Enumeration Text="7" Value="7" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-7" />
-                  <Enumeration Text="8" Value="8" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-8" />
-                  <Enumeration Text="9" Value="9" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-9" />
+                  <Enumeration Text="jede" Value="63" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-63" />
+                  <Enumeration Text="00" Value="0" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-0" />
+                  <Enumeration Text="01" Value="1" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-1" />
+                  <Enumeration Text="02" Value="2" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-2" />
+                  <Enumeration Text="03" Value="3" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-3" />
+                  <Enumeration Text="04" Value="4" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-4" />
+                  <Enumeration Text="05" Value="5" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-5" />
+                  <Enumeration Text="06" Value="6" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-6" />
+                  <Enumeration Text="07" Value="7" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-7" />
+                  <Enumeration Text="08" Value="8" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-8" />
+                  <Enumeration Text="09" Value="9" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-9" />
                   <Enumeration Text="10" Value="10" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-10" />
                   <Enumeration Text="11" Value="11" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-11" />
                   <Enumeration Text="12" Value="12" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-12" />
@@ -477,19 +535,83 @@
                   <Enumeration Text="59" Value="59" Id="M-00FA_A-0001-01-0000_PT-Minute_EN-59" />
                 </TypeRestriction>
               </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-MinuteRel" Name="MinuteRel">
+                <TypeRestriction Base="Value" SizeInBit="6">
+                  <Enumeration Text="00" Value="0" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-0" />
+                  <Enumeration Text="01" Value="1" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-1" />
+                  <Enumeration Text="02" Value="2" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-2" />
+                  <Enumeration Text="03" Value="3" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-3" />
+                  <Enumeration Text="04" Value="4" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-4" />
+                  <Enumeration Text="05" Value="5" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-5" />
+                  <Enumeration Text="06" Value="6" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-6" />
+                  <Enumeration Text="07" Value="7" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-7" />
+                  <Enumeration Text="08" Value="8" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-8" />
+                  <Enumeration Text="09" Value="9" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-9" />
+                  <Enumeration Text="10" Value="10" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-10" />
+                  <Enumeration Text="11" Value="11" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-11" />
+                  <Enumeration Text="12" Value="12" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-12" />
+                  <Enumeration Text="13" Value="13" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-13" />
+                  <Enumeration Text="14" Value="14" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-14" />
+                  <Enumeration Text="15" Value="15" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-15" />
+                  <Enumeration Text="16" Value="16" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-16" />
+                  <Enumeration Text="17" Value="17" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-17" />
+                  <Enumeration Text="18" Value="18" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-18" />
+                  <Enumeration Text="19" Value="19" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-19" />
+                  <Enumeration Text="20" Value="20" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-20" />
+                  <Enumeration Text="21" Value="21" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-21" />
+                  <Enumeration Text="22" Value="22" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-22" />
+                  <Enumeration Text="23" Value="23" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-23" />
+                  <Enumeration Text="24" Value="24" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-24" />
+                  <Enumeration Text="25" Value="25" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-25" />
+                  <Enumeration Text="26" Value="26" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-26" />
+                  <Enumeration Text="27" Value="27" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-27" />
+                  <Enumeration Text="28" Value="28" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-28" />
+                  <Enumeration Text="29" Value="29" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-29" />
+                  <Enumeration Text="30" Value="30" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-30" />
+                  <Enumeration Text="31" Value="31" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-31" />
+                  <Enumeration Text="32" Value="32" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-32" />
+                  <Enumeration Text="33" Value="33" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-33" />
+                  <Enumeration Text="34" Value="34" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-34" />
+                  <Enumeration Text="35" Value="35" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-35" />
+                  <Enumeration Text="36" Value="36" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-36" />
+                  <Enumeration Text="37" Value="37" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-37" />
+                  <Enumeration Text="38" Value="38" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-38" />
+                  <Enumeration Text="39" Value="39" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-39" />
+                  <Enumeration Text="40" Value="40" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-40" />
+                  <Enumeration Text="41" Value="41" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-41" />
+                  <Enumeration Text="42" Value="42" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-42" />
+                  <Enumeration Text="43" Value="43" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-43" />
+                  <Enumeration Text="44" Value="44" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-44" />
+                  <Enumeration Text="45" Value="45" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-45" />
+                  <Enumeration Text="46" Value="46" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-46" />
+                  <Enumeration Text="47" Value="47" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-47" />
+                  <Enumeration Text="48" Value="48" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-48" />
+                  <Enumeration Text="49" Value="49" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-49" />
+                  <Enumeration Text="50" Value="50" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-50" />
+                  <Enumeration Text="51" Value="51" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-51" />
+                  <Enumeration Text="52" Value="52" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-52" />
+                  <Enumeration Text="53" Value="53" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-53" />
+                  <Enumeration Text="54" Value="54" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-54" />
+                  <Enumeration Text="55" Value="55" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-55" />
+                  <Enumeration Text="56" Value="56" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-56" />
+                  <Enumeration Text="57" Value="57" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-57" />
+                  <Enumeration Text="58" Value="58" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-58" />
+                  <Enumeration Text="59" Value="59" Id="M-00FA_A-0001-01-0000_PT-MinuteRel_EN-59" />
+                </TypeRestriction>
+              </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-Hour" Name="Hour">
                 <TypeRestriction Base="Value" SizeInBit="5">
-                  <Enumeration Text="*" Value="31" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-31" />
-                  <Enumeration Text="0" Value="0" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-0" />
-                  <Enumeration Text="1" Value="1" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-1" />
-                  <Enumeration Text="2" Value="2" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-2" />
-                  <Enumeration Text="3" Value="3" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-3" />
-                  <Enumeration Text="4" Value="4" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-4" />
-                  <Enumeration Text="5" Value="5" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-5" />
-                  <Enumeration Text="6" Value="6" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-6" />
-                  <Enumeration Text="7" Value="7" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-7" />
-                  <Enumeration Text="8" Value="8" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-8" />
-                  <Enumeration Text="9" Value="9" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-9" />
+                  <Enumeration Text="jede" Value="31" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-31" />
+                  <Enumeration Text="00" Value="0" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-0" />
+                  <Enumeration Text="01" Value="1" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-1" />
+                  <Enumeration Text="02" Value="2" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-2" />
+                  <Enumeration Text="03" Value="3" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-3" />
+                  <Enumeration Text="04" Value="4" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-4" />
+                  <Enumeration Text="05" Value="5" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-5" />
+                  <Enumeration Text="06" Value="6" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-6" />
+                  <Enumeration Text="07" Value="7" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-7" />
+                  <Enumeration Text="08" Value="8" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-8" />
+                  <Enumeration Text="09" Value="9" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-9" />
                   <Enumeration Text="10" Value="10" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-10" />
                   <Enumeration Text="11" Value="11" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-11" />
                   <Enumeration Text="12" Value="12" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-12" />
@@ -506,18 +628,58 @@
                   <Enumeration Text="23" Value="23" Id="M-00FA_A-0001-01-0000_PT-Hour_EN-23" />
                 </TypeRestriction>
               </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-HourRel" Name="HourRel">
+                <TypeRestriction Base="Value" SizeInBit="5">
+                  <Enumeration Text="00" Value="0" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-0" />
+                  <Enumeration Text="01" Value="1" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-1" />
+                  <Enumeration Text="02" Value="2" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-2" />
+                  <Enumeration Text="03" Value="3" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-3" />
+                  <Enumeration Text="04" Value="4" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-4" />
+                  <Enumeration Text="05" Value="5" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-5" />
+                  <Enumeration Text="06" Value="6" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-6" />
+                  <Enumeration Text="07" Value="7" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-7" />
+                  <Enumeration Text="08" Value="8" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-8" />
+                  <Enumeration Text="09" Value="9" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-9" />
+                  <Enumeration Text="10" Value="10" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-10" />
+                  <Enumeration Text="11" Value="11" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-11" />
+                  <Enumeration Text="12" Value="12" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-12" />
+                  <Enumeration Text="13" Value="13" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-13" />
+                  <Enumeration Text="14" Value="14" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-14" />
+                  <Enumeration Text="15" Value="15" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-15" />
+                  <Enumeration Text="16" Value="16" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-16" />
+                  <Enumeration Text="17" Value="17" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-17" />
+                  <Enumeration Text="18" Value="18" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-18" />
+                  <Enumeration Text="19" Value="19" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-19" />
+                  <Enumeration Text="20" Value="20" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-20" />
+                  <Enumeration Text="21" Value="21" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-21" />
+                  <Enumeration Text="22" Value="22" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-22" />
+                  <Enumeration Text="23" Value="23" Id="M-00FA_A-0001-01-0000_PT-HourRel_EN-23" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-Weekday" Name="Weekday">
+                <TypeRestriction Base="Value" SizeInBit="3">
+                  <Enumeration Text="jeder" Value="0" Id="M-00FA_A-0001-01-0000_PT-Weekday_EN-0" />
+                  <Enumeration Text="Montag" Value="1" Id="M-00FA_A-0001-01-0000_PT-Weekday_EN-1" />
+                  <Enumeration Text="Dienstag" Value="2" Id="M-00FA_A-0001-01-0000_PT-Weekday_EN-2" />
+                  <Enumeration Text="Mittwoch" Value="3" Id="M-00FA_A-0001-01-0000_PT-Weekday_EN-3" />
+                  <Enumeration Text="Donnerstag" Value="4" Id="M-00FA_A-0001-01-0000_PT-Weekday_EN-4" />
+                  <Enumeration Text="Freitag" Value="5" Id="M-00FA_A-0001-01-0000_PT-Weekday_EN-5" />
+                  <Enumeration Text="Samstag" Value="6" Id="M-00FA_A-0001-01-0000_PT-Weekday_EN-6" />
+                  <Enumeration Text="Sonntag" Value="7" Id="M-00FA_A-0001-01-0000_PT-Weekday_EN-7" />
+                </TypeRestriction>
+              </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-Day" Name="Day">
-                <TypeRestriction Base="Value" SizeInBit="6">
-                  <Enumeration Text="*" Value="0" Id="M-00FA_A-0001-01-0000_PT-Day_EN-0" />
-                  <Enumeration Text="1" Value="1" Id="M-00FA_A-0001-01-0000_PT-Day_EN-1" />
-                  <Enumeration Text="2" Value="2" Id="M-00FA_A-0001-01-0000_PT-Day_EN-2" />
-                  <Enumeration Text="3" Value="3" Id="M-00FA_A-0001-01-0000_PT-Day_EN-3" />
-                  <Enumeration Text="4" Value="4" Id="M-00FA_A-0001-01-0000_PT-Day_EN-4" />
-                  <Enumeration Text="5" Value="5" Id="M-00FA_A-0001-01-0000_PT-Day_EN-5" />
-                  <Enumeration Text="6" Value="6" Id="M-00FA_A-0001-01-0000_PT-Day_EN-6" />
-                  <Enumeration Text="7" Value="7" Id="M-00FA_A-0001-01-0000_PT-Day_EN-7" />
-                  <Enumeration Text="8" Value="8" Id="M-00FA_A-0001-01-0000_PT-Day_EN-8" />
-                  <Enumeration Text="9" Value="9" Id="M-00FA_A-0001-01-0000_PT-Day_EN-9" />
+                <TypeRestriction Base="Value" SizeInBit="7">
+                  <Enumeration Text="jeder" Value="0" Id="M-00FA_A-0001-01-0000_PT-Day_EN-0" />
+                  <Enumeration Text="01" Value="1" Id="M-00FA_A-0001-01-0000_PT-Day_EN-1" />
+                  <Enumeration Text="02" Value="2" Id="M-00FA_A-0001-01-0000_PT-Day_EN-2" />
+                  <Enumeration Text="03" Value="3" Id="M-00FA_A-0001-01-0000_PT-Day_EN-3" />
+                  <Enumeration Text="04" Value="4" Id="M-00FA_A-0001-01-0000_PT-Day_EN-4" />
+                  <Enumeration Text="05" Value="5" Id="M-00FA_A-0001-01-0000_PT-Day_EN-5" />
+                  <Enumeration Text="06" Value="6" Id="M-00FA_A-0001-01-0000_PT-Day_EN-6" />
+                  <Enumeration Text="07" Value="7" Id="M-00FA_A-0001-01-0000_PT-Day_EN-7" />
+                  <Enumeration Text="08" Value="8" Id="M-00FA_A-0001-01-0000_PT-Day_EN-8" />
+                  <Enumeration Text="09" Value="9" Id="M-00FA_A-0001-01-0000_PT-Day_EN-9" />
                   <Enumeration Text="10" Value="10" Id="M-00FA_A-0001-01-0000_PT-Day_EN-10" />
                   <Enumeration Text="11" Value="11" Id="M-00FA_A-0001-01-0000_PT-Day_EN-11" />
                   <Enumeration Text="12" Value="12" Id="M-00FA_A-0001-01-0000_PT-Day_EN-12" />
@@ -540,33 +702,32 @@
                   <Enumeration Text="29" Value="29" Id="M-00FA_A-0001-01-0000_PT-Day_EN-29" />
                   <Enumeration Text="30" Value="30" Id="M-00FA_A-0001-01-0000_PT-Day_EN-30" />
                   <Enumeration Text="31" Value="31" Id="M-00FA_A-0001-01-0000_PT-Day_EN-31" />
-                  <Enumeration Text="Letzter Tag im Monat" Value="32" Id="M-00FA_A-0001-01-0000_PT-Day_EN-32" />
-                  <Enumeration Text="Sonntag" Value="33" Id="M-00FA_A-0001-01-0000_PT-Day_EN-33" />
-                  <Enumeration Text="Montag" Value="34" Id="M-00FA_A-0001-01-0000_PT-Day_EN-34" />
-                  <Enumeration Text="Dienstag" Value="35" Id="M-00FA_A-0001-01-0000_PT-Day_EN-35" />
-                  <Enumeration Text="Mittwoch" Value="36" Id="M-00FA_A-0001-01-0000_PT-Day_EN-36" />
-                  <Enumeration Text="Donnerstag" Value="37" Id="M-00FA_A-0001-01-0000_PT-Day_EN-37" />
-                  <Enumeration Text="Freitag" Value="38" Id="M-00FA_A-0001-01-0000_PT-Day_EN-38" />
-                  <Enumeration Text="Samstag" Value="39" Id="M-00FA_A-0001-01-0000_PT-Day_EN-39" />
-                  <Enumeration Text="Werktag" Value="40" Id="M-00FA_A-0001-01-0000_PT-Day_EN-40" />
-                  <Enumeration Text="Wochenende" Value="41" Id="M-00FA_A-0001-01-0000_PT-Day_EN-41" />
+                  <Enumeration Text="ultimo" Value="32" Id="M-00FA_A-0001-01-0000_PT-Day_EN-32" />
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-Month" Name="Month">
                 <TypeRestriction Base="Value" SizeInBit="4">
-                  <Enumeration Text="*" Value="0" Id="M-00FA_A-0001-01-0000_PT-Month_EN-0" />
-                  <Enumeration Text="1" Value="1" Id="M-00FA_A-0001-01-0000_PT-Month_EN-1" />
-                  <Enumeration Text="2" Value="2" Id="M-00FA_A-0001-01-0000_PT-Month_EN-2" />
-                  <Enumeration Text="3" Value="3" Id="M-00FA_A-0001-01-0000_PT-Month_EN-3" />
-                  <Enumeration Text="4" Value="4" Id="M-00FA_A-0001-01-0000_PT-Month_EN-4" />
-                  <Enumeration Text="5" Value="5" Id="M-00FA_A-0001-01-0000_PT-Month_EN-5" />
-                  <Enumeration Text="6" Value="6" Id="M-00FA_A-0001-01-0000_PT-Month_EN-6" />
-                  <Enumeration Text="7" Value="7" Id="M-00FA_A-0001-01-0000_PT-Month_EN-7" />
-                  <Enumeration Text="8" Value="8" Id="M-00FA_A-0001-01-0000_PT-Month_EN-8" />
-                  <Enumeration Text="9" Value="9" Id="M-00FA_A-0001-01-0000_PT-Month_EN-9" />
-                  <Enumeration Text="10" Value="10" Id="M-00FA_A-0001-01-0000_PT-Month_EN-10" />
-                  <Enumeration Text="11" Value="11" Id="M-00FA_A-0001-01-0000_PT-Month_EN-11" />
-                  <Enumeration Text="12" Value="12" Id="M-00FA_A-0001-01-0000_PT-Month_EN-12" />
+                  <Enumeration Text="jeder" Value="0" Id="M-00FA_A-0001-01-0000_PT-Month_EN-0" />
+                  <Enumeration Text="Jan" Value="1" Id="M-00FA_A-0001-01-0000_PT-Month_EN-1" />
+                  <Enumeration Text="Feb" Value="2" Id="M-00FA_A-0001-01-0000_PT-Month_EN-2" />
+                  <Enumeration Text="Mär" Value="3" Id="M-00FA_A-0001-01-0000_PT-Month_EN-3" />
+                  <Enumeration Text="Apr" Value="4" Id="M-00FA_A-0001-01-0000_PT-Month_EN-4" />
+                  <Enumeration Text="Mai" Value="5" Id="M-00FA_A-0001-01-0000_PT-Month_EN-5" />
+                  <Enumeration Text="Jun" Value="6" Id="M-00FA_A-0001-01-0000_PT-Month_EN-6" />
+                  <Enumeration Text="Jul" Value="7" Id="M-00FA_A-0001-01-0000_PT-Month_EN-7" />
+                  <Enumeration Text="Aug" Value="8" Id="M-00FA_A-0001-01-0000_PT-Month_EN-8" />
+                  <Enumeration Text="Sep" Value="9" Id="M-00FA_A-0001-01-0000_PT-Month_EN-9" />
+                  <Enumeration Text="Okt" Value="10" Id="M-00FA_A-0001-01-0000_PT-Month_EN-10" />
+                  <Enumeration Text="Nov" Value="11" Id="M-00FA_A-0001-01-0000_PT-Month_EN-11" />
+                  <Enumeration Text="Dez" Value="12" Id="M-00FA_A-0001-01-0000_PT-Month_EN-12" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-Timezone" Name="Timezone">
+                <TypeRestriction Base="Value" SizeInBit="2">
+                  <Enumeration Text="London (+0 Stunden)" Value="0" Id="M-00FA_A-0001-01-0000_PT-Timezone_EN-0" />
+                  <Enumeration Text="Berlin (+1 Stunde)" Value="1" Id="M-00FA_A-0001-01-0000_PT-Timezone_EN-1" />
+                  <Enumeration Text="Athen (+2)" Value="2" Id="M-00FA_A-0001-01-0000_PT-Timezone_EN-2" />
+                  <Enumeration Text="Moskau (+3)" Value="3" Id="M-00FA_A-0001-01-0000_PT-Timezone_EN-3" />
                 </TypeRestriction>
               </ParameterType>
             </ParameterTypes>
@@ -581,13 +742,57 @@
               <Parameter Id="M-00FA_A-0001-01-0000_P-3" Name="Heartbeat" ParameterType="M-00FA_A-0001-01-0000_PT-DelaySeconds" Text="In Betrieb senden alle" SuffixText="Sekunden" Value="300">
                 <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="5" BitOffset="0" />
               </Parameter>
-              <Union SizeInBit="8">
+              <Union SizeInBit="16">
                 <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="9" BitOffset="0" />
                 <Parameter Id="M-00FA_A-0001-01-0000_UP-4" Name="ReadTimeDate" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Uhrzeit und Datum nach einem Neustart vom Bus lesen" Value="1" />
                 <Parameter Id="M-00FA_A-0001-01-0000_UP-5" Name="BuzzerInstalled" Offset="0" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Akustischer Signalgeber vorhanden (Buzzer)?" Value="1" />
                 <Parameter Id="M-00FA_A-0001-01-0000_UP-6" Name="LedInstalled" Offset="0" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Optischer Signalgeber vorhanden (RGB-LED)?" Value="1" />
                 <Parameter Id="M-00FA_A-0001-01-0000_UP-7" Name="EepromInstalled" Offset="0" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Nichtflüchtiger Speicher vorhanden (EEPROM)?" Value="1" />
                 <Parameter Id="M-00FA_A-0001-01-0000_UP-8" Name="NCN5130Installed" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Zusatzhardware abschaltbar (z.B. mit NCN5130)?" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-38" Name="VacationKo" Offset="0" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Urlaubsbehandlung aktivieren?" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-39" Name="HolidayKo" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Feiertage auf dem Bus verfügbar machen?" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-40" Name="VacationRead" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Nach Neustart Urlaubsinfo lesen?" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-41" Name="HolidaySend" Offset="1" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Nach Neuberechnung Feiertagsinfo senden?" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-44" Name="Timezone" Offset="1" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-Timezone" Text="Zeitzone" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-45" Name="UseSummertime" Offset="1" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Sommerzeit berücksichtigen" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-46" Name="Diagnose" Offset="1" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Diagnoseobjekt anzeigen" Value="0" />
+              </Union>
+              <Union SizeInBit="32">
+                <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="11" BitOffset="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-9" Name="Neujahr" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Neujahr" Value="1" SuffixText="1. Januar" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-10" Name="DreiKoenige" Offset="0" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Hl. Drei Könige" Value="1" SuffixText="6. Januar" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-11" Name="Weiberfastnacht" Offset="0" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Weiberfastnacht" Value="0" SuffixText="52 Tage vor Ostern" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-12" Name="Rosenmontag" Offset="0" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Rosenmontag" Value="0" SuffixText="48 Tage vor Ostern" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-13" Name="Fastnachtsdienstag" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Fastnachtsdienstag" Value="0" SuffixText="47 Tage vor Ostern" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-14" Name="Aschermittwoch" Offset="0" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Aschermittwoch" Value="0" SuffixText="46 Tage vor Ostern" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-15" Name="Gruendonnerstag" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Gründonnerstag" Value="0" SuffixText="3 Tage vor Ostern" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-16" Name="Karfreitag" Offset="0" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Karfreitag" Value="1" SuffixText="2 Tage vor Ostern" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-17" Name="Ostersonntag" Offset="1" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Ostersonntag" Value="1" SuffixText="Ostern" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-18" Name="Ostermontag" Offset="1" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Ostermontag" Value="1" SuffixText="1 Tag nach Ostern" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-19" Name="TagDerArbeit" Offset="1" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Tag der Arbeit" Value="1" SuffixText="1. Mai" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-20" Name="Himmelfahrt" Offset="1" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Christi Himmelfahrt" Value="1" SuffixText="39 Tage nach Ostern" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-21" Name="Pfingstsonntag" Offset="1" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Pfingstsonntag" Value="1" SuffixText="49 Tage nach Ostern" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-22" Name="Pfingstmontag" Offset="1" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Pfingstmontag" Value="1" SuffixText="50 Tage nach Ostern" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-23" Name="Frohleichnam" Offset="1" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Frohleichnam" Value="1" SuffixText="60 Tage nach Ostern" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-24" Name="Friedensfest" Offset="1" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Hohes Friedensfest" Value="0" SuffixText="8. August" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-25" Name="MariaHimmelfahrt" Offset="2" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Mariä Himmelfahrt" Value="0" SuffixText="15. August" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-26" Name="DeutscheEinheit" Offset="2" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Tag der Deutschen Einheit" Value="1" SuffixText="3. Oktober" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-27" Name="Reformationstag" Offset="2" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Reformationstag" Value="0" SuffixText="31. Oktober" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-28" Name="Allerheiligen" Offset="2" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Allerheiligen" Value="1" SuffixText="1. November" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-29" Name="BussBettag" Offset="2" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Buß- und Bettag" Value="0" SuffixText="11 Tage vor 1. Adv." />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-30" Name="Advent1" Offset="2" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="1. Advent" Value="0" SuffixText="21 Tage vor 4. Adv." />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-31" Name="Advent2" Offset="2" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="2. Advent" Value="0" SuffixText="14 Tage vor 4. Adv." />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-32" Name="Advent3" Offset="2" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="3. Advent" Value="0" SuffixText="7 Tage vor 4. Adv." />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-33" Name="Advent4" Offset="3" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="4. Advent" Value="0" SuffixText="Sonntag vor Weihn." />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-34" Name="Heiligabend" Offset="3" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Heiligabend" Value="1" SuffixText="24. Dezember" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-35" Name="Weihnachtstag1" Offset="3" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Erster Weihnachtstag" Value="1" SuffixText="25. Dezember" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-36" Name="Weihnachtstag2" Offset="3" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Zweiter Weihnachtstag" Value="1" SuffixText="26. Dezember" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-37" Name="Silvester" Offset="3" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Silvester" Value="1" SuffixText="31. Dezember" />
+              </Union>
+              <Union SizeInBit="64">
+                <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="15" BitOffset="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-42" Name="Latitude" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-Latitude" Text="Breitengrad" Value="50.115377" SuffixText="Lat" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-43" Name="Longitude" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-Longitude" Text="Längengrad" Value="8.683764" SuffixText="Long"/>
               </Union>
             </Parameters>
             <ParameterRefs>
@@ -596,16 +801,63 @@
               <ParameterRef Id="M-00FA_A-0001-01-0000_P-2_R-21" RefId="M-00FA_A-0001-01-0000_P-2" />
               <ParameterRef Id="M-00FA_A-0001-01-0000_P-3_R-31" RefId="M-00FA_A-0001-01-0000_P-3" />
               <ParameterRef Id="M-00FA_A-0001-01-0000_UP-4_R-41" RefId="M-00FA_A-0001-01-0000_UP-4" />
+              <!-- Parameter 5-8 are enabled on generic page of target application -->
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-9_R-91" RefId="M-00FA_A-0001-01-0000_UP-9" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-10_R-101" RefId="M-00FA_A-0001-01-0000_UP-10" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-11_R-111" RefId="M-00FA_A-0001-01-0000_UP-11" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-12_R-121" RefId="M-00FA_A-0001-01-0000_UP-12" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-13_R-131" RefId="M-00FA_A-0001-01-0000_UP-13" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-14_R-141" RefId="M-00FA_A-0001-01-0000_UP-14" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-15_R-151" RefId="M-00FA_A-0001-01-0000_UP-15" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-16_R-161" RefId="M-00FA_A-0001-01-0000_UP-16" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-17_R-171" RefId="M-00FA_A-0001-01-0000_UP-17" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-18_R-181" RefId="M-00FA_A-0001-01-0000_UP-18" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-19_R-191" RefId="M-00FA_A-0001-01-0000_UP-19" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-20_R-201" RefId="M-00FA_A-0001-01-0000_UP-20" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-21_R-211" RefId="M-00FA_A-0001-01-0000_UP-21" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-22_R-221" RefId="M-00FA_A-0001-01-0000_UP-22" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-23_R-231" RefId="M-00FA_A-0001-01-0000_UP-23" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-24_R-241" RefId="M-00FA_A-0001-01-0000_UP-24" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-25_R-251" RefId="M-00FA_A-0001-01-0000_UP-25" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-26_R-261" RefId="M-00FA_A-0001-01-0000_UP-26" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-27_R-271" RefId="M-00FA_A-0001-01-0000_UP-27" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-28_R-281" RefId="M-00FA_A-0001-01-0000_UP-28" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-29_R-291" RefId="M-00FA_A-0001-01-0000_UP-29" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-30_R-301" RefId="M-00FA_A-0001-01-0000_UP-30" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-31_R-311" RefId="M-00FA_A-0001-01-0000_UP-31" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-32_R-321" RefId="M-00FA_A-0001-01-0000_UP-32" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-33_R-331" RefId="M-00FA_A-0001-01-0000_UP-33" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-34_R-341" RefId="M-00FA_A-0001-01-0000_UP-34" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-35_R-351" RefId="M-00FA_A-0001-01-0000_UP-35" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-36_R-361" RefId="M-00FA_A-0001-01-0000_UP-36" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-37_R-371" RefId="M-00FA_A-0001-01-0000_UP-37" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-38_R-381" RefId="M-00FA_A-0001-01-0000_UP-38" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-39_R-391" RefId="M-00FA_A-0001-01-0000_UP-39" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-40_R-401" RefId="M-00FA_A-0001-01-0000_UP-40" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-41_R-411" RefId="M-00FA_A-0001-01-0000_UP-41" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-42_R-421" RefId="M-00FA_A-0001-01-0000_UP-42" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-43_R-431" RefId="M-00FA_A-0001-01-0000_UP-43" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-44_R-441" RefId="M-00FA_A-0001-01-0000_UP-44" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-45_R-451" RefId="M-00FA_A-0001-01-0000_UP-45" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-46_R-461" RefId="M-00FA_A-0001-01-0000_UP-46" />
             </ParameterRefs>
             <ComObjectTable>
               <ComObject Id="M-00FA_A-0001-01-0000_O-1" Name="Heartbeat" Text="In Betieb" Number="1" FunctionText="Zyklisch" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-2" />
               <ComObject Id="M-00FA_A-0001-01-0000_O-2" Name="Time" Text="Uhrzeit" Number="2" FunctionText="Eingang" ObjectSize="3 Bytes" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" DatapointType="DPST-10-1" />
               <ComObject Id="M-00FA_A-0001-01-0000_O-3" Name="Date" Text="Datum" Number="3" FunctionText="Eingang" ObjectSize="3 Bytes" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" DatapointType="DPST-11-1" />
+              <ComObject Id="M-00FA_A-0001-01-0000_O-4" Name="Vacation" Text="Urlaub" Number="4" FunctionText="Eingang" ObjectSize="1 Bit" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />
+              <ComObject Id="M-00FA_A-0001-01-0000_O-5" Name="Holiday1" Text="Feiertag heute" Number="5" FunctionText="Ausgang" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />
+              <ComObject Id="M-00FA_A-0001-01-0000_O-6" Name="Holiday2" Text="Feiertag morgen" Number="6" FunctionText="Ausgang" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-1" />
+              <ComObject Id="M-00FA_A-0001-01-0000_O-7" Name="Diagnose" Text="Diagnose" Number="7" FunctionText="Diagnosetext" ObjectSize="14 Bytes" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-16-1" />
             </ComObjectTable>
             <ComObjectRefs>
               <ComObjectRef Id="M-00FA_A-0001-01-0000_O-1_R-11" RefId="M-00FA_A-0001-01-0000_O-1" />
               <ComObjectRef Id="M-00FA_A-0001-01-0000_O-2_R-21" RefId="M-00FA_A-0001-01-0000_O-2" />
               <ComObjectRef Id="M-00FA_A-0001-01-0000_O-3_R-31" RefId="M-00FA_A-0001-01-0000_O-3" />
+              <ComObjectRef Id="M-00FA_A-0001-01-0000_O-4_R-41" RefId="M-00FA_A-0001-01-0000_O-4" />
+              <ComObjectRef Id="M-00FA_A-0001-01-0000_O-5_R-51" RefId="M-00FA_A-0001-01-0000_O-5" />
+              <ComObjectRef Id="M-00FA_A-0001-01-0000_O-6_R-61" RefId="M-00FA_A-0001-01-0000_O-6" />
+              <ComObjectRef Id="M-00FA_A-0001-01-0000_O-7_R-71" RefId="M-00FA_A-0001-01-0000_O-7" />
             </ComObjectRefs>
             <AddressTable MaxEntries="255" />
             <AssociationTable MaxEntries="255" />
@@ -632,15 +884,15 @@
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-7_R-71" />
                 <choose ParamRefId="M-00FA_A-0001-01-0000_UP-7_R-71">
                   <when test="0">
-                    <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Ohne EEPROM kann das Logikmodul Werte der Eingänge nicht speichern und nach einem Neustart wieder zur Verfügung stellen. Diese Funktion wird in der Applikation nicht angeboten." UIHint="Information" />
+                    <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-82" Text="Ohne EEPROM kann das Logikmodul Werte der Eingänge nicht speichern und nach einem Neustart wieder zur Verfügung stellen. Diese Funktion wird in der Applikation nicht angeboten." UIHint="Information" />
                   </when>
                 </choose>
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-8_R-81" />
-                  <choose ParamRefId="M-00FA_A-0001-01-0000_UP-8_R-81">
-                    <when test="0">
-                      <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Ohne Abschaltmöglichkeit der Zusatzhardware (RGB-LED, Buzzer) kann das Logikmodul Werte der Eingänge nicht speichern und nach einem Neustart wieder zur Verfügung stellen. Diese Funktion wird in der Applikation nicht angeboten." UIHint="Information" />
-                    </when>
-                  </choose>
+                <choose ParamRefId="M-00FA_A-0001-01-0000_UP-8_R-81">
+                  <when test="0">
+                    <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-81" Text="Ohne Abschaltmöglichkeit der Zusatzhardware (RGB-LED, Buzzer) kann das Logikmodul Werte der Eingänge nicht speichern und nach einem Neustart wieder zur Verfügung stellen. Diese Funktion wird in der Applikation nicht angeboten." UIHint="Information" />
+                  </when>
+                </choose>
                 <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-2_R-21" />
                 <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-3_R-31" />
                 <choose ParamRefId="M-00FA_A-0001-01-0000_P-3_R-31">
@@ -649,10 +901,78 @@
                     <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-1_R-11" />
                   </when>
                 </choose>
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-46_R-461" />
+                <choose ParamRefId="M-00FA_A-0001-01-0000_UP-46_R-461">
+                  <when test="1">
+                    <!-- show diagnose object just if requested -->
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-7_R-71" />
+                    <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-80" Text="Das Diagnoseobjekt ist derzeit für interne Verwendung (Debug) vorgesehen." />
+                  </when>
+                </choose>
+              </ParameterBlock>
+              <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-nnn" Name="Holidays" Text="Urlaub/Feiertage">
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-49" Text="Zeit" UIHint="Headline" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-47" Text="Damit der Sonnenauf- und Untergang korrekt berechnet werden kann, muss man genaue Geokoordinaten des Standorts angeben. Standardwert ist Frankfurt/Main." />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-42_R-421" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-43_R-431" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-46" Text="Ferner wird die Zeitzone des Ortes benötigt und ob die Zeit auf dem Bus auch die Sommerzeit berücksichtigt." />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-44_R-441" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-45_R-451" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-48" Text="" UIHint="HorizontalRuler" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-50" Text="Urlaub" UIHint="Headline" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-51" Text="Zeitschaltuhren können auch Urlaubszeiten berücksichtigen. Damit das funktioniert, muss eine Urlaubszeit über das KO 4 dem Gerät mitgeteilt werden." />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-38_R-381" />
+                <choose ParamRefId="M-00FA_A-0001-01-0000_UP-38_R-381">
+                  <when test="1">
+                    <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-40_R-401" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-4_R-41" />
+                  </when>
+                </choose>
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-52" Text="" UIHint="HorizontalRuler" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-53" Text="Feiertage" UIHint="Headline" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-54" Text="Das Gerät kann die berechneten Feiertage auch auf den Bus senden. Über das KO 5 wird mitgeteilt, ob 'Heute' ein Feiertag ist, über KO 6 ob 'Morgen' ein Feiertag ist." />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-39_R-391" />
+                <choose ParamRefId="M-00FA_A-0001-01-0000_UP-39_R-391">
+                  <when test="1">
+                    <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-41_R-411" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-5_R-51" />
+                    <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-6_R-61" />
+                  </when>
+                </choose>
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-55" Text="Im folgendend kann bestimmt werden, welche Feiertage berechnet werden sollen. Diese Feiertage werden auch von den Zeitschaltuhren berücksichtigt." />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-9_R-91" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-10_R-101" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-11_R-111" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-12_R-121" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-13_R-131" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-14_R-141" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-15_R-151" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-16_R-161" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-17_R-171" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-18_R-181" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-19_R-191" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-20_R-201" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-21_R-211" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-22_R-221" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-23_R-231" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-24_R-241" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-25_R-251" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-26_R-261" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-27_R-271" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-28_R-281" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-29_R-291" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-30_R-301" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-31_R-311" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-32_R-321" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-33_R-331" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-34_R-341" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-35_R-351" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-36_R-361" />
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-37_R-371" />
               </ParameterBlock>
             </ChannelIndependentBlock>
             <Channel Id="M-00FA_A-0001-01-0000_CH-3" Name="Logik" Number="3" Text="Logikdokumentation">
-              <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-2" Name="Info" Text="Allgemein">
+              <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-2" Name="Info1" Text="Allgemein">
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-1" Text="Jeder Logikkanal dieses Moduls repräsentiert eine Logik. Die Logikverarbeitung ist intern immer Binär (DPT1). Jede Logik hat bis zu 4 Eingänge, Detais siehe bei der Doku der Eingänge." />
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-2" Text="Da das Logikmodul unterschiedliche DPT für Ein- und Ausgänge erlaubt, gibt es Funktionsblöcke (im folgendem FB), die einen DPTx zu DPT1 konvertieren (für Eingänge) und umgekehrt (für Ausgänge)." />
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-3" Text="In das Ein- und Ausgangssignal einer Logik können weitere FB eingefügt werden und so das Ein- bzw. das Ausgangssignal beeinflussen. Folgende Funktionsblöcke gibt es:" />
@@ -668,7 +988,7 @@
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-13" Text="Zyklisch senden: Für ein/aus einzeln einstellbar" />
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-14" Text="Ausgangs-Konverter: Kann in DPT 1,2,5,6,7,8,9,16,17,232 konvertieren, für an und aus in unterschiedliche Werte oder auch nichts tun (Wert unterdrücken)." />
               </ParameterBlock>
-              <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-3" Name="Info" Text="Eingänge">
+              <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-3" Name="Info2" Text="Eingänge">
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-15" Text="Es gibt bis zu 4 Eingänge, wobei maximal 2 Eingänge von außen (über ein KO) oder über einen Sensorwert versorgt werden können, und maximal 2 Eingänge mit dem Ausgang eines anderen Kanäls verbunden werden können." />
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-16" Text="Ist ein Eingang mit dem Bus verbunden (hat ein KO), kann er zyklisch Leseanforderungen auf dieses KO senden." />
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-17" Text="Ist ein Eingang ein Zahlenwert (DPT2 bis DPT9), muss ein Eingangs-Konverter gewählt werden, der den Wert in ein binären Wert (DPT1) konvertiert." />
@@ -687,7 +1007,7 @@
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-30" Text="Ferner kann ein Eingang auch so eingestellt werden, dass er seinen Wert zyklisch alle n Sekunden vom Bus lesen soll." />
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-31" Text="Ein Eingang kann auch invertiert werden, allerdings passiert das als letzter FB, direkt am Logikeingang. Somit werden alle vorhergehenden FB (z.B. Initialisierung mit AUS) auch invertiert!" />
               </ParameterBlock>
-              <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-4" Name="Info" Text="Ausgänge">
+              <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-4" Name="Info3" Text="Ausgänge">
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-35" Text="Alle FB am Ausgang können einzeln zu- oder abgeschaltet, aber nicht in ihrer Reihenfolge geändert werden. Somit geht das Ergebnis eines FB direkt in den folgenden FB-Eingang ein." />
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-36" Text="Der Logik-Ausgangswert triggert weitere FB, sobald sich der Ausgangswert der Logik ändert, sobald sich irgendein Eingangswert ändert oder sobald irgendein Eingang einen Wert bekommen hat. Man kann auch bestimmte Eingänge auswählen." />
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-37" Text="Treppenlicht/Blinken: Normales Treppenlicht mit wählbarem Verlängern bzw. vorzeitig ausschalten. Während der Treppenlichtzeit kann man den FB-Ausgang mit einstellbaren Puls-/Pausenverhältnis ein- und ausschalten (blinken) lassen." />
@@ -703,6 +1023,8 @@
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-45" Text="- Einen Ton Ein- bzw. Ausschalten (nur für Module mit Buzzer)" />
               </ParameterBlock>
             </Channel>
+            <!-- <Channel Id="M-00FA_A-0001-01-0000_CH-5" Name="Timer" Number="5" Text="Urlaub/Feiertage">
+            </Channel> -->
           </Dynamic>
         </ApplicationProgram>
       </ApplicationPrograms>
