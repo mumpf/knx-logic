@@ -476,7 +476,7 @@ bool LogicChannel::isInputActive(uint8_t iIOIndex)
     if (lIsActive == 0)
     {
         //input might be also activated by a delta input converter, means from the other input
-        lIsActive = (getByteParam((iIOIndex == IO_Input2) ? LOG_fE1Convert : LOG_fE2Convert) >> 4) & 1;
+        lIsActive = (getByteParam((iIOIndex == IO_Input2) ? LOG_fE1Convert : LOG_fE2Convert) >> LOG_fE1ConvertShift) & 1;
     }
     return (lIsActive > 0);
 }
@@ -511,7 +511,7 @@ void LogicChannel::processInput(uint8_t iIOIndex)
         startConvert(iIOIndex);
     // this input might also be used for delta conversion in the other input
     uint16_t lOtherParamBase = (iIOIndex == 2) ? LOG_fE1 : LOG_fE2;
-    uint8_t lConverter = getByteParam(lOtherParamBase) >> 4;
+    uint8_t lConverter = getByteParam(lOtherParamBase) >> LOG_fE1ConvertShift;
     if (lConverter & 1)
     {
         // delta convertersion, we start convert for the other input
@@ -563,12 +563,12 @@ void LogicChannel::stopRepeatInput(uint8_t iIOIndex)
         case 1:
             lRepeatInputBit = PIP_REPEAT_INPUT1;
             lRepeatTime = getIntParam(LOG_fE1Repeat);
-            lJustOneTelegram = getByteParam(LOG_fE1DefaultRepeat) & 8;
+            lJustOneTelegram = getByteParam(LOG_fE1DefaultRepeat) & LOG_fE1DefaultRepeatMask;
             break;
         case 2:
             lRepeatInputBit = PIP_REPEAT_INPUT2;
             lRepeatTime = getIntParam(LOG_fE2Repeat);
-            lJustOneTelegram = getByteParam(LOG_fE2DefaultRepeat) & 8;
+            lJustOneTelegram = getByteParam(LOG_fE2DefaultRepeat) & LOG_fE2DefaultRepeatMask;
             break;
         default:
             return;
@@ -593,7 +593,7 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
 {
     uint16_t lParamBase = (iIOIndex == 1) ? LOG_fE1 : LOG_fE2;
     uint16_t lParamLow = (iIOIndex == 1) ? LOG_fE1LowDelta : LOG_fE2LowDelta;
-    uint8_t lConvert = getByteParam(lParamBase) >> 4;
+    uint8_t lConvert = getByteParam(lParamBase) >> LOG_fE1ConvertShift;
     bool lValueOut = 0;
     // get input value
     int32_t lValue1In = getInputValue(iIOIndex);
@@ -703,10 +703,10 @@ void LogicChannel::processLogic()
     pCurrentPipeline &= ~PIP_LOGIC_EXECUTE;
     // we have to delete all trigger if output pipeline is not started
     bool lOutputSent = false;
-    if ((getByteParam(LOG_fCalculate) & 3) == 0 || lValidInputs == lActiveInputs)
+    if ((getByteParam(LOG_fCalculate) & LOG_fCalculateMask) == 0 || lValidInputs == lActiveInputs)
     {
         // we process only if all inputs are valid or the user requested invalid evaluation
-        uint8_t lLogic = (getByteParam(LOG_fDisable) & 4) ? 0 : getByteParam(LOG_fLogic);
+        uint8_t lLogic = (getByteParam(LOG_fDisable) & LOG_fDisableMask) ? 0 : getByteParam(LOG_fLogic);
         uint8_t lOnes = 0;
         switch (lLogic)
         {
@@ -788,7 +788,7 @@ void LogicChannel::processLogic()
 
 void LogicChannel::startStairlight(bool iOutput)
 {
-    if (getByteParam(LOG_fOStair) & 128)
+    if (getByteParam(LOG_fOStair) & LOG_fOStairMask)
     {
         if (iOutput)
         {
@@ -796,7 +796,7 @@ void LogicChannel::startStairlight(bool iOutput)
             if ((pCurrentPipeline & PIP_STAIRLIGHT) == 0)
                 startOnDelay();
             // stairlight should also be switched on
-            bool lRetrigger = getByteParam(LOG_fORetrigger) & 64;
+            bool lRetrigger = getByteParam(LOG_fORetrigger) & LOG_fORetriggerMask;
             if ((pCurrentPipeline & PIP_STAIRLIGHT) == 0 || lRetrigger)
             {
                 // stairlight is not running or may be retriggered
@@ -812,7 +812,7 @@ void LogicChannel::startStairlight(bool iOutput)
             if ((pCurrentPipeline & PIP_STAIRLIGHT) == 0)
                 startOffDelay();
             // stairlight should be switched off
-            bool lOff = getByteParam(LOG_fOStairOff) & 32;
+            bool lOff = getByteParam(LOG_fOStairOff) & LOG_fOStairOffMask;
             if (lOff)
             {
                 // stairlight might be switched off,
@@ -886,7 +886,7 @@ void LogicChannel::startOnDelay()
     //    2. second on restarts delay time
     //    3. an off stops on delay
     uint8_t lOnDelay = getByteParam(LOG_fODelay);
-    uint8_t lOnDelayRepeat = (lOnDelay & 96) >> 5;
+    uint8_t lOnDelayRepeat = (lOnDelay & LOG_fODelayOnRepeatMask) >> LOG_fODelayOnRepeatShift;
     if ((pCurrentPipeline & PIP_ON_DELAY) == 0)
     {
         pOnDelay = millis();
@@ -910,7 +910,7 @@ void LogicChannel::startOnDelay()
                 break;
         }
     }
-    uint8_t lOnDelayReset = (lOnDelay & 16) >> 4;
+    uint8_t lOnDelayReset = (lOnDelay & LOG_fODelayOnResetMask) >> LOG_fODelayOnResetShift;
     // if requested, this on stops an off delay
     if ((lOnDelayReset > 0) && (pCurrentPipeline & PIP_OFF_DELAY) > 0)
     {
@@ -938,7 +938,7 @@ void LogicChannel::startOffDelay()
     //    2. second off restarts delay time
     //    3. an on stops off delay
     uint8_t lOffDelay = getByteParam(LOG_fODelay);
-    uint8_t lOffDelayRepeat = (lOffDelay & 12) >> 2;
+    uint8_t lOffDelayRepeat = (lOffDelay & LOG_fODelayOffRepeatMask) >> LOG_fODelayOffRepeatShift;
     if ((pCurrentPipeline & PIP_OFF_DELAY) == 0)
     {
         pOffDelay = millis();
@@ -962,7 +962,7 @@ void LogicChannel::startOffDelay()
                 break;
         }
     }
-    uint8_t lOffDelayReset = (lOffDelay & 2) >> 1;
+    uint8_t lOffDelayReset = (lOffDelay & LOG_fODelayOffResetMask) >> LOG_fODelayOffResetShift;
     // if requested, this on stops an off delay
     if ((lOffDelayReset > 0) && (pCurrentPipeline & PIP_ON_DELAY) > 0)
     {
@@ -985,7 +985,7 @@ void LogicChannel::processOffDelay()
 // Output filter prevents repetition of 0 or 1 values
 void LogicChannel::startOutputFilter(bool iOutput)
 {
-    uint8_t lAllow = (getByteParam(LOG_fOOutputFilter) & 12) >> 2;
+    uint8_t lAllow = (getByteParam(LOG_fOOutputFilter) & LOG_fOOutputFilterMask) >> LOG_fOOutputFilterShift;
     bool lLastOutput = (pCurrentIO & BIT_LAST_OUTPUT) > 0;
     bool lContinue = false;
     switch (lAllow)
@@ -1084,7 +1084,7 @@ void LogicChannel::processOnOffRepeat()
 // we trigger all associated internal inputs with the new value
 void LogicChannel::processInternalInputs(uint8_t iChannelId, bool iValue)
 {
-    uint8_t lInput1 = getByteParam(LOG_fI1) >> 4;
+    uint8_t lInput1 = getByteParam(LOG_fI1) >> LOG_fI1Shift;
     if (lInput1 > 0)
     {
         uint8_t lFunction1 = getByteParam(LOG_fI1Function);
@@ -1093,7 +1093,7 @@ void LogicChannel::processInternalInputs(uint8_t iChannelId, bool iValue)
             startLogic(BIT_INT_INPUT_1, iValue);
         }
     }
-    uint8_t lInput2 = getByteParam(LOG_fI2) & BIT_INPUT_MASK;
+    uint8_t lInput2 = getByteParam(LOG_fI2) & LOG_fI2Mask;
     if (lInput2 > 0)
     {
         uint8_t lFunction2 = getByteParam(LOG_fI2Function);
@@ -1289,7 +1289,7 @@ bool LogicChannel::prepareChannel()
     bool lResult = false;
     bool lInput1EEPROM = false;
     bool lInput2EEPROM = false;
-    uint8_t lLogicFunction = (getByteParam(LOG_fDisable) & 4) ? 0 : getByteParam(LOG_fLogic);
+    uint8_t lLogicFunction = (getByteParam(LOG_fDisable) & LOG_fDisableMask) ? 0 : getByteParam(LOG_fLogic);
 
     if (lLogicFunction == 5)
     {
@@ -1395,7 +1395,7 @@ bool LogicChannel::prepareChannel()
         }
         // internal input 1
         // first check, if input is active
-        uint8_t lIsActive = getByteParam(LOG_fI1) >> 4;
+        uint8_t lIsActive = getByteParam(LOG_fI1) >> LOG_fI1Shift;
         if (lIsActive > 0)
         {
             // input is active, we set according flag
@@ -1403,7 +1403,7 @@ bool LogicChannel::prepareChannel()
         }
         // internal input 2
         // first check, if input is active
-        lIsActive = getByteParam(LOG_fI2) & BIT_INPUT_MASK;
+        lIsActive = getByteParam(LOG_fI2) & LOG_fI2Mask;
         if (lIsActive > 0)
         {
             // input is active, we set according flag

@@ -94,13 +94,14 @@ void Logic::processReadRequests() {
 
     // the following code should be called only once after initial startup delay 
     if (!sCalled) {
-        if (knx.paramByte(LOG_VacationRead) & 2) {
+        if (knx.paramByte(LOG_VacationRead) & LOG_VacationReadMask)
+        {
             knx.getGroupObject(LOG_KoVacation).requestObjectRead();
         }
         sCalled = true;
     }
     // date and time are red from bus every minute until a response is received
-    if ((knx.paramByte(LOG_ReadTimeDate) & 0x80))
+    if ((knx.paramByte(LOG_ReadTimeDate) & LOG_ReadTimeDateMask))
     {
         eTimeValid lValid = sTimer.isTimerValid();
         if (delayCheck(sDelay, 30000) && lValid != tmValid)
@@ -403,7 +404,7 @@ void Logic::setup(bool iSaveSupported) {
         float lLon = LogicChannel::getFloat(knx.paramData(LOG_Longitude));
         // sTimer.setup(8.639751, 49.310209, 1, true, 0xFFFFFFFF);
         uint8_t lTimezone = (knx.paramByte(LOG_Timezone) & LOG_TimezoneMask) >> LOG_TimezoneShift;
-        bool lUseSummertime = (knx.paramByte(LOG_UseSummertime) & LOG_UseSummertimeMask) >> LOG_UseSummertimeShift;
+        bool lUseSummertime = (knx.paramByte(LOG_UseSummertime) & LOG_UseSummertimeMask);
         sTimer.setup(lLon, lLat, lTimezone, lUseSummertime, knx.paramInt(LOG_Neujahr));
         // for TimerRestore we prepare all Timer channels
         for (uint8_t lIndex = 0; lIndex < mNumChannels; lIndex++)
@@ -482,7 +483,7 @@ void Logic::sendHoliday() {
         knx.getGroupObject(LOG_KoHoliday1).valueNoSend(sTimer.isHolidayToday(), getDPT(VAL_DPT_1));
         knx.getGroupObject(LOG_KoHoliday2).valueNoSend(sTimer.isHolidayTomorrow(), getDPT(VAL_DPT_1));
         sTimer.clearHolidayChanged();
-        if (knx.paramByte(LOG_HolidaySend & 1)) {
+        if (knx.paramByte(LOG_HolidaySend & LOG_HolidaySendMask)) {
             // and send it, if requested by application setting
             knx.getGroupObject(LOG_KoHoliday1).objectWritten();
             knx.getGroupObject(LOG_KoHoliday2).objectWritten();
