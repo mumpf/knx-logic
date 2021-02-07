@@ -422,6 +422,7 @@ void Logic::loop()
 
     processInterrupt();
     sTimer.loop(); // clock and timer async methods
+    knx.loop();
 
     // we loop on all channels and execute pipeline
     for (uint8_t lIndex = 0; lIndex < mNumChannels; lIndex++)
@@ -435,6 +436,7 @@ void Logic::loop()
     if (sTimer.minuteChanged()) {
         sendHoliday();
         sTimer.clearMinuteChanged();
+        knx.loop();
     }
     processTimerRestore();
 }
@@ -462,6 +464,7 @@ void Logic::processTimerRestore() {
             {
                 sTimerRestore.decreaseDay();
             }
+            knx.loop();
         } else {
             // stop timer restore processing in logic...
             sTimerRestoreDelay = 0;
