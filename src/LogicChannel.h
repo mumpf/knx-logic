@@ -199,9 +199,13 @@ class Logic;
 class LogicChannel
 {
   private:
-    // static
     // instance
     uint8_t mChannelId;
+#if LOGIC_TRACE
+    static char sFilter[30];
+    int channelDebug(const char *format, ...);
+    bool debugFilter();
+#endif
     uint32_t calcParamIndex(uint16_t iParamIndex);
     uint16_t calcKoNumber(uint8_t iIOIndex);
     uint8_t getByteParam(uint16_t iParamIndex);

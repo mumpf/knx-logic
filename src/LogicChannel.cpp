@@ -7,6 +7,9 @@
 Logic *LogicChannel::sLogic = nullptr;
 Timer &LogicChannel::sTimer = Timer::instance();
 TimerRestore &LogicChannel::sTimerRestore = TimerRestore::instance(); // singleton
+#if LOGIC_TRACE
+char LogicChannel::sFilter[30] = "";
+#endif
 
 /******************************
  * Constructors
@@ -24,6 +27,42 @@ LogicChannel::LogicChannel(uint8_t iChannelNumber)
 LogicChannel::~LogicChannel()
 {
 }
+
+/******************************
+ * Debig helper
+ * ***************************/
+
+#if LOGIC_TRACE
+// channel debug output
+int LogicChannel::channelDebug(const char *iFormat, ...)
+{
+    char lBuffer[256];
+    uint8_t lBufferPos = mChannelId * 2;
+    memset(lBuffer, ' ', lBufferPos + 1);
+    lBuffer[lBufferPos] = 'C';
+    sprintf(lBuffer + lBufferPos + 1, "%02i-", mChannelId + 1);
+    va_list lArgs;
+    va_start(lArgs, iFormat);
+    int lResult = vsnprintf(lBuffer + lBufferPos + 4, 252 - lBufferPos, iFormat, lArgs);
+    va_end(lArgs);
+    SerialUSB.print(lBuffer);
+    return lResult;
+}
+
+bool LogicChannel::debugFilter()
+{
+    char lChannel[3];
+    bool lReturn = true;
+    if (sFilter[0]) {
+      sprintf(lChannel, "%02i", mChannelId + 1);
+      lReturn = (sFilter[0] == lChannel[0]) && (sFilter[1] == lChannel[1]);
+      for (uint8_t i = 2; !lReturn && sFilter[i] && i < 30; i = i + 2)
+      {
+          lReturn = (sFilter[i] == lChannel[0]) && (sFilter[i + 1] == lChannel[1]);
+      }
+    }
+}
+#endif
 
 /******************************
  * Parameter helper
@@ -149,19 +188,25 @@ Dpt &LogicChannel::getKoDPT(uint8_t iIOIndex)
 // write value to bus
 void LogicChannel::knxWriteBool(uint8_t iIOIndex, bool iValue)
 {
-    printDebug("knxWrite KO %d bool value %d\n", calcKoNumber(iIOIndex), iValue);
+#if LOGIC_TRACE    
+    channelDebug("knxWrite KO %d bool value %d\n", calcKoNumber(iIOIndex), iValue);
+#endif
     getKo(iIOIndex)->value(iValue, getKoDPT(iIOIndex));
 }
 
 void LogicChannel::knxWriteInt(uint8_t iIOIndex, int32_t iValue)
 {
-    printDebug("knxWrite KO %d int value %li\n", calcKoNumber(iIOIndex), iValue);
+#if LOGIC_TRACE
+    channelDebug("knxWrite KO %d int value %li\n", calcKoNumber(iIOIndex), iValue);
+#endif
     getKo(iIOIndex)->value((int32_t)iValue, getKoDPT(iIOIndex));
 }
 
 void LogicChannel::knxWriteRawInt(uint8_t iIOIndex, int32_t iValue)
 {
-    printDebug("knxWrite KO %d int value %li\n", calcKoNumber(iIOIndex), iValue);
+#if LOGIC_TRACE
+    channelDebug("knxWrite KO %d int value %li\n", calcKoNumber(iIOIndex), iValue);
+#endif
     GroupObject *lKo = getKo(iIOIndex);
     uint8_t *lValueRef = lKo->valueRef();
     *lValueRef = iValue;
@@ -170,20 +215,26 @@ void LogicChannel::knxWriteRawInt(uint8_t iIOIndex, int32_t iValue)
 
 void LogicChannel::knxWriteFloat(uint8_t iIOIndex, float iValue)
 {
-    printDebug("knxWrite KO %d float value %f\n", calcKoNumber(iIOIndex), iValue);
+#if LOGIC_TRACE
+    channelDebug("knxWrite KO %d float value %f\n", calcKoNumber(iIOIndex), iValue);
+#endif
     getKo(iIOIndex)->value(iValue, getKoDPT(iIOIndex));
 }
 
 void LogicChannel::knxWriteString(uint8_t iIOIndex, char *iValue)
 {
-    printDebug("knxWrite KO %d string value %s\n", calcKoNumber(iIOIndex), iValue);
+#if LOGIC_TRACE
+    channelDebug("knxWrite KO %d string value %s\n", calcKoNumber(iIOIndex), iValue);
+#endif
     getKo(iIOIndex)->value(iValue, getKoDPT(iIOIndex));
 }
 
 // send read request on bus
 void LogicChannel::knxRead(uint8_t iIOIndex)
 {
-    printDebug("knxReadRequest send from KO %d\n", calcKoNumber(iIOIndex));
+#if LOGIC_TRACE
+    channelDebug("knxReadRequest send from KO %d\n", calcKoNumber(iIOIndex));
+#endif
     getKo(iIOIndex)->requestObjectRead();
 }
 
@@ -192,7 +243,9 @@ void LogicChannel::knxResetDevice(uint16_t iParamIndex)
 {
     uint16_t lAddress = getWordParam(iParamIndex);
     uint8_t lHigh = lAddress >> 8;
-    printDebug("knxResetDevice with PA %d.%d.%d\n", lHigh >> 4, lHigh & 0xF, lAddress & 0xFF);
+#if LOGIC_TRACE
+    channelDebug("knxResetDevice with PA %d.%d.%d\n", lHigh >> 4, lHigh & 0xF, lAddress & 0xFF);
+#endif
     knx.restart(lAddress);
 }
 
@@ -486,6 +539,12 @@ void LogicChannel::startStartup()
 {
     pOnDelay = millis();
     pCurrentPipeline |= PIP_STARTUP;
+#if LOGIC_TRACE
+    if (debugFilter()) 
+    {
+        channelDebug("startStartup: wait for %i s\n", getIntParam(LOG_fChannelDelay));
+    }
+#endif
 }
 
 void LogicChannel::processStartup()
@@ -493,6 +552,12 @@ void LogicChannel::processStartup()
     if (delayCheck(pOnDelay, getIntParam(LOG_fChannelDelay) * 1000))
     {
         // we waited enough, remove pipeline marker
+#if LOGIC_TRACE
+        if (debugFilter())
+        {
+            channelDebug("endedStartup: waited %i ms\n", millis() - pOnDelay);
+        }
+#endif
         pCurrentPipeline &= ~PIP_STARTUP;
         pCurrentPipeline |= PIP_RUNNING;
         pOnDelay = 0;
@@ -610,6 +675,12 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
     {
         case VAL_DPT_1:
             lValueOut = lValue1In;
+#if LOGIC_TRACE
+            if (debugFilter())
+            {
+                channelDebug("proc.ConvertInput DPT1: In=Out=%i\n", lValueOut);
+            }
+#endif
             break;
         case VAL_DPT_17:
             // there might be 8 possible scenes to check
@@ -626,6 +697,19 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
                 lValueOut = ((uint8_t)lValue1In == lValue);
             }
             break;
+#if LOGIC_TRACE
+            if (debugFilter())
+            {
+                if (lDpt == VAL_DPT_17)
+                {
+                    channelDebug("proc.ConvertInput DPT17: In=%i, Out=%i\n", lValue1In, lValueOut);
+                }
+                else
+                {
+                    channelDebug("proc.ConvertInput DPT2: In=%i, Out=%i\n", lValue1In, lValueOut);
+                }
+            }
+#endif
         default:
             lDoDefault = true;
             break;
@@ -638,10 +722,22 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
             case VAL_InputConvert_Interval:
                 lValueOut = (lValue1In >= getParamByDpt(lDpt, lParamLow + 0)) &&
                             (lValue1In <= getParamByDpt(lDpt, lParamLow + 4));
+#if LOGIC_TRACE
+                if (debugFilter())
+                {
+                    channelDebug("proc.ConvertInput Interval: In=%i, Out=%i\n", lValue1In, lValueOut);
+                }
+#endif
                 break;
             case VAL_InputConvert_DeltaInterval:
                 lValueOut = (lValue1In - lValue2In >= getParamForDelta(lDpt, lParamLow + 0)) &&
                             (lValue1In - lValue2In <= getParamForDelta(lDpt, lParamLow + 4));
+#if LOGIC_TRACE
+                if (debugFilter())
+                {
+                    channelDebug("proc.ConvertInput DeltaInterval: In1=%i, In2=%i, Delta=%i, Out=%i\n", lValue1In, lValue2In, lValue1In - lValue2In, lValueOut);
+                }
+#endif
                 break;
             case VAL_InputConvert_Hysterese:
                 lValueOut = pCurrentIO & iIOIndex; // retrieve old result, will be send if current value is in hysterese inbervall
@@ -649,6 +745,12 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
                     lValueOut = false;
                 if (lValue1In >= getParamByDpt(lDpt, lParamLow + 4))
                     lValueOut = true;
+#if LOGIC_TRACE
+                if (debugFilter())
+                {
+                    channelDebug("proc.ConvertInput Hysterese: In=%i, Out=%i\n", lValue1In, lValueOut);
+                }
+#endif
                 break;
             case VAL_InputConvert_DeltaHysterese:
                 lValueOut = pCurrentIO & iIOIndex; // retrieve old result, will be send if current value is in hysterese inbervall
@@ -656,9 +758,21 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
                     lValueOut = false;
                 if (lValue1In - lValue2In >= getParamForDelta(lDpt, lParamLow + 4))
                     lValueOut = true;
+#if LOGIC_TRACE
+                if (debugFilter())
+                {
+                    channelDebug("proc.ConvertInput DeltaHysterese: In1=%i, In2=%i, Delta=%i, Out=%i\n", lValue1In, lValue2In, lValue1In - lValue2In, lValueOut);
+                }
+#endif
                 break;
             default:
                 // do nothing, wrong converter id
+#if LOGIC_TRACE
+                if (debugFilter())
+                {
+                    channelDebug("proc.ConvertInput: no Execution, wrong convert id");
+                }
+#endif
                 break;
         }
     }
@@ -687,6 +801,12 @@ void LogicChannel::startLogic(uint8_t iIOIndex, bool iValue)
     pTriggerIO |= iIOIndex;
     // finally set the pipeline bit
     pCurrentPipeline |= PIP_LOGIC_EXECUTE;
+#if LOGIC_TRACE  
+    if (debugFilter())
+    {
+        channelDebug("startLogic: Input %s%i; Value %i\n", (iIOIndex && (BIT_EXT_INPUT_1 || BIT_EXT_INPUT_2)) ? "E" : "I", (iIOIndex && (BIT_EXT_INPUT_1 || BIT_INT_INPUT_1)) ? 1 : 2, lValue);
+    }
+#endif
 }
 
 // Processing parametrized logic
@@ -699,6 +819,10 @@ void LogicChannel::processLogic()
     bool lCurrentOuput = ((pCurrentIO & BIT_OUTPUT) == BIT_OUTPUT);
     bool lNewOutput = false;
     bool lValidOutput = false;
+#if LOGIC_TRACE
+    bool lDebugValid = false;
+    char *lDebugLogic = "Invalid input";
+#endif
     // first deactivate execution in pipeline
     pCurrentPipeline &= ~PIP_LOGIC_EXECUTE;
     // we have to delete all trigger if output pipeline is not started
@@ -715,11 +839,17 @@ void LogicChannel::processLogic()
                 //Check if all bits are set -> logical AND of all input bits
                 lNewOutput = (lCurrentInputs == lActiveInputs);
                 lValidOutput = true;
+#if LOGIC_TRACE
+                lDebugLogic = "AND";
+#endif
                 break;
             case VAL_Logic_Or:
                 // Check if any bit is set -> logical OR of all input bits
                 lNewOutput = (lCurrentInputs > 0);
                 lValidOutput = true;
+#if LOGIC_TRACE
+                lDebugLogic = "OR";
+#endif
                 break;
             case VAL_Logic_ExOr:
                 // EXOR handles invalid inputs as non existig
@@ -729,6 +859,9 @@ void LogicChannel::processLogic()
                 // Check if we have an odd number of bits -> logical EXOR of all input bits
                 lNewOutput = (lOnes % 2 == 1);
                 lValidOutput = true;
+#if LOGIC_TRACE
+                lDebugLogic = "EXOR";
+#endif
                 break;
             case VAL_Logic_Gate:
                 // GATE works a little bit more complex
@@ -743,11 +876,20 @@ void LogicChannel::processLogic()
                 if (lGate)
                     lNewOutput = lValue;
                 lValidOutput = lGate;
+#if LOGIC_TRACE
+                lDebugLogic = "TOR";
+#endif
                 break;
             case VAL_Logic_Timer:
                 lNewOutput = (lCurrentInputs & BIT_EXT_INPUT_2);
                 lValidOutput = true;
+#if LOGIC_TRACE
+                lDebugLogic = "TIMER";
+#endif
             default:
+#if LOGIC_TRACE
+                lDebugLogic = "Invalid Logic";
+#endif
                 break;
         }
         // now there is a new Output value and we know, if it is valid
@@ -772,14 +914,36 @@ void LogicChannel::processLogic()
                 // in case that first processing should be skipped, this happens here
                 if (pCurrentIO & BIT_FIRST_PROCESSING || lHandleFirstProcessing == BIT_FIRST_PROCESSING)
                 {
+#if LOGIC_TRACE
+                    lDebugValid = true;
+                    if (debugFilter())
+                    {
+                        channelDebug("endedLogic: Logic %s\n", lDebugLogic);
+                    }
+#endif
                     // now we start stairlight processing
                     startStairlight(lNewOutput);
                 }
                 pCurrentIO |= BIT_FIRST_PROCESSING; //first processing was done
                 lOutputSent = true;
             }
+#if LOGIC_TRACE
+            else
+            {
+                lDebugValid = true;
+                if (debugFilter())
+                {
+                    channelDebug("endedLogic: No execution, Logic %s (Value not changed)\n", lDebugLogic);
+                }
+            }
+#endif
         }
     }
+#if LOGIC_TRACE
+    if (!lDebugValid && debugFilter()) {
+        channelDebug("endedLogic: No execution, Logic %s\n", lDebugLogic);
+    }
+#endif
     pCurrentIODebug = pCurrentIO;
     // we have to delete all trigger if output pipeline is not started
     if (!lOutputSent)
@@ -801,6 +965,14 @@ void LogicChannel::startStairlight(bool iOutput)
             {
                 // stairlight is not running or may be retriggered
                 // we init the stairlight timer
+#if LOGIC_TRACE
+                if (debugFilter()) 
+                {
+                    uint8_t lStairTimeBase = getByteParam(LOG_fOTimeBase);
+                    uint32_t lStairTime = getIntParam(LOG_fOTime);
+                    channelDebug("startStairlight: Factor %i, Base %s\n", lStairTime, (lStairTimeBase == 0) ? "sec/10" : (lStairTimeBase == 1) ? "sec" : (lStairTimeBase == 2) ? "min" : "h");
+                }
+#endif
                 pStairlightDelay = millis();
                 pCurrentPipeline |= PIP_STAIRLIGHT;
                 startBlink();
@@ -840,6 +1012,15 @@ void LogicChannel::processStairlight()
 
     if (delayCheck(pStairlightDelay, lTime))
     {
+#if LOGIC_TRACE
+        if (debugFilter()) 
+        {
+            channelDebug("startStairlight: Factor %i, Base %s\n", lStairTime, (lStairTimeBase == 0) ? "sec/10" : (lStairTimeBase == 1) ? "sec" : (lStairTimeBase == 2) ? "min" : "h");
+            if (pCurrentPipeline & PIP_BLINK) {
+                printDebug("endedBlink Channel %02\n", mChannelId + 1);
+            }
+        }
+#endif
         // stairlight time is over, we switch off, also potential blinking
         pCurrentPipeline &= ~(PIP_STAIRLIGHT | PIP_BLINK);
         // we start switchOffProcessing
@@ -852,6 +1033,12 @@ void LogicChannel::startBlink()
     uint32_t lBlinkTime = getIntParam(LOG_fOBlink);
     if (lBlinkTime > 0)
     {
+#if LOGIC_TRACE
+        if (debugFilter())
+        {
+            channelDebug("startBlink: BlinkTime %8.1f s\n", lBlinkTime / 10.0);
+        }
+#endif
         pBlinkDelay = millis();
         pCurrentPipeline |= PIP_BLINK;
         pCurrentIO |= BIT_OUTPUT;
@@ -866,11 +1053,23 @@ void LogicChannel::processBlink()
         bool lOn = !(pCurrentIO & BIT_OUTPUT);
         if (lOn)
         {
+#if LOGIC_TRACE
+            if (debugFilter())
+            {
+                channelDebug("proc.Blink: On\n");
+            }
+#endif
             pCurrentIO |= BIT_OUTPUT;
             startOnDelay();
         }
         else
         {
+#if LOGIC_TRACE
+            if (debugFilter())
+            {
+                channelDebug("proc.Blink: Off\n");
+            }
+#endif
             pCurrentIO &= ~BIT_OUTPUT;
             startOffDelay();
         }
@@ -882,15 +1081,23 @@ void LogicChannel::processBlink()
 void LogicChannel::startOnDelay()
 {
     // if on delay is already running, there are options:
-    //    1. second on switches immediately on
+    //    1. second on does nothing, the rest of delay time passes
     //    2. second on restarts delay time
-    //    3. an off stops on delay
+    //    3. second on switches immediately on
+    //    4. an off stops on delay
     uint8_t lOnDelay = getByteParam(LOG_fODelay);
     uint8_t lOnDelayRepeat = (lOnDelay & LOG_fODelayOnRepeatMask) >> LOG_fODelayOnRepeatShift;
     if ((pCurrentPipeline & PIP_ON_DELAY) == 0)
     {
+        // on delay is not running, we start it 
         pOnDelay = millis();
         pCurrentPipeline |= PIP_ON_DELAY;
+#if LOGIC_TRACE
+        if (debugFilter())
+        {
+            channelDebug("startOnDelay: Time %0.1f s\n", getIntParam(LOG_fODelayOn) / 10.0);
+        }
+#endif
     }
     else
     {
@@ -902,19 +1109,47 @@ void LogicChannel::startOnDelay()
                 // cData->currentPipeline &= ~PIP_ON_DELAY;
                 // StartOnOffRepeat(cData, iChannel, true);
                 pOnDelay = 0;
+#if LOGIC_TRACE
+                if (debugFilter())
+                {
+                    channelDebug("startOnDelay: Sencond ON, turn on immediately\n");
+                }
+#endif
                 break;
             case VAL_Delay_Extend:
                 pOnDelay = millis();
+#if LOGIC_TRACE
+                if (debugFilter())
+                {
+                    channelDebug("startOnDelay: Sencond ON, extend delay by %0.1f s\n", getIntParam(LOG_fODelayOn) / 10.0);
+                }
+#endif
                 break;
             default:
+#if LOGIC_TRACE
+                if (debugFilter())
+                {
+                    channelDebug("startOnDelay: Sencond ON, simply continue, remaining %li\n", millis() - pOnDelay);
+                }
+#endif
                 break;
         }
     }
-    uint8_t lOnDelayReset = (lOnDelay & LOG_fODelayOnResetMask) >> LOG_fODelayOnResetShift;
+    uint8_t lOffDelayReset = (lOnDelay & LOG_fODelayOffResetMask) >> LOG_fODelayOffResetShift;
     // if requested, this on stops an off delay
-    if ((lOnDelayReset > 0) && (pCurrentPipeline & PIP_OFF_DELAY) > 0)
+    if ((lOffDelayReset > 0) && (pCurrentPipeline & PIP_OFF_DELAY) > 0)
     {
+#if LOGIC_TRACE
+        if (debugFilter())
+        {
+            channelDebug("endedOffDelay: ON during OffDelay\n");
+        }
+#endif
         pCurrentPipeline &= ~PIP_OFF_DELAY;
+        // there might be an additional option necessary:
+        // - an additional ON stops processing
+        // currently we do this by default
+        // pCurrentPipeline &= ~PIP_ON_DELAY;
     }
 }
 
@@ -923,6 +1158,12 @@ void LogicChannel::processOnDelay()
     uint32_t lOnDelay = getIntParam(LOG_fODelayOn) * 100;
     if (delayCheck(pOnDelay, lOnDelay))
     {
+#if LOGIC_TRACE
+        if (debugFilter())
+        {
+            channelDebug("endedOnDelay: Normal delay time %0.1f\n", getIntParam(LOG_fODelayOn) / 10.0);
+        }
+#endif
         // delay time is over, we turn off pipeline
         pCurrentPipeline &= ~PIP_ON_DELAY;
         // we start repeatOnProcessing
@@ -943,6 +1184,12 @@ void LogicChannel::startOffDelay()
     {
         pOffDelay = millis();
         pCurrentPipeline |= PIP_OFF_DELAY;
+#if LOGIC_TRACE
+        if (debugFilter())
+        {
+            channelDebug("startOffDelay: Time %0.1f s\n", getIntParam(LOG_fODelayOff) / 10.0);
+        }
+#endif
     }
     else
     {
@@ -954,19 +1201,47 @@ void LogicChannel::startOffDelay()
                 // cData->currentPipeline &= ~PIP_OFF_DELAY;
                 // StartOnOffRepeat(cData, iChannel, false);
                 pOffDelay = 0;
+#if LOGIC_TRACE
+                if (debugFilter())
+                {
+                    channelDebug("startOffDelay: Sencond OFF, turn off immediately\n");
+                }
+#endif
                 break;
             case VAL_Delay_Extend:
                 pOffDelay = millis();
+#if LOGIC_TRACE
+                if (debugFilter())
+                {
+                    channelDebug("startOffDelay: Sencond OFF, extend delay by %0.1f s\n", getIntParam(LOG_fODelayOff) / 10.0);
+                }
+#endif
                 break;
             default:
+#if LOGIC_TRACE
+                if (debugFilter())
+                {
+                    channelDebug("startOffDelay: Sencond OFF, simply continue, remaining %li\n", millis() - pOffDelay);
+                }
+#endif
                 break;
         }
     }
-    uint8_t lOffDelayReset = (lOffDelay & LOG_fODelayOffResetMask) >> LOG_fODelayOffResetShift;
-    // if requested, this on stops an off delay
-    if ((lOffDelayReset > 0) && (pCurrentPipeline & PIP_ON_DELAY) > 0)
+    uint8_t lOnDelayReset = (lOffDelay & LOG_fODelayOnResetMask) >> LOG_fODelayOnResetShift;
+    // if requested, this off stops an on delay
+    if ((lOnDelayReset > 0) && (pCurrentPipeline & PIP_ON_DELAY) > 0)
     {
+#if LOGIC_TRACE
+        if (debugFilter())
+        {
+            channelDebug("endedOnDelay: OFF during OnDelay\n");
+        }
+#endif
         pCurrentPipeline &= ~PIP_ON_DELAY;
+        // there might be an additional option necessary:
+        // - an additional OFF stops processing
+        // currently we do this by default
+        // pCurrentPipeline &= ~PIP_OFF_DELAY;
     }
 }
 
@@ -975,6 +1250,12 @@ void LogicChannel::processOffDelay()
     uint32_t lOffDelay = getIntParam(LOG_fODelayOff) * 100;
     if (delayCheck(pOffDelay, lOffDelay))
     {
+#if LOGIC_TRACE
+        if (debugFilter())
+        {
+            channelDebug("endedOffDelay: Normal delay time %0.1f\n", getIntParam(LOG_fODelayOff) / 10.0);
+        }
+#endif
         // delay time is over, we turn off pipeline
         pCurrentPipeline &= ~PIP_OFF_DELAY;
         // we start repeatOffProcessing
@@ -1037,8 +1318,15 @@ void LogicChannel::startOnOffRepeat(bool iOutput)
             pRepeatOnOffDelay = millis();
             pCurrentPipeline &= ~PIP_OFF_REPEAT;
             processOutput(iOutput);
-            if (getIntParam(LOG_fORepeatOn) > 0)
+            if (getIntParam(LOG_fORepeatOn) > 0) {
                 pCurrentPipeline |= PIP_ON_REPEAT;
+#if LOGIC_TRACE
+                if (debugFilter())
+                {
+                    channelDebug("startOnRepeat: Every %0.1f s\n", getIntParam(LOG_fORepeatOn) / 10.0);
+                }
+#endif
+            }
         }
     }
     else
@@ -1048,8 +1336,15 @@ void LogicChannel::startOnOffRepeat(bool iOutput)
             pRepeatOnOffDelay = millis();
             pCurrentPipeline &= ~PIP_ON_REPEAT;
             processOutput(iOutput);
-            if (getIntParam(LOG_fORepeatOff) > 0)
+            if (getIntParam(LOG_fORepeatOff) > 0) {
                 pCurrentPipeline |= PIP_OFF_REPEAT;
+#if LOGIC_TRACE
+                if (debugFilter())
+                {
+                    channelDebug("startOffRepeat: Every %0.1f s\n", getIntParam(LOG_fORepeatOff) / 10.0);
+                }
+#endif
+            }
         }
     }
 }
@@ -1074,6 +1369,19 @@ void LogicChannel::processOnOffRepeat()
 
     if (delayCheck(pRepeatOnOffDelay, lRepeat))
     {
+#if LOGIC_TRACE
+        if (debugFilter())
+        {
+            if (lValue)
+            {
+                channelDebug("proc.OnRepeat: After %0.1f s\n", getIntParam(LOG_fORepeatOn) / 10.0);
+            }
+            else
+            {
+                channelDebug("proc.OffRepeat: After %0.1f s\n", getIntParam(LOG_fORepeatOff) / 10.0);
+            }
+        }
+#endif
         // delay time is over, we repeat the output
         processOutput(lValue);
         // and we restart repeat counter
@@ -1090,6 +1398,12 @@ void LogicChannel::processInternalInputs(uint8_t iChannelId, bool iValue)
         uint8_t lFunction1 = getByteParam(LOG_fI1Function);
         if (lFunction1 == (iChannelId + 1))
         {
+#if LOGIC_TRACE
+            if (debugFilter())
+            {
+                channelDebug("proc.InternalInputs: Input 1, Value %i\n", iValue);
+            }
+#endif
             startLogic(BIT_INT_INPUT_1, iValue);
         }
     }
@@ -1099,6 +1413,12 @@ void LogicChannel::processInternalInputs(uint8_t iChannelId, bool iValue)
         uint8_t lFunction2 = getByteParam(LOG_fI2Function);
         if (lFunction2 == (iChannelId + 1))
         {
+#if LOGIC_TRACE
+            if (debugFilter())
+            {
+                channelDebug("proc.InternalInputs: Input 2, Value %i\n", iValue);
+            }
+#endif
             startLogic(BIT_INT_INPUT_2, iValue);
         }
     }
@@ -1157,6 +1477,12 @@ void LogicChannel::processOutput(bool iValue)
     if (iValue)
     {
         uint8_t lOn = getByteParam(LOG_fOOn);
+#if LOGIC_TRACE
+        if (debugFilter())
+        {
+            channelDebug("proc.Output: Value %i\n", iValue);
+        }
+#endif
         switch (lOn)
         {
             case VAL_Out_Constant:
@@ -1469,7 +1795,7 @@ void LogicChannel::loop()
             processRepeatInput2();
         if (pCurrentPipeline & PIP_TIMER_INPUT)
             processTimerInput();
-        }
+    }
 }
 
 // Start of Timer implementation
@@ -1571,6 +1897,12 @@ void LogicChannel::processTimerInput()
     }
     if (lResult)
     {
+#if LOGIC_TRACE
+        if (debugFilter())
+        {
+            channelDebug("startTimerInput: Value %i\n", lValue);
+        }
+#endif
         startLogic(BIT_EXT_INPUT_2, lValue);
         // if a timer is executed, it has not to be restored anymore
         pCurrentPipeline &= ~PIP_TIMER_RESTORE_STATE;
@@ -1718,7 +2050,7 @@ void LogicChannel::startTimerRestoreState()
                 pCurrentPipeline |= PIP_TIMER_RESTORE_STATE;
                 pCurrentPipeline &= ~PIP_TIMER_RESTORE_STEP; // ensure first processing step is set to 1
             }
-            printDebug("TimerRestore activated for channel %d\n", mChannelId);
+            printDebug("TimerRestore activated for channel %d\n", mChannelId + 1);
         }
     }
 }
@@ -1756,7 +2088,7 @@ void LogicChannel::processTimerRestoreState(TimerRestore &iTimer)
 
     int16_t lDayTime = iTimer.getHour() * 100 + iTimer.getMinute();
 
-    printDebug("Processing TimerRestore on Channel %d for Day %02d.%02d.%02d\n", mChannelId, iTimer.getDay(), iTimer.getMonth(), iTimer.getYear());
+    printDebug("Processing TimerRestore on Channel %d for Day %02d.%02d.%02d\n", mChannelId + 1, iTimer.getDay(), iTimer.getMonth(), iTimer.getYear());
     // first we process settings valid for whole timer
     // vacation is not processed (always skipped)
 
