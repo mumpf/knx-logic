@@ -304,12 +304,14 @@ void Timer::debug()
     if (mTimeValid & tmMinutesValid) {
         printDebug("Aktuelle Zeit: %s", getTimeAsc());
     }
+#if LOGIC_TRACE
     if (mTimeValid & tmDateValid) {
         printDebug("\nFeiertage %d: ", getYear());
         calculateHolidays(true);
         printDebug("\nEnd of holiday debug\n");
         printDebug("Sonnenaufgang: %02d:%02d, Sonnenuntergang: %02d:%02d\n\n", mSunrise.hour, mSunrise.minute, mSunset.hour, mSunset.minute);
     }
+#endif
 }
 
 void Timer::calculateHolidays(bool iDebugOutput) {
