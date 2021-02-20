@@ -64,6 +64,18 @@
 #define VAL_Logic_Gate 4
 #define VAL_Logic_Timer 5
 
+// enum gate trigger values
+#define VAL_Gate_Send_Nothing 0
+#define VAL_Gate_Send_Off 1
+#define VAL_Gate_Send_On 2
+#define VAL_Gate_Send_Input 3
+
+// enum gate transitions
+#define VAL_Gate_Closed_Close 0
+#define VAL_Gate_Closed_Open 1
+#define VAL_Gate_Open_Close 2
+#define VAL_Gate_Open_Open 3
+
 // enum delay extend
 #define VAL_Delay_Nothing 0
 #define VAL_Delay_Extend 1
@@ -90,14 +102,15 @@
 #define VAL_AllowRepeat_None 3
 
 // flags for in- and output
-#define BIT_EXT_INPUT_1 1
-#define BIT_EXT_INPUT_2 2
-#define BIT_INT_INPUT_1 4
-#define BIT_INT_INPUT_2 8
-#define BIT_INPUT_MASK 15
-#define BIT_OUTPUT 16
-#define BIT_FIRST_PROCESSING 32
-#define BIT_LAST_OUTPUT 128
+#define BIT_EXT_INPUT_1 0x01
+#define BIT_EXT_INPUT_2 0x02
+#define BIT_INT_INPUT_1 0x04
+#define BIT_INT_INPUT_2 0x08
+#define BIT_INPUT_MASK 0x0F
+#define BIT_OUTPUT 0x10
+#define BIT_FIRST_PROCESSING 0x20
+#define BIT_PREVIOUS_GATE 0x40
+#define BIT_PREVIOUS_OUTPUT 0x80
 
 // enum fo IOIndex
 #define IO_Absolute 0
@@ -300,7 +313,7 @@ class LogicChannel
     /* Runtime information per channel */
     uint8_t pTriggerIO;        // Bitfield: Which input (0-3) triggered processing, output (4) is triggering further processing
     uint8_t pValidActiveIO;    // Bitfield: validity flags for input (0-3) values and active inputs (4-7)
-    uint8_t pCurrentIO;        // Bitfield: current input (0-3), current output (4), first processing (5) and previous output (7) values
+    uint8_t pCurrentIO;        // Bitfield: current input (0-3), current output (4), first processing (5), previous gate (6) and previous output (7) values
     uint32_t pCurrentPipeline; // Bitfield: indicator for current pipeline step
 
     uint8_t pCurrentIODebug;   // Bitfield: current input (0-3), current output (4), first processing (5) and previous output (7) values

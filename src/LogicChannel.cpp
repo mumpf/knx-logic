@@ -61,6 +61,7 @@ bool LogicChannel::debugFilter()
           lReturn = (sFilter[i] == lChannel[0]) && (sFilter[i + 1] == lChannel[1]);
       }
     }
+    return lReturn;
 }
 #endif
 
@@ -566,7 +567,7 @@ void LogicChannel::processStartup()
 
 void LogicChannel::processInput(uint8_t iIOIndex)
 {
-    if (iIOIndex == 0)
+    if (iIOIndex == 0 || iIOIndex == 3)
         return;
     uint16_t lParamBase = (iIOIndex == 1) ? LOG_fE1 : LOG_fE2;
     // we have now an event for an input, first we check, if this input is active
@@ -650,8 +651,10 @@ void LogicChannel::stopRepeatInput(uint8_t iIOIndex)
 
 void LogicChannel::startConvert(uint8_t iIOIndex)
 {
-    pCurrentPipeline |= (iIOIndex == 1) ? PIP_CONVERT_INPUT1 : PIP_CONVERT_INPUT2;
-    stopRepeatInput(iIOIndex);
+    if (iIOIndex == 1 || iIOIndex == 2) {
+        pCurrentPipeline |= (iIOIndex == 1) ? PIP_CONVERT_INPUT1 : PIP_CONVERT_INPUT2;
+        stopRepeatInput(iIOIndex);
+    }
 }
 
 void LogicChannel::processConvertInput(uint8_t iIOIndex)
@@ -659,6 +662,9 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
     uint16_t lParamBase = (iIOIndex == 1) ? LOG_fE1 : LOG_fE2;
     uint16_t lParamLow = (iIOIndex == 1) ? LOG_fE1LowDelta : LOG_fE2LowDelta;
     uint8_t lConvert = getByteParam(lParamBase) >> LOG_fE1ConvertShift;
+#if LOGIC_TRACE
+    uint8_t lDebugInput = (iIOIndex == 1) ? 1 : 2;
+#endif
     bool lValueOut = 0;
     // get input value
     int32_t lValue1In = getInputValue(iIOIndex);
@@ -678,7 +684,7 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
 #if LOGIC_TRACE
             if (debugFilter())
             {
-                channelDebug("proc.ConvertInput DPT1: In=Out=%i\n", lValueOut);
+                channelDebug("proc.ConvertInput E%i DPT1: In=Out=%i\n", lDebugInput, lValueOut);
             }
 #endif
             break;
@@ -702,11 +708,11 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
             {
                 if (lDpt == VAL_DPT_17)
                 {
-                    channelDebug("proc.ConvertInput DPT17: In=%i, Out=%i\n", lValue1In, lValueOut);
+                    channelDebug("proc.ConvertInput E%i DPT17: In=%i, Out=%i\n", lDebugInput, lValue1In, lValueOut);
                 }
                 else
                 {
-                    channelDebug("proc.ConvertInput DPT2: In=%i, Out=%i\n", lValue1In, lValueOut);
+                    channelDebug("proc.ConvertInput E%i DPT2: In=%i, Out=%i\n", lDebugInput, lValue1In, lValueOut);
                 }
             }
 #endif
@@ -725,7 +731,7 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
 #if LOGIC_TRACE
                 if (debugFilter())
                 {
-                    channelDebug("proc.ConvertInput Interval: In=%i, Out=%i\n", lValue1In, lValueOut);
+                    channelDebug("proc.ConvertInput E%i Interval: In=%i, Out=%i\n", lDebugInput, lValue1In, lValueOut);
                 }
 #endif
                 break;
@@ -735,7 +741,7 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
 #if LOGIC_TRACE
                 if (debugFilter())
                 {
-                    channelDebug("proc.ConvertInput DeltaInterval: In1=%i, In2=%i, Delta=%i, Out=%i\n", lValue1In, lValue2In, lValue1In - lValue2In, lValueOut);
+                    channelDebug("proc.ConvertInput E%i DeltaInterval: In1=%i, In2=%i, Delta=%i, Out=%i\n", lDebugInput, lValue1In, lValue2In, lValue1In - lValue2In, lValueOut);
                 }
 #endif
                 break;
@@ -748,7 +754,7 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
 #if LOGIC_TRACE
                 if (debugFilter())
                 {
-                    channelDebug("proc.ConvertInput Hysterese: In=%i, Out=%i\n", lValue1In, lValueOut);
+                    channelDebug("proc.ConvertInput E%i Hysterese: In=%i, Out=%i\n", lDebugInput, lValue1In, lValueOut);
                 }
 #endif
                 break;
@@ -761,7 +767,7 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
 #if LOGIC_TRACE
                 if (debugFilter())
                 {
-                    channelDebug("proc.ConvertInput DeltaHysterese: In1=%i, In2=%i, Delta=%i, Out=%i\n", lValue1In, lValue2In, lValue1In - lValue2In, lValueOut);
+                    channelDebug("proc.ConvertInput E%i DeltaHysterese: In1=%i, In2=%i, Delta=%i, Out=%i\n", lDebugInput, lValue1In, lValue2In, lValue1In - lValue2In, lValueOut);
                 }
 #endif
                 break;
@@ -770,7 +776,7 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
 #if LOGIC_TRACE
                 if (debugFilter())
                 {
-                    channelDebug("proc.ConvertInput: no Execution, wrong convert id");
+                    channelDebug("proc.ConvertInput E%i: no Execution, wrong convert id\n", lDebugInput);
                 }
 #endif
                 break;
@@ -804,7 +810,7 @@ void LogicChannel::startLogic(uint8_t iIOIndex, bool iValue)
 #if LOGIC_TRACE  
     if (debugFilter())
     {
-        channelDebug("startLogic: Input %s%i; Value %i\n", (iIOIndex && (BIT_EXT_INPUT_1 || BIT_EXT_INPUT_2)) ? "E" : "I", (iIOIndex && (BIT_EXT_INPUT_1 || BIT_INT_INPUT_1)) ? 1 : 2, lValue);
+        channelDebug("startLogic: Input %s%i; Value %i\n", (iIOIndex & (BIT_EXT_INPUT_1 | BIT_EXT_INPUT_2)) ? "E" : "I", (iIOIndex & (BIT_EXT_INPUT_1 | BIT_INT_INPUT_1)) ? 1 : 2, lValue);
     }
 #endif
 }
@@ -868,17 +874,64 @@ void LogicChannel::processLogic()
                 // E1 OR I1 are the data inputs
                 // E2 OR I2 are the gate inputs
                 // Invalid data is handled as ???
-                // Invalid gate is an open gate (1)
-                uint8_t lGate;
-                lGate = ((lCurrentInputs & (BIT_EXT_INPUT_2 | BIT_INT_INPUT_2)) > 0);
-                uint8_t lValue;
-                lValue = ((lCurrentInputs & (BIT_EXT_INPUT_1 | BIT_INT_INPUT_1)) > 0);
-                if (lGate)
-                    lNewOutput = lValue;
-                lValidOutput = lGate;
+                {
+                    // Invalid gate is a closed gate (0), as described in app doc
+                    // if the behaviour should be changed (invalid is open), 
+                    // just change the init (for gate and previous) to true.
+                    bool lGate = false;
+                    bool lPreviousGate = false;
+                    // check if gate input is valid
+                    if (lValidInputs & (BIT_EXT_INPUT_2 | BIT_INT_INPUT_2)) {
+                        // get the current gate state
+                        lGate = (lCurrentInputs & (BIT_EXT_INPUT_2 | BIT_INT_INPUT_2));
+                        // get the previous gate state
+                        lPreviousGate = pCurrentIO & BIT_PREVIOUS_GATE;
+                        // set previous gate state for next roundtrip
+                        pCurrentIO &= ~BIT_PREVIOUS_GATE;
+                        if (lGate)
+                            pCurrentIO |= BIT_PREVIOUS_GATE;
+                    }
+                    uint8_t lGateState = 2 * lPreviousGate + lGate;
+                    uint8_t lGateTrigger = 0;
+                    switch (lGateState)
+                    {
+                        case VAL_Gate_Closed_Open: // was closed and opens now
+                            lGateTrigger = LOG_fTriggerGateOpen;
+                        case VAL_Gate_Open_Close: // was open and closes now
+                            {
+                                if (lGateTrigger == 0)
+                                    lGateTrigger = LOG_fTriggerGateClose;
+                                uint8_t lOnGateTrigger = getByteParam(lGateTrigger) & 3;
+                                lValidOutput = true;
+                                switch (lOnGateTrigger)
+                                {
+                                    case VAL_Gate_Send_Off:
+                                        lNewOutput = false;
+                                        break;
+                                    case VAL_Gate_Send_On:
+                                        lNewOutput = true;
+                                        break;
+                                    case VAL_Gate_Send_Input:
+                                        lNewOutput = (lCurrentInputs & (BIT_EXT_INPUT_1 | BIT_INT_INPUT_1));
+                                        break;
+                                    default: // same as VAL_Gate_Send_Nothing
+                                        lValidOutput = false;
+                                        break;
+                                }
+                            }
+                            break;
+                        case VAL_Gate_Open_Open: // was open and stays open
+                            lNewOutput = (lCurrentInputs & (BIT_EXT_INPUT_1 | BIT_INT_INPUT_1));
+                            lValidOutput = true;
+                            break;
+                        default: // same as VAL_Gate_Closed_Close
+                            lValidOutput = false;
+                            break;
+                    }
 #if LOGIC_TRACE
-                lDebugLogic = "TOR";
+                    lDebugLogic = "TOR";
 #endif
+                }
                 break;
             case VAL_Logic_Timer:
                 lNewOutput = (lCurrentInputs & BIT_EXT_INPUT_2);
@@ -886,6 +939,7 @@ void LogicChannel::processLogic()
 #if LOGIC_TRACE
                 lDebugLogic = "TIMER";
 #endif
+                break;
             default:
 #if LOGIC_TRACE
                 lDebugLogic = "Invalid Logic";
@@ -918,7 +972,7 @@ void LogicChannel::processLogic()
                     lDebugValid = true;
                     if (debugFilter())
                     {
-                        channelDebug("endedLogic: Logic %s\n", lDebugLogic);
+                        channelDebug("endedLogic: Logic %s, Value %i\n", lDebugLogic, lNewOutput);
                     }
 #endif
                     // now we start stairlight processing
@@ -933,7 +987,15 @@ void LogicChannel::processLogic()
                 lDebugValid = true;
                 if (debugFilter())
                 {
-                    channelDebug("endedLogic: No execution, Logic %s (Value not changed)\n", lDebugLogic);
+                    if (lTrigger == 0 && lNewOutput == lCurrentOuput) { 
+                        channelDebug("endedLogic: No execution, Logic %s, Value %i (Value not changed)\n", lDebugLogic, lNewOutput);
+                    }
+                    else if ((lTrigger & pTriggerIO) == 0) {
+                        channelDebug("endedLogic: No execution, Logic %s, Value %i (Input was not a trigger)\n", lDebugLogic, lNewOutput);
+                    }
+                    else if (lHandleFirstProcessing > 0 && (pCurrentIO & BIT_FIRST_PROCESSING) > 0) {
+                        channelDebug("endedLogic: No execution, Logic %s, Value %i (Skipped first processing)\n", lDebugLogic, lNewOutput);
+                    }
                 }
             }
 #endif
@@ -1267,7 +1329,7 @@ void LogicChannel::processOffDelay()
 void LogicChannel::startOutputFilter(bool iOutput)
 {
     uint8_t lAllow = (getByteParam(LOG_fOOutputFilter) & LOG_fOOutputFilterMask) >> LOG_fOOutputFilterShift;
-    bool lLastOutput = (pCurrentIO & BIT_LAST_OUTPUT) > 0;
+    bool lLastOutput = (pCurrentIO & BIT_PREVIOUS_OUTPUT) > 0;
     bool lContinue = false;
     switch (lAllow)
     {
@@ -1288,9 +1350,9 @@ void LogicChannel::startOutputFilter(bool iOutput)
     {
         pCurrentPipeline &= ~(PIP_OUTPUT_FILTER_OFF | PIP_OUTPUT_FILTER_ON);
         pCurrentPipeline |= iOutput ? PIP_OUTPUT_FILTER_ON : PIP_OUTPUT_FILTER_OFF;
-        pCurrentIO &= ~BIT_LAST_OUTPUT;
+        pCurrentIO &= ~BIT_PREVIOUS_OUTPUT;
         if (iOutput)
-            pCurrentIO |= BIT_LAST_OUTPUT;
+            pCurrentIO |= BIT_PREVIOUS_OUTPUT;
     }
 }
 void LogicChannel::processOutputFilter()
@@ -1401,7 +1463,7 @@ void LogicChannel::processInternalInputs(uint8_t iChannelId, bool iValue)
 #if LOGIC_TRACE
             if (debugFilter())
             {
-                channelDebug("proc.InternalInputs: Input 1, Value %i\n", iValue);
+                channelDebug("proc.InternalInputs: Input I1, Value %i\n", iValue);
             }
 #endif
             startLogic(BIT_INT_INPUT_1, iValue);
@@ -1416,7 +1478,7 @@ void LogicChannel::processInternalInputs(uint8_t iChannelId, bool iValue)
 #if LOGIC_TRACE
             if (debugFilter())
             {
-                channelDebug("proc.InternalInputs: Input 2, Value %i\n", iValue);
+                channelDebug("proc.InternalInputs: Input I2, Value %i\n", iValue);
             }
 #endif
             startLogic(BIT_INT_INPUT_2, iValue);

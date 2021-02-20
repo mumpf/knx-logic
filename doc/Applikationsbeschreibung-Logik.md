@@ -353,8 +353,7 @@ Alle Eingänge werden über ein logisches Exklusiv-ODER verknüpft. Das Ergebnis
 
 #### TOR
 
-Ein Tor hat normalerweise einen Dateneingang, Datenausgang und einen Toreingang. Wird das Tor über ein Signal am Toreingang geöffnet, könne
-n Daten vom Dateneingang zum Datenausgang fließen. Wird das Tor geschlossen, dann fließen keine Daten zwischen Dateneingang und Datenausgang.
+Ein Tor hat normalerweise einen Dateneingang, Datenausgang und einen Toreingang. Wird das Tor über ein Signal am Toreingang geöffnet, können Daten vom Dateneingang zum Datenausgang fließen. Wird das Tor geschlossen, dann fließen keine Daten zwischen Dateneingang und Datenausgang.
 
 Wir das Signal am Toreingang invertiert (negiert), dann sprechen wir von einer Sperre.
 
