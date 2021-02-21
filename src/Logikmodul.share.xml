@@ -733,7 +733,7 @@
             </ParameterTypes>
             <Parameters>
               <!-- Standard parameter in any of our devices -->
-              <Parameter Id="M-00FA_A-0001-01-0000_P-1" Name="NumChannels" ParameterType="M-00FA_A-0001-01-0000_PT-NumChannels" Text="Anzahl verfügbarer Logikkanäle" Value="%N%" Access="Read">
+              <Parameter Id="M-00FA_A-0001-01-0000_P-1" Name="NumChannels" ParameterType="M-00FA_A-0001-01-0000_PT-NumChannels" Text="Anzahl verfügbarer Logikkanäle" Access="Read" Value="%N%">
                 <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="0" BitOffset="0" />
               </Parameter>
               <Parameter Id="M-00FA_A-0001-01-0000_P-2" Name="StartupDelay" ParameterType="M-00FA_A-0001-01-0000_PT-DelaySeconds" Text="Zeit bis das Gerät nach einem Neustart aktiv wird" SuffixText="Sekunden" Value="10">
@@ -744,55 +744,55 @@
               </Parameter>
               <Union SizeInBit="16">
                 <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="9" BitOffset="0" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-4" Name="ReadTimeDate" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Uhrzeit und Datum nach einem Neustart vom Bus lesen" Value="1" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-5" Name="BuzzerInstalled" Offset="0" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Akustischer Signalgeber vorhanden (Buzzer)?" Value="1" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-6" Name="LedInstalled" Offset="0" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Optischer Signalgeber vorhanden (RGB-LED)?" Value="1" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-7" Name="EepromInstalled" Offset="0" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Nichtflüchtiger Speicher vorhanden (EEPROM)?" Value="1" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-8" Name="NCN5130Installed" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Zusatzhardware abschaltbar (z.B. mit NCN5130)?" Value="1" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-38" Name="VacationKo" Offset="0" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Urlaubsbehandlung aktivieren?" Value="0" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-39" Name="HolidayKo" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Feiertage auf dem Bus verfügbar machen?" Value="0" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-40" Name="VacationRead" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Nach Neustart Urlaubsinfo lesen?" Value="0" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-41" Name="HolidaySend" Offset="1" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Nach Neuberechnung Feiertagsinfo senden?" Value="0" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-44" Name="Timezone" Offset="1" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-Timezone" Text="Zeitzone" Value="1" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-45" Name="UseSummertime" Offset="1" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Sommerzeit berücksichtigen" Value="1" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-46" Name="Diagnose" Offset="1" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Diagnoseobjekt anzeigen" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-4" Name="ReadTimeDate" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Uhrzeit und Datum nach einem Neustart vom Bus lesen" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-5" Name="BuzzerInstalled" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="0" BitOffset="1" Text="Akustischer Signalgeber vorhanden (Buzzer)?" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-6" Name="LedInstalled" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="0" BitOffset="2" Text="Optischer Signalgeber vorhanden (RGB-LED)?" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-7" Name="EepromInstalled" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="0" BitOffset="3" Text="Nichtflüchtiger Speicher vorhanden (EEPROM)?" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-8" Name="NCN5130Installed" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="0" BitOffset="4" Text="Zusatzhardware abschaltbar (z.B. mit NCN5130)?" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-38" Name="VacationKo" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Offset="0" BitOffset="5" Text="Urlaubsbehandlung aktivieren?" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-39" Name="HolidayKo" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Offset="0" BitOffset="6" Text="Feiertage auf dem Bus verfügbar machen?" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-40" Name="VacationRead" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Offset="0" BitOffset="6" Text="Nach Neustart Urlaubsinfo lesen?" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-41" Name="HolidaySend" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Offset="1" BitOffset="0" Text="Nach Neuberechnung Feiertagsinfo senden?" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-44" Name="Timezone" ParameterType="M-00FA_A-0001-01-0000_PT-Timezone" Offset="1" BitOffset="1" Text="Zeitzone" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-45" Name="UseSummertime" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Offset="1" BitOffset="3" Text="Sommerzeit berücksichtigen" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-46" Name="Diagnose" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Offset="1" BitOffset="4" Text="Diagnoseobjekt anzeigen" Value="0" />
               </Union>
               <Union SizeInBit="32">
                 <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="11" BitOffset="0" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-9" Name="Neujahr" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Neujahr" Value="1" SuffixText="1. Januar" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-10" Name="DreiKoenige" Offset="0" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Hl. Drei Könige" Value="1" SuffixText="6. Januar" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-11" Name="Weiberfastnacht" Offset="0" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Weiberfastnacht" Value="0" SuffixText="52 Tage vor Ostern" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-12" Name="Rosenmontag" Offset="0" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Rosenmontag" Value="0" SuffixText="48 Tage vor Ostern" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-13" Name="Fastnachtsdienstag" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Fastnachtsdienstag" Value="0" SuffixText="47 Tage vor Ostern" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-14" Name="Aschermittwoch" Offset="0" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Aschermittwoch" Value="0" SuffixText="46 Tage vor Ostern" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-15" Name="Gruendonnerstag" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Gründonnerstag" Value="0" SuffixText="3 Tage vor Ostern" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-16" Name="Karfreitag" Offset="0" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Karfreitag" Value="1" SuffixText="2 Tage vor Ostern" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-17" Name="Ostersonntag" Offset="1" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Ostersonntag" Value="1" SuffixText="Ostern" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-18" Name="Ostermontag" Offset="1" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Ostermontag" Value="1" SuffixText="1 Tag nach Ostern" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-19" Name="TagDerArbeit" Offset="1" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Tag der Arbeit" Value="1" SuffixText="1. Mai" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-20" Name="Himmelfahrt" Offset="1" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Christi Himmelfahrt" Value="1" SuffixText="39 Tage nach Ostern" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-21" Name="Pfingstsonntag" Offset="1" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Pfingstsonntag" Value="1" SuffixText="49 Tage nach Ostern" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-22" Name="Pfingstmontag" Offset="1" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Pfingstmontag" Value="1" SuffixText="50 Tage nach Ostern" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-23" Name="Frohleichnam" Offset="1" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Frohleichnam" Value="1" SuffixText="60 Tage nach Ostern" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-24" Name="Friedensfest" Offset="1" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Hohes Friedensfest" Value="0" SuffixText="8. August" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-25" Name="MariaHimmelfahrt" Offset="2" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Mariä Himmelfahrt" Value="0" SuffixText="15. August" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-26" Name="DeutscheEinheit" Offset="2" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Tag der Deutschen Einheit" Value="1" SuffixText="3. Oktober" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-27" Name="Reformationstag" Offset="2" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Reformationstag" Value="0" SuffixText="31. Oktober" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-28" Name="Allerheiligen" Offset="2" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Allerheiligen" Value="1" SuffixText="1. November" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-29" Name="BussBettag" Offset="2" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Buß- und Bettag" Value="0" SuffixText="11 Tage vor 1. Adv." />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-30" Name="Advent1" Offset="2" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="1. Advent" Value="0" SuffixText="21 Tage vor 4. Adv." />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-31" Name="Advent2" Offset="2" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="2. Advent" Value="0" SuffixText="14 Tage vor 4. Adv." />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-32" Name="Advent3" Offset="2" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="3. Advent" Value="0" SuffixText="7 Tage vor 4. Adv." />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-33" Name="Advent4" Offset="3" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="4. Advent" Value="0" SuffixText="Sonntag vor Weihn." />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-34" Name="Heiligabend" Offset="3" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Heiligabend" Value="1" SuffixText="24. Dezember" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-35" Name="Weihnachtstag1" Offset="3" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Erster Weihnachtstag" Value="1" SuffixText="25. Dezember" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-36" Name="Weihnachtstag2" Offset="3" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Zweiter Weihnachtstag" Value="1" SuffixText="26. Dezember" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-37" Name="Silvester" Offset="3" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Silvester" Value="1" SuffixText="31. Dezember" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-9" Name="Neujahr"             ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="0" BitOffset="0" Text="Neujahr"                   SuffixText="1. Januar"           Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-10" Name="DreiKoenige"        ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="0" BitOffset="1" Text="Hl. Drei Könige"           SuffixText="6. Januar"           Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-11" Name="Weiberfastnacht"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="0" BitOffset="2" Text="Weiberfastnacht"           SuffixText="52 Tage vor Ostern"  Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-12" Name="Rosenmontag"        ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="0" BitOffset="3" Text="Rosenmontag"               SuffixText="48 Tage vor Ostern"  Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-13" Name="Fastnachtsdienstag" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="0" BitOffset="4" Text="Fastnachtsdienstag"        SuffixText="47 Tage vor Ostern"  Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-14" Name="Aschermittwoch"     ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="0" BitOffset="5" Text="Aschermittwoch"            SuffixText="46 Tage vor Ostern"  Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-15" Name="Gruendonnerstag"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="0" BitOffset="6" Text="Gründonnerstag"            SuffixText="3 Tage vor Ostern"   Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-16" Name="Karfreitag"         ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="0" BitOffset="7" Text="Karfreitag"                SuffixText="2 Tage vor Ostern"   Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-17" Name="Ostersonntag"       ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="1" BitOffset="0" Text="Ostersonntag"              SuffixText="Ostern"              Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-18" Name="Ostermontag"        ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="1" BitOffset="1" Text="Ostermontag"               SuffixText="1 Tag nach Ostern"   Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-19" Name="TagDerArbeit"       ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="1" BitOffset="2" Text="Tag der Arbeit"            SuffixText="1. Mai"              Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-20" Name="Himmelfahrt"        ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="1" BitOffset="3" Text="Christi Himmelfahrt"       SuffixText="39 Tage nach Ostern" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-21" Name="Pfingstsonntag"     ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="1" BitOffset="4" Text="Pfingstsonntag"            SuffixText="49 Tage nach Ostern" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-22" Name="Pfingstmontag"      ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="1" BitOffset="5" Text="Pfingstmontag"             SuffixText="50 Tage nach Ostern" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-23" Name="Frohleichnam"       ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="1" BitOffset="6" Text="Frohleichnam"              SuffixText="60 Tage nach Ostern" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-24" Name="Friedensfest"       ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="1" BitOffset="7" Text="Hohes Friedensfest"        SuffixText="8. August"           Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-25" Name="MariaHimmelfahrt"   ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="2" BitOffset="0" Text="Mariä Himmelfahrt"         SuffixText="15. August"          Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-26" Name="DeutscheEinheit"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="2" BitOffset="1" Text="Tag der Deutschen Einheit" SuffixText="3. Oktober"          Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-27" Name="Reformationstag"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="2" BitOffset="2" Text="Reformationstag"           SuffixText="31. Oktober"         Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-28" Name="Allerheiligen"      ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="2" BitOffset="3" Text="Allerheiligen"             SuffixText="1. November"         Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-29" Name="BussBettag"         ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="2" BitOffset="4" Text="Buß- und Bettag"           SuffixText="11 Tage vor 1. Adv." Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-30" Name="Advent1"            ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="2" BitOffset="5" Text="1. Advent"                 SuffixText="21 Tage vor 4. Adv." Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-31" Name="Advent2"            ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="2" BitOffset="6" Text="2. Advent"                 SuffixText="14 Tage vor 4. Adv." Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-32" Name="Advent3"            ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="2" BitOffset="7" Text="3. Advent"                 SuffixText="7 Tage vor 4. Adv."  Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-33" Name="Advent4"            ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="3" BitOffset="0" Text="4. Advent"                 SuffixText="Sonntag vor Weihn."  Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-34" Name="Heiligabend"        ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="3" BitOffset="1" Text="Heiligabend"               SuffixText="24. Dezember"        Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-35" Name="Weihnachtstag1"     ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="3" BitOffset="2" Text="Erster Weihnachtstag"      SuffixText="25. Dezember"        Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-36" Name="Weihnachtstag2"     ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="3" BitOffset="3" Text="Zweiter Weihnachtstag"     SuffixText="26. Dezember"        Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-37" Name="Silvester"          ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="3" BitOffset="4" Text="Silvester"                 SuffixText="31. Dezember"        Value="1" />
               </Union>
               <Union SizeInBit="64">
                 <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="15" BitOffset="0" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-42" Name="Latitude" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-Latitude" Text="Breitengrad" Value="50.115377" SuffixText="Lat" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-43" Name="Longitude" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-Longitude" Text="Längengrad" Value="8.683764" SuffixText="Long"/>
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-42" Name="Latitude"  ParameterType="M-00FA_A-0001-01-0000_PT-Latitude"  Offset="0" BitOffset="0" Text="Breitengrad" SuffixText="Lat"  Value="50.115377" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-43" Name="Longitude" ParameterType="M-00FA_A-0001-01-0000_PT-Longitude" Offset="4" BitOffset="0" Text="Längengrad"  SuffixText="Long" Value="8.683764"  />
               </Union>
             </Parameters>
             <ParameterRefs>
@@ -801,10 +801,7 @@
               <ParameterRef Id="M-00FA_A-0001-01-0000_P-2_R-21" RefId="M-00FA_A-0001-01-0000_P-2" />
               <ParameterRef Id="M-00FA_A-0001-01-0000_P-3_R-31" RefId="M-00FA_A-0001-01-0000_P-3" />
               <ParameterRef Id="M-00FA_A-0001-01-0000_UP-4_R-41" RefId="M-00FA_A-0001-01-0000_UP-4" />
-              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-5_R-51" RefId="M-00FA_A-0001-01-0000_UP-5" />
-              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-6_R-61" RefId="M-00FA_A-0001-01-0000_UP-6" />
-              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-7_R-71" RefId="M-00FA_A-0001-01-0000_UP-7" />
-              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-8_R-81" RefId="M-00FA_A-0001-01-0000_UP-8" />
+              <!-- Parameter 5-8 are enabled on generic page of target application -->
               <ParameterRef Id="M-00FA_A-0001-01-0000_UP-9_R-91" RefId="M-00FA_A-0001-01-0000_UP-9" />
               <ParameterRef Id="M-00FA_A-0001-01-0000_UP-10_R-101" RefId="M-00FA_A-0001-01-0000_UP-10" />
               <ParameterRef Id="M-00FA_A-0001-01-0000_UP-11_R-111" RefId="M-00FA_A-0001-01-0000_UP-11" />
@@ -913,58 +910,6 @@
                   </when>
                 </choose>
               </ParameterBlock>
-            </ChannelIndependentBlock>
-            <Channel Id="M-00FA_A-0001-01-0000_CH-1" Name="Logik" Number="1">
-              <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-2" Name="Doku" Text="Logikdokumentation">
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-1" Text="Jeder Logikkanal dieses Moduls repräsentiert eine Logik. Die Logikverarbeitung ist intern immer Binär (DPT1). Jede Logik hat bis zu 4 Eingänge, Detais siehe bei der Doku der Eingänge." />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-2" Text="Da das Logikmodul unterschiedliche DPT für Ein- und Ausgänge erlaubt, gibt es Funktionsblöcke (im folgendem FB), die einen DPTx zu DPT1 konvertieren (für Eingänge) und umgekehrt (für Ausgänge)." />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-3" Text="In das Ein- und Ausgangssignal einer Logik können weitere FB eingefügt werden und so das Ein- bzw. das Ausgangssignal beeinflussen. Folgende Funktionsblöcke gibt es:" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-4" Text="Eingangs-Konverter (konvertiert Eingangs-DPT nach binär DPT1)" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-5" Text="Eingang vorbelegen mit einem bestimmten (DPT1) Wert" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-6" Text="Eingang zyklisch lesen alle n Sekunden" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-7" Text="Eingang invertieren" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-8" Text="Logik selbst (UND, ODER, EXKLUSIV-ODER, TOR), wobei bei TOR Ex- und Interner Eingang 1 über ein ODER zum Dateneingang zusammengefasst werden, Ex- und Interner Eingang 2 zum Toreingang." />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-9" Text="Logikauswertung: Normal kann die Logik erst ausgewertet werden, wenn alle Eingänge einen gültigen Wert haben. Man kann auch bereits auswerten, sobald das erstbeste Signal ankommt. Die ungültigen Eingänge werden dann wie inaktive Eingänge behandelt." />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-10" Text="Logik-Ausgangswert: Der Ausgang kann seinen Wert weiterleiten, sobald sich der Ausgangswert ändert, sobald sich irgendein Eingangswert ändert oder sobald irgendein Eingang einen Wert bekommen hat. Man kann auch bestimmte Eingänge auswählen." />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-11" Text="Treppenlicht/Blinken: Normales Treppenlicht mit wählbarem Verlängern bzw. vorzeitig ausschalten. Während der Treppenlichtzeit kann man den FB-Ausgang ein- und ausschalten (blinken) lassen." />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-12" Text="Ein/Ausschaltverzögerung: Für ein/aus einzeln einstellbar" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-13" Text="Zyklisch senden: Für ein/aus einzeln einstellbar" />
-                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-14" Text="Ausgangs-Konverter: Kann in DPT 1,2,5,6,7,8,9,16,17,232 konvertieren, für an und aus in unterschiedliche Werte oder auch nichts tun (Wert unterdrücken)." />
-                <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-3" Name="Info2" Text="Eingänge">
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-15" Text="Es gibt bis zu 4 Eingänge, wobei maximal 2 Eingänge von außen (über ein KO) oder über einen Sensorwert versorgt werden können, und maximal 2 Eingänge mit dem Ausgang eines anderen Kanäls verbunden werden können." />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-16" Text="Ist ein Eingang mit dem Bus verbunden (hat ein KO), kann er zyklisch Leseanforderungen auf dieses KO senden." />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-17" Text="Ist ein Eingang ein Zahlenwert (DPT2 bis DPT9), muss ein Eingangs-Konverter gewählt werden, der den Wert in ein binären Wert (DPT1) konvertiert." />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-18" Text="Als Eingangs-Konverter kann man einen der folgenden Funktionsblöcke (FB) nutzen:" />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-19" Text="- Werteintervall: FB wird wahr, wenn der Eingangswert zwischen einem Von- und einem Bis-Wert liegt, sonst falsch" />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-20" Text="- Differenzintervall: FB wird wahr, wenn die Differenz von 2 Eingangswerten zwischen einem Von- und einem Bis-Wert liegt, sonst falsch" />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-21" Text="- Hysterese: FB wird wahr, wenn der Eingangswert einen oberen Grenzwert überschreitet. FB wird falsch, wenn der Eingangswert einen unteren Grenzwert unterschreitet" />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-22" Text="- Differenzhysterese: Es wird die Differenz zweier Eingänge gebildet. FB wird wahr, wenn die Differenz einen oberen Grenzwert überschreitet. FB eird falsch, wenn die Differenz einen unteren Grenzwert unterschreitet" />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-23" Text="- Zwangsführung: FB wird wahr, wenn einer von 4 möglichen Zwangsführungswerten am Eingang anliegt, sonst falsch" />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-24" Text="- Szenen: FB wird wahr, wenn eine von 8 möglichen Szenen am Eingang anliegt, sonst falsch" />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-25" Text="Für die FB Differenzintervall und Differenzhysterese wird auch der Wert des anderen Eingang herangezogen." />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-26" Text="Ein Eingang kann auch seinen Wert im EEPROM speichern und sich nach einem Neustart daraus initialisieren. Falls das nicht gewünscht ist oder kein gültiber Wert im EEPROM steht, kann man noch folgende Initialisierungen wählen:" />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-27" Text="- Initialisierung durch Lesen des Wertes vom Bus" />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-28" Text="- Initialisierung mit EIN" />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-29" Text="- Initialisierung mit AUS" />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-30" Text="Ferner kann ein Eingang auch so eingestellt werden, dass er seinen Wert zyklisch alle n Sekunden vom Bus lesen soll." />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-31" Text="Ein Eingang kann auch invertiert werden, allerdings passiert das als letzter FB, direkt am Logikeingang. Somit werden alle vorhergehenden FB (z.B. Initialisierung mit AUS) auch invertiert!" />
-                </ParameterBlock>
-                <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-4" Name="Info3" Text="Ausgänge">
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-35" Text="Alle FB am Ausgang können einzeln zu- oder abgeschaltet, aber nicht in ihrer Reihenfolge geändert werden. Somit geht das Ergebnis eines FB direkt in den folgenden FB-Eingang ein." />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-36" Text="Der Logik-Ausgangswert triggert weitere FB, sobald sich der Ausgangswert der Logik ändert, sobald sich irgendein Eingangswert ändert oder sobald irgendein Eingang einen Wert bekommen hat. Man kann auch bestimmte Eingänge auswählen." />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-37" Text="Treppenlicht/Blinken: Normales Treppenlicht mit wählbarem Verlängern bzw. vorzeitig ausschalten. Während der Treppenlichtzeit kann man den FB-Ausgang mit einstellbaren Puls-/Pausenverhältnis ein- und ausschalten (blinken) lassen." />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-38" Text="Ein/Ausschaltverzögerung: Für ein/aus einzeln einstellbar, und mit wählbaren Verhalten, wenn mehrere EIN- oder AUS-Signale nacheinander kommen." />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-39" Text="Wiederholungsfilter: Aufeinanderfolgende EIN- bzw. AUS-Signale können unterdürckt oder durchgelassen werden (muss natürich vor dem zyklischen Senden eingestellt werden)" />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-32" Text="Zyklisch senden: Für ein/aus einzeln einstellbar" />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-33" Text="Der Ausgangs-Konverter kann in DPT 1,2,5,6,7,8,9,16,17,232 konvertieren, man kann für EIN und AUS unterschiedliche Einstellungen vornehmen:" />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-40" Text="- Wert nicht senden (unterdrücken)" />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-41" Text="- Konstanten Wert senden" />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-42" Text="- Den Wert eines Eingangs senden, wobei in den passenden Ausgangs-DPT konvertiert wird" />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-43" Text="- Auf die Ausgangs-GA einen Read-Request senden" />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-44" Text="- Ein KNX-Gerät zurücksetzen (Reset-Funktion der ETS)" />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-45" Text="- Einen Ton Ein- bzw. Ausschalten (nur für Module mit Buzzer)" />
-                </ParameterBlock>
-              </ParameterBlock>
               <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-nnn" Name="Holidays" Text="Urlaub/Feiertage">
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-49" Text="Zeit" UIHint="Headline" />
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-47" Text="Damit der Sonnenauf- und Untergang korrekt berechnet werden kann, muss man genaue Geokoordinaten des Standorts angeben. Standardwert ist Frankfurt/Main." />
@@ -1025,7 +970,61 @@
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-36_R-361" />
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-37_R-371" />
               </ParameterBlock>
+            </ChannelIndependentBlock>
+            <Channel Name="Logik" Text="Logikdokumentation" Number="3" Id="M-00FA_A-0001-01-0000_CH-3">
+              <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-2" Name="Info1" Text="Allgemein">
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-1" Text="Jeder Logikkanal dieses Moduls repräsentiert eine Logik. Die Logikverarbeitung ist intern immer Binär (DPT1). Jede Logik hat bis zu 4 Eingänge, Detais siehe bei der Doku der Eingänge." />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-2" Text="Da das Logikmodul unterschiedliche DPT für Ein- und Ausgänge erlaubt, gibt es Funktionsblöcke (im folgendem FB), die einen DPTx zu DPT1 konvertieren (für Eingänge) und umgekehrt (für Ausgänge)." />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-3" Text="In das Ein- und Ausgangssignal einer Logik können weitere FB eingefügt werden und so das Ein- bzw. das Ausgangssignal beeinflussen. Folgende Funktionsblöcke gibt es:" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-4" Text="Eingangs-Konverter (konvertiert Eingangs-DPT nach binär DPT1)" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-5" Text="Eingang vorbelegen mit einem bestimmten (DPT1) Wert" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-6" Text="Eingang zyklisch lesen alle n Sekunden" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-7" Text="Eingang invertieren" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-8" Text="Logik selbst (UND, ODER, EXKLUSIV-ODER, TOR), wobei bei TOR Ex- und Interner Eingang 1 über ein ODER zum Dateneingang zusammengefasst werden, Ex- und Interner Eingang 2 zum Toreingang." />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-9" Text="Logikauswertung: Normal kann die Logik erst ausgewertet werden, wenn alle Eingänge einen gültigen Wert haben. Man kann auch bereits auswerten, sobald das erstbeste Signal ankommt. Die ungültigen Eingänge werden dann wie inaktive Eingänge behandelt." />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-10" Text="Logik-Ausgangswert: Der Ausgang kann seinen Wert weiterleiten, sobald sich der Ausgangswert ändert, sobald sich irgendein Eingangswert ändert oder sobald irgendein Eingang einen Wert bekommen hat. Man kann auch bestimmte Eingänge auswählen." />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-11" Text="Treppenlicht/Blinken: Normales Treppenlicht mit wählbarem Verlängern bzw. vorzeitig ausschalten. Während der Treppenlichtzeit kann man den FB-Ausgang ein- und ausschalten (blinken) lassen." />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-12" Text="Ein/Ausschaltverzögerung: Für ein/aus einzeln einstellbar" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-13" Text="Zyklisch senden: Für ein/aus einzeln einstellbar" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-14" Text="Ausgangs-Konverter: Kann in DPT 1,2,5,6,7,8,9,16,17,232 konvertieren, für an und aus in unterschiedliche Werte oder auch nichts tun (Wert unterdrücken)." />
+              </ParameterBlock>
+              <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-3" Name="Info2" Text="Eingänge">
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-15" Text="Es gibt bis zu 4 Eingänge, wobei maximal 2 Eingänge von außen (über ein KO) oder über einen Sensorwert versorgt werden können, und maximal 2 Eingänge mit dem Ausgang eines anderen Kanäls verbunden werden können." />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-16" Text="Ist ein Eingang mit dem Bus verbunden (hat ein KO), kann er zyklisch Leseanforderungen auf dieses KO senden." />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-17" Text="Ist ein Eingang ein Zahlenwert (DPT2 bis DPT9), muss ein Eingangs-Konverter gewählt werden, der den Wert in ein binären Wert (DPT1) konvertiert." />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-18" Text="Als Eingangs-Konverter kann man einen der folgenden Funktionsblöcke (FB) nutzen:" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-19" Text="- Werteintervall: FB wird wahr, wenn der Eingangswert zwischen einem Von- und einem Bis-Wert liegt, sonst falsch" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-20" Text="- Differenzintervall: FB wird wahr, wenn die Differenz von 2 Eingangswerten zwischen einem Von- und einem Bis-Wert liegt, sonst falsch" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-21" Text="- Hysterese: FB wird wahr, wenn der Eingangswert einen oberen Grenzwert überschreitet. FB wird falsch, wenn der Eingangswert einen unteren Grenzwert unterschreitet" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-22" Text="- Differenzhysterese: Es wird die Differenz zweier Eingänge gebildet. FB wird wahr, wenn die Differenz einen oberen Grenzwert überschreitet. FB eird falsch, wenn die Differenz einen unteren Grenzwert unterschreitet" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-23" Text="- Zwangsführung: FB wird wahr, wenn einer von 4 möglichen Zwangsführungswerten am Eingang anliegt, sonst falsch" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-24" Text="- Szenen: FB wird wahr, wenn eine von 8 möglichen Szenen am Eingang anliegt, sonst falsch" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-25" Text="Für die FB Differenzintervall und Differenzhysterese wird auch der Wert des anderen Eingang herangezogen." />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-26" Text="Ein Eingang kann auch seinen Wert im EEPROM speichern und sich nach einem Neustart daraus initialisieren. Falls das nicht gewünscht ist oder kein gültiber Wert im EEPROM steht, kann man noch folgende Initialisierungen wählen:" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-27" Text="- Initialisierung durch Lesen des Wertes vom Bus" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-28" Text="- Initialisierung mit EIN" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-29" Text="- Initialisierung mit AUS" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-30" Text="Ferner kann ein Eingang auch so eingestellt werden, dass er seinen Wert zyklisch alle n Sekunden vom Bus lesen soll." />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-31" Text="Ein Eingang kann auch invertiert werden, allerdings passiert das als letzter FB, direkt am Logikeingang. Somit werden alle vorhergehenden FB (z.B. Initialisierung mit AUS) auch invertiert!" />
+              </ParameterBlock>
+              <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-4" Name="Info3" Text="Ausgänge">
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-35" Text="Alle FB am Ausgang können einzeln zu- oder abgeschaltet, aber nicht in ihrer Reihenfolge geändert werden. Somit geht das Ergebnis eines FB direkt in den folgenden FB-Eingang ein." />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-36" Text="Der Logik-Ausgangswert triggert weitere FB, sobald sich der Ausgangswert der Logik ändert, sobald sich irgendein Eingangswert ändert oder sobald irgendein Eingang einen Wert bekommen hat. Man kann auch bestimmte Eingänge auswählen." />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-37" Text="Treppenlicht/Blinken: Normales Treppenlicht mit wählbarem Verlängern bzw. vorzeitig ausschalten. Während der Treppenlichtzeit kann man den FB-Ausgang mit einstellbaren Puls-/Pausenverhältnis ein- und ausschalten (blinken) lassen." />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-38" Text="Ein/Ausschaltverzögerung: Für ein/aus einzeln einstellbar, und mit wählbaren Verhalten, wenn mehrere EIN- oder AUS-Signale nacheinander kommen." />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-39" Text="Wiederholungsfilter: Aufeinanderfolgende EIN- bzw. AUS-Signale können unterdürckt oder durchgelassen werden (muss natürich vor dem zyklischen Senden eingestellt werden)" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-32" Text="Zyklisch senden: Für ein/aus einzeln einstellbar" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-33" Text="Der Ausgangs-Konverter kann in DPT 1,2,5,6,7,8,9,16,17,232 konvertieren, man kann für EIN und AUS unterschiedliche Einstellungen vornehmen:" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-40" Text="- Wert nicht senden (unterdrücken)" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-41" Text="- Konstanten Wert senden" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-42" Text="- Den Wert eines Eingangs senden, wobei in den passenden Ausgangs-DPT konvertiert wird" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-43" Text="- Auf die Ausgangs-GA einen Read-Request senden" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-44" Text="- Ein KNX-Gerät zurücksetzen (Reset-Funktion der ETS)" />
+                <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-45" Text="- Einen Ton Ein- bzw. Ausschalten (nur für Module mit Buzzer)" />
+              </ParameterBlock>
             </Channel>
+            <!-- <Channel Id="M-00FA_A-0001-01-0000_CH-5" Name="Timer" Number="5" Text="Urlaub/Feiertage">
+            </Channel> -->
           </Dynamic>
         </ApplicationProgram>
       </ApplicationPrograms>
