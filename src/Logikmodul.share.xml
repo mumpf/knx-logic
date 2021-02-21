@@ -733,7 +733,7 @@
             </ParameterTypes>
             <Parameters>
               <!-- Standard parameter in any of our devices -->
-              <Parameter Id="M-00FA_A-0001-01-0000_P-1" Name="NumChannels" ParameterType="M-00FA_A-0001-01-0000_PT-NumChannels" Text="Anzahl verfügbarer Logikkanäle" Value="%N%" Access="Read">
+              <Parameter Id="M-00FA_A-0001-01-0000_P-1" Name="NumChannels" ParameterType="M-00FA_A-0001-01-0000_PT-NumChannels" Text="Anzahl verfügbarer Logikkanäle" Access="Read" Value="%N%">
                 <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="0" BitOffset="0" />
               </Parameter>
               <Parameter Id="M-00FA_A-0001-01-0000_P-2" Name="StartupDelay" ParameterType="M-00FA_A-0001-01-0000_PT-DelaySeconds" Text="Zeit bis das Gerät nach einem Neustart aktiv wird" SuffixText="Sekunden" Value="10">
@@ -744,55 +744,55 @@
               </Parameter>
               <Union SizeInBit="16">
                 <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="9" BitOffset="0" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-4" Name="ReadTimeDate" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Uhrzeit und Datum nach einem Neustart vom Bus lesen" Value="1" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-5" Name="BuzzerInstalled" Offset="0" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Akustischer Signalgeber vorhanden (Buzzer)?" Value="1" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-6" Name="LedInstalled" Offset="0" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Optischer Signalgeber vorhanden (RGB-LED)?" Value="1" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-7" Name="EepromInstalled" Offset="0" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Nichtflüchtiger Speicher vorhanden (EEPROM)?" Value="1" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-8" Name="NCN5130Installed" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Zusatzhardware abschaltbar (z.B. mit NCN5130)?" Value="1" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-38" Name="VacationKo" Offset="0" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Urlaubsbehandlung aktivieren?" Value="0" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-39" Name="HolidayKo" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Feiertage auf dem Bus verfügbar machen?" Value="0" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-40" Name="VacationRead" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Nach Neustart Urlaubsinfo lesen?" Value="0" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-41" Name="HolidaySend" Offset="1" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Nach Neuberechnung Feiertagsinfo senden?" Value="0" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-44" Name="Timezone" Offset="1" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-Timezone" Text="Zeitzone" Value="1" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-45" Name="UseSummertime" Offset="1" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Sommerzeit berücksichtigen" Value="1" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-46" Name="Diagnose" Offset="1" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Diagnoseobjekt anzeigen" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-4" Name="ReadTimeDate" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Offset="0" BitOffset="0" Text="Uhrzeit und Datum nach einem Neustart vom Bus lesen" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-5" Name="BuzzerInstalled" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="0" BitOffset="1" Text="Akustischer Signalgeber vorhanden (Buzzer)?" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-6" Name="LedInstalled" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="0" BitOffset="2" Text="Optischer Signalgeber vorhanden (RGB-LED)?" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-7" Name="EepromInstalled" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="0" BitOffset="3" Text="Nichtflüchtiger Speicher vorhanden (EEPROM)?" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-8" Name="NCN5130Installed" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="0" BitOffset="4" Text="Zusatzhardware abschaltbar (z.B. mit NCN5130)?" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-38" Name="VacationKo" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Offset="0" BitOffset="5" Text="Urlaubsbehandlung aktivieren?" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-39" Name="HolidayKo" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Offset="0" BitOffset="6" Text="Feiertage auf dem Bus verfügbar machen?" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-40" Name="VacationRead" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Offset="0" BitOffset="6" Text="Nach Neustart Urlaubsinfo lesen?" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-41" Name="HolidaySend" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Offset="1" BitOffset="0" Text="Nach Neuberechnung Feiertagsinfo senden?" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-44" Name="Timezone" ParameterType="M-00FA_A-0001-01-0000_PT-Timezone" Offset="1" BitOffset="1" Text="Zeitzone" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-45" Name="UseSummertime" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Offset="1" BitOffset="3" Text="Sommerzeit berücksichtigen" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-46" Name="Diagnose" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Offset="1" BitOffset="4" Text="Diagnoseobjekt anzeigen" Value="0" />
               </Union>
               <Union SizeInBit="32">
                 <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="11" BitOffset="0" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-9" Name="Neujahr" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Neujahr" Value="1" SuffixText="1. Januar" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-10" Name="DreiKoenige" Offset="0" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Hl. Drei Könige" Value="1" SuffixText="6. Januar" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-11" Name="Weiberfastnacht" Offset="0" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Weiberfastnacht" Value="0" SuffixText="52 Tage vor Ostern" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-12" Name="Rosenmontag" Offset="0" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Rosenmontag" Value="0" SuffixText="48 Tage vor Ostern" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-13" Name="Fastnachtsdienstag" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Fastnachtsdienstag" Value="0" SuffixText="47 Tage vor Ostern" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-14" Name="Aschermittwoch" Offset="0" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Aschermittwoch" Value="0" SuffixText="46 Tage vor Ostern" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-15" Name="Gruendonnerstag" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Gründonnerstag" Value="0" SuffixText="3 Tage vor Ostern" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-16" Name="Karfreitag" Offset="0" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Karfreitag" Value="1" SuffixText="2 Tage vor Ostern" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-17" Name="Ostersonntag" Offset="1" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Ostersonntag" Value="1" SuffixText="Ostern" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-18" Name="Ostermontag" Offset="1" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Ostermontag" Value="1" SuffixText="1 Tag nach Ostern" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-19" Name="TagDerArbeit" Offset="1" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Tag der Arbeit" Value="1" SuffixText="1. Mai" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-20" Name="Himmelfahrt" Offset="1" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Christi Himmelfahrt" Value="1" SuffixText="39 Tage nach Ostern" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-21" Name="Pfingstsonntag" Offset="1" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Pfingstsonntag" Value="1" SuffixText="49 Tage nach Ostern" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-22" Name="Pfingstmontag" Offset="1" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Pfingstmontag" Value="1" SuffixText="50 Tage nach Ostern" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-23" Name="Frohleichnam" Offset="1" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Frohleichnam" Value="1" SuffixText="60 Tage nach Ostern" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-24" Name="Friedensfest" Offset="1" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Hohes Friedensfest" Value="0" SuffixText="8. August" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-25" Name="MariaHimmelfahrt" Offset="2" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Mariä Himmelfahrt" Value="0" SuffixText="15. August" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-26" Name="DeutscheEinheit" Offset="2" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Tag der Deutschen Einheit" Value="1" SuffixText="3. Oktober" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-27" Name="Reformationstag" Offset="2" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Reformationstag" Value="0" SuffixText="31. Oktober" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-28" Name="Allerheiligen" Offset="2" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Allerheiligen" Value="1" SuffixText="1. November" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-29" Name="BussBettag" Offset="2" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Buß- und Bettag" Value="0" SuffixText="11 Tage vor 1. Adv." />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-30" Name="Advent1" Offset="2" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="1. Advent" Value="0" SuffixText="21 Tage vor 4. Adv." />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-31" Name="Advent2" Offset="2" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="2. Advent" Value="0" SuffixText="14 Tage vor 4. Adv." />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-32" Name="Advent3" Offset="2" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="3. Advent" Value="0" SuffixText="7 Tage vor 4. Adv." />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-33" Name="Advent4" Offset="3" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="4. Advent" Value="0" SuffixText="Sonntag vor Weihn." />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-34" Name="Heiligabend" Offset="3" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Heiligabend" Value="1" SuffixText="24. Dezember" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-35" Name="Weihnachtstag1" Offset="3" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Erster Weihnachtstag" Value="1" SuffixText="25. Dezember" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-36" Name="Weihnachtstag2" Offset="3" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Zweiter Weihnachtstag" Value="1" SuffixText="26. Dezember" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-37" Name="Silvester" Offset="3" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Silvester" Value="1" SuffixText="31. Dezember" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-9" Name="Neujahr"             ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="0" BitOffset="0" Text="Neujahr"                   SuffixText="1. Januar"           Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-10" Name="DreiKoenige"        ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="0" BitOffset="1" Text="Hl. Drei Könige"           SuffixText="6. Januar"           Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-11" Name="Weiberfastnacht"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="0" BitOffset="2" Text="Weiberfastnacht"           SuffixText="52 Tage vor Ostern"  Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-12" Name="Rosenmontag"        ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="0" BitOffset="3" Text="Rosenmontag"               SuffixText="48 Tage vor Ostern"  Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-13" Name="Fastnachtsdienstag" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="0" BitOffset="4" Text="Fastnachtsdienstag"        SuffixText="47 Tage vor Ostern"  Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-14" Name="Aschermittwoch"     ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="0" BitOffset="5" Text="Aschermittwoch"            SuffixText="46 Tage vor Ostern"  Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-15" Name="Gruendonnerstag"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="0" BitOffset="6" Text="Gründonnerstag"            SuffixText="3 Tage vor Ostern"   Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-16" Name="Karfreitag"         ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="0" BitOffset="7" Text="Karfreitag"                SuffixText="2 Tage vor Ostern"   Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-17" Name="Ostersonntag"       ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="1" BitOffset="0" Text="Ostersonntag"              SuffixText="Ostern"              Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-18" Name="Ostermontag"        ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="1" BitOffset="1" Text="Ostermontag"               SuffixText="1 Tag nach Ostern"   Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-19" Name="TagDerArbeit"       ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="1" BitOffset="2" Text="Tag der Arbeit"            SuffixText="1. Mai"              Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-20" Name="Himmelfahrt"        ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="1" BitOffset="3" Text="Christi Himmelfahrt"       SuffixText="39 Tage nach Ostern" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-21" Name="Pfingstsonntag"     ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="1" BitOffset="4" Text="Pfingstsonntag"            SuffixText="49 Tage nach Ostern" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-22" Name="Pfingstmontag"      ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="1" BitOffset="5" Text="Pfingstmontag"             SuffixText="50 Tage nach Ostern" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-23" Name="Frohleichnam"       ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="1" BitOffset="6" Text="Frohleichnam"              SuffixText="60 Tage nach Ostern" Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-24" Name="Friedensfest"       ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="1" BitOffset="7" Text="Hohes Friedensfest"        SuffixText="8. August"           Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-25" Name="MariaHimmelfahrt"   ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="2" BitOffset="0" Text="Mariä Himmelfahrt"         SuffixText="15. August"          Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-26" Name="DeutscheEinheit"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="2" BitOffset="1" Text="Tag der Deutschen Einheit" SuffixText="3. Oktober"          Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-27" Name="Reformationstag"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="2" BitOffset="2" Text="Reformationstag"           SuffixText="31. Oktober"         Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-28" Name="Allerheiligen"      ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="2" BitOffset="3" Text="Allerheiligen"             SuffixText="1. November"         Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-29" Name="BussBettag"         ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="2" BitOffset="4" Text="Buß- und Bettag"           SuffixText="11 Tage vor 1. Adv." Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-30" Name="Advent1"            ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="2" BitOffset="5" Text="1. Advent"                 SuffixText="21 Tage vor 4. Adv." Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-31" Name="Advent2"            ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="2" BitOffset="6" Text="2. Advent"                 SuffixText="14 Tage vor 4. Adv." Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-32" Name="Advent3"            ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="2" BitOffset="7" Text="3. Advent"                 SuffixText="7 Tage vor 4. Adv."  Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-33" Name="Advent4"            ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="3" BitOffset="0" Text="4. Advent"                 SuffixText="Sonntag vor Weihn."  Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-34" Name="Heiligabend"        ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="3" BitOffset="1" Text="Heiligabend"               SuffixText="24. Dezember"        Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-35" Name="Weihnachtstag1"     ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="3" BitOffset="2" Text="Erster Weihnachtstag"      SuffixText="25. Dezember"        Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-36" Name="Weihnachtstag2"     ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="3" BitOffset="3" Text="Zweiter Weihnachtstag"     SuffixText="26. Dezember"        Value="1" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-37" Name="Silvester"          ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Offset="3" BitOffset="4" Text="Silvester"                 SuffixText="31. Dezember"        Value="1" />
               </Union>
               <Union SizeInBit="64">
                 <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="15" BitOffset="0" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-42" Name="Latitude" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-Latitude" Text="Breitengrad" Value="50.115377" SuffixText="Lat" />
-                <Parameter Id="M-00FA_A-0001-01-0000_UP-43" Name="Longitude" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-Longitude" Text="Längengrad" Value="8.683764" SuffixText="Long"/>
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-42" Name="Latitude"  ParameterType="M-00FA_A-0001-01-0000_PT-Latitude"  Offset="0" BitOffset="0" Text="Breitengrad" SuffixText="Lat"  Value="50.115377" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-43" Name="Longitude" ParameterType="M-00FA_A-0001-01-0000_PT-Longitude" Offset="4" BitOffset="0" Text="Längengrad"  SuffixText="Long" Value="8.683764"  />
               </Union>
             </Parameters>
             <ParameterRefs>
@@ -971,7 +971,7 @@
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-37_R-371" />
               </ParameterBlock>
             </ChannelIndependentBlock>
-            <Channel Id="M-00FA_A-0001-01-0000_CH-3" Name="Logik" Number="3" Text="Logikdokumentation">
+            <Channel Name="Logik" Text="Logikdokumentation" Number="3" Id="M-00FA_A-0001-01-0000_CH-3">
               <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-2" Name="Info1" Text="Allgemein">
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-1" Text="Jeder Logikkanal dieses Moduls repräsentiert eine Logik. Die Logikverarbeitung ist intern immer Binär (DPT1). Jede Logik hat bis zu 4 Eingänge, Detais siehe bei der Doku der Eingänge." />
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-2" Text="Da das Logikmodul unterschiedliche DPT für Ein- und Ausgänge erlaubt, gibt es Funktionsblöcke (im folgendem FB), die einen DPTx zu DPT1 konvertieren (für Eingänge) und umgekehrt (für Ausgänge)." />

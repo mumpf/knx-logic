@@ -10,17 +10,17 @@
     </Parameter>
     <Union SizeInBit="8">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="5" BitOffset="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%004" Name="f%C%Calculate" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-Calculate" Text="Logik auswerten" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%166" Name="f%C%Disable" Offset="0" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Kanal deaktivieren (zu Testzwecken)" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%004" Name="f%C%Calculate" ParameterType="M-00FA_A-0001-01-0000_PT-Calculate" Offset="0" BitOffset="6" Text="Logik auswerten" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%166" Name="f%C%Disable"   ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="0" BitOffset="5" Text="Kanal deaktivieren (zu Testzwecken)" Value="0" />
     </Union>
     <Union SizeInBit="8">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="6" BitOffset="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%005" Name="f%C%Trigger" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-Trigger" Text="Logik sendet ihren Wert weiter" Value="15" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%089" Name="f%C%TriggerE1" Offset="0" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="          Eingang 1" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%090" Name="f%C%TriggerE2" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="          Eingang 2" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%091" Name="f%C%TriggerI1" Offset="0" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="          Kanalausgang X" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%092" Name="f%C%TriggerI2" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="          Kanalausgang Y" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%167" Name="f%C%TriggerTime" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-TriggerTime" Text="Logik sendet ihren Wert weiter" Value="15" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%005" Name="f%C%Trigger"     ParameterType="M-00FA_A-0001-01-0000_PT-Trigger"     Offset="0" BitOffset="0" Text="Logik sendet ihren Wert weiter" Value="15" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%089" Name="f%C%TriggerE1"   ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"    Offset="0" BitOffset="7" Text="          Eingang 1" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%090" Name="f%C%TriggerE2"   ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"    Offset="0" BitOffset="6" Text="          Eingang 2" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%091" Name="f%C%TriggerI1"   ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"    Offset="0" BitOffset="5" Text="          Kanalausgang X" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%092" Name="f%C%TriggerI2"   ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"    Offset="0" BitOffset="4" Text="          Kanalausgang Y" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%167" Name="f%C%TriggerTime" ParameterType="M-00FA_A-0001-01-0000_PT-TriggerTime" Offset="0" BitOffset="0" Text="Logik sendet ihren Wert weiter" Value="15" />
     </Union>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%006" Name="f%C%TriggerGateClose" ParameterType="M-00FA_A-0001-01-0000_PT-GateTrigger" Text="Beim schließen vom Tor wird" Value="0">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="7" BitOffset="0" />
@@ -30,216 +30,216 @@
     </Parameter>
     <Union SizeInBit="8">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="9" BitOffset="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%008" Name="f%C%E1" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-InputEnable" Text="Eingang 1" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%093" Name="f%C%E1Convert" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-InputConv" Text="Wert für Eingang 1 wird ermittelt durch" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%008" Name="f%C%E1"        ParameterType="M-00FA_A-0001-01-0000_PT-InputEnable" Offset="0" BitOffset="4" Text="Eingang 1" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%093" Name="f%C%E1Convert" ParameterType="M-00FA_A-0001-01-0000_PT-InputConv"   Offset="0" BitOffset="0" Text="Wert für Eingang 1 wird ermittelt durch" Value="0" />
     </Union>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%009" Name="f%C%E1Dpt" ParameterType="M-00FA_A-0001-01-0000_PT-InputDpt" Text="DPT für Eingang 1" Value="0">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="10" BitOffset="0" />
     </Parameter>
     <Union SizeInBit="8">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="11" BitOffset="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%026" Name="f%C%E1Default" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-InputDefault" Text="Falls Vorbelegung aus dem Speicher nicht möglich oder nicht gewünscht, dann vorbelegen mit" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%130" Name="f%C%E1DefaultEEPROM" Offset="0" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Eingangswert speichern und beim nächsten Neustart als Vorbelegung nutzen?" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%164" Name="f%C%E1DefaultRepeat" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Nur so lange zyklisch lesen, bis erstes Telegramm eingeht" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%272" Name="f%C%TYearDay" Offset="0" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-YearDay" Text="Typ der Zeitschaltuhr" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%274" Name="f%C%TRestoreState" Offset="0" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-RestoreState" Text="Beim Neustart letzte Schaltzeit nachholen" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%026" Name="f%C%E1Default"       ParameterType="M-00FA_A-0001-01-0000_PT-InputDefault" Offset="0" BitOffset="6" Text="Falls Vorbelegung aus dem Speicher nicht möglich oder nicht gewünscht, dann vorbelegen mit" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%130" Name="f%C%E1DefaultEEPROM" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo"   Offset="0" BitOffset="5" Text="Eingangswert speichern und beim nächsten Neustart als Vorbelegung nutzen?" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%164" Name="f%C%E1DefaultRepeat" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo"   Offset="0" BitOffset="4" Text="Nur so lange zyklisch lesen, bis erstes Telegramm eingeht" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%272" Name="f%C%TYearDay"        ParameterType="M-00FA_A-0001-01-0000_PT-YearDay"      Offset="0" BitOffset="3" Text="Typ der Zeitschaltuhr" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%274" Name="f%C%TRestoreState"   ParameterType="M-00FA_A-0001-01-0000_PT-RestoreState" Offset="0" BitOffset="1" Text="Beim Neustart letzte Schaltzeit nachholen" Value="0" />
     </Union>
     <Union SizeInBit="32">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="12" BitOffset="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%027" Name="f%C%E1Repeat" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-DelaySeconds" Text="Eingang 1 wird alle n Sekunden gelesen (0 = nicht zyklisch lesen)" SuffixText="Sekunden" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%027" Name="f%C%E1Repeat" ParameterType="M-00FA_A-0001-01-0000_PT-DelaySeconds" Offset="0" BitOffset="0" Text="Eingang 1 wird alle n Sekunden gelesen (0 = nicht zyklisch lesen)" SuffixText="Sekunden" Value="0" />
     </Union>
     <Union SizeInBit="8">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="16" BitOffset="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%028" Name="f%C%E2" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-InputEnable" Text="Eingang 2" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%094" Name="f%C%E2Convert" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-InputConv" Text="Wert für Eingang 2 wird ermittelt durch" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%028" Name="f%C%E2"        ParameterType="M-00FA_A-0001-01-0000_PT-InputEnable" Offset="0" BitOffset="4" Text="Eingang 2" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%094" Name="f%C%E2Convert" ParameterType="M-00FA_A-0001-01-0000_PT-InputConv"   Offset="0" BitOffset="0" Text="Wert für Eingang 2 wird ermittelt durch" Value="0" />
     </Union>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%029" Name="f%C%E2Dpt" ParameterType="M-00FA_A-0001-01-0000_PT-InputDpt" Text="DPT für Eingang 2" Value="0">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="17" BitOffset="0" />
     </Parameter>
     <Union SizeInBit="8">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="18" BitOffset="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%046" Name="f%C%E2Default" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-InputDefault" Text="Falls Vorbelegung aus dem Speicher nicht möglich oder nicht gewünscht, dann vorbelegen mit" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%131" Name="f%C%E2DefaultEEPROM" Offset="0" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Eingangswert speichern und beim nächsten Neustart als Vorbelegung nutzen" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%165" Name="f%C%E2DefaultRepeat" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Nur so lange zyklisch lesen, bis erstes Telegramm eingeht" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%273" Name="f%C%THoliday" Offset="0" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-Holiday" Text="Feiertagsbehandlung" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%276" Name="f%C%TVacation" Offset="0" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-Vacation" Text="Urlaubsbehandlung" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%046" Name="f%C%E2Default"       ParameterType="M-00FA_A-0001-01-0000_PT-InputDefault" Offset="0" BitOffset="6" Text="Falls Vorbelegung aus dem Speicher nicht möglich oder nicht gewünscht, dann vorbelegen mit" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%131" Name="f%C%E2DefaultEEPROM" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo"   Offset="0" BitOffset="5" Text="Eingangswert speichern und beim nächsten Neustart als Vorbelegung nutzen" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%165" Name="f%C%E2DefaultRepeat" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo"   Offset="0" BitOffset="4" Text="Nur so lange zyklisch lesen, bis erstes Telegramm eingeht" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%273" Name="f%C%THoliday"        ParameterType="M-00FA_A-0001-01-0000_PT-Holiday"      Offset="0" BitOffset="3" Text="Feiertagsbehandlung" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%276" Name="f%C%TVacation"       ParameterType="M-00FA_A-0001-01-0000_PT-Vacation"     Offset="0" BitOffset="1" Text="Urlaubsbehandlung" Value="0" />
     </Union>
     <Union SizeInBit="32">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="19" BitOffset="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%047" Name="f%C%E2Repeat" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-DelaySeconds" Text="Eingang 2 wird alle n Sekunden gelesen (0 = nicht zyklisch lesen)" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%047" Name="f%C%E2Repeat" ParameterType="M-00FA_A-0001-01-0000_PT-DelaySeconds" Offset="0" BitOffset="0" Text="Eingang 2 wird alle n Sekunden gelesen (0 = nicht zyklisch lesen)" Value="0" />
       <!-- Timer setup -->
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%171" Name="f%C%Td1DuskDawn" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-DuskDawn" Text="Zeitbezug" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%179" Name="f%C%Td2DuskDawn" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-DuskDawn" Text="Zeitbezug" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%187" Name="f%C%Td3DuskDawn" Offset="1" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-DuskDawn" Text="Zeitbezug" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%195" Name="f%C%Td4DuskDawn" Offset="1" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-DuskDawn" Text="Zeitbezug" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%203" Name="f%C%Td5DuskDawn" Offset="2" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-DuskDawn" Text="Zeitbezug" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%211" Name="f%C%Td6DuskDawn" Offset="2" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-DuskDawn" Text="Zeitbezug" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%219" Name="f%C%Td7DuskDawn" Offset="3" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-DuskDawn" Text="Zeitbezug" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%227" Name="f%C%Td8DuskDawn" Offset="3" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-DuskDawn" Text="Zeitbezug" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%171" Name="f%C%Td1DuskDawn" ParameterType="M-00FA_A-0001-01-0000_PT-DuskDawn" Offset="0" BitOffset="0" Text="Zeitbezug" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%179" Name="f%C%Td2DuskDawn" ParameterType="M-00FA_A-0001-01-0000_PT-DuskDawn" Offset="0" BitOffset="4" Text="Zeitbezug" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%187" Name="f%C%Td3DuskDawn" ParameterType="M-00FA_A-0001-01-0000_PT-DuskDawn" Offset="1" BitOffset="0" Text="Zeitbezug" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%195" Name="f%C%Td4DuskDawn" ParameterType="M-00FA_A-0001-01-0000_PT-DuskDawn" Offset="1" BitOffset="4" Text="Zeitbezug" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%203" Name="f%C%Td5DuskDawn" ParameterType="M-00FA_A-0001-01-0000_PT-DuskDawn" Offset="2" BitOffset="0" Text="Zeitbezug" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%211" Name="f%C%Td6DuskDawn" ParameterType="M-00FA_A-0001-01-0000_PT-DuskDawn" Offset="2" BitOffset="4" Text="Zeitbezug" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%219" Name="f%C%Td7DuskDawn" ParameterType="M-00FA_A-0001-01-0000_PT-DuskDawn" Offset="3" BitOffset="0" Text="Zeitbezug" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%227" Name="f%C%Td8DuskDawn" ParameterType="M-00FA_A-0001-01-0000_PT-DuskDawn" Offset="3" BitOffset="4" Text="Zeitbezug" Value="0" />
     </Union>
     <!-- Parameter for input E1 and E2 -->
     <Union SizeInBit="128">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="23" BitOffset="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%115" Name="f%C%E1LowDelta" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-Delta" Text="Von-Wert" Value="-10" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%116" Name="f%C%E1HighDelta" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-Delta" Text="Bis-Wert" Value="10" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%010" Name="f%C%E1LowDpt2" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2" Text="Eingang 1 ist EIN, wenn Wert gleich" Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%098" Name="f%C%E1Low1Dpt2" Offset="1" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2" Text="... oder wenn Wert gleich " Value="4" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%099" Name="f%C%E1Low2Dpt2" Offset="2" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2" Text="... oder wenn Wert gleich " Value="4" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%100" Name="f%C%E1Low3Dpt2" Offset="3" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2" Text="... oder wenn Wert gleich " Value="4" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%011" Name="f%C%E1LowDpt5" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5" Text="Von-Wert" Value="128" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%012" Name="f%C%E1HighDpt5" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5" Text="Bis-Wert" Value="255" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%013" Name="f%C%E1LowDpt5001" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001" Text="Von-Wert" Value="50" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%014" Name="f%C%E1HighDpt5001" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001" Text="Bisrt" Value="100" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%015" Name="f%C%E1LowDpt6" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6" Text="Von-Wert" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%016" Name="f%C%E1HighDpt6" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6" Text="Bis-Wert" Value="127" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%017" Name="f%C%E1LowDpt7" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7" Text="Von-Wert" Value="32768" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%018" Name="f%C%E1HighDpt7" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7" Text="Bis-Wert" Value="65535" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%019" Name="f%C%E1LowDpt8" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8" Text="Von-Wert" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%020" Name="f%C%E1HighDpt8" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8" Text="Bis-Wert" Value="32767" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%021" Name="f%C%E1LowDpt9" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9" Text="Von-Wert" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%022" Name="f%C%E1HighDpt9" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9" Text="Bis-Wert" Value="670760" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%023" Name="f%C%E1Low0Dpt17" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Text="Eingang 1 ist EIN bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%101" Name="f%C%E1Low1Dpt17" Offset="1" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%102" Name="f%C%E1Low2Dpt17" Offset="2" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%103" Name="f%C%E1Low3Dpt17" Offset="3" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%104" Name="f%C%E1Low4Dpt17" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%105" Name="f%C%E1Low5Dpt17" Offset="5" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%106" Name="f%C%E1Low6Dpt17" Offset="6" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%107" Name="f%C%E1Low7Dpt17" Offset="7" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%024" Name="f%C%E1LowDptRGB" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB" Text="Von-Wert" Value="8388608" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%025" Name="f%C%E1HighDptRGB" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB" Text="Bis-Wert" Value="16777216" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%115" Name="f%C%E1LowDelta"    ParameterType="M-00FA_A-0001-01-0000_PT-Delta"        Offset="0"  BitOffset="0" Text="Von-Wert" Value="-10" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%116" Name="f%C%E1HighDelta"   ParameterType="M-00FA_A-0001-01-0000_PT-Delta"        Offset="4"  BitOffset="0" Text="Bis-Wert" Value="10" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%010" Name="f%C%E1LowDpt2"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"    Offset="0"  BitOffset="0" Text="Eingang 1 ist EIN, wenn Wert gleich" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%098" Name="f%C%E1Low1Dpt2"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"    Offset="1"  BitOffset="0" Text="... oder wenn Wert gleich " Value="4" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%099" Name="f%C%E1Low2Dpt2"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"    Offset="2"  BitOffset="0" Text="... oder wenn Wert gleich " Value="4" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%100" Name="f%C%E1Low3Dpt2"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"    Offset="3"  BitOffset="0" Text="... oder wenn Wert gleich " Value="4" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%011" Name="f%C%E1LowDpt5"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"    Offset="0"  BitOffset="0" Text="Von-Wert" Value="128" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%012" Name="f%C%E1HighDpt5"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"    Offset="4"  BitOffset="0" Text="Bis-Wert" Value="255" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%013" Name="f%C%E1LowDpt5001"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001" Offset="0"  BitOffset="0" Text="Von-Wert" Value="50" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%014" Name="f%C%E1HighDpt5001" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001" Offset="4"  BitOffset="0" Text="Bisrt" Value="100" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%015" Name="f%C%E1LowDpt6"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"    Offset="0"  BitOffset="0" Text="Von-Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%016" Name="f%C%E1HighDpt6"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"    Offset="4"  BitOffset="0" Text="Bis-Wert" Value="127" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%017" Name="f%C%E1LowDpt7"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7"    Offset="0"  BitOffset="0" Text="Von-Wert" Value="32768" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%018" Name="f%C%E1HighDpt7"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7"    Offset="4"  BitOffset="0" Text="Bis-Wert" Value="65535" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%019" Name="f%C%E1LowDpt8"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8"    Offset="0"  BitOffset="0" Text="Von-Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%020" Name="f%C%E1HighDpt8"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8"    Offset="4"  BitOffset="0" Text="Bis-Wert" Value="32767" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%021" Name="f%C%E1LowDpt9"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9"    Offset="0"  BitOffset="0" Text="Von-Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%022" Name="f%C%E1HighDpt9"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9"    Offset="4"  BitOffset="0" Text="Bis-Wert" Value="670760" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%023" Name="f%C%E1Low0Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="0"  BitOffset="0" Text="Eingang 1 ist EIN bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%101" Name="f%C%E1Low1Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="1"  BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%102" Name="f%C%E1Low2Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="2"  BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%103" Name="f%C%E1Low3Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="3"  BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%104" Name="f%C%E1Low4Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="4"  BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%105" Name="f%C%E1Low5Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="5"  BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%106" Name="f%C%E1Low6Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="6"  BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%107" Name="f%C%E1Low7Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="7"  BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%024" Name="f%C%E1LowDptRGB"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB"     Offset="0"  BitOffset="0" Text="Von-Wert" Value="8388608" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%025" Name="f%C%E1HighDptRGB"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB"     Offset="4"  BitOffset="0" Text="Bis-Wert" Value="16777216" />
 
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%142" Name="f%C%E2LowDelta" Offset="8" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-Delta" Text="Von-Wert" Value="-10" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%143" Name="f%C%E2HighDelta" Offset="12" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-Delta" Text="Bis-Wert" Value="10" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%030" Name="f%C%E2Low0Dpt2" Offset="8" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2" Text="Eingang 2 ist EIN, wenn Wert gleich " Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%095" Name="f%C%E2Low1Dpt2" Offset="9" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2" Text="... oder wenn Wert gleich " Value="4" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%096" Name="f%C%E2Low2Dpt2" Offset="10" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2" Text="... oder wenn Wert gleich " Value="4" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%097" Name="f%C%E2Low3Dpt2" Offset="11" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2" Text="... oder wenn Wert gleich " Value="4" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%031" Name="f%C%E2LowDpt5" Offset="8" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5" Text="Von-Wert" Value="128" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%032" Name="f%C%E2HighDpt5" Offset="12" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5" Text="Bis-Wert" Value="255" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%033" Name="f%C%E2LowDpt5001" Offset="8" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001" Text="Von-Wert" Value="50" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%034" Name="f%C%E2HighDpt5001" Offset="12" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001" Text="Bis-Wert" Value="100" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%035" Name="f%C%E2LowDpt6" Offset="8" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6" Text="Von-Wert" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%036" Name="f%C%E2HighDpt6" Offset="12" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6" Text="Bis-Wert" Value="127" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%037" Name="f%C%E2LowDpt7" Offset="8" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7" Text="Von-Wert" Value="32768" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%038" Name="f%C%E2HighDpt7" Offset="12" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7" Text="Bis-Wert" Value="65535" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%039" Name="f%C%E2LowDpt8" Offset="8" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8" Text="Von-Wert" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%040" Name="f%C%E2HighDpt8" Offset="12" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8" Text="Bis-Wert" Value="32767" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%041" Name="f%C%E2LowDpt9" Offset="8" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9" Text="Von-Wert" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%042" Name="f%C%E2HighDpt9" Offset="12" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9" Text="Bis-Wert" Value="670760" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%043" Name="f%C%E2Low0Dpt17" Offset="8" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Text="Eingang 2 ist EIN bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%108" Name="f%C%E2Low1Dpt17" Offset="9" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%109" Name="f%C%E2Low2Dpt17" Offset="10" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%110" Name="f%C%E2Low3Dpt17" Offset="11" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%111" Name="f%C%E2Low4Dpt17" Offset="12" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%112" Name="f%C%E2Low5Dpt17" Offset="13" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%113" Name="f%C%E2Low6Dpt17" Offset="14" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%114" Name="f%C%E2Low7Dpt17" Offset="15" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%044" Name="f%C%E2LowDptRGB" Offset="8" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB" Text="Von-Wert" Value="8388608" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%045" Name="f%C%E2HighDptRGB" Offset="12" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB" Text="Bis-Wert" Value="16777216" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%142" Name="f%C%E2LowDelta"    ParameterType="M-00FA_A-0001-01-0000_PT-Delta"        Offset="8"  BitOffset="0" Text="Von-Wert" Value="-10" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%143" Name="f%C%E2HighDelta"   ParameterType="M-00FA_A-0001-01-0000_PT-Delta"        Offset="12" BitOffset="0" Text="Bis-Wert" Value="10" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%030" Name="f%C%E2Low0Dpt2"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"    Offset="8"  BitOffset="0" Text="Eingang 2 ist EIN, wenn Wert gleich " Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%095" Name="f%C%E2Low1Dpt2"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"    Offset="9"  BitOffset="0" Text="... oder wenn Wert gleich " Value="4" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%096" Name="f%C%E2Low2Dpt2"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"    Offset="10" BitOffset="0" Text="... oder wenn Wert gleich " Value="4" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%097" Name="f%C%E2Low3Dpt2"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"    Offset="11" BitOffset="0" Text="... oder wenn Wert gleich " Value="4" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%031" Name="f%C%E2LowDpt5"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"    Offset="8"  BitOffset="0" Text="Von-Wert" Value="128" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%032" Name="f%C%E2HighDpt5"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"    Offset="12" BitOffset="0" Text="Bis-Wert" Value="255" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%033" Name="f%C%E2LowDpt5001"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001" Offset="8"  BitOffset="0" Text="Von-Wert" Value="50" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%034" Name="f%C%E2HighDpt5001" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001" Offset="12" BitOffset="0" Text="Bis-Wert" Value="100" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%035" Name="f%C%E2LowDpt6"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"    Offset="8"  BitOffset="0" Text="Von-Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%036" Name="f%C%E2HighDpt6"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"    Offset="12" BitOffset="0" Text="Bis-Wert" Value="127" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%037" Name="f%C%E2LowDpt7"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7"    Offset="8"  BitOffset="0" Text="Von-Wert" Value="32768" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%038" Name="f%C%E2HighDpt7"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7"    Offset="12" BitOffset="0" Text="Bis-Wert" Value="65535" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%039" Name="f%C%E2LowDpt8"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8"    Offset="8"  BitOffset="0" Text="Von-Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%040" Name="f%C%E2HighDpt8"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8"    Offset="12" BitOffset="0" Text="Bis-Wert" Value="32767" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%041" Name="f%C%E2LowDpt9"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9"    Offset="8"  BitOffset="0" Text="Von-Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%042" Name="f%C%E2HighDpt9"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9"    Offset="12" BitOffset="0" Text="Bis-Wert" Value="670760" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%043" Name="f%C%E2Low0Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="8"  BitOffset="0" Text="Eingang 2 ist EIN bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%108" Name="f%C%E2Low1Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="9"  BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%109" Name="f%C%E2Low2Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="10" BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%110" Name="f%C%E2Low3Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="11" BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%111" Name="f%C%E2Low4Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="12" BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%112" Name="f%C%E2Low5Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="13" BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%113" Name="f%C%E2Low6Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="14" BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%114" Name="f%C%E2Low7Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="15" BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%044" Name="f%C%E2LowDptRGB"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB"     Offset="8"  BitOffset="0" Text="Von-Wert" Value="8388608" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%045" Name="f%C%E2HighDptRGB"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB"     Offset="12" BitOffset="0" Text="Bis-Wert" Value="16777216" />
     </Union>
     <!-- Timer name -->
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%275" Name="f%C%TimerName" ParameterType="M-00FA_A-0001-01-0000_PT-Text40Byte" Text="Beschreibung der Zeitschaltuhr" Value="" />
     <!-- Parameter for timer daily -->
     <Union SizeInBit="128">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="23" BitOffset="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%168" Name="f%C%Td1Value" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OnOff" Text="Schaltwert" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%170" Name="f%C%Td1HourAbs" Offset="0" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-Hour" Text="Stunde" Value="31" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%172" Name="f%C%Td1HourRel" Offset="0" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-HourRel" Text="Sonnen auf-/untergang" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%173" Name="f%C%Td1MinuteAbs" Offset="0" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-Minute" Text="Minute" Value="63" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%174" Name="f%C%Td1MinuteRel" Offset="0" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-MinuteRel" Text="Minute" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%175" Name="f%C%Td1Weekday" Offset="1" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-Weekday" Text="Wochentag" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%176" Name="f%C%Td2Value" Offset="2" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OnOff" Text="Schaltwert" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%178" Name="f%C%Td2HourAbs" Offset="2" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-Hour" Text="Stunde" Value="31" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%180" Name="f%C%Td2HourRel" Offset="2" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-HourRel" Text="Sonnen auf-/untergang" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%181" Name="f%C%Td2MinuteAbs" Offset="2" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-Minute" Text="Minute" Value="63" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%182" Name="f%C%Td2MinuteRel" Offset="2" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-MinuteRel" Text="Minute" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%183" Name="f%C%Td2Weekday" Offset="3" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-Weekday" Text="Wochentag" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%184" Name="f%C%Td3Value" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OnOff" Text="Schaltwert" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%186" Name="f%C%Td3HourAbs" Offset="4" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-Hour" Text="Stunde" Value="31" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%188" Name="f%C%Td3HourRel" Offset="4" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-HourRel" Text="Sonnen auf-/untergang" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%189" Name="f%C%Td3MinuteAbs" Offset="4" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-Minute" Text="Minute" Value="63" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%190" Name="f%C%Td3MinuteRel" Offset="4" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-MinuteRel" Text="Minute" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%191" Name="f%C%Td3Weekday" Offset="5" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-Weekday" Text="Wochentag" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%192" Name="f%C%Td4Value" Offset="6" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OnOff" Text="Schaltwert" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%194" Name="f%C%Td4HourAbs" Offset="6" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-Hour" Text="Stunde" Value="31" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%196" Name="f%C%Td4HourRel" Offset="6" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-HourRel" Text="Sonnen auf-/untergang" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%197" Name="f%C%Td4MinuteAbs" Offset="6" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-Minute" Text="Minute" Value="63" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%198" Name="f%C%Td4MinuteRel" Offset="6" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-MinuteRel" Text="Minute" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%199" Name="f%C%Td4Weekday" Offset="7" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-Weekday" Text="Wochentag" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%200" Name="f%C%Td5Value" Offset="8" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OnOff" Text="Schaltwert" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%202" Name="f%C%Td5HourAbs" Offset="8" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-Hour" Text="Stunde" Value="31" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%204" Name="f%C%Td5HourRel" Offset="8" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-HourRel" Text="Sonnen auf-/untergang" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%205" Name="f%C%Td5MinuteAbs" Offset="8" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-Minute" Text="Minute" Value="63" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%206" Name="f%C%Td5MinuteRel" Offset="8" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-MinuteRel" Text="Minute" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%207" Name="f%C%Td5Weekday" Offset="9" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-Weekday" Text="Wochentag" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%208" Name="f%C%Td6Value" Offset="10" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OnOff" Text="Schaltwert" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%210" Name="f%C%Td6HourAbs" Offset="10" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-Hour" Text="Stunde" Value="31" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%212" Name="f%C%Td6HourRel" Offset="10" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-HourRel" Text="Sonnen auf-/untergang" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%213" Name="f%C%Td6MinuteAbs" Offset="10" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-Minute" Text="Minute" Value="63" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%214" Name="f%C%Td6MinuteRel" Offset="10" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-MinuteRel" Text="Minute" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%215" Name="f%C%Td6Weekday" Offset="11" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-Weekday" Text="Wochentag" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%216" Name="f%C%Td7Value" Offset="12" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OnOff" Text="Schaltwert" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%218" Name="f%C%Td7HourAbs" Offset="12" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-Hour" Text="Stunde" Value="31" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%220" Name="f%C%Td7HourRel" Offset="12" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-HourRel" Text="Sonnen auf-/untergang" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%221" Name="f%C%Td7MinuteAbs" Offset="12" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-Minute" Text="Minute" Value="63" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%222" Name="f%C%Td7MinuteRel" Offset="12" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-MinuteRel" Text="Minute" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%223" Name="f%C%Td7Weekday" Offset="13" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-Weekday" Text="Wochentag" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%224" Name="f%C%Td8Value" Offset="14" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OnOff" Text="Schaltwert" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%226" Name="f%C%Td8HourAbs" Offset="14" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-Hour" Text="Stunde" Value="31" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%228" Name="f%C%Td8HourRel" Offset="14" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-HourRel" Text="Sonnen auf-/untergang" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%229" Name="f%C%Td8MinuteAbs" Offset="14" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-Minute" Text="Minute" Value="63" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%230" Name="f%C%Td8MinuteRel" Offset="14" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-MinuteRel" Text="Minute" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%231" Name="f%C%Td8Weekday" Offset="15" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-Weekday" Text="Wochentag" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%168" Name="f%C%Td1Value"     ParameterType="M-00FA_A-0001-01-0000_PT-OnOff"     Offset="0"  BitOffset="0" Text="Schaltwert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%170" Name="f%C%Td1HourAbs"   ParameterType="M-00FA_A-0001-01-0000_PT-Hour"      Offset="0"  BitOffset="2" Text="Stunde" Value="31" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%172" Name="f%C%Td1HourRel"   ParameterType="M-00FA_A-0001-01-0000_PT-HourRel"   Offset="0"  BitOffset="2" Text="Sonnen auf-/untergang" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%173" Name="f%C%Td1MinuteAbs" ParameterType="M-00FA_A-0001-01-0000_PT-Minute"    Offset="0"  BitOffset="7" Text="Minute" Value="63" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%174" Name="f%C%Td1MinuteRel" ParameterType="M-00FA_A-0001-01-0000_PT-MinuteRel" Offset="0"  BitOffset="7" Text="Minute" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%175" Name="f%C%Td1Weekday"   ParameterType="M-00FA_A-0001-01-0000_PT-Weekday"   Offset="1"  BitOffset="5" Text="Wochentag" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%176" Name="f%C%Td2Value"     ParameterType="M-00FA_A-0001-01-0000_PT-OnOff"     Offset="2"  BitOffset="0" Text="Schaltwert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%178" Name="f%C%Td2HourAbs"   ParameterType="M-00FA_A-0001-01-0000_PT-Hour"      Offset="2"  BitOffset="2" Text="Stunde" Value="31" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%180" Name="f%C%Td2HourRel"   ParameterType="M-00FA_A-0001-01-0000_PT-HourRel"   Offset="2"  BitOffset="2" Text="Sonnen auf-/untergang" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%181" Name="f%C%Td2MinuteAbs" ParameterType="M-00FA_A-0001-01-0000_PT-Minute"    Offset="2"  BitOffset="7" Text="Minute" Value="63" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%182" Name="f%C%Td2MinuteRel" ParameterType="M-00FA_A-0001-01-0000_PT-MinuteRel" Offset="2"  BitOffset="7" Text="Minute" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%183" Name="f%C%Td2Weekday"   ParameterType="M-00FA_A-0001-01-0000_PT-Weekday"   Offset="3"  BitOffset="5" Text="Wochentag" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%184" Name="f%C%Td3Value"     ParameterType="M-00FA_A-0001-01-0000_PT-OnOff"     Offset="4"  BitOffset="0" Text="Schaltwert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%186" Name="f%C%Td3HourAbs"   ParameterType="M-00FA_A-0001-01-0000_PT-Hour"      Offset="4"  BitOffset="2" Text="Stunde" Value="31" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%188" Name="f%C%Td3HourRel"   ParameterType="M-00FA_A-0001-01-0000_PT-HourRel"   Offset="4"  BitOffset="2" Text="Sonnen auf-/untergang" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%189" Name="f%C%Td3MinuteAbs" ParameterType="M-00FA_A-0001-01-0000_PT-Minute"    Offset="4"  BitOffset="7" Text="Minute" Value="63" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%190" Name="f%C%Td3MinuteRel" ParameterType="M-00FA_A-0001-01-0000_PT-MinuteRel" Offset="4"  BitOffset="7" Text="Minute" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%191" Name="f%C%Td3Weekday"   ParameterType="M-00FA_A-0001-01-0000_PT-Weekday"   Offset="5"  BitOffset="5" Text="Wochentag" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%192" Name="f%C%Td4Value"     ParameterType="M-00FA_A-0001-01-0000_PT-OnOff"     Offset="6"  BitOffset="0" Text="Schaltwert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%194" Name="f%C%Td4HourAbs"   ParameterType="M-00FA_A-0001-01-0000_PT-Hour"      Offset="6"  BitOffset="2" Text="Stunde" Value="31" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%196" Name="f%C%Td4HourRel"   ParameterType="M-00FA_A-0001-01-0000_PT-HourRel"   Offset="6"  BitOffset="2" Text="Sonnen auf-/untergang" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%197" Name="f%C%Td4MinuteAbs" ParameterType="M-00FA_A-0001-01-0000_PT-Minute"    Offset="6"  BitOffset="7" Text="Minute" Value="63" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%198" Name="f%C%Td4MinuteRel" ParameterType="M-00FA_A-0001-01-0000_PT-MinuteRel" Offset="6"  BitOffset="7" Text="Minute" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%199" Name="f%C%Td4Weekday"   ParameterType="M-00FA_A-0001-01-0000_PT-Weekday"   Offset="7"  BitOffset="5" Text="Wochentag" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%200" Name="f%C%Td5Value"     ParameterType="M-00FA_A-0001-01-0000_PT-OnOff"     Offset="8"  BitOffset="0" Text="Schaltwert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%202" Name="f%C%Td5HourAbs"   ParameterType="M-00FA_A-0001-01-0000_PT-Hour"      Offset="8"  BitOffset="2" Text="Stunde" Value="31" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%204" Name="f%C%Td5HourRel"   ParameterType="M-00FA_A-0001-01-0000_PT-HourRel"   Offset="8"  BitOffset="2" Text="Sonnen auf-/untergang" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%205" Name="f%C%Td5MinuteAbs" ParameterType="M-00FA_A-0001-01-0000_PT-Minute"    Offset="8"  BitOffset="7" Text="Minute" Value="63" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%206" Name="f%C%Td5MinuteRel" ParameterType="M-00FA_A-0001-01-0000_PT-MinuteRel" Offset="8"  BitOffset="7" Text="Minute" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%207" Name="f%C%Td5Weekday"   ParameterType="M-00FA_A-0001-01-0000_PT-Weekday"   Offset="9"  BitOffset="5" Text="Wochentag" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%208" Name="f%C%Td6Value"     ParameterType="M-00FA_A-0001-01-0000_PT-OnOff"     Offset="10" BitOffset="0" Text="Schaltwert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%210" Name="f%C%Td6HourAbs"   ParameterType="M-00FA_A-0001-01-0000_PT-Hour"      Offset="10" BitOffset="2" Text="Stunde" Value="31" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%212" Name="f%C%Td6HourRel"   ParameterType="M-00FA_A-0001-01-0000_PT-HourRel"   Offset="10" BitOffset="2" Text="Sonnen auf-/untergang" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%213" Name="f%C%Td6MinuteAbs" ParameterType="M-00FA_A-0001-01-0000_PT-Minute"    Offset="10" BitOffset="7" Text="Minute" Value="63" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%214" Name="f%C%Td6MinuteRel" ParameterType="M-00FA_A-0001-01-0000_PT-MinuteRel" Offset="10" BitOffset="7" Text="Minute" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%215" Name="f%C%Td6Weekday"   ParameterType="M-00FA_A-0001-01-0000_PT-Weekday"   Offset="11" BitOffset="5" Text="Wochentag" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%216" Name="f%C%Td7Value"     ParameterType="M-00FA_A-0001-01-0000_PT-OnOff"     Offset="12" BitOffset="0" Text="Schaltwert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%218" Name="f%C%Td7HourAbs"   ParameterType="M-00FA_A-0001-01-0000_PT-Hour"      Offset="12" BitOffset="2" Text="Stunde" Value="31" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%220" Name="f%C%Td7HourRel"   ParameterType="M-00FA_A-0001-01-0000_PT-HourRel"   Offset="12" BitOffset="2" Text="Sonnen auf-/untergang" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%221" Name="f%C%Td7MinuteAbs" ParameterType="M-00FA_A-0001-01-0000_PT-Minute"    Offset="12" BitOffset="7" Text="Minute" Value="63" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%222" Name="f%C%Td7MinuteRel" ParameterType="M-00FA_A-0001-01-0000_PT-MinuteRel" Offset="12" BitOffset="7" Text="Minute" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%223" Name="f%C%Td7Weekday"   ParameterType="M-00FA_A-0001-01-0000_PT-Weekday"   Offset="13" BitOffset="5" Text="Wochentag" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%224" Name="f%C%Td8Value"     ParameterType="M-00FA_A-0001-01-0000_PT-OnOff"     Offset="14" BitOffset="0" Text="Schaltwert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%226" Name="f%C%Td8HourAbs"   ParameterType="M-00FA_A-0001-01-0000_PT-Hour"      Offset="14" BitOffset="2" Text="Stunde" Value="31" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%228" Name="f%C%Td8HourRel"   ParameterType="M-00FA_A-0001-01-0000_PT-HourRel"   Offset="14" BitOffset="2" Text="Sonnen auf-/untergang" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%229" Name="f%C%Td8MinuteAbs" ParameterType="M-00FA_A-0001-01-0000_PT-Minute"    Offset="14" BitOffset="7" Text="Minute" Value="63" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%230" Name="f%C%Td8MinuteRel" ParameterType="M-00FA_A-0001-01-0000_PT-MinuteRel" Offset="14" BitOffset="7" Text="Minute" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%231" Name="f%C%Td8Weekday"   ParameterType="M-00FA_A-0001-01-0000_PT-Weekday"   Offset="15" BitOffset="5" Text="Wochentag" Value="0" />
     </Union>
     <!-- Parameter for Timer Yearly -->
     <Union SizeInBit="64">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="31" BitOffset="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%232" Name="f%C%Ty1Weekday1" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Mo" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%233" Name="f%C%Ty1Weekday2" Offset="0" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Di" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%234" Name="f%C%Ty1Weekday3" Offset="0" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Mi" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%235" Name="f%C%Ty1Weekday4" Offset="0" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Do" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%236" Name="f%C%Ty1Weekday5" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Fr" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%237" Name="f%C%Ty1Weekday6" Offset="0" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Sa" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%238" Name="f%C%Ty1Weekday7" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="So" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%239" Name="f%C%Ty1Day" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-Day" Text="Tag" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%240" Name="f%C%Ty1IsWeekday" Offset="0" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-IsWeekday" Text="Wochentag" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%241" Name="f%C%Ty1Month" Offset="1" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-Month" Text="Monat" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%242" Name="f%C%Ty2Weekday1" Offset="2" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Mo" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%243" Name="f%C%Ty2Weekday2" Offset="2" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Di" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%244" Name="f%C%Ty2Weekday3" Offset="2" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Mi" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%245" Name="f%C%Ty2Weekday4" Offset="2" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Do" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%246" Name="f%C%Ty2Weekday5" Offset="2" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Fr" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%247" Name="f%C%Ty2Weekday6" Offset="2" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Sa" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%248" Name="f%C%Ty2Weekday7" Offset="2" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="So" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%249" Name="f%C%Ty2Day" Offset="2" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-Day" Text="Tag" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%250" Name="f%C%Ty2IsWeekday" Offset="2" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-IsWeekday" Text="Wochentag" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%251" Name="f%C%Ty2Month" Offset="3" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-Month" Text="Monat" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%252" Name="f%C%Ty3Weekday1" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Mo" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%253" Name="f%C%Ty3Weekday2" Offset="4" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Di" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%254" Name="f%C%Ty3Weekday3" Offset="4" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Mi" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%255" Name="f%C%Ty3Weekday4" Offset="4" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Do" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%256" Name="f%C%Ty3Weekday5" Offset="4" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Fr" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%257" Name="f%C%Ty3Weekday6" Offset="4" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Sa" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%258" Name="f%C%Ty3Weekday7" Offset="4" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="So" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%259" Name="f%C%Ty3Day" Offset="4" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-Day" Text="Tag" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%260" Name="f%C%Ty3IsWeekday" Offset="4" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-IsWeekday" Text="Wochentag" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%261" Name="f%C%Ty3Month" Offset="5" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-Month" Text="Monat" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%262" Name="f%C%Ty4Weekday1" Offset="6" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Mo" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%263" Name="f%C%Ty4Weekday2" Offset="6" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Di" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%264" Name="f%C%Ty4Weekday3" Offset="6" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Mi" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%265" Name="f%C%Ty4Weekday4" Offset="6" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Do" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%266" Name="f%C%Ty4Weekday5" Offset="6" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Fr" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%267" Name="f%C%Ty4Weekday6" Offset="6" BitOffset="5" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="Sa" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%268" Name="f%C%Ty4Weekday7" Offset="6" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox" Text="So" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%269" Name="f%C%Ty4Day" Offset="6" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-Day" Text="Tag" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%270" Name="f%C%Ty4IsWeekday" Offset="6" BitOffset="7" ParameterType="M-00FA_A-0001-01-0000_PT-IsWeekday" Text="Wochentag" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%271" Name="f%C%Ty4Month" Offset="7" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-Month" Text="Monat" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%232" Name="f%C%Ty1Weekday1"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="0" BitOffset="0" Text="Mo" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%233" Name="f%C%Ty1Weekday2"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="0" BitOffset="1" Text="Di" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%234" Name="f%C%Ty1Weekday3"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="0" BitOffset="2" Text="Mi" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%235" Name="f%C%Ty1Weekday4"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="0" BitOffset="3" Text="Do" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%236" Name="f%C%Ty1Weekday5"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="0" BitOffset="4" Text="Fr" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%237" Name="f%C%Ty1Weekday6"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="0" BitOffset="5" Text="Sa" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%238" Name="f%C%Ty1Weekday7"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="0" BitOffset="6" Text="So" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%239" Name="f%C%Ty1Day"       ParameterType="M-00FA_A-0001-01-0000_PT-Day"       Offset="0" BitOffset="0" Text="Tag" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%240" Name="f%C%Ty1IsWeekday" ParameterType="M-00FA_A-0001-01-0000_PT-IsWeekday" Offset="0" BitOffset="7" Text="Wochentag" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%241" Name="f%C%Ty1Month"     ParameterType="M-00FA_A-0001-01-0000_PT-Month"     Offset="1" BitOffset="0" Text="Monat" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%242" Name="f%C%Ty2Weekday1"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="2" BitOffset="0" Text="Mo" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%243" Name="f%C%Ty2Weekday2"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="2" BitOffset="1" Text="Di" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%244" Name="f%C%Ty2Weekday3"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="2" BitOffset="2" Text="Mi" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%245" Name="f%C%Ty2Weekday4"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="2" BitOffset="3" Text="Do" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%246" Name="f%C%Ty2Weekday5"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="2" BitOffset="4" Text="Fr" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%247" Name="f%C%Ty2Weekday6"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="2" BitOffset="5" Text="Sa" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%248" Name="f%C%Ty2Weekday7"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="2" BitOffset="6" Text="So" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%249" Name="f%C%Ty2Day"       ParameterType="M-00FA_A-0001-01-0000_PT-Day"       Offset="2" BitOffset="0" Text="Tag" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%250" Name="f%C%Ty2IsWeekday" ParameterType="M-00FA_A-0001-01-0000_PT-IsWeekday" Offset="2" BitOffset="7" Text="Wochentag" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%251" Name="f%C%Ty2Month"     ParameterType="M-00FA_A-0001-01-0000_PT-Month"     Offset="3" BitOffset="0" Text="Monat" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%252" Name="f%C%Ty3Weekday1"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="4" BitOffset="0" Text="Mo" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%253" Name="f%C%Ty3Weekday2"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="4" BitOffset="1" Text="Di" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%254" Name="f%C%Ty3Weekday3"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="4" BitOffset="2" Text="Mi" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%255" Name="f%C%Ty3Weekday4"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="4" BitOffset="3" Text="Do" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%256" Name="f%C%Ty3Weekday5"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="4" BitOffset="4" Text="Fr" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%257" Name="f%C%Ty3Weekday6"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="4" BitOffset="5" Text="Sa" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%258" Name="f%C%Ty3Weekday7"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="4" BitOffset="6" Text="So" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%259" Name="f%C%Ty3Day"       ParameterType="M-00FA_A-0001-01-0000_PT-Day"       Offset="4" BitOffset="0" Text="Tag" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%260" Name="f%C%Ty3IsWeekday" ParameterType="M-00FA_A-0001-01-0000_PT-IsWeekday" Offset="4" BitOffset="7" Text="Wochentag" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%261" Name="f%C%Ty3Month"     ParameterType="M-00FA_A-0001-01-0000_PT-Month"     Offset="5" BitOffset="0" Text="Monat" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%262" Name="f%C%Ty4Weekday1"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="6" BitOffset="0" Text="Mo" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%263" Name="f%C%Ty4Weekday2"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="6" BitOffset="1" Text="Di" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%264" Name="f%C%Ty4Weekday3"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="6" BitOffset="2" Text="Mi" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%265" Name="f%C%Ty4Weekday4"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="6" BitOffset="3" Text="Do" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%266" Name="f%C%Ty4Weekday5"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="6" BitOffset="4" Text="Fr" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%267" Name="f%C%Ty4Weekday6"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="6" BitOffset="5" Text="Sa" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%268" Name="f%C%Ty4Weekday7"  ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="6" BitOffset="6" Text="So" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%269" Name="f%C%Ty4Day"       ParameterType="M-00FA_A-0001-01-0000_PT-Day"       Offset="6" BitOffset="0" Text="Tag" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%270" Name="f%C%Ty4IsWeekday" ParameterType="M-00FA_A-0001-01-0000_PT-IsWeekday" Offset="6" BitOffset="7" Text="Wochentag" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%271" Name="f%C%Ty4Month"     ParameterType="M-00FA_A-0001-01-0000_PT-Month"     Offset="7" BitOffset="0" Text="Monat" Value="0" />
     </Union>
     <Union SizeInBit="8">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="39" BitOffset="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%048" Name="f%C%I1" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-InputEnable" Text="Kanalausgang X" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%050" Name="f%C%I2" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-InputEnable" Text="Kanalausgang Y" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%048" Name="f%C%I1" ParameterType="M-00FA_A-0001-01-0000_PT-InputEnable" Offset="0" BitOffset="0" Text="Kanalausgang X" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%050" Name="f%C%I2" ParameterType="M-00FA_A-0001-01-0000_PT-InputEnable" Offset="0" BitOffset="4" Text="Kanalausgang Y" Value="0" />
     </Union>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%049" Name="f%C%I1Function" ParameterType="M-00FA_A-0001-01-0000_PT-InputFunction" Text="Kanalausgang X als interner Eingang 1, X =" Value="0">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="40" BitOffset="0" />
@@ -258,11 +258,11 @@
     </Parameter>
     <Union SizeInBit="8">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="51" BitOffset="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%058" Name="f%C%ODelay" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Ausgang schaltet zeitverzögert" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%117" Name="f%C%ODelayOnRepeat" Offset="0" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffRepeat" Text="Erneutes EIN führt zu" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%118" Name="f%C%ODelayOnReset" Offset="0" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffReset" Text="Darauffolgendes AUS führt zu" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%119" Name="f%C%ODelayOffRepeat" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffRepeat" Text="Erneutes AUS führt zu" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%120" Name="f%C%ODelayOffReset" Offset="0" BitOffset="6" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffReset" Text="Darauffolgendes EIN führt zu" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%058" Name="f%C%ODelay"          ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo"  Offset="0" BitOffset="0" Text="Ausgang schaltet zeitverzögert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%117" Name="f%C%ODelayOnRepeat"  ParameterType="M-00FA_A-0001-01-0000_PT-OnOffRepeat" Offset="0" BitOffset="1" Text="Erneutes EIN führt zu" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%118" Name="f%C%ODelayOnReset"   ParameterType="M-00FA_A-0001-01-0000_PT-OnOffReset"  Offset="0" BitOffset="3" Text="Darauffolgendes AUS führt zu" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%119" Name="f%C%ODelayOffRepeat" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffRepeat" Offset="0" BitOffset="4" Text="Erneutes AUS führt zu" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%120" Name="f%C%ODelayOffReset"  ParameterType="M-00FA_A-0001-01-0000_PT-OnOffReset"  Offset="0" BitOffset="6" Text="Darauffolgendes EIN führt zu" Value="0" />
     </Union>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%059" Name="f%C%ODelayOn" ParameterType="M-00FA_A-0001-01-0000_PT-DelayDeziSeconds" Text="EINschalten wird um n/10 Sekunden verzögert (0 = nicht verzögern)" SuffixText="/10 Sekunden" Value="0">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="52" BitOffset="0" />
@@ -272,11 +272,11 @@
     </Parameter>
     <Union SizeInBit="8">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="60" BitOffset="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%052" Name="f%C%OStair" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Ausgang hat eine Treppenlichtfunktion" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%055" Name="f%C%ORetrigger" Offset="0" BitOffset="1" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Treppenlicht kann verlängert werden" Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%056" Name="f%C%OStairOff" Offset="0" BitOffset="2" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Treppenlicht kann ausgeschaltet werden" Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%061" Name="f%C%ORepeat" Offset="0" BitOffset="3" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Ausgang wiederholt zyklisch" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%127" Name="f%C%OOutputFilter" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-OutputFilter" Text="Wiederholungsfilter" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%052" Name="f%C%OStair"        ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo"   Offset="0" BitOffset="0" Text="Ausgang hat eine Treppenlichtfunktion" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%055" Name="f%C%ORetrigger"    ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo"   Offset="0" BitOffset="1" Text="Treppenlicht kann verlängert werden" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%056" Name="f%C%OStairOff"     ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo"   Offset="0" BitOffset="2" Text="Treppenlicht kann ausgeschaltet werden" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%061" Name="f%C%ORepeat"       ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo"   Offset="0" BitOffset="3" Text="Ausgang wiederholt zyklisch" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%127" Name="f%C%OOutputFilter" ParameterType="M-00FA_A-0001-01-0000_PT-OutputFilter" Offset="0" BitOffset="4" Text="Wiederholungsfilter" Value="0" />
     </Union>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%062" Name="f%C%ORepeatOn" ParameterType="M-00FA_A-0001-01-0000_PT-DelayDeziSeconds" Text="EIN-Telegramm wird alle n/10 Sekunden wiederholt (0 = nicht wiederholen)" SuffixText="/10 Sekunden" Value="0">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="61" BitOffset="0" />
@@ -289,60 +289,60 @@
     </Parameter>
     <Union SizeInBit="8">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="70" BitOffset="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%065" Name="f%C%OOn" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OutputSend" Text="Wert für EIN senden?" Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%134" Name="f%C%OOnBuzzer" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OutputSendBuzzer" Text="Wert für EIN senden?" Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%135" Name="f%C%OOnLed" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OutputSendLed" Text="Wert für EIN senden?" Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%136" Name="f%C%OOnAll" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OutputSendAll" Text="Wert für EIN senden?" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%065" Name="f%C%OOn"       ParameterType="M-00FA_A-0001-01-0000_PT-OutputSend"       Offset="0" BitOffset="0" Text="Wert für EIN senden?" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%134" Name="f%C%OOnBuzzer" ParameterType="M-00FA_A-0001-01-0000_PT-OutputSendBuzzer" Offset="0" BitOffset="0" Text="Wert für EIN senden?" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%135" Name="f%C%OOnLed"    ParameterType="M-00FA_A-0001-01-0000_PT-OutputSendLed"    Offset="0" BitOffset="0" Text="Wert für EIN senden?" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%136" Name="f%C%OOnAll"    ParameterType="M-00FA_A-0001-01-0000_PT-OutputSendAll"    Offset="0" BitOffset="0" Text="Wert für EIN senden?" Value="1" />
     </Union>
     <Union SizeInBit="112">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="71" BitOffset="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%140" Name="f%C%OOnTone" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueBuzzer" Text="    Wert für EIN senden als" Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%066" Name="f%C%OOnDpt1" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt1" Text="    Wert für EIN senden als" Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%067" Name="f%C%OOnDpt2" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2" Text="    Wert für EIN senden als" Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%068" Name="f%C%OOnDpt5" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5" Text="    Wert für EIN senden als " Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%069" Name="f%C%OOnDpt5001" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001" Text="    Wert für EIN senden als" Value="100" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%070" Name="f%C%OOnDpt6" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6" Text="    Wert für EIN senden als" Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%071" Name="f%C%OOnDpt7" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7" Text="    Wert für EIN senden als" Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%072" Name="f%C%OOnDpt8" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8" Text="    Wert für EIN senden als" Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%073" Name="f%C%OOnDpt9" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9" Text="    Wert für EIN senden als" Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%074" Name="f%C%OOnDpt16" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueText" Text="    Wert für EIN senden als " Value="Ein" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%075" Name="f%C%OOnDpt17" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneOut" Text="    Wert für EIN senden als " Value="2" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%076" Name="f%C%OOnRGB" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueColor" Text="    Wert für EIN senden als (3-Byte-RGB)" Value="FFFFFF" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%121" Name="f%C%OOnPAArea" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-PALine" Text="" Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%122" Name="f%C%OOnPALine" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-PALine" Text="" Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%123" Name="f%C%OOnPADevice" Offset="1" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-PADevice" Text="" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%140" Name="f%C%OOnTone"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueBuzzer"   Offset="0" BitOffset="0" Text="    Wert für EIN senden als" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%066" Name="f%C%OOnDpt1"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt1"     Offset="0" BitOffset="0" Text="    Wert für EIN senden als" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%067" Name="f%C%OOnDpt2"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"     Offset="0" BitOffset="0" Text="    Wert für EIN senden als" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%068" Name="f%C%OOnDpt5"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"     Offset="0" BitOffset="0" Text="    Wert für EIN senden als " Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%069" Name="f%C%OOnDpt5001"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001"  Offset="0" BitOffset="0" Text="    Wert für EIN senden als" Value="100" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%070" Name="f%C%OOnDpt6"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"     Offset="0" BitOffset="0" Text="    Wert für EIN senden als" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%071" Name="f%C%OOnDpt7"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7"     Offset="0" BitOffset="0" Text="    Wert für EIN senden als" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%072" Name="f%C%OOnDpt8"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8"     Offset="0" BitOffset="0" Text="    Wert für EIN senden als" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%073" Name="f%C%OOnDpt9"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9"     Offset="0" BitOffset="0" Text="    Wert für EIN senden als" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%074" Name="f%C%OOnDpt16"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueText"     Offset="0" BitOffset="0" Text="    Wert für EIN senden als " Value="Ein" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%075" Name="f%C%OOnDpt17"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneOut" Offset="0" BitOffset="0" Text="    Wert für EIN senden als " Value="2" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%076" Name="f%C%OOnRGB"      ParameterType="M-00FA_A-0001-01-0000_PT-ValueColor"    Offset="0" BitOffset="0" Text="    Wert für EIN senden als (3-Byte-RGB)" Value="FFFFFF" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%121" Name="f%C%OOnPAArea"   ParameterType="M-00FA_A-0001-01-0000_PT-PALine"        Offset="0" BitOffset="0" Text="" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%122" Name="f%C%OOnPALine"   ParameterType="M-00FA_A-0001-01-0000_PT-PALine"        Offset="0" BitOffset="4" Text="" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%123" Name="f%C%OOnPADevice" ParameterType="M-00FA_A-0001-01-0000_PT-PADevice"      Offset="1" BitOffset="0" Text="" Value="1" />
     </Union>
     <Union SizeInBit="8">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="85" BitOffset="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%077" Name="f%C%OOff" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OutputSend" Text="Wert für AUS senden?" Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%137" Name="f%C%OOffBuzzer" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OutputSendBuzzer" Text="Wert für AUS senden?" Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%138" Name="f%C%OOffLed" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OutputSendLed" Text="Wert für AUS senden?" Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%139" Name="f%C%OOffAll" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-OutputSendAll" Text="Wert für AUS senden?" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%077" Name="f%C%OOff"       ParameterType="M-00FA_A-0001-01-0000_PT-OutputSend"       Offset="0" BitOffset="0" Text="Wert für AUS senden?" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%137" Name="f%C%OOffBuzzer" ParameterType="M-00FA_A-0001-01-0000_PT-OutputSendBuzzer" Offset="0" BitOffset="0" Text="Wert für AUS senden?" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%138" Name="f%C%OOffLed"    ParameterType="M-00FA_A-0001-01-0000_PT-OutputSendLed"    Offset="0" BitOffset="0" Text="Wert für AUS senden?" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%139" Name="f%C%OOffAll"    ParameterType="M-00FA_A-0001-01-0000_PT-OutputSendAll"    Offset="0" BitOffset="0" Text="Wert für AUS senden?" Value="1" />
     </Union>
     <Union SizeInBit="112">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="86" BitOffset="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%141" Name="f%C%OOffTone" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueBuzzer" Text="    Wert für AUS senden als" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%078" Name="f%C%OOffDpt1" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt1" Text="    Wert für AUS senden als" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%079" Name="f%C%OOffDpt2" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2" Text="    Wert für AUS senden als" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%080" Name="f%C%OOffDpt5" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5" Text="    Wert für AUS senden als" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%081" Name="f%C%OOffDpt5001" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001" Text="    Wert für AUS senden als" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%082" Name="f%C%OOffDpt6" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6" Text="    Wert für AUS senden als" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%083" Name="f%C%OOffDpt7" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7" Text="    Wert für AUS senden als" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%084" Name="f%C%OOffDpt8" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8" Text="    Wert für AUS senden als" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%085" Name="f%C%OOffDpt9" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9" Text="    Wert für AUS senden als" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%086" Name="f%C%OOffDpt16" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueText" Text="    Wert für AUS senden als" Value="Aus" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%087" Name="f%C%OOffDpt17" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneOut" Text="    Wert für AUS senden als " Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%088" Name="f%C%OOffRGB" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-ValueColor" Text="    Wert für AUS senden als (3-Byte-RGB)" Value="000000" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%124" Name="f%C%OOffPAArea" Offset="0" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-PALine" Text="" Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%125" Name="f%C%OOffPALine" Offset="0" BitOffset="4" ParameterType="M-00FA_A-0001-01-0000_PT-PALine" Text="" Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%126" Name="f%C%OOffPADevice" Offset="1" BitOffset="0" ParameterType="M-00FA_A-0001-01-0000_PT-PADevice" Text="" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%141" Name="f%C%OOffTone"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueBuzzer"   Offset="0" BitOffset="0" Text="    Wert für AUS senden als" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%078" Name="f%C%OOffDpt1"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt1"     Offset="0" BitOffset="0" Text="    Wert für AUS senden als" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%079" Name="f%C%OOffDpt2"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"     Offset="0" BitOffset="0" Text="    Wert für AUS senden als" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%080" Name="f%C%OOffDpt5"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"     Offset="0" BitOffset="0" Text="    Wert für AUS senden als" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%081" Name="f%C%OOffDpt5001"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001"  Offset="0" BitOffset="0" Text="    Wert für AUS senden als" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%082" Name="f%C%OOffDpt6"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"     Offset="0" BitOffset="0" Text="    Wert für AUS senden als" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%083" Name="f%C%OOffDpt7"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7"     Offset="0" BitOffset="0" Text="    Wert für AUS senden als" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%084" Name="f%C%OOffDpt8"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8"     Offset="0" BitOffset="0" Text="    Wert für AUS senden als" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%085" Name="f%C%OOffDpt9"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9"     Offset="0" BitOffset="0" Text="    Wert für AUS senden als" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%086" Name="f%C%OOffDpt16"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueText"     Offset="0" BitOffset="0" Text="    Wert für AUS senden als" Value="Aus" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%087" Name="f%C%OOffDpt17"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneOut" Offset="0" BitOffset="0" Text="    Wert für AUS senden als " Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%088" Name="f%C%OOffRGB"      ParameterType="M-00FA_A-0001-01-0000_PT-ValueColor"    Offset="0" BitOffset="0" Text="    Wert für AUS senden als (3-Byte-RGB)" Value="000000" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%124" Name="f%C%OOffPAArea"   ParameterType="M-00FA_A-0001-01-0000_PT-PALine"        Offset="0" BitOffset="0" Text="" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%125" Name="f%C%OOffPALine"   ParameterType="M-00FA_A-0001-01-0000_PT-PALine"        Offset="0" BitOffset="4" Text="" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%126" Name="f%C%OOffPADevice" ParameterType="M-00FA_A-0001-01-0000_PT-PADevice"      Offset="1" BitOffset="0" Text="" Value="1" />
     </Union>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%128" Name="f%C%NameInput1" ParameterType="M-00FA_A-0001-01-0000_PT-Text40Byte" Text="Beschreibung Eingang 1" Value="" />
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%129" Name="f%C%NameInput2" ParameterType="M-00FA_A-0001-01-0000_PT-Text40Byte" Text="Beschreibung Eingang 2" Value="" />
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%132" Name="f%C%NameOutput" ParameterType="M-00FA_A-0001-01-0000_PT-Text40Byte" Text="Beschreibung Ausgang" Value="" />
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%133" Name="f%C%AnyInputActive" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Irgendein Eingang aktiv (interner Wert)" Value="0" Access="None" />
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%144" Name="f%C%E1AnySceneChosen" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5" Text="Eingang1: Welches Szenenfeld wird benutzt (interner Wert)" Value="0" Access="None" />
-    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%145" Name="f%C%E2AnySceneChosen" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5" Text="Eingang2: Welches Szenenfeld wird benutzt (interner Wert)" Value="0" Access="None" />
+    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%133" Name="f%C%AnyInputActive" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="Irgendein Eingang aktiv (interner Wert)"                    Access="None" Value="0" />
+    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%144" Name="f%C%E1AnySceneChosen" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5" Text="Eingang1: Welches Szenenfeld wird benutzt (interner Wert)" Access="None" Value="0" />
+    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%145" Name="f%C%E2AnySceneChosen" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5" Text="Eingang2: Welches Szenenfeld wird benutzt (interner Wert)" Access="None" Value="0" />
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%146" Name="f%C%E1Low0Dpt17Input" ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Text="Eingang 1 ist EIN bei Szene" Value="0" />
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%147" Name="f%C%E1Low1Dpt17Input" ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Text="... oder bei Szene" Value="0" />
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%148" Name="f%C%E1Low2Dpt17Input" ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Text="... oder bei Szene" Value="0" />
@@ -444,10 +444,10 @@
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%051_R-%C%0511" RefId="M-00FA_A-0001-01-0000_P-%C%051" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%052_R-%C%0521" RefId="M-00FA_A-0001-01-0000_UP-%C%052" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%053_R-%C%0531" RefId="M-00FA_A-0001-01-0000_P-%C%053" />
-    <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%054_R-%C%0541" RefId="M-00FA_A-0001-01-0000_P-%C%054" Value="50" SuffixText="/10 Sekunden" />
-    <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%054_R-%C%0542" RefId="M-00FA_A-0001-01-0000_P-%C%054" Value="10" SuffixText="Sekunden" />
-    <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%054_R-%C%0543" RefId="M-00FA_A-0001-01-0000_P-%C%054" Value="2" SuffixText="Minuten" />
-    <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%054_R-%C%0544" RefId="M-00FA_A-0001-01-0000_P-%C%054" Value="1" SuffixText="Stunden" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%054_R-%C%0541" RefId="M-00FA_A-0001-01-0000_P-%C%054" SuffixText="/10 Sekunden" Value="50" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%054_R-%C%0542" RefId="M-00FA_A-0001-01-0000_P-%C%054" SuffixText="Sekunden"     Value="10" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%054_R-%C%0543" RefId="M-00FA_A-0001-01-0000_P-%C%054" SuffixText="Minuten"      Value="2"  />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%054_R-%C%0544" RefId="M-00FA_A-0001-01-0000_P-%C%054" SuffixText="Stunden"      Value="1"  />
     <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%055_R-%C%0551" RefId="M-00FA_A-0001-01-0000_UP-%C%055" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%056_R-%C%0561" RefId="M-00FA_A-0001-01-0000_UP-%C%056" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%057_R-%C%0571" RefId="M-00FA_A-0001-01-0000_P-%C%057" />
@@ -671,42 +671,42 @@
     <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%276_R-%C%2761" RefId="M-00FA_A-0001-01-0000_UP-%C%276" />
   </ParameterRefs>
   <ComObjectTable>
-    <ComObject Id="M-00FA_A-0001-01-0000_O-%K0%" Name="KOf%C%E1" Number="%K0%" Text="Eingang 1" FunctionText="Logik %C%, Eingang 1" ObjectSize="1 Bit" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" />
-    <ComObject Id="M-00FA_A-0001-01-0000_O-%K1%" Name="KOf%C%E2" Number="%K1%" Text="Eingang 2" FunctionText="Logik %C%, Eingang 2" ObjectSize="1 Bit" ReadFlag="Disabled" WriteFlag="Enabled" CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled" ReadOnInitFlag="Disabled" />
-    <ComObject Id="M-00FA_A-0001-01-0000_O-%K2%" Name="KOf%C%O" Number="%K2%" Text="Ausgang" FunctionText="Logik %C%, Ausgang" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" />
+    <ComObject Id="M-00FA_A-0001-01-0000_O-%K0%" Name="KOf%C%E1" Text="Eingang 1" Number="%K0%" FunctionText="Logik %C%, Eingang 1" ObjectSize="1 Bit" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled"  ReadOnInitFlag="Disabled" />
+    <ComObject Id="M-00FA_A-0001-01-0000_O-%K1%" Name="KOf%C%E2" Text="Eingang 2" Number="%K1%" FunctionText="Logik %C%, Eingang 2" ObjectSize="1 Bit" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled"  ReadOnInitFlag="Disabled" />
+    <ComObject Id="M-00FA_A-0001-01-0000_O-%K2%" Name="KOf%C%O"  Text="Ausgang"   Number="%K2%" FunctionText="Logik %C%, Ausgang"   ObjectSize="1 Bit" ReadFlag="Enabled"  WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled"  UpdateFlag="Disabled" ReadOnInitFlag="Disabled" />
   </ComObjectTable>
   <ComObjectRefs>
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%01" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="1 Bit" DatapointType="DPST-1-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%02" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="2 Bit" DatapointType="DPST-2-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%03" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="1 Byte" DatapointType="DPST-5-10" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%04" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="1 Byte" DatapointType="DPST-5-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%05" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="1 Byte" DatapointType="DPST-6-10" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%06" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="2 Bytes" DatapointType="DPST-7-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%07" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="2 Bytes" DatapointType="DPST-8-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%08" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="2 Bytes" DatapointType="DPST-9-2" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%09" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="14 Bytes" DatapointType="DPST-16-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%10" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="1 Byte" DatapointType="DPST-17-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%11" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" ObjectSize="3 Bytes" DatapointType="DPST-232-600" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%01" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="1 Bit" DatapointType="DPST-1-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%02" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="2 Bit" DatapointType="DPST-2-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%03" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="1 Byte" DatapointType="DPST-5-10" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%04" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="1 Byte" DatapointType="DPST-5-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%05" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="1 Byte" DatapointType="DPST-6-10" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%06" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="2 Bytes" DatapointType="DPST-7-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%07" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="2 Bytes" DatapointType="DPST-8-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%08" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="2 Bytes" DatapointType="DPST-9-2" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%09" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="1 Byte" DatapointType="DPST-17-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%10" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" ObjectSize="3 Bytes" DatapointType="DPST-232-600" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%01" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="1 Bit" DatapointType="DPST-1-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%02" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="2 Bit" DatapointType="DPST-2-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%03" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="1 Byte" DatapointType="DPST-5-10" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%04" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="1 Byte" DatapointType="DPST-5-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%05" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="1 Byte" DatapointType="DPST-6-10" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%06" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="2 Bytes" DatapointType="DPST-7-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%07" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="2 Bytes" DatapointType="DPST-8-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%08" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="2 Bytes" DatapointType="DPST-9-2" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%09" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="1 Byte" DatapointType="DPST-17-1" />
-    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%10" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" ObjectSize="3 Bytes" DatapointType="DPST-232-600" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%01" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}"   ObjectSize="1 Bit"    DatapointType="DPST-1-1"     TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%02" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}"   ObjectSize="2 Bit"    DatapointType="DPST-2-1"     TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%03" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}"   ObjectSize="1 Byte"   DatapointType="DPST-5-10"    TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%04" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}"   ObjectSize="1 Byte"   DatapointType="DPST-5-1"     TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%05" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}"   ObjectSize="1 Byte"   DatapointType="DPST-6-10"    TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%06" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}"   ObjectSize="2 Bytes"  DatapointType="DPST-7-1"     TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%07" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}"   ObjectSize="2 Bytes"  DatapointType="DPST-8-1"     TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%08" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}"   ObjectSize="2 Bytes"  DatapointType="DPST-9-2"     TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%09" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}"   ObjectSize="14 Bytes" DatapointType="DPST-16-1"    TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%10" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}"   ObjectSize="1 Byte"   DatapointType="DPST-17-1"    TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%11" RefId="M-00FA_A-0001-01-0000_O-%K2%" Text="{{0:Ausgang}}"   ObjectSize="3 Bytes"  DatapointType="DPST-232-600" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%132_R-%C%1321" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%01" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" ObjectSize="1 Bit"    DatapointType="DPST-1-1"     TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%02" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" ObjectSize="2 Bit"    DatapointType="DPST-2-1"     TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%03" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" ObjectSize="1 Byte"   DatapointType="DPST-5-10"    TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%04" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" ObjectSize="1 Byte"   DatapointType="DPST-5-1"     TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%05" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" ObjectSize="1 Byte"   DatapointType="DPST-6-10"    TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%06" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" ObjectSize="2 Bytes"  DatapointType="DPST-7-1"     TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%07" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" ObjectSize="2 Bytes"  DatapointType="DPST-8-1"     TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%08" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" ObjectSize="2 Bytes"  DatapointType="DPST-9-2"     TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%09" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" ObjectSize="1 Byte"   DatapointType="DPST-17-1"    TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%10" RefId="M-00FA_A-0001-01-0000_O-%K0%" Text="{{0:Eingang 1}}" ObjectSize="3 Bytes"  DatapointType="DPST-232-600" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%01" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" ObjectSize="1 Bit"    DatapointType="DPST-1-1"     TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%02" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" ObjectSize="2 Bit"    DatapointType="DPST-2-1"     TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%03" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" ObjectSize="1 Byte"   DatapointType="DPST-5-10"    TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%04" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" ObjectSize="1 Byte"   DatapointType="DPST-5-1"     TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%05" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" ObjectSize="1 Byte"   DatapointType="DPST-6-10"    TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%06" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" ObjectSize="2 Bytes"  DatapointType="DPST-7-1"     TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%07" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" ObjectSize="2 Bytes"  DatapointType="DPST-8-1"     TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%08" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" ObjectSize="2 Bytes"  DatapointType="DPST-9-2"     TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%09" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" ObjectSize="1 Byte"   DatapointType="DPST-17-1"    TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" />
+    <ComObjectRef Id="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%10" RefId="M-00FA_A-0001-01-0000_O-%K1%" Text="{{0:Eingang 2}}" ObjectSize="3 Bytes"  DatapointType="DPST-232-600" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" />
   </ComObjectRefs>
   <Dynamic>
     <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-%C%17" Name="f%C%Logic" Text="Logik %C%: {{0:unbenannt}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%001_R-%C%0011">
@@ -837,18 +837,6 @@
           <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%008_R-%C%0081">
             <when test="!=0">
               <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-%C%12" Name="f%C%ExtInput1" Text="Eingang 1: {{0:Wert}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281">
-                <!-- The following parameter are invisible and just for internal DPT17 dropdown processing -->
-                <!-- <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%144_R-%C%1441" />
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%023_R-%C%0231" />
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%101_R-%C%1011" />
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%102_R-%C%1021" />
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%103_R-%C%1031" />
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%104_R-%C%1041" />
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%105_R-%C%1051" />
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%106_R-%C%1061" />
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%107_R-%C%1071" /> -->
-
-                <!-- Now we start with visible parameter -->
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%128_R-%C%1281" />
                 <choose ParamRefId="M-00FA_A-0001-01-0000_P-%C%003_R-%C%0031">
                   <when test="4">
@@ -1038,74 +1026,6 @@
                         <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%106_R-%C%1061" />
                         <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%107_R-%C%1071" />
 
-                        <!-- <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%146_R-%C%1461" />
-                        <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%023_R-%C%0231" SourceParamRefRef="M-00FA_A-0001-01-0000_P-%C%146_R-%C%1461" />
-                        <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_P-%C%144_R-%C%1441" Value="0" />
-                        <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%023_R-%C%0231">
-                          <when test=">0">
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_P-%C%144_R-%C%1441" Value="1" />
-                          </when>
-                        </choose>
-                        <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%101_R-%C%1011">
-                          <when test=">0">
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_P-%C%144_R-%C%1441" Value="2" />
-                          </when>
-                        </choose>
-                        <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%102_R-%C%1021">
-                          <when test=">0">
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_P-%C%144_R-%C%1441" Value="3" />
-                          </when>
-                        </choose>
-                        <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%103_R-%C%1031">
-                          <when test=">0">
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_P-%C%144_R-%C%1441" Value="4" />
-                          </when>
-                        </choose>
-                        <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%104_R-%C%1041">
-                          <when test=">0">
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_P-%C%144_R-%C%1441" Value="5" />
-                          </when>
-                        </choose>
-                        <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%105_R-%C%1051">
-                          <when test=">0">
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_P-%C%144_R-%C%1441" Value="6" />
-                          </when>
-                        </choose>
-                        <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%106_R-%C%1061">
-                          <when test=">0">
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_P-%C%144_R-%C%1441" Value="7" />
-                          </when>
-                        </choose>
-                        <choose ParamRefId="M-00FA_A-0001-01-0000_P-%C%144_R-%C%1441">
-                          <when test=">0">
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%147_R-%C%1471" />
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%101_R-%C%1011" SourceParamRefRef="M-00FA_A-0001-01-0000_P-%C%147_R-%C%1471" />
-                          </when>
-                          <when test=">1">
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%148_R-%C%1481" />
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%102_R-%C%1021" SourceParamRefRef="M-00FA_A-0001-01-0000_P-%C%148_R-%C%1481" />
-                          </when>
-                          <when test=">2">
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%149_R-%C%1491" />
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%103_R-%C%1031" SourceParamRefRef="M-00FA_A-0001-01-0000_P-%C%149_R-%C%1491" />
-                          </when>
-                          <when test=">3">
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%150_R-%C%1501" />
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%104_R-%C%1041" SourceParamRefRef="M-00FA_A-0001-01-0000_P-%C%150_R-%C%1501" />
-                          </when>
-                          <when test=">4">
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%151_R-%C%1511" />
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%105_R-%C%1051" SourceParamRefRef="M-00FA_A-0001-01-0000_P-%C%151_R-%C%1511" />
-                          </when>
-                          <when test=">5">
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%152_R-%C%1521" />
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%106_R-%C%1061" SourceParamRefRef="M-00FA_A-0001-01-0000_P-%C%152_R-%C%1521" />
-                          </when>
-                          <when test=">6">
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%153_R-%C%1531" />
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%107_R-%C%1071" SourceParamRefRef="M-00FA_A-0001-01-0000_P-%C%153_R-%C%1531" />
-                          </when>
-                        </choose> -->
                       </when>
                       <when test="10">
                         <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%10" />
@@ -1221,18 +1141,7 @@
           <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%028_R-%C%0281">
             <when test="!=0">
               <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-%C%14" Name="f%C%ExtInput2" Text="Eingang 2: {{0:Wert}}" TextParameterRefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291">
-                <!-- The following parameter are invisible and just for internal DPT17 dropdown processing -->
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%145_R-%C%1451" />
-                <!-- <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%043_R-%C%0431" />
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%108_R-%C%1081" />
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%109_R-%C%1091" />
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%110_R-%C%1101" />
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%111_R-%C%1111" />
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%112_R-%C%1121" />
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%113_R-%C%1131" />
-                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%114_R-%C%1141" /> -->
-
-                <!-- Now we start with visible parameter -->
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%129_R-%C%1291" />
                 <choose ParamRefId="M-00FA_A-0001-01-0000_P-%C%003_R-%C%0031">
                   <when test="4">
@@ -1422,74 +1331,6 @@
                         <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%113_R-%C%1131" />
                         <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%114_R-%C%1141" />
 
-                        <!-- <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%154_R-%C%1541" />
-                        <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%043_R-%C%0431" SourceParamRefRef="M-00FA_A-0001-01-0000_P-%C%154_R-%C%1541" />
-                        <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_P-%C%145_R-%C%1451" Value="0" />
-                        <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%043_R-%C%0431">
-                          <when test=">0">
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_P-%C%145_R-%C%1451" Value="1" />
-                          </when>
-                        </choose>
-                        <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%108_R-%C%1081">
-                          <when test=">0">
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_P-%C%145_R-%C%1451" Value="2" />
-                          </when>
-                        </choose>
-                        <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%109_R-%C%1091">
-                          <when test=">0">
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_P-%C%145_R-%C%1451" Value="3" />
-                          </when>
-                        </choose>
-                        <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%110_R-%C%1101">
-                          <when test=">0">
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_P-%C%145_R-%C%1451" Value="4" />
-                          </when>
-                        </choose>
-                        <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%111_R-%C%1111">
-                          <when test=">0">
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_P-%C%145_R-%C%1451" Value="5" />
-                          </when>
-                        </choose>
-                        <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%112_R-%C%1121">
-                          <when test=">0">
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_P-%C%145_R-%C%1451" Value="6" />
-                          </when>
-                        </choose>
-                        <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%113_R-%C%1131">
-                          <when test=">0">
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_P-%C%145_R-%C%1451" Value="7" />
-                          </when>
-                        </choose>
-                        <choose ParamRefId="M-00FA_A-0001-01-0000_P-%C%145_R-%C%1451">
-                          <when test=">0">
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%155_R-%C%1551" />
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%108_R-%C%1081" SourceParamRefRef="M-00FA_A-0001-01-0000_P-%C%155_R-%C%1551" />
-                          </when>
-                          <when test=">1">
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%156_R-%C%1561" />
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%109_R-%C%1091" SourceParamRefRef="M-00FA_A-0001-01-0000_P-%C%156_R-%C%1561" />
-                          </when>
-                          <when test=">2">
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%157_R-%C%1571" />
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%110_R-%C%1101" SourceParamRefRef="M-00FA_A-0001-01-0000_P-%C%157_R-%C%1571" />
-                          </when>
-                          <when test=">3">
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%158_R-%C%1581" />
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%111_R-%C%1111" SourceParamRefRef="M-00FA_A-0001-01-0000_P-%C%158_R-%C%1581" />
-                          </when>
-                          <when test=">4">
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%159_R-%C%1591" />
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%112_R-%C%1121" SourceParamRefRef="M-00FA_A-0001-01-0000_P-%C%159_R-%C%1591" />
-                          </when>
-                          <when test=">5">
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%160_R-%C%1601" />
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%113_R-%C%1131" SourceParamRefRef="M-00FA_A-0001-01-0000_P-%C%160_R-%C%1601" />
-                          </when>
-                          <when test=">6">
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%161_R-%C%1611" />
-                            <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%114_R-%C%1141" SourceParamRefRef="M-00FA_A-0001-01-0000_P-%C%161_R-%C%1611" />
-                          </when>
-                        </choose> -->
                       </when>
                       <when test="10">
                         <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%10" />
@@ -1972,15 +1813,11 @@
                   <when test="0">
                     <!-- No Buzzer, no Led -->
                     <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%065_R-%C%0651" />
-                    <!-- <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%134_R-%C%1341" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%065_R-%C%0651" /> -->
-                    <!-- <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%135_R-%C%1351" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%065_R-%C%0651" /> -->
                     <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%136_R-%C%1361" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%065_R-%C%0651" />
                   </when>
                   <when test="1">
                     <!-- No Buzzer, only Led -->
                     <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%135_R-%C%1351" />
-                    <!-- <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%065_R-%C%0651" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%135_R-%C%1351" /> -->
-                    <!-- <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%134_R-%C%1341" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%135_R-%C%1351" /> -->
                     <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%136_R-%C%1361" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%135_R-%C%1351" />
                   </when>
                 </choose>
@@ -1990,16 +1827,11 @@
                   <when test="0">
                     <!-- Only Buzzer, no Led -->
                     <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%134_R-%C%1341" />
-                    <!-- <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%065_R-%C%0651" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%134_R-%C%1341" /> -->
-                    <!-- <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%135_R-%C%1351" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%134_R-%C%1341" /> -->
                     <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%136_R-%C%1361" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%134_R-%C%1341" />
                   </when>
                   <when test="1">
                     <!-- Both Buzzer and Led -->
                     <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%136_R-%C%1361" />
-                    <!-- <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%065_R-%C%0651" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%136_R-%C%1361" /> -->
-                    <!-- <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%135_R-%C%1351" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%136_R-%C%1361" /> -->
-                    <!-- <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%134_R-%C%1341" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%136_R-%C%1361" /> -->
                   </when>
                 </choose>
               </when>
@@ -2058,9 +1890,9 @@
                   </Columns>
                   <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    Physikalische Adresse" Cell="1,1" />
                   <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%121_R-%C%1211" Cell="1,2" />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="." Cell="1,3" UIHint="Headline" />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="." UIHint="Headline" Cell="1,3" />
                   <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%122_R-%C%1221" Cell="1,4" />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="." Cell="1,5" UIHint="Headline" />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="." UIHint="Headline" Cell="1,5" />
                   <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%123_R-%C%1231" Cell="1,6" />
                 </ParameterBlock>
               </when>
@@ -2077,15 +1909,11 @@
                   <when test="0">
                     <!-- No Buzzer, no Led -->
                     <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%077_R-%C%0771" />
-                    <!-- <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%138_R-%C%1381" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%077_R-%C%0771" /> -->
-                    <!-- <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%137_R-%C%1371" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%077_R-%C%0771" /> -->
                     <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%139_R-%C%1391" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%077_R-%C%0771" />
                   </when>
                   <when test="1">
                     <!-- No Buzzer, only Led -->
                     <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%138_R-%C%1381" />
-                    <!-- <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%077_R-%C%0771" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%138_R-%C%1381" /> -->
-                    <!-- <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%137_R-%C%1371" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%138_R-%C%1381" /> -->
                     <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%139_R-%C%1391" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%138_R-%C%1381" />
                   </when>
                 </choose>
@@ -2095,16 +1923,11 @@
                   <when test="0">
                     <!-- Only Buzzer, no Led -->
                     <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%137_R-%C%1371" />
-                    <!-- <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%077_R-%C%0771" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%137_R-%C%1371" /> -->
-                    <!-- <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%138_R-%C%1381" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%137_R-%C%1371" /> -->
                     <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%139_R-%C%1391" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%137_R-%C%1371" />
                   </when>
                   <when test="1">
                     <!-- Both Buzzer and Led -->
                     <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%139_R-%C%1391" />
-                    <!-- <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%077_R-%C%0771" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%139_R-%C%1391" /> -->
-                    <!-- <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%137_R-%C%1371" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%139_R-%C%1391" /> -->
-                    <!-- <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%138_R-%C%1381" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%139_R-%C%1391" /> -->
                   </when>
                 </choose>
               </when>
@@ -2163,9 +1986,9 @@
                   </Columns>
                   <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    Physikalische Adresse" Cell="1,1" />
                   <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%124_R-%C%1241" Cell="1,2" />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="." Cell="1,3" UIHint="Headline" />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="." UIHint="Headline" Cell="1,3" />
                   <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%125_R-%C%1251" Cell="1,4" />
-                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="." Cell="1,5" UIHint="Headline" />
+                  <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="." UIHint="Headline" Cell="1,5" />
                   <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%126_R-%C%1261" Cell="1,6" />
                 </ParameterBlock>
               </when>
