@@ -311,7 +311,7 @@ class LogicChannel
 
     // instance
     /* Runtime information per channel */
-    uint8_t pTriggerIO;        // Bitfield: Which input (0-3) triggered processing, output (4) is triggering further processing
+    uint8_t pTriggerIO;        // Bitfield: Which input (0-3) triggered processing, Bit 4-7 are not used
     uint8_t pValidActiveIO;    // Bitfield: validity flags for input (0-3) values and active inputs (4-7)
     uint8_t pCurrentIO;        // Bitfield: current input (0-3), current output (4), first processing (5), previous gate (6) and previous output (7) values
     uint32_t pCurrentPipeline; // Bitfield: indicator for current pipeline step

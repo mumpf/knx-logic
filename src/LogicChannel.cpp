@@ -963,8 +963,6 @@ void LogicChannel::processLogic()
                 // set the output value (first delete BIT_OUTPUT and then set the value
                 // of lNewOutput)
                 pCurrentIO = (pCurrentIO & ~BIT_OUTPUT) | lNewOutput << 4;
-                // set the output trigger bit
-                pTriggerIO |= BIT_OUTPUT;
                 // in case that first processing should be skipped, this happens here
                 if (pCurrentIO & BIT_FIRST_PROCESSING || lHandleFirstProcessing == BIT_FIRST_PROCESSING)
                 {
@@ -1007,9 +1005,8 @@ void LogicChannel::processLogic()
     }
 #endif
     pCurrentIODebug = pCurrentIO;
-    // we have to delete all trigger if output pipeline is not started
-    if (!lOutputSent)
-        pTriggerIO = 0;
+    // reset trigger as soon as this logic is executed
+    pTriggerIO = 0;
 }
 
 void LogicChannel::startStairlight(bool iOutput)
@@ -1604,8 +1601,6 @@ void LogicChannel::processOutput(bool iValue)
                 break;
         }
     }
-    // any valid output removes all input trigger
-    pTriggerIO = 0;
 }
 
 bool LogicChannel::checkDpt(uint8_t iIOIndex, uint8_t iDpt)
