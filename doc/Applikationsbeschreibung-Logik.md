@@ -29,6 +29,16 @@ Im folgenden werden Änderungen an dem Dokument erfasst, damit man nicht immer d
 * Neues Kapitel 'Zeitschaltuhren'
 * Anpassung im Kapitel 'Uhrzeit und Datum nach einem Neustart vom Bus lesen'
 
+20.02.2021: Fi
+rmware 2.1.0, Applikation 2.0 - 2.3
+
+* Firmware-Only-Fix: TOR war unvollständig implementiert und verhielt sich nicht so wie beschrieben. Das ist nun behoben. Der Fix hat aber das bisherige (falsche) Verhalten geändert. **Logiken, die TOR benutzen, sollten neu getestet werden.**
+* Firmware-Only-Fix: Falls man das S-Flag an einem Ausgangs-KO gesetzt hat, haben Schreibvorgänge fälschlicherweise den externen Eingang 2 beeinflusst. Dies ist nur korrigiert und ein Ausgangs-KO kann normal zur Zwischenspeicherung von Werten verwendet werden.
+
+27.02.2021: Firmware 2.1.1, Applikation 2.0 - 2.3
+
+* Firmware-Only-Fix: Die interne Behandlung, wann ein Eingang, der eine Logikfunktion triggert, diese Triggereigenschaft verliert, war nicht korrekt. Das konnte dazu führen, dass auch nicht-triggernde Eingänge die Logikauswertung getriggert haben. Beispiel: E1 triggert ein UND, E2 nicht. E1 und E2 sind AUS. Wenn jetzt E1 auf AN geht, triggert er das UND, Ergebnis ist 0. Wenn jetzt E2 auf AN geht, bevor bevor das Ergebnis der vorherigen Auswertung auf den Bus gesendet wurde, würde das AN von E2 auch triggern und das UND ein AN liefern. Das war nicht korrekt und ist jetzt korrigiert.
+
 <div style="page-break-after: always;"></div>
 
 ## Allgemeine Parameter
