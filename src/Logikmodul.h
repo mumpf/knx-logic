@@ -26,9 +26,9 @@
 #define LOG_HolidayKo                  9      // 1 Bit, Bit 1
 #define     LOG_HolidayKoMask 0x02
 #define     LOG_HolidayKoShift 1
-#define LOG_VacationRead               9      // 1 Bit, Bit 1
-#define     LOG_VacationReadMask 0x02
-#define     LOG_VacationReadShift 1
+#define LOG_VacationRead               9      // 1 Bit, Bit 0
+#define     LOG_VacationReadMask 0x01
+#define     LOG_VacationReadShift 0
 #define LOG_HolidaySend               10      // 1 Bit, Bit 7
 #define     LOG_HolidaySendMask 0x80
 #define     LOG_HolidaySendShift 7
@@ -142,6 +142,9 @@
 #define LOG_fDisable                   5      // 1 Bit, Bit 2
 #define     LOG_fDisableMask 0x04
 #define     LOG_fDisableShift 2
+#define LOG_fAlarm                     5      // 1 Bit, Bit 3
+#define     LOG_fAlarmMask 0x08
+#define     LOG_fAlarmShift 3
 #define LOG_fTrigger                   6      // 8 Bits, Bit 7-0
 #define LOG_fTriggerE1                 6      // 1 Bit, Bit 0
 #define     LOG_fTriggerE1Mask 0x01
@@ -616,4 +619,6 @@
 #define LOG_KoHoliday1 5
 #define LOG_KoHoliday2 6
 #define LOG_KoDiagnose 7
+#define LOG_KoLedLock 8
+#define LOG_KoBuzzerLock 9
 

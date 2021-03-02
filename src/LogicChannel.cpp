@@ -254,11 +254,17 @@ void LogicChannel::knxResetDevice(uint16_t iParamIndex)
 void LogicChannel::setRGBColor(uint16_t iParamIndex)
 {
 #ifdef I2C_RGBLED_DEVICE_ADDRESS
-    uint32_t lRGBColor = getIntParam(iParamIndex);
-    uint8_t lRed = lRGBColor >> 24;
-    uint8_t lGreen = lRGBColor >> 16;
-    uint8_t lBlue = lRGBColor >> 8;
-    PCA9632_SetColor(lRed, lGreen, lBlue);
+    if ((getByteParam(LOG_fAlarm) & LOG_fAlarmMask) || !knx.getGroupObject(LOG_KoLedLock).value(getDPT(VAL_DPT_1)))
+    {
+        uint32_t lRGBColor = getIntParam(iParamIndex);
+        uint8_t lRed = lRGBColor >> 24;
+        uint8_t lGreen = lRGBColor >> 16;
+        uint8_t lBlue = lRGBColor >> 8;
+        PCA9632_SetColor(lRed, lGreen, lBlue);
+    } else {
+        // in case of lock we turn off led
+        PCA9632_SetColor(0, 0, 0);
+    }
 #endif
 }
 
@@ -266,22 +272,28 @@ void LogicChannel::setRGBColor(uint16_t iParamIndex)
 void LogicChannel::setBuzzer(uint16_t iParamIndex)
 {
 #ifdef BUZZER_PIN
-    switch (getByteParam(iParamIndex))
-    {
-        case 0:
-            noTone(BUZZER_PIN);
-            break;
-        case 1:
-            tone(BUZZER_PIN, BUZZER_FREQ_LOUD);
-            break;
-        case 2:
-            tone(BUZZER_PIN, BUZZER_FREQ_SILENT);
-            break;
-        case 3:
-            tone(BUZZER_PIN, BUZZER_FREQ_NORMAL);
-            break;
-        default:
-            break;
+    // check for global lock and alarm
+    if ((getByteParam(LOG_fAlarm) & LOG_fAlarmMask) || !knx.getGroupObject(LOG_KoBuzzerLock).value(getDPT(VAL_DPT_1))) {
+        switch (getByteParam(iParamIndex))
+        {
+            case 0:
+                noTone(BUZZER_PIN);
+                break;
+            case 1:
+                tone(BUZZER_PIN, BUZZER_FREQ_LOUD);
+                break;
+            case 2:
+                tone(BUZZER_PIN, BUZZER_FREQ_SILENT);
+                break;
+            case 3:
+                tone(BUZZER_PIN, BUZZER_FREQ_NORMAL);
+                break;
+            default:
+                break;
+        }
+    } else {
+        // in case of lock we turn off buzzer
+        noTone(BUZZER_PIN);
     }
 #endif
 }
