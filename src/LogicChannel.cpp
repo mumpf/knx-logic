@@ -21,7 +21,8 @@ LogicChannel::LogicChannel(uint8_t iChannelNumber)
     pCurrentPipeline = 0;
     pValidActiveIO = 0;
     pTriggerIO = 0;
-    pCurrentIO = 0;
+    pCurrentIn = 0;
+    pCurrentOut = 0;
 }
 
 LogicChannel::~LogicChannel()
@@ -696,7 +697,7 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
 #if LOGIC_TRACE
             if (debugFilter())
             {
-                channelDebug("proc.ConvertInput E%i DPT1: In=Out=%i\n", lDebugInput, lValueOut);
+                channelDebug("processConvertInput E%i DPT1: In=Out=%i\n", lDebugInput, lValueOut);
             }
 #endif
             break;
@@ -720,11 +721,11 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
             {
                 if (lDpt == VAL_DPT_17)
                 {
-                    channelDebug("proc.ConvertInput E%i DPT17: In=%i, Out=%i\n", lDebugInput, lValue1In, lValueOut);
+                    channelDebug("processConvertInput E%i DPT17: In=%i, Out=%i\n", lDebugInput, lValue1In, lValueOut);
                 }
                 else
                 {
-                    channelDebug("proc.ConvertInput E%i DPT2: In=%i, Out=%i\n", lDebugInput, lValue1In, lValueOut);
+                    channelDebug("processConvertInput E%i DPT2: In=%i, Out=%i\n", lDebugInput, lValue1In, lValueOut);
                 }
             }
 #endif
@@ -743,7 +744,7 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
 #if LOGIC_TRACE
                 if (debugFilter())
                 {
-                    channelDebug("proc.ConvertInput E%i Interval: In=%i, Out=%i\n", lDebugInput, lValue1In, lValueOut);
+                    channelDebug("processConvertInput E%i Interval: In=%i, Out=%i\n", lDebugInput, lValue1In, lValueOut);
                 }
 #endif
                 break;
@@ -753,12 +754,12 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
 #if LOGIC_TRACE
                 if (debugFilter())
                 {
-                    channelDebug("proc.ConvertInput E%i DeltaInterval: In1=%i, In2=%i, Delta=%i, Out=%i\n", lDebugInput, lValue1In, lValue2In, lValue1In - lValue2In, lValueOut);
+                    channelDebug("processConvertInput E%i DeltaInterval: In1=%i, In2=%i, Delta=%i, Out=%i\n", lDebugInput, lValue1In, lValue2In, lValue1In - lValue2In, lValueOut);
                 }
 #endif
                 break;
             case VAL_InputConvert_Hysterese:
-                lValueOut = pCurrentIO & iIOIndex; // retrieve old result, will be send if current value is in hysterese inbervall
+                lValueOut = pCurrentIn & iIOIndex; // retrieve old result, will be send if current value is in hysterese inbervall
                 if (lValue1In <= getParamByDpt(lDpt, lParamLow + 0))
                     lValueOut = false;
                 if (lValue1In >= getParamByDpt(lDpt, lParamLow + 4))
@@ -766,12 +767,12 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
 #if LOGIC_TRACE
                 if (debugFilter())
                 {
-                    channelDebug("proc.ConvertInput E%i Hysterese: In=%i, Out=%i\n", lDebugInput, lValue1In, lValueOut);
+                    channelDebug("processConvertInput E%i Hysterese: In=%i, Out=%i\n", lDebugInput, lValue1In, lValueOut);
                 }
 #endif
                 break;
             case VAL_InputConvert_DeltaHysterese:
-                lValueOut = pCurrentIO & iIOIndex; // retrieve old result, will be send if current value is in hysterese inbervall
+                lValueOut = pCurrentIn & iIOIndex; // retrieve old result, will be send if current value is in hysterese inbervall
                 if (lValue1In - lValue2In <= getParamForDelta(lDpt, lParamLow + 0))
                     lValueOut = false;
                 if (lValue1In - lValue2In >= getParamForDelta(lDpt, lParamLow + 4))
@@ -779,7 +780,7 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
 #if LOGIC_TRACE
                 if (debugFilter())
                 {
-                    channelDebug("proc.ConvertInput E%i DeltaHysterese: In1=%i, In2=%i, Delta=%i, Out=%i\n", lDebugInput, lValue1In, lValue2In, lValue1In - lValue2In, lValueOut);
+                    channelDebug("processConvertInput E%i DeltaHysterese: In1=%i, In2=%i, Delta=%i, Out=%i\n", lDebugInput, lValue1In, lValue2In, lValue1In - lValue2In, lValueOut);
                 }
 #endif
                 break;
@@ -788,7 +789,7 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
 #if LOGIC_TRACE
                 if (debugFilter())
                 {
-                    channelDebug("proc.ConvertInput E%i: no Execution, wrong convert id\n", lDebugInput);
+                    channelDebug("processConvertInput E%i: no Execution, wrong convert id\n", lDebugInput);
                 }
 #endif
                 break;
@@ -811,8 +812,8 @@ void LogicChannel::startLogic(uint8_t iIOIndex, bool iValue)
     if ((lInput & BIT_INPUT_MASK) == 2)
         lValue = !iValue;
     // set according input bit
-    pCurrentIO &= ~iIOIndex;
-    pCurrentIO |= iIOIndex * lValue;
+    pCurrentIn &= ~iIOIndex;
+    pCurrentIn |= iIOIndex * lValue;
     // set the validity bit
     pValidActiveIO |= iIOIndex;
     // set the trigger bit
@@ -833,8 +834,8 @@ void LogicChannel::processLogic()
     /* Logic execution bit is set from any method which changes input values */
     uint8_t lValidInputs = pValidActiveIO & BIT_INPUT_MASK;
     uint8_t lActiveInputs = (pValidActiveIO >> 4) & BIT_INPUT_MASK;
-    uint8_t lCurrentInputs = pCurrentIO & lValidInputs;
-    bool lCurrentOuput = ((pCurrentIO & BIT_OUTPUT) == BIT_OUTPUT);
+    uint8_t lCurrentInputs = pCurrentIn & lValidInputs;
+    bool lCurrentOuput = (pCurrentOut & BIT_OUTPUT_LOGIC);
     bool lNewOutput = false;
     bool lValidOutput = false;
 #if LOGIC_TRACE
@@ -897,11 +898,11 @@ void LogicChannel::processLogic()
                         // get the current gate state
                         lGate = (lCurrentInputs & (BIT_EXT_INPUT_2 | BIT_INT_INPUT_2));
                         // get the previous gate state
-                        lPreviousGate = pCurrentIO & BIT_PREVIOUS_GATE;
+                        lPreviousGate = pCurrentIn & BIT_PREVIOUS_GATE;
                         // set previous gate state for next roundtrip
-                        pCurrentIO &= ~BIT_PREVIOUS_GATE;
+                        pCurrentIn &= ~BIT_PREVIOUS_GATE;
                         if (lGate)
-                            pCurrentIO |= BIT_PREVIOUS_GATE;
+                            pCurrentIn |= BIT_PREVIOUS_GATE;
                     }
                     uint8_t lGateState = 2 * lPreviousGate + lGate;
                     uint8_t lGateTrigger = 0;
@@ -967,16 +968,16 @@ void LogicChannel::processLogic()
             uint8_t lHandleFirstProcessing = (lTrigger & 0x30);
             lTrigger &= BIT_INPUT_MASK;
             if (lHandleFirstProcessing == 0)
-                pCurrentIO |= BIT_FIRST_PROCESSING;
+                pCurrentIn |= BIT_FIRST_PROCESSING;
             if ((lTrigger == 0 && lNewOutput != lCurrentOuput) ||                         /* Just Changes  */
                 (lTrigger & pTriggerIO) > 0 ||                                            /* each telegram on specific input */
-                (lHandleFirstProcessing > 0 && (pCurrentIO & BIT_FIRST_PROCESSING) == 0)) /* first processing */
+                (lHandleFirstProcessing > 0 && (pCurrentIn & BIT_FIRST_PROCESSING) == 0)) /* first processing */
             {
                 // set the output value (first delete BIT_OUTPUT and then set the value
                 // of lNewOutput)
-                pCurrentIO = (pCurrentIO & ~BIT_OUTPUT) | lNewOutput << 4;
+                pCurrentOut = (pCurrentOut & ~BIT_OUTPUT_LOGIC) | (lNewOutput * BIT_OUTPUT_LOGIC);
                 // in case that first processing should be skipped, this happens here
-                if (pCurrentIO & BIT_FIRST_PROCESSING || lHandleFirstProcessing == BIT_FIRST_PROCESSING)
+                if (pCurrentIn & BIT_FIRST_PROCESSING || lHandleFirstProcessing == BIT_FIRST_PROCESSING)
                 {
 #if LOGIC_TRACE
                     lDebugValid = true;
@@ -988,7 +989,7 @@ void LogicChannel::processLogic()
                     // now we start stairlight processing
                     startStairlight(lNewOutput);
                 }
-                pCurrentIO |= BIT_FIRST_PROCESSING; //first processing was done
+                pCurrentIn |= BIT_FIRST_PROCESSING; //first processing was done
                 lOutputSent = true;
             }
 #if LOGIC_TRACE
@@ -1003,7 +1004,7 @@ void LogicChannel::processLogic()
                     else if ((lTrigger & pTriggerIO) == 0) {
                         channelDebug("endedLogic: No execution, Logic %s, Value %i (Input was not a trigger)\n", lDebugLogic, lNewOutput);
                     }
-                    else if (lHandleFirstProcessing > 0 && (pCurrentIO & BIT_FIRST_PROCESSING) > 0) {
+                    else if (lHandleFirstProcessing > 0 && (pCurrentIn & BIT_FIRST_PROCESSING) > 0) {
                         channelDebug("endedLogic: No execution, Logic %s, Value %i (Skipped first processing)\n", lDebugLogic, lNewOutput);
                     }
                 }
@@ -1016,7 +1017,7 @@ void LogicChannel::processLogic()
         channelDebug("endedLogic: No execution, Logic %s\n", lDebugLogic);
     }
 #endif
-    pCurrentIODebug = pCurrentIO;
+    pCurrentIODebug = (pCurrentIn & BIT_INPUT_MASK) | ((pCurrentOut & BIT_OUTPUT_LOGIC) ? BIT_OUTPUT_DEBUG : 0);
     // reset trigger as soon as this logic is executed
     pTriggerIO = 0;
 }
@@ -1025,6 +1026,10 @@ void LogicChannel::startStairlight(bool iOutput)
 {
     if (getByteParam(LOG_fOStair) & LOG_fOStairMask)
     {
+#if LOGIC_TRACE
+        uint8_t lStairTimeBase = getByteParam(LOG_fOTimeBase);
+        uint32_t lStairTime = getIntParam(LOG_fOTime);
+#endif
         if (iOutput)
         {
             // if stairlight is not running yet, we switch first the output to on
@@ -1039,9 +1044,11 @@ void LogicChannel::startStairlight(bool iOutput)
 #if LOGIC_TRACE
                 if (debugFilter()) 
                 {
-                    uint8_t lStairTimeBase = getByteParam(LOG_fOTimeBase);
-                    uint32_t lStairTime = getIntParam(LOG_fOTime);
-                    channelDebug("startStairlight: Factor %i, Base %s\n", lStairTime, (lStairTimeBase == 0) ? "sec/10" : (lStairTimeBase == 1) ? "sec" : (lStairTimeBase == 2) ? "min" : "h");
+                    if (lRetrigger) {
+                        channelDebug("retriggerStairlight: Factor %i, Base %s\n", lStairTime, (lStairTimeBase == 0) ? "sec/10" : (lStairTimeBase == 1) ? "sec" : (lStairTimeBase == 2) ? "min" : "h");
+                    } else {
+                        channelDebug("startStairlight: Factor %i, Base %s\n", lStairTime, (lStairTimeBase == 0) ? "sec/10" : (lStairTimeBase == 1) ? "sec" : (lStairTimeBase == 2) ? "min" : "h");
+                    }
                 }
 #endif
                 pStairlightDelay = millis();
@@ -1061,6 +1068,12 @@ void LogicChannel::startStairlight(bool iOutput)
                 // stairlight might be switched off,
                 // we set the timer to 0
                 pStairlightDelay = 0;
+#if LOGIC_TRACE
+                if (debugFilter()) 
+                {
+                    channelDebug("turnOffStairlight: Factor %i, Base %s\n", lStairTime, (lStairTimeBase == 0) ? "sec/10" : (lStairTimeBase == 1) ? "sec" : (lStairTimeBase == 2) ? "min" : "h");
+                }
+#endif
             }
         }
     }
@@ -1086,10 +1099,10 @@ void LogicChannel::processStairlight()
 #if LOGIC_TRACE
         if (debugFilter()) 
         {
-            channelDebug("startStairlight: Factor %i, Base %s\n", lStairTime, (lStairTimeBase == 0) ? "sec/10" : (lStairTimeBase == 1) ? "sec" : (lStairTimeBase == 2) ? "min" : "h");
             if (pCurrentPipeline & PIP_BLINK) {
-                printDebug("endedBlink Channel %02\n", mChannelId + 1);
+                channelDebug("endedBlink");
             }
+            channelDebug("endedStairlight: Factor %i, Base %s\n", lStairTime, (lStairTimeBase == 0) ? "sec/10" : (lStairTimeBase == 1) ? "sec" : (lStairTimeBase == 2) ? "min" : "h");
         }
 #endif
         // stairlight time is over, we switch off, also potential blinking
@@ -1112,7 +1125,7 @@ void LogicChannel::startBlink()
 #endif
         pBlinkDelay = millis();
         pCurrentPipeline |= PIP_BLINK;
-        pCurrentIO |= BIT_OUTPUT;
+        pCurrentOut |= BIT_OUTPUT_BLINK;
     }
 }
 
@@ -1121,16 +1134,16 @@ void LogicChannel::processBlink()
     uint32_t lBlinkTime = getIntParam(LOG_fOBlink) * 100;
     if (delayCheck(pBlinkDelay, lBlinkTime))
     {
-        bool lOn = !(pCurrentIO & BIT_OUTPUT);
-        if (lOn)
+        bool lOn = (pCurrentOut & BIT_OUTPUT_BLINK);
+        if (!lOn)
         {
 #if LOGIC_TRACE
             if (debugFilter())
             {
-                channelDebug("proc.Blink: On\n");
+                channelDebug("processBlink: On\n");
             }
 #endif
-            pCurrentIO |= BIT_OUTPUT;
+            pCurrentOut |= BIT_OUTPUT_BLINK;
             startOnDelay();
         }
         else
@@ -1138,10 +1151,10 @@ void LogicChannel::processBlink()
 #if LOGIC_TRACE
             if (debugFilter())
             {
-                channelDebug("proc.Blink: Off\n");
+                channelDebug("processBlink: Off\n");
             }
 #endif
-            pCurrentIO &= ~BIT_OUTPUT;
+            pCurrentOut &= ~BIT_OUTPUT_BLINK;
             startOffDelay();
         }
         pBlinkDelay = millis();
@@ -1338,7 +1351,7 @@ void LogicChannel::processOffDelay()
 void LogicChannel::startOutputFilter(bool iOutput)
 {
     uint8_t lAllow = (getByteParam(LOG_fOOutputFilter) & LOG_fOOutputFilterMask) >> LOG_fOOutputFilterShift;
-    bool lLastOutput = (pCurrentIO & BIT_PREVIOUS_OUTPUT) > 0;
+    bool lLastOutput = (pCurrentOut & BIT_OUTPUT_PREVIOUS) > 0;
     bool lContinue = false;
     switch (lAllow)
     {
@@ -1359,9 +1372,9 @@ void LogicChannel::startOutputFilter(bool iOutput)
     {
         pCurrentPipeline &= ~(PIP_OUTPUT_FILTER_OFF | PIP_OUTPUT_FILTER_ON);
         pCurrentPipeline |= iOutput ? PIP_OUTPUT_FILTER_ON : PIP_OUTPUT_FILTER_OFF;
-        pCurrentIO &= ~BIT_PREVIOUS_OUTPUT;
+        pCurrentOut &= ~BIT_OUTPUT_PREVIOUS;
         if (iOutput)
-            pCurrentIO |= BIT_PREVIOUS_OUTPUT;
+            pCurrentOut |= BIT_OUTPUT_PREVIOUS;
     }
 }
 void LogicChannel::processOutputFilter()
@@ -1445,11 +1458,11 @@ void LogicChannel::processOnOffRepeat()
         {
             if (lValue)
             {
-                channelDebug("proc.OnRepeat: After %0.1f s\n", getIntParam(LOG_fORepeatOn) / 10.0);
+                channelDebug("processOnRepeat: After %0.1f s\n", getIntParam(LOG_fORepeatOn) / 10.0);
             }
             else
             {
-                channelDebug("proc.OffRepeat: After %0.1f s\n", getIntParam(LOG_fORepeatOff) / 10.0);
+                channelDebug("processOffRepeat: After %0.1f s\n", getIntParam(LOG_fORepeatOff) / 10.0);
             }
         }
 #endif
@@ -1472,7 +1485,7 @@ void LogicChannel::processInternalInputs(uint8_t iChannelId, bool iValue)
 #if LOGIC_TRACE
             if (debugFilter())
             {
-                channelDebug("proc.InternalInputs: Input I1, Value %i\n", iValue);
+                channelDebug("processInternalInputs: Input I1, Value %i\n", iValue);
             }
 #endif
             startLogic(BIT_INT_INPUT_1, iValue);
@@ -1487,7 +1500,7 @@ void LogicChannel::processInternalInputs(uint8_t iChannelId, bool iValue)
 #if LOGIC_TRACE
             if (debugFilter())
             {
-                channelDebug("proc.InternalInputs: Input I2, Value %i\n", iValue);
+                channelDebug("processInternalInputs: Input I2, Value %i\n", iValue);
             }
 #endif
             startLogic(BIT_INT_INPUT_2, iValue);
@@ -1522,7 +1535,7 @@ bool LogicChannel::processDiagnoseCommand(char *cBuffer)
                 lCurrentIO >>= 1;
             }
             // output value
-            if ((pCurrentPipeline & PIP_RUNNING) && (pCurrentIO & BIT_FIRST_PROCESSING))
+            if ((pCurrentPipeline & PIP_RUNNING) && (pCurrentIn & BIT_FIRST_PROCESSING))
             {
                 v[4] = (lCurrentIO & 1) ? '1' : '0';
             }
@@ -1545,15 +1558,15 @@ bool LogicChannel::processDiagnoseCommand(char *cBuffer)
 void LogicChannel::processOutput(bool iValue)
 {
     LogicChannel::sLogic->processAllInternalInputs(this, iValue);
+#if LOGIC_TRACE
+    if (debugFilter())
+    {
+        channelDebug("processOutput: Value %i\n", iValue);
+    }
+#endif
     if (iValue)
     {
         uint8_t lOn = getByteParam(LOG_fOOn);
-#if LOGIC_TRACE
-        if (debugFilter())
-        {
-            channelDebug("proc.Output: Value %i\n", iValue);
-        }
-#endif
         switch (lOn)
         {
             case VAL_Out_Constant:

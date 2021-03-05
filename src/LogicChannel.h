@@ -107,10 +107,13 @@
 #define BIT_INT_INPUT_1 0x04
 #define BIT_INT_INPUT_2 0x08
 #define BIT_INPUT_MASK 0x0F
-#define BIT_OUTPUT 0x10
 #define BIT_FIRST_PROCESSING 0x20
 #define BIT_PREVIOUS_GATE 0x40
-#define BIT_PREVIOUS_OUTPUT 0x80
+
+#define BIT_OUTPUT_LOGIC 0x01    
+#define BIT_OUTPUT_BLINK 0x02    
+#define BIT_OUTPUT_PREVIOUS 0x04 
+#define BIT_OUTPUT_DEBUG 0x10    
 
 // enum fo IOIndex
 #define IO_Absolute 0
@@ -313,10 +316,11 @@ class LogicChannel
     /* Runtime information per channel */
     uint8_t pTriggerIO;        // Bitfield: Which input (0-3) triggered processing, Bit 4-7 are not used
     uint8_t pValidActiveIO;    // Bitfield: validity flags for input (0-3) values and active inputs (4-7)
-    uint8_t pCurrentIO;        // Bitfield: current input (0-3), current output (4), first processing (5), previous gate (6) and previous output (7) values
+    uint8_t pCurrentIn;        // Bitfield: current input (0-3), free (4), first processing (5), previous gate (6) and free (7) values
+    uint8_t pCurrentOut;       // Bitfield: logic output (0), blink output (1), previous output (2)
     uint32_t pCurrentPipeline; // Bitfield: indicator for current pipeline step
 
-    uint8_t pCurrentIODebug;   // Bitfield: current input (0-3), current output (4), first processing (5) and previous output (7) values
+    uint8_t pCurrentIODebug;   // Bitfield: current input (0-3), logic output (4)
     // uint32_t pRepeatInput1Delay;  // used also for timer preparation
     // uint32_t pRepeatInput2Delay;  // used also for timer processing
     uInputProcessing pInputProcessing;

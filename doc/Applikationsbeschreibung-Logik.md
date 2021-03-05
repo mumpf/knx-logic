@@ -46,6 +46,10 @@ rmware 2.1.0, Applikation 2.0 - 2.3
 * Jede Info-Ausgabe (LED-Signal oder Akkustisches Signal (Buzzer)) kann auch als Alarm parametrisiert werden, die Ausgabe kommt dann trotz globaler Sperre (neues Kapitel "Alarmausgabe" ergänzt)
 * FIX: Die Flags "Feiertage auf dem Bus verfügbar machen?" und "Nach Neustart Urlaubsinfo lesen?" wurden fälschlicherweise gemeinsam ausgewertet (ein anhaken des ersten hat auch zum Lesen der Urlaugsinfo geführt).
 
+05.03.2021: Firmware 2.4.1, Applikation 2.4 - 2.7
+
+* FIX: Das Blinkmodul hat fälschlicherweise den Ausgangszustand der Logik verändert. Das konnte bei "nur bei geändertem Ergebnis senden" auch zu unerwarteten Logik-Triggern führen. Immer wenn während des Blinkens am Eingang ein Signal ankam, dass invers zum Blinkstatus war, wurde unerwünscht getriggert.
+
 <div style="page-break-after: always;"></div>
 
 ## Allgemeine Parameter
