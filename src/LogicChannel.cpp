@@ -845,7 +845,6 @@ void LogicChannel::processLogic()
     // first deactivate execution in pipeline
     pCurrentPipeline &= ~PIP_LOGIC_EXECUTE;
     // we have to delete all trigger if output pipeline is not started
-    bool lOutputSent = false;
     if ((getByteParam(LOG_fCalculate) & LOG_fCalculateMask) == 0 || lValidInputs == lActiveInputs)
     {
         // we process only if all inputs are valid or the user requested invalid evaluation
@@ -990,7 +989,6 @@ void LogicChannel::processLogic()
                     startStairlight(lNewOutput);
                 }
                 pCurrentIn |= BIT_FIRST_PROCESSING; //first processing was done
-                lOutputSent = true;
             }
 #if LOGIC_TRACE
             else
