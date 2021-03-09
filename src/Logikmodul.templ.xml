@@ -12,6 +12,7 @@
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="5" BitOffset="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%004" Name="f%C%Calculate" ParameterType="M-00FA_A-0001-01-0000_PT-Calculate" Offset="0" BitOffset="6" Text="Logik auswerten" Value="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%166" Name="f%C%Disable"   ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="0" BitOffset="5" Text="Kanal deaktivieren (zu Testzwecken)" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%277" Name="f%C%Alarm"     ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"  Offset="0" BitOffset="4" Text="Alarmausgabe (Buzzer oder LED trotz Sperre schalten)?" Value="0" />
     </Union>
     <Union SizeInBit="8">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="6" BitOffset="0" />
@@ -361,6 +362,7 @@
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%161" Name="f%C%E2Low7Dpt17Input" ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Text="... oder bei Szene" Value="0" />
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%162" Name="f%C%I1Name" ParameterType="M-00FA_A-0001-01-0000_PT-Text40Byte" Text="Beschreibung interner Eingang 1" Value="" />
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%163" Name="f%C%I2Name" ParameterType="M-00FA_A-0001-01-0000_PT-Text40Byte" Text="Beschreibung interner Eingang 2" Value="" />
+    <Parameter Id="M-00FA_A-0001-01-0000_P-%C%278" Name="f%C%AskForAlarm" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Text="LED oder Buzzer aktiv (interner Wert)" Access="None" Value="0" />
   </Parameters>
   <ParameterRefs>
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%001_R-%C%0011" RefId="M-00FA_A-0001-01-0000_P-%C%001" />
@@ -669,6 +671,8 @@
     <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%274_R-%C%2741" RefId="M-00FA_A-0001-01-0000_UP-%C%274" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%275_R-%C%2751" RefId="M-00FA_A-0001-01-0000_P-%C%275" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%276_R-%C%2761" RefId="M-00FA_A-0001-01-0000_UP-%C%276" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%277_R-%C%2771" RefId="M-00FA_A-0001-01-0000_UP-%C%277" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%278_R-%C%2781" RefId="M-00FA_A-0001-01-0000_P-%C%278" />
   </ParameterRefs>
   <ComObjectTable>
     <ComObject Id="M-00FA_A-0001-01-0000_O-%K0%" Name="KOf%C%E1" Text="Eingang 1" Number="%K0%" FunctionText="Logik %C%, Eingang 1" ObjectSize="1 Bit" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled"  ReadOnInitFlag="Disabled" />
@@ -737,7 +741,7 @@
         <when test="1 2 3 4">
           <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%005_R-%C%0051" />
           <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%005_R-%C%0051">
-            <when test="1">
+            <when test="1 17">
               <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%008_R-%C%0081">
                 <when test="!=0">
                   <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%089_R-%C%0891" />
@@ -1898,9 +1902,11 @@
               </when>
               <when test="6">
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%140_R-%C%1401" />
+                <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_P-%C%278_R-%C%2781" Value="1" />
               </when>
               <when test="7">
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%076_R-%C%0762" />
+                <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_P-%C%278_R-%C%2781" Value="1" />
               </when>
             </choose>
             <choose ParamRefId="M-00FA_A-0001-01-0000_UP-5_R-51">
@@ -1994,9 +2000,17 @@
               </when>
               <when test="6">
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%141_R-%C%1411" />
+                <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_P-%C%278_R-%C%2781" Value="1" />
               </when>
               <when test="7">
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%088_R-%C%0882" />
+                <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_P-%C%278_R-%C%2781" Value="1" />
+              </when>
+            </choose>
+            <!-- Ask for alarm output in case RGB or Buzzer is acive -->
+            <choose ParamRefId="M-00FA_A-0001-01-0000_P-%C%278_R-%C%2781">
+              <when test="1">
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%277_R-%C%2771" />
               </when>
             </choose>
             <!-- We present KO only if any input is active -->

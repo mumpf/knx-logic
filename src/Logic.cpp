@@ -3,6 +3,7 @@
 #include "Hardware.h"
 #include "Timer.h"
 #include "TimerRestore.h"
+#include "PCA9632.h"
 
 uint8_t Logic::sMagicWord[] = {0xAE, 0x49, 0xD2, 0x9F};
 Timer &Logic::sTimer = Timer::instance(); // singleton
@@ -204,7 +205,24 @@ void Logic::processInputKo(GroupObject &iKo)
         sTimer.setDateFromBus(&lTmp);
     } else if (iKo.asap() == LOG_Diagnose) {
         processDiagnoseCommand(iKo);
-    } else if (iKo.asap() >= LOG_KoOffset && iKo.asap() < LOG_KoOffset + mNumChannels * LOG_KoBlockSize) {
+    }
+#ifdef BUZZER_PIN
+    else if (iKo.asap() == LOG_KoBuzzerLock) {
+        // turn off buzzer in case of lock
+        if (iKo.value(getDPT(VAL_DPT_1)))
+            noTone(BUZZER_PIN);
+    }
+#endif
+#ifdef I2C_RGBLED_DEVICE_ADDRESS
+    else if (iKo.asap() == LOG_KoLedLock)
+    {
+        // turn off LED in case of lock
+        if (iKo.value(getDPT(VAL_DPT_1)))
+            PCA9632_SetColor(0, 0, 0);
+    }
+#endif
+    else if (iKo.asap() >= LOG_KoOffset && iKo.asap() < LOG_KoOffset + mNumChannels * LOG_KoBlockSize)
+    {
         uint16_t lKoNumber = iKo.asap() - LOG_KoOffset;
         uint8_t lChannelId = lKoNumber / LOG_KoBlockSize;
         uint8_t lIOIndex = lKoNumber % LOG_KoBlockSize + 1;

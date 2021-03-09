@@ -29,6 +29,27 @@ Im folgenden werden Änderungen an dem Dokument erfasst, damit man nicht immer d
 * Neues Kapitel 'Zeitschaltuhren'
 * Anpassung im Kapitel 'Uhrzeit und Datum nach einem Neustart vom Bus lesen'
 
+20.02.2021: Fi
+rmware 2.1.0, Applikation 2.0 - 2.3
+
+* Firmware-Only-Fix: TOR war unvollständig implementiert und verhielt sich nicht so wie beschrieben. Das ist nun behoben. Der Fix hat aber das bisherige (falsche) Verhalten geändert. **Logiken, die TOR benutzen, sollten neu getestet werden.**
+* Firmware-Only-Fix: Falls man das S-Flag an einem Ausgangs-KO gesetzt hat, haben Schreibvorgänge fälschlicherweise den externen Eingang 2 beeinflusst. Dies ist nur korrigiert und ein Ausgangs-KO kann normal zur Zwischenspeicherung von Werten verwendet werden.
+
+27.02.2021: Firmware 2.1.1, Applikation 2.0 - 2.3
+
+* Firmware-Only-Fix: Die interne Behandlung, wann ein Eingang, der eine Logikfunktion triggert, diese Triggereigenschaft verliert, war nicht korrekt. Das konnte dazu führen, dass auch nicht-triggernde Eingänge die Logikauswertung getriggert haben. Beispiel: E1 triggert ein UND, E2 nicht. E1 und E2 sind AUS. Wenn jetzt E1 auf AN geht, triggert er das UND, Ergebnis ist 0. Wenn jetzt E2 auf AN geht, bevor bevor das Ergebnis der vorherigen Auswertung auf den Bus gesendet wurde, würde das AN von E2 auch triggern und das UND ein AN liefern. Das war nicht korrekt und ist jetzt korrigiert.
+
+01.03.2021: Firmware 2.4.0, Applikation 2.4 - 2.7
+
+* Auch beim Trigger "Jedes Eingangstelegramm" ist es jetzt möglich, das erste Ergebnis nicht zu senden.
+* Info-Ausgaben (LED Signal oder Akkustisches Signal (Buzzer)) können jetzt auch global gesperrt werden (z.B. nachts).
+* Jede Info-Ausgabe (LED-Signal oder Akkustisches Signal (Buzzer)) kann auch als Alarm parametrisiert werden, die Ausgabe kommt dann trotz globaler Sperre (neues Kapitel "Alarmausgabe" ergänzt)
+* FIX: Die Flags "Feiertage auf dem Bus verfügbar machen?" und "Nach Neustart Urlaubsinfo lesen?" wurden fälschlicherweise gemeinsam ausgewertet (ein anhaken des ersten hat auch zum Lesen der Urlaugsinfo geführt).
+
+05.03.2021: Firmware 2.4.1, Applikation 2.4 - 2.7
+
+* FIX: Das Blinkmodul hat fälschlicherweise den Ausgangszustand der Logik verändert. Das konnte bei "nur bei geändertem Ergebnis senden" auch zu unerwarteten Logik-Triggern führen. Immer wenn während des Blinkens am Eingang ein Signal ankam, dass invers zum Blinkstatus war, wurde unerwünscht getriggert.
+
 <div style="page-break-after: always;"></div>
 
 ## Allgemeine Parameter
@@ -72,9 +93,13 @@ Falsche Angaben können zu falschern Konfigurationen der Applikation und somit z
 
 Das Logikmodul unterstützt auch die Ausgabe von Pieptönen mittels eines Buzzers. Mit einem Haken in diesem Feld wird angegeben, ob ein Buzzer installiert ist.
 
+Gleichzeitig wird ein Kommunikationsobjekt freigeschaltet, mit dem man die Soundausgabe sperren kann. Damit kann man verhindern, dass z.B. nachts Töne ausgegeben werden.
+
 #### Optischer Signalgeber vorhanden (RGB-LED)?
 
 Das Logikmodul unterstützt auch die Ausgabe eines Lichtsignals mittels einer RGB-LED. Mit einem Haken in diesem Feld wird angegeben, ob eine RGB-LED installiert ist.
+
+Gleichzeitig wird ein Kommunikationsobjekt freigeschaltet, mit dem man die Lichtausgabe sperren kann. Damit kann man verhindern, dass z.B. nachts die LED leuchtet.
 
 #### Nichtflüchtiger Speicher vorhanden (EEPROM)
 
@@ -486,11 +511,20 @@ Diese Einstellung hat ein spezifisches Verhalten beim Neustart der Logik. Bei ei
 
 Sobald ein neues Eingangstelegramm eintrifft, wird das Ergebnis der logischen Verknüpfung ermittelt und an den nächsten Funktionsblock weitergeleitet.
 
+#### bei allen Eingangstelegrammen, aber erstes Telegramm nicht senden
+
+Sobald ein neues Eingangstelegramm eintrifft, wird das Ergebnis der logischen Verknüpfung ermittelt und an den nächsten Funktionsblock weitergeleitet. Allerdings wird das erste Telegramm nach einem Neustart unterdrückt. Damit kann man vermeiden, dass mögliche Statusmeldungen bei einem Neustart ungewollt Logiken bzw. Folgelogiken auslösen.
+
 #### bei folgenden Eingangstelegrammen
 
 ![Logik sendet](LogikSendet.png)
 
 Es erscheint eine Liste mit allen aktiven Eingängen. Man kann die Eingänge ankreuzen, auf die die Logikauswertung reagieren soll. Nur wenn ein Telgramm von einem dieser Eingänge kommt, wird die Logikauswertung angestoßen und das Ergebnis ermittelt und an den nächsten Funktionsblock weitergeleitet.
+
+#### bei folgenden Eingangstelegrammen, aber erstes Telegramm nicht senden
+
+Es erscheint eine Liste mit allen aktiven Eingängen. Man kann die Eingänge ankreuzen, auf die die Logikauswertung reagieren soll. Nur wenn ein Telgramm von einem dieser Eingänge kommt, wird die Logikauswertung angestoßen und das Ergebnis ermittelt und an den nächsten Funktionsblock weitergeleitet.
+Allerdings wird das erste Telegramm nach einem Neustart unterdrückt. Damit kann man vermeiden, dass mögliche Statusmeldungen bei einem Neustart ungewollt Logiken bzw. Folgelogiken auslösen.
 
 ## Eingang 1: unbenannt / Eingang 2: unbenannt
 
@@ -1215,6 +1249,10 @@ Wird nur angeboten, wenn ein Buzzer vorhanden ist.
 
 Bei einem EIN-Signal wird kein Wert gesendet, sondern der interne Buzzer zur Tonwiedergabe angesprochen. In einem weiteren Feld wird angegeben, in welcher Lautstärke die Tonwiedergabe gestartet oder ob sie gestoppt wird.
 
+Falls der Buzzer gerade über das Kommunikationsobjekt 9 gesperrt ist, wird kein Ton ausgegeben und ein eventueller laufender Ton abgeschaltet.
+
+Falls dieser Kanal als Alarmkanal gekennzeichnet ist, wird ein Ton unabhängig von der Sperre ausgegeben.
+
 ![Tonwiedergabe](Tonwiedergabe.png)
 
 #### Ja - RGB-LED schalten
@@ -1224,6 +1262,10 @@ Wird nur angeboten, wenn eine RGB-LED vorhanden ist.
 Bei einem EIN-Signal wird kein Wert gesendet, sondern die interne RBG-LED angesprochen. So kann man eine optische Rückmeldung erreichen.
 
 In einem weiteren Feld wird die Farbe eingestellt. Ist die Farbe Schwarz eingestellt, wir die LED ausgeschaltet.
+
+Falls die LED gerade über das Kommunikationsobjekt 8 gesperrt ist, wird die LED nicht eingeschaltet und falls sie an ist, wird sie abgeschaltet.
+
+Falls dieser Kanal als Alarmkanal gekennzeichnet ist, wird die LED unabhängig von der Sperre eingeschaltet.
 
 ### Wert für EIN senden als
 
@@ -1289,6 +1331,10 @@ Wird nur angeboten, wenn ein Buzzer vorhanden ist.
 
 Bei einem AUS-Signal wird kein Wert gesendet, sondern der interne Buzzer zur Tonwiedergabe angesprochen. In einem weiteren Feld wird angegeben, ob die Tonwiedergabe gestartet oder gestoppt wird.
 
+Falls der Buzzer gerade über das Kommunikationsobjekt 9 gesperrt ist, wird kein Ton ausgegeben und ein eventueller laufender Ton abgeschaltet.
+
+Falls dieser Kanal als Alarmkanal gekennzeichnet ist, wird ein Ton unabhängig von der Sperre ausgegeben.
+
 #### Ja - RGB-LED schalten
 
 Wird nur angeboten, wenn eine RGB-LED vorhanden ist.
@@ -1296,6 +1342,10 @@ Wird nur angeboten, wenn eine RGB-LED vorhanden ist.
 Bei einem AUS-Signal wird kein Wert gesendet, sondern die interne RBG-LED angesprochen. So kann man eine optische Rückmeldung erreichen.
 
 In einem weiteren Feld wird die Farbe eingestellt. Ist die Farbe Schwarz eingestellt, wir die LED ausgeschaltet.
+
+Falls die LED gerade über das Kommunikationsobjekt 8 gesperrt ist, wird die LED nicht eingeschaltet und falls sie an ist, wird sie abgeschaltet.
+
+Falls dieser Kanal als Alarmkanal gekennzeichnet ist, wird die LED unabhängig von der Sperre eingeschaltet.
 
 ### Wert für AUS senden als
 
@@ -1320,6 +1370,14 @@ Das Feld erscheint nur, wenn für "Wert für AUS senden" ein "Ja - RGB-LED schal
 Hier wird die Farbe der LED bestimmt, in der sie leuchten soll. Wird die Farbe Schwarz gewählt (#000000), geht die LED aus. Für die Auswahl der Farbe kann auch ein Farbauswahldialog verwendet werden.
 
 Diese Option kann nur funktionieren, wenn das Gerät, auf dem die Applikation Logik läuft, auch eine RGB-LED verbaut hat.
+
+### Alarmausgabe (Buzzer oder Sperre trotz Sperre schalten)?
+
+Diese Einstellung erscheint nur, wenn die LED- oder Buzzer-Ausgabe aktiviert ist.
+
+Wenn die Einstellung aktiviert ist, wird eine akkustische oder optische Ausgabe trotz Sperre vorgenommen.
+
+So können bestimmte Töne oder RGB-Anzeigen als Alarm definiert werden. Alarme können nicht durch entsprechende Sperren abgeschaltet werden.
 
 ## Diagnoseobjekt
 
@@ -1468,9 +1526,11 @@ KO | Name | DPT | Bedeutung
 3 | Datum | 11.001 | Eingang zum empfangen des Datums
 4 | Urlaub | 1.001 | Eingang: Information über Urlaub
 5 | Feiertag heute | 1.001 | Ausgang: Information, dass der aktuelle Tag ein Feiertag ist
-6 | Feiertag 
+6 | Feiertag
 morgen | 1.001 | Ausgang: Information, dass der morgige Tag ein Feiertag ist
 7 | Diagnoseobjekt | 16.001 | Ein-/Ausgang für Diagnoseinformationen
+8 | LED sperren | 1.001 | Eingang: LED global sperren (kein Licht)
+9 | Buzzer sperren | 1.001 | Eingang: Buzzer global sperren (kein Ton)
 n | Eingang 1 | *) | Eingang 1 für einen Logikkanal
 n+1 | Eingang 2 | *) | Eingang 2 für einen Logikkanal
 n+2 | Ausgang | **) | Ausgang eines Logikkanals
