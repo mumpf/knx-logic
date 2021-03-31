@@ -2,9 +2,9 @@
 #include "Hardware.h"
 #include "Logic.h"
 
-const uint8_t cFirmwareMajor = 2;    // 0-31
-const uint8_t cFirmwareMinor = 4;    // 0-31
-const uint8_t cFirmwareRevision = 1; // 0-63
+const uint8_t cFirmwareMajor = 3;    // 0-31
+const uint8_t cFirmwareMinor = 0;    // 0-31
+const uint8_t cFirmwareRevision = 0; // 0-63
 
 struct sRuntimeInfo
 {

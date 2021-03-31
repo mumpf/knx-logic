@@ -3,6 +3,11 @@
 #include "Timer.h"
 #include "TimerRestore.h"
 
+// Watchdog reset causees
+#define WDT_RCAUSE_SYSTEM 6   // reset by system itself
+#define WDT_RCAUSE_WDT 5      // reset by watchdog
+#define WDT_RCAUSE_EXT 4      // reset by reset signal
+#define WDT_RCAUSE_POR 0      // power on reset
 class Logic
 {
   public:

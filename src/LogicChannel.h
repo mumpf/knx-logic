@@ -204,9 +204,7 @@
 #define VAL_Tim_YearTimerCount 4
 #define VAL_Tim_DayTimerCount 8
 
-#ifdef __linux__
-extern KnxFacade<LinuxPlatform, Bau57B0> knx;
-#endif
+// extern KnxFacade<LinuxPlatform, Bau57B0> knx;
 
 const uint32_t cTimeFactors[] = {100, 1000, 60000, 3600000};
 

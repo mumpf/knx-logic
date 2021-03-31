@@ -41,6 +41,9 @@
 #define LOG_Diagnose                  10      // 1 Bit, Bit 3
 #define     LOG_DiagnoseMask 0x08
 #define     LOG_DiagnoseShift 3
+#define LOG_Watchdog                  10      // 1 Bit, Bit 3
+#define     LOG_WatchdogMask 0x08
+#define     LOG_WatchdogShift 3
 #define LOG_Neujahr                   11      // 1 Bit, Bit 7
 #define     LOG_NeujahrMask 0x80
 #define     LOG_NeujahrShift 7

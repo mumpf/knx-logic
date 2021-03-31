@@ -759,6 +759,7 @@
                 <Parameter Id="M-00FA_A-0001-01-0000_UP-44" Name="Timezone" ParameterType="M-00FA_A-0001-01-0000_PT-Timezone" Offset="1" BitOffset="1" Text="Zeitzone" Value="1" />
                 <Parameter Id="M-00FA_A-0001-01-0000_UP-45" Name="UseSummertime" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Offset="1" BitOffset="3" Text="Sommerzeit berücksichtigen" Value="1" />
                 <Parameter Id="M-00FA_A-0001-01-0000_UP-46" Name="Diagnose" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Offset="1" BitOffset="4" Text="Diagnoseobjekt anzeigen" Value="0" />
+                <Parameter Id="M-00FA_A-0001-01-0000_UP-47" Name="Watchdog" ParameterType="M-00FA_A-0001-01-0000_PT-OnOffYesNo" Offset="1" BitOffset="5" Text="Wachdog aktivieren" Value="0" />
               </Union>
               <Union SizeInBit="32">
                 <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="11" BitOffset="0" />
@@ -847,6 +848,7 @@
               <ParameterRef Id="M-00FA_A-0001-01-0000_UP-44_R-441" RefId="M-00FA_A-0001-01-0000_UP-44" />
               <ParameterRef Id="M-00FA_A-0001-01-0000_UP-45_R-451" RefId="M-00FA_A-0001-01-0000_UP-45" />
               <ParameterRef Id="M-00FA_A-0001-01-0000_UP-46_R-461" RefId="M-00FA_A-0001-01-0000_UP-46" />
+              <ParameterRef Id="M-00FA_A-0001-01-0000_UP-47_R-471" RefId="M-00FA_A-0001-01-0000_UP-47" />
             </ParameterRefs>
             <ComObjectTable>
               <ComObject Id="M-00FA_A-0001-01-0000_O-1" Name="Heartbeat" Text="In Betieb" Number="1" FunctionText="Zyklisch" ObjectSize="1 Bit" ReadFlag="Enabled" WriteFlag="Disabled" CommunicationFlag="Enabled" TransmitFlag="Enabled" UpdateFlag="Disabled" ReadOnInitFlag="Disabled" DatapointType="DPST-1-2" />

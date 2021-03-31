@@ -4,6 +4,11 @@
 #include "Timer.h"
 #include "TimerRestore.h"
 #include "PCA9632.h"
+#ifdef WATCHDOG
+#include <Adafruit_SleepyDog.h>
+uint32_t gWatchdogDelay;
+uint8_t gWatchdogResetCause;
+#endif
 
 uint8_t Logic::sMagicWord[] = {0xAE, 0x49, 0xD2, 0x9F};
 Timer &Logic::sTimer = Timer::instance(); // singleton
@@ -302,6 +307,39 @@ bool Logic::processDiagnoseCommand() {
             lResult = true;
             break;
         }
+        case 'w': {
+            // Watchdog information
+#ifdef WATCHDOG
+            if ((knx.paramByte(LOG_Watchdog) & LOG_WatchdogMask >> LOG_WatchdogShift) == 0)
+            {
+                snprintf(sDiagnoseBuffer, 15, "WD not active");
+            }
+            else if (gWatchdogResetCause & WDT_RCAUSE_EXT)
+            {
+                snprintf(sDiagnoseBuffer, 15, "WD reset button");
+            }
+            else if (gWatchdogResetCause & WDT_RCAUSE_POR)
+            {
+                snprintf(sDiagnoseBuffer, 15, "WD bus reset");
+            }
+            else if (gWatchdogResetCause & WDT_RCAUSE_SYSTEM)
+            {
+                snprintf(sDiagnoseBuffer, 15, "WD ETS program");
+            }
+            else if (gWatchdogResetCause & WDT_RCAUSE_WDT)
+            {
+                snprintf(sDiagnoseBuffer, 15, "WD watchdog");
+            }
+            else
+            {
+                snprintf(sDiagnoseBuffer, 15, "WD unknown");
+            }
+#else
+            snprintf(sDiagnoseBuffer, 15, "WD not compiled");
+#endif
+            lResult = true;
+            break;
+        }
         default:
             lResult = false;
             break;
@@ -378,6 +416,15 @@ void Logic::debug() {
 void Logic::setup(bool iSaveSupported) {
     // Wire.end();   // seems to end hangs on I2C bus
     // Wire.begin(); // we use I2C in logic, so we setup the bus. It is not critical to setup it more than once
+#ifdef WATCHDOG
+    if (knx.paramByte(LOG_Watchdog) & LOG_WatchdogMask >> LOG_WatchdogShift) {
+        // used for Diagnose command
+        gWatchdogResetCause = Watchdog.resetCause();
+        // setup watchdog to prevent endless loops
+        int lWatchTime = Watchdog.enable(16384, false);
+        printDebug("Watchdog started with a watchtime of %i Seconds\n", lWatchTime / 1000);
+    }
+#endif
     if (knx.configured())
     {
         // setup channels, not possible in constructor, because knx is not configured there
@@ -395,10 +442,8 @@ void Logic::setup(bool iSaveSupported) {
         // this should be changed if we ever use multiple instances of logic
         mEEPROM = new EepromManager(SAVE_BUFFER_START_PAGE, SAVE_BUFFER_NUM_PAGES, sMagicWord);
         // setup buzzer
-#ifndef __linux__
 #ifdef BUZZER_PIN
         pinMode(BUZZER_PIN, OUTPUT);
-#endif
 #endif
         // we set just a callback if it is not set from a potential caller
         if (GroupObject::classCallback() == 0) GroupObject::classCallback(Logic::onInputKoHandler);
@@ -435,6 +480,13 @@ void Logic::setup(bool iSaveSupported) {
 
 void Logic::loop()
 {
+#ifdef WATCHDOG
+    if (delayCheck(gWatchdogDelay, 1000) && (knx.paramByte(LOG_Watchdog) & LOG_WatchdogMask >> LOG_WatchdogShift))
+    {
+        Watchdog.reset();
+        gWatchdogDelay = millis();
+    }
+#endif
     if (!knx.configured())
         return;
 
