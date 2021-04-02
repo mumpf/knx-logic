@@ -310,7 +310,7 @@ bool Logic::processDiagnoseCommand() {
         case 'w': {
             // Watchdog information
 #ifdef WATCHDOG
-            if ((knx.paramByte(LOG_Watchdog) & LOG_WatchdogMask >> LOG_WatchdogShift) == 0)
+            if (((knx.paramByte(LOG_Watchdog) & LOG_WatchdogMask) >> LOG_WatchdogShift) == 0)
             {
                 snprintf(sDiagnoseBuffer, 15, "WD not active");
             }
@@ -335,7 +335,7 @@ bool Logic::processDiagnoseCommand() {
                 snprintf(sDiagnoseBuffer, 15, "WD unknown");
             }
 #else
-            snprintf(sDiagnoseBuffer, 15, "WD not compiled");
+            snprintf(sDiagnoseBuffer, 15, "WD no compile");
 #endif
             lResult = true;
             break;
@@ -417,7 +417,7 @@ void Logic::setup(bool iSaveSupported) {
     // Wire.end();   // seems to end hangs on I2C bus
     // Wire.begin(); // we use I2C in logic, so we setup the bus. It is not critical to setup it more than once
 #ifdef WATCHDOG
-    if (knx.paramByte(LOG_Watchdog) & LOG_WatchdogMask >> LOG_WatchdogShift) {
+    if ((knx.paramByte(LOG_Watchdog) & LOG_WatchdogMask) >> LOG_WatchdogShift) {
         // used for Diagnose command
         gWatchdogResetCause = Watchdog.resetCause();
         // setup watchdog to prevent endless loops
@@ -481,7 +481,7 @@ void Logic::setup(bool iSaveSupported) {
 void Logic::loop()
 {
 #ifdef WATCHDOG
-    if (delayCheck(gWatchdogDelay, 1000) && (knx.paramByte(LOG_Watchdog) & LOG_WatchdogMask >> LOG_WatchdogShift))
+    if (delayCheck(gWatchdogDelay, 1000) && ((knx.paramByte(LOG_Watchdog) & LOG_WatchdogMask) >> LOG_WatchdogShift))
     {
         Watchdog.reset();
         gWatchdogDelay = millis();
