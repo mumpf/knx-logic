@@ -10,11 +10,14 @@ uint32_t gWatchdogDelay;
 uint8_t gWatchdogResetCause;
 #endif
 
+
 uint8_t Logic::sMagicWord[] = {0xAE, 0x49, 0xD2, 0x9F};
 Timer &Logic::sTimer = Timer::instance(); // singleton
 TimerRestore &Logic::sTimerRestore = TimerRestore::instance(); // singleton
 
 char Logic::sDiagnoseBuffer[16] = {0};
+sLoopCallbackParams Logic::sLoopCallbacks[5] = {nullptr};
+uint8_t Logic::sNumLoopCallbacks = 0;
 
 // callbacks have to be static members
 void Logic::onInputKoHandler(GroupObject &iKo) {
@@ -46,6 +49,13 @@ void Logic::onBeforeTableUnloadHandler(TableObject & iTableObject, LoadState & i
 void Logic::onSafePinInterruptHandler()
 {
     LogicChannel::sLogic->mSaveInterruptTimestamp = millis();
+}
+
+void Logic::addLoopCallback(loopCallback iLoopCallback, void *iThis) {
+    sLoopCallbackParams lParams;
+    lParams.callback = iLoopCallback;
+    lParams.instance = iThis;
+    Logic::sLoopCallbacks[sNumLoopCallbacks++] = lParams;
 }
 
 Logic::Logic()
@@ -199,7 +209,7 @@ void Logic::writeAllInputsToEEPROMFacade() {
     println(lTime);
 }
 
-// on input level, all dpt>1 values are converted to bool by the according converter
+// on input level, all dpt > 1 values are converted to bool by the according converter
 void Logic::processInputKo(GroupObject &iKo)
 {
     if (iKo.asap() == LOG_KoTime) {
@@ -432,8 +442,9 @@ void Logic::setup(bool iSaveSupported) {
         mNumChannels = knx.paramByte(LOG_NumChannels);
         if (LOG_ChannelsFirmware < mNumChannels)
         {
-            printDebug("FATAL: Firmware compiled for %d channels, but knxprod needs %d channels!\n", LOG_ChannelsFirmware, mNumChannels);
-            knx.platform().fatalError();
+            char lErrorText[80];
+            sprintf(lErrorText, "FATAL: Firmware compiled for %d channels, but knxprod needs %d channels!\n", LOG_ChannelsFirmware, mNumChannels);
+            fatalError(FATAL_LOG_WRONG_CHANNEL_COUNT, lErrorText);
         }
         for (uint8_t lIndex = 0; lIndex < mNumChannels; lIndex++)
         {
@@ -492,7 +503,7 @@ void Logic::loop()
 
     processInterrupt();
     sTimer.loop(); // clock and timer async methods
-    knx.loop();
+    loopSubmodules();
 
     // we loop on all channels and execute pipeline
     for (uint8_t lIndex = 0; lIndex < mNumChannels; lIndex++)
@@ -501,12 +512,12 @@ void Logic::loop()
         if (sTimer.minuteChanged())
             lChannel->startTimerInput();
         lChannel->loop();
-        knx.loop();
+        loopSubmodules();
     }
     if (sTimer.minuteChanged()) {
         sendHoliday();
         sTimer.clearMinuteChanged();
-        knx.loop();
+        loopSubmodules();
     }
     processTimerRestore();
 }
@@ -534,7 +545,7 @@ void Logic::processTimerRestore() {
             {
                 sTimerRestore.decreaseDay();
             }
-            knx.loop();
+            loopSubmodules();
         } else {
             // stop timer restore processing in logic...
             sTimerRestoreDelay = 0;
@@ -562,4 +573,20 @@ void Logic::sendHoliday() {
             knx.getGroupObject(LOG_KoHoliday2).objectWritten();
         }
     }
+}
+
+void Logic::loopSubmodules() {
+    static uint8_t sCount = 0;
+    uint8_t lCount = sCount / 2;
+    knx.loop();
+    // we call submodules half as often as knx.loop();
+    if (lCount * 2 == sCount && lCount < sNumLoopCallbacks) {
+        sLoopCallbacks[lCount].callback(sLoopCallbacks[lCount].instance);
+    }
+    sCount = (lCount < sNumLoopCallbacks) ? sCount + 1 : 0;
+    // for (uint8_t i = 0; i < sNumLoopCallbacks; i++)
+    // {
+    //     sLoopCallbacks[i].callback(sLoopCallbacks[i].instance);
+    //     knx.loop();
+    // }
 }
