@@ -1896,7 +1896,7 @@ void LogicChannel::processTimerInput()
     bool lToday;                              // if it is a day timer lToday=true
     bool lResult = false;
     bool lValue;
-    bool lEvaluate = false;
+    bool lEvaluate = true;
     // first we process settings valid for whole timer
     // vacation
     bool lIsVacation = knx.getGroupObject(LOG_KoVacation).value(getDPT(VAL_DPT_1));
@@ -1907,85 +1907,87 @@ void LogicChannel::processTimerInput()
         lEvaluate = true;
     if (lVacationSetting == VAL_Tim_Special_Only)
         lEvaluate = lIsVacation;
-    if (!lEvaluate)
-        return;
 
     // holiday
     uint8_t lHolidaySetting = (getByteParam(LOG_fTHoliday) & LOG_fTHolidayMask) >> LOG_fTHolidayShift;
-    if (lHolidaySetting == VAL_Tim_Special_No && sTimer.isHolidayToday())
-        lEvaluate = false;
-    if (lHolidaySetting == VAL_Tim_Special_Skip || lHolidaySetting == VAL_Tim_Special_Sunday)
-        lEvaluate = true;
-    if (lHolidaySetting == VAL_Tim_Special_Only)
-        lEvaluate = sTimer.isHolidayToday();
-    if (!lEvaluate)
-        return;
+    if (lEvaluate) {
+        if (lHolidaySetting == VAL_Tim_Special_No && sTimer.isHolidayToday())
+            lEvaluate = false;
+        if (lHolidaySetting == VAL_Tim_Special_Skip || lHolidaySetting == VAL_Tim_Special_Sunday)
+            lEvaluate = true;
+        if (lHolidaySetting == VAL_Tim_Special_Only)
+            lEvaluate = sTimer.isHolidayToday();
+    }
 
-    bool lHandleAsSunday = (lHolidaySetting == VAL_Tim_Special_Sunday && sTimer.isHolidayToday()) ||
-                           (lVacationSetting == VAL_Tim_Special_Sunday && lIsVacation);
-
-    // loop through all timer
-    uint32_t lTimerFunctions = getIntParam(LOG_fTd1DuskDawn);
-    for (uint8_t lTimerIndex = 0; lTimerIndex < lCountTimer; lTimerIndex++)
+    if (lEvaluate)
     {
-        // get timer function code
-        uint8_t lTimerFunction = (lTimerFunctions >> (28 - lTimerIndex * 4)) & 0xF;
-        if (lTimerFunction)
+
+        bool lHandleAsSunday = (lHolidaySetting == VAL_Tim_Special_Sunday && sTimer.isHolidayToday()) ||
+                               (lVacationSetting == VAL_Tim_Special_Sunday && lIsVacation);
+
+        // loop through all timer
+        uint32_t lTimerFunctions = getIntParam(LOG_fTd1DuskDawn);
+        for (uint8_t lTimerIndex = 0; lTimerIndex < lCountTimer; lTimerIndex++)
         {
-            // timer function is active
-            lToday = !lIsYearTimer || checkTimerToday(sTimer, lTimerIndex, lHandleAsSunday);
-            if (lToday)
+            // get timer function code
+            uint8_t lTimerFunction = (lTimerFunctions >> (28 - lTimerIndex * 4)) & 0xF;
+            if (lTimerFunction)
             {
-                uint16_t lBitfield = getWordParam(LOG_fTd1Value + 2 * lTimerIndex);
-                lValue = lBitfield & 0x8000;
-                switch (lTimerFunction)
+                // timer function is active
+                lToday = !lIsYearTimer || checkTimerToday(sTimer, lTimerIndex, lHandleAsSunday);
+                if (lToday)
                 {
-                    case VAL_Tim_PointInTime:
-                        lResult = checkPointInTime(sTimer, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday);
-                        break;
-                    case VAL_Tim_Sunrise_Plus:
-                        lResult = checkSunAbs(sTimer, SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
-                        break;
-                    case VAL_Tim_Sunrise_Minus:
-                        lResult = checkSunAbs(sTimer, SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
-                        break;
-                    case VAL_Tim_Sunset_Plus:
-                        lResult = checkSunAbs(sTimer, SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
-                        break;
-                    case VAL_Tim_Sunset_Minus:
-                        lResult = checkSunAbs(sTimer, SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
-                        break;
-                    case VAL_Tim_Sunrise_Earliest:
-                        lResult = checkSunLimit(sTimer, SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
-                        break;
-                    case VAL_Tim_Sunrise_Latest:
-                        lResult = checkSunLimit(sTimer, SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
-                        break;
-                    case VAL_Tim_Sunset_Earliest:
-                        lResult = checkSunLimit(sTimer, SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
-                        break;
-                    case VAL_Tim_Sunset_Latest:
-                        lResult = checkSunLimit(sTimer, SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
-                        break;
-                    default:
-                        break;
+                    uint16_t lBitfield = getWordParam(LOG_fTd1Value + 2 * lTimerIndex);
+                    lValue = lBitfield & 0x8000;
+                    switch (lTimerFunction)
+                    {
+                        case VAL_Tim_PointInTime:
+                            lResult = checkPointInTime(sTimer, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday);
+                            break;
+                        case VAL_Tim_Sunrise_Plus:
+                            lResult = checkSunAbs(sTimer, SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
+                            break;
+                        case VAL_Tim_Sunrise_Minus:
+                            lResult = checkSunAbs(sTimer, SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
+                            break;
+                        case VAL_Tim_Sunset_Plus:
+                            lResult = checkSunAbs(sTimer, SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
+                            break;
+                        case VAL_Tim_Sunset_Minus:
+                            lResult = checkSunAbs(sTimer, SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
+                            break;
+                        case VAL_Tim_Sunrise_Earliest:
+                            lResult = checkSunLimit(sTimer, SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
+                            break;
+                        case VAL_Tim_Sunrise_Latest:
+                            lResult = checkSunLimit(sTimer, SUN_SUNRISE, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
+                            break;
+                        case VAL_Tim_Sunset_Earliest:
+                            lResult = checkSunLimit(sTimer, SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, false);
+                            break;
+                        case VAL_Tim_Sunset_Latest:
+                            lResult = checkSunLimit(sTimer, SUN_SUNSET, lTimerIndex, lBitfield, lIsYearTimer, lHandleAsSunday, true);
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
+            if (lResult)
+                break;
         }
         if (lResult)
-            break;
-    }
-    if (lResult)
-    {
-#if LOGIC_TRACE
-        if (debugFilter())
         {
-            channelDebug("startTimerInput: Value %i\n", lValue);
-        }
+#if LOGIC_TRACE
+            if (debugFilter())
+            {
+                channelDebug("startTimerInput: Value %i\n", lValue);
+            }
 #endif
-        startLogic(BIT_EXT_INPUT_2, lValue);
-        // if a timer is executed, it has not to be restored anymore
-        pCurrentPipeline &= ~PIP_TIMER_RESTORE_STATE;
+            startLogic(BIT_EXT_INPUT_2, lValue);
+            // if a timer is executed, it has not to be restored anymore
+            pCurrentPipeline &= ~PIP_TIMER_RESTORE_STATE;
+        }
     }
     // we wait for next timer execution
     pCurrentPipeline &= ~PIP_TIMER_INPUT;
