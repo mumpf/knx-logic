@@ -50,6 +50,10 @@ rmware 2.1.0, Applikation 2.0 - 2.3
 
 * FIX: Das Blinkmodul hat fälschlicherweise den Ausgangszustand der Logik verändert. Das konnte bei "nur bei geändertem Ergebnis senden" auch zu unerwarteten Logik-Triggern führen. Immer wenn während des Blinkens am Eingang ein Signal ankam, dass invers zum Blinkstatus war, wurde unerwünscht getriggert.
 
+12.04.2021: Firmware 3.1.0, Applikation 3.1
+
+* FIX: Bei Zeitschaltuhren hat die Kombination "Feiertage wie Sonntage behandeln" und "Im Urlaub nicht schalten" nicht funktioniert.
+
 <div style="page-break-after: always;"></div>
 
 ## Allgemeine Parameter
