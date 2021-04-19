@@ -69,9 +69,18 @@
                   <when test="1">
                     <!-- show lock KO for Buzzer -->
                     <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-9_R-91" />
+                    <!-- Expert screen: we allow definition of buzzer frequencies -->
+                    <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-nnn" Name="LogicExtraSettings" Text="Experteneinstellungen">
+                      <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Buzzer" UIHint="Headline" />
+                      <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Die beim Buzzer verwendeten Frequenzen für leise, normal und laut können hier eingestellt werden" />
+                      <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-48_R-481" />
+                      <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-49_R-491" />
+                      <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-50_R-501" />
+                      <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Der Buzzer kann nur 'AN' oder 'AUS'. Die Lautstärke wird durch Frequenz wählt, die niicht im optimalen Arbeitsbereich liegt. Die Standardwerte meinen also 'leise und tief', 'normal und hoch', 'laut und mittel'." />
+                      <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                    </ParameterBlock>
                   </when>
                 </choose>
-
               </ParameterBlock>
               <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-nnn" Name="Holidays" Text="Urlaub/Feiertage">
                 <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-49" Text="Zeit" UIHint="Headline" />

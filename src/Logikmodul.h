@@ -41,9 +41,9 @@
 #define LOG_Diagnose                  10      // 1 Bit, Bit 3
 #define     LOG_DiagnoseMask 0x08
 #define     LOG_DiagnoseShift 3
-#define LOG_Watchdog                  10      // 1 Bit, Bit 3
-#define     LOG_WatchdogMask 0x08
-#define     LOG_WatchdogShift 3
+#define LOG_Watchdog                  10      // 1 Bit, Bit 2
+#define     LOG_WatchdogMask 0x04
+#define     LOG_WatchdogShift 2
 #define LOG_Neujahr                   11      // 1 Bit, Bit 7
 #define     LOG_NeujahrMask 0x80
 #define     LOG_NeujahrShift 7
@@ -133,9 +133,12 @@
 #define     LOG_SilvesterShift 3
 #define LOG_Latitude                  15      // float
 #define LOG_Longitude                 19      // float
+#define LOG_BuzzerSilent              23      // uint16_t
+#define LOG_BuzzerNormal              25      // uint16_t
+#define LOG_BuzzerLoud                27      // uint16_t
 
 // Parameter per channel
-#define LOG_ParamBlockOffset 23
+#define LOG_ParamBlockOffset 29
 #define LOG_ParamBlockSize 100
 #define LOG_fChannelDelay              0      // int32_t
 #define LOG_fLogic                     4      // 8 Bits, Bit 7-0

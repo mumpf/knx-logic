@@ -277,17 +277,17 @@ void LogicChannel::setBuzzer(uint16_t iParamIndex)
     if ((getByteParam(LOG_fAlarm) & LOG_fAlarmMask) || !knx.getGroupObject(LOG_KoBuzzerLock).value(getDPT(VAL_DPT_1))) {
         switch (getByteParam(iParamIndex))
         {
-            case 0:
+            case VAL_Buzzer_Off:
                 noTone(BUZZER_PIN);
                 break;
-            case 1:
-                tone(BUZZER_PIN, BUZZER_FREQ_LOUD);
+            case VAL_Buzzer_Loud:
+                tone(BUZZER_PIN, knx.paramWord(LOG_BuzzerLoud));
                 break;
-            case 2:
-                tone(BUZZER_PIN, BUZZER_FREQ_SILENT);
+            case VAL_Buzzer_Silent:
+                tone(BUZZER_PIN, knx.paramWord(LOG_BuzzerSilent));
                 break;
-            case 3:
-                tone(BUZZER_PIN, BUZZER_FREQ_NORMAL);
+            case VAL_Buzzer_Normal:
+                tone(BUZZER_PIN, knx.paramWord(LOG_BuzzerNormal));
                 break;
             default:
                 break;

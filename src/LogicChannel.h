@@ -101,6 +101,12 @@
 #define VAL_AllowRepeat_Off 2
 #define VAL_AllowRepeat_None 3
 
+// enum for buzzer volume
+#define VAL_Buzzer_Off 0
+#define VAL_Buzzer_Silent 2
+#define VAL_Buzzer_Normal 3
+#define VAL_Buzzer_Loud 1
+
 // flags for in- and output
 #define BIT_EXT_INPUT_1 0x01
 #define BIT_EXT_INPUT_2 0x02

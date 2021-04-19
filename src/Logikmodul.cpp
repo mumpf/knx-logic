@@ -3,7 +3,7 @@
 #include "Logic.h"
 
 const uint8_t cFirmwareMajor = 3;    // 0-31
-const uint8_t cFirmwareMinor = 0;    // 0-31
+const uint8_t cFirmwareMinor = 1;    // 0-31
 const uint8_t cFirmwareRevision = 0; // 0-63
 
 struct sRuntimeInfo
@@ -63,14 +63,14 @@ void appSetup(bool iSaveSupported)
 {
     // try to get rid of occasional I2C lock...
     // savePower();
-    digitalWrite(PROG_LED_PIN, HIGH);
-    digitalWrite(LED_YELLOW_PIN, HIGH);
+    ledProg(true);
+    ledInfo(true);
     // delay(100);
     // restorePower();
     // check hardware availability
     boardCheck();
-    digitalWrite(PROG_LED_PIN, LOW);
-    digitalWrite(LED_YELLOW_PIN, LOW);
+    ledInfo(false);
+    ledProg(false);
 
     if (knx.configured())
     {

@@ -418,9 +418,7 @@ void Logic::debug() {
     // Test i2c failure
     // we start an i2c read i.e. for EEPROM
     // prepareReadEEPROM(4711, 20);
-    // digitalWrite(LED_YELLOW_PIN, HIGH);
     // delay(10000);
-    // digitalWrite(LED_YELLOW_PIN, LOW);
 }
 
 void Logic::setup(bool iSaveSupported) {
