@@ -350,6 +350,7 @@
                   <Enumeration Text="Ja - Wert vorgeben" Value="1" Id="M-00FA_A-0001-01-0000_PT-OutputSendOn_EN-1" />
                   <Enumeration Text="Ja - Wert von Eingang 1" Value="2" Id="M-00FA_A-0001-01-0000_PT-OutputSendOn_EN-2" />
                   <Enumeration Text="Ja - Wert von Eingang 2" Value="3" Id="M-00FA_A-0001-01-0000_PT-OutputSendOn_EN-3" />
+                  <Enumeration Text="Ja - Wert einer Funktion" Value="8" Id="M-00FA_A-0001-01-0000_PT-OutputSendOn_EN-8" />
                   <Enumeration Text="Ja - Read Request senden" Value="4" Id="M-00FA_A-0001-01-0000_PT-OutputSendOn_EN-4" />
                   <Enumeration Text="Ja - 'Gerät zurücksetzen' senden" Value="5" Id="M-00FA_A-0001-01-0000_PT-OutputSendOn_EN-5" />
                 </TypeRestriction>
@@ -360,6 +361,7 @@
                   <Enumeration Text="Ja - Wert vorgeben" Value="1" Id="M-00FA_A-0001-01-0000_PT-OutputSendBuzzer_EN-1" />
                   <Enumeration Text="Ja - Wert von Eingang 1" Value="2" Id="M-00FA_A-0001-01-0000_PT-OutputSendBuzzer_EN-2" />
                   <Enumeration Text="Ja - Wert von Eingang 2" Value="3" Id="M-00FA_A-0001-01-0000_PT-OutputSendBuzzer_EN-3" />
+                  <Enumeration Text="Ja - Wert einer Funktion" Value="8" Id="M-00FA_A-0001-01-0000_PT-OutputSendBuzzer_EN-8" />
                   <Enumeration Text="Ja - Read Request senden" Value="4" Id="M-00FA_A-0001-01-0000_PT-OutputSendBuzzer_EN-4" />
                   <Enumeration Text="Ja - 'Gerät zurücksetzen' senden" Value="5" Id="M-00FA_A-0001-01-0000_PT-OutputSendBuzzer_EN-5" />
                   <Enumeration Text="Ja - Tonwiedegabe (Buzzer)" Value="6" Id="M-00FA_A-0001-01-0000_PT-OutputSendBuzzer_EN-6" />
@@ -371,6 +373,7 @@
                   <Enumeration Text="Ja - Wert vorgeben" Value="1" Id="M-00FA_A-0001-01-0000_PT-OutputSendLed_EN-1" />
                   <Enumeration Text="Ja - Wert von Eingang 1" Value="2" Id="M-00FA_A-0001-01-0000_PT-OutputSendLed_EN-2" />
                   <Enumeration Text="Ja - Wert von Eingang 2" Value="3" Id="M-00FA_A-0001-01-0000_PT-OutputSendLed_EN-3" />
+                  <Enumeration Text="Ja - Wert einer Funktion" Value="8" Id="M-00FA_A-0001-01-0000_PT-OutputSendLed_EN-8" />
                   <Enumeration Text="Ja - Read Request senden" Value="4" Id="M-00FA_A-0001-01-0000_PT-OutputSendLed_EN-4" />
                   <Enumeration Text="Ja - 'Gerät zurücksetzen' senden" Value="5" Id="M-00FA_A-0001-01-0000_PT-OutputSendLed_EN-5" />
                   <Enumeration Text="Ja - RGB-LED schalten" Value="7" Id="M-00FA_A-0001-01-0000_PT-OutputSendLed_EN-7" />
@@ -382,10 +385,52 @@
                   <Enumeration Text="Ja - Wert vorgeben" Value="1" Id="M-00FA_A-0001-01-0000_PT-OutputSendAll_EN-1" />
                   <Enumeration Text="Ja - Wert von Eingang 1" Value="2" Id="M-00FA_A-0001-01-0000_PT-OutputSendAll_EN-2" />
                   <Enumeration Text="Ja - Wert von Eingang 2" Value="3" Id="M-00FA_A-0001-01-0000_PT-OutputSendAll_EN-3" />
+                  <Enumeration Text="Ja - Wert einer Funktion" Value="8" Id="M-00FA_A-0001-01-0000_PT-OutputSendAll_EN-8" />
                   <Enumeration Text="Ja - Read Request senden" Value="4" Id="M-00FA_A-0001-01-0000_PT-OutputSendAll_EN-4" />
                   <Enumeration Text="Ja - 'Gerät zurücksetzen' senden" Value="5" Id="M-00FA_A-0001-01-0000_PT-OutputSendAll_EN-5" />
                   <Enumeration Text="Ja - Tonwiedegabe (Buzzer)" Value="6" Id="M-00FA_A-0001-01-0000_PT-OutputSendAll_EN-6" />
                   <Enumeration Text="Ja - RGB-LED schalten" Value="7" Id="M-00FA_A-0001-01-0000_PT-OutputSendAll_EN-7" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-ValueFunction" Name="ValueFunction">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="Ausgang = Eingang 1 + Eingang 2" Value="1" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-1" />
+                  <Enumeration Text="Ausgang = Eingang 1 - Eingang 2" Value="2" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-2" />
+                  <Enumeration Text="Ausgang = Eingang 1 * Eingang 2" Value="3" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-3" />
+                  <Enumeration Text="Ausgang = Eingang 1 / Eingang 2" Value="4" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-4" />
+                  <Enumeration Text="Ausgang = (Eingang 1 + Eingang 2) / 2" Value="5" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-5" />
+                  <Enumeration Text="Ausgang = Min(Eingang 1, Eingang 2)" Value="6" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-6" />
+                  <Enumeration Text="Ausgang = Max(Eingang 1, Eingang 2)" Value="7" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-7" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_01(E1, E2)" Value="201" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-201" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_02(E1, E2)" Value="202" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-202" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_03(E1, E2)" Value="203" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-203" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_04(E1, E2)" Value="204" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-204" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_05(E1, E2)" Value="205" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-205" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_06(E1, E2)" Value="206" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-206" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_07(E1, E2)" Value="207" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-207" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_08(E1, E2)" Value="208" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-208" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_09(E1, E2)" Value="209" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-209" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_10(E1, E2)" Value="210" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-210" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_11(E1, E2)" Value="211" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-211" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_12(E1, E2)" Value="212" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-212" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_13(E1, E2)" Value="213" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-213" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_14(E1, E2)" Value="214" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-214" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_15(E1, E2)" Value="215" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-215" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_16(E1, E2)" Value="216" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-216" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_17(E1, E2)" Value="217" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-217" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_18(E1, E2)" Value="218" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-218" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_19(E1, E2)" Value="219" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-219" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_20(E1, E2)" Value="220" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-220" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_21(E1, E2)" Value="221" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-221" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_22(E1, E2)" Value="222" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-222" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_23(E1, E2)" Value="223" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-223" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_24(E1, E2)" Value="224" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-224" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_25(E1, E2)" Value="225" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-225" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_26(E1, E2)" Value="226" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-226" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_27(E1, E2)" Value="227" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-227" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_28(E1, E2)" Value="228" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-228" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_29(E1, E2)" Value="229" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-229" />
+                  <Enumeration Text="Ausgang = Benutzerfunktion_30(E1, E2)" Value="230" Id="M-00FA_A-0001-01-0000_PT-ValueFunction_EN-230" />
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-ValueDpt6" Name="ValueDpt6">

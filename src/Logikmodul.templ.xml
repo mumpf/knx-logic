@@ -312,6 +312,7 @@
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%121" Name="f%C%OOnPAArea"   ParameterType="M-00FA_A-0001-01-0000_PT-PALine"        Offset="0" BitOffset="0" Text="" Value="1" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%122" Name="f%C%OOnPALine"   ParameterType="M-00FA_A-0001-01-0000_PT-PALine"        Offset="0" BitOffset="4" Text="" Value="1" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%123" Name="f%C%OOnPADevice" ParameterType="M-00FA_A-0001-01-0000_PT-PADevice"      Offset="1" BitOffset="0" Text="" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%279" Name="f%C%OOnFunction" ParameterType="M-00FA_A-0001-01-0000_PT-ValueFunction" Offset="0" BitOffset="0" Text="    Wert für EIN ermitteln als" Value="1" />
     </Union>
     <Union SizeInBit="8">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="85" BitOffset="0" />
@@ -337,6 +338,7 @@
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%124" Name="f%C%OOffPAArea"   ParameterType="M-00FA_A-0001-01-0000_PT-PALine"        Offset="0" BitOffset="0" Text="" Value="1" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%125" Name="f%C%OOffPALine"   ParameterType="M-00FA_A-0001-01-0000_PT-PALine"        Offset="0" BitOffset="4" Text="" Value="1" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%126" Name="f%C%OOffPADevice" ParameterType="M-00FA_A-0001-01-0000_PT-PADevice"      Offset="1" BitOffset="0" Text="" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%280" Name="f%C%OOffFunction" ParameterType="M-00FA_A-0001-01-0000_PT-ValueFunction" Offset="0" BitOffset="0" Text="    Wert für AUS ermitteln als" Value="1" />
     </Union>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%128" Name="f%C%NameInput1" ParameterType="M-00FA_A-0001-01-0000_PT-Text40Byte" Text="Beschreibung Eingang 1" Value="" />
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%129" Name="f%C%NameInput2" ParameterType="M-00FA_A-0001-01-0000_PT-Text40Byte" Text="Beschreibung Eingang 2" Value="" />
@@ -673,6 +675,8 @@
     <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%276_R-%C%2761" RefId="M-00FA_A-0001-01-0000_UP-%C%276" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%277_R-%C%2771" RefId="M-00FA_A-0001-01-0000_UP-%C%277" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%278_R-%C%2781" RefId="M-00FA_A-0001-01-0000_P-%C%278" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%279_R-%C%2791" RefId="M-00FA_A-0001-01-0000_UP-%C%279" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%280_R-%C%2801" RefId="M-00FA_A-0001-01-0000_UP-%C%280" />
   </ParameterRefs>
   <ComObjectTable>
     <ComObject Id="M-00FA_A-0001-01-0000_O-%K0%" Name="KOf%C%E1" Text="Eingang 1" Number="%K0%" FunctionText="Logik %C%, Eingang 1" ObjectSize="1 Bit" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled"  ReadOnInitFlag="Disabled" />
@@ -1908,6 +1912,9 @@
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%076_R-%C%0762" />
                 <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_P-%C%278_R-%C%2781" Value="1" />
               </when>
+              <when test="8">
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%279_R-%C%2791" />
+              </when>
             </choose>
             <choose ParamRefId="M-00FA_A-0001-01-0000_UP-5_R-51">
               <when test="0">
@@ -2005,6 +2012,9 @@
               <when test="7">
                 <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%088_R-%C%0882" />
                 <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_P-%C%278_R-%C%2781" Value="1" />
+              </when>
+              <when test="8">
+                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%280_R-%C%2801" />
               </when>
             </choose>
             <!-- Ask for alarm output in case RGB or Buzzer is acive -->

@@ -586,6 +586,7 @@
 #define     LOG_fOOnPALineMask 0x0F
 #define     LOG_fOOnPALineShift 0
 #define LOG_fOOnPADevice              72      // uint8_t
+#define LOG_fOOnFunction              71      // 8 Bits, Bit 7-0
 #define LOG_fOOff                     85      // 8 Bits, Bit 7-0
 #define LOG_fOOffBuzzer               85      // 8 Bits, Bit 7-0
 #define LOG_fOOffLed                  85      // 8 Bits, Bit 7-0
@@ -609,6 +610,7 @@
 #define     LOG_fOOffPALineMask 0x0F
 #define     LOG_fOOffPALineShift 0
 #define LOG_fOOffPADevice             87      // uint8_t
+#define LOG_fOOffFunction             86      // 8 Bits, Bit 7-0
 
 // Communication objects per channel (multiple occurance)
 #define LOG_KoOffset 20

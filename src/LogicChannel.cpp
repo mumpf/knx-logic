@@ -3,6 +3,7 @@
 #include "Helper.h"
 #include "Hardware.h"
 #include "PCA9632.h"
+#include "LogicFunction.h"
 
 Logic *LogicChannel::sLogic = nullptr;
 Timer &LogicChannel::sTimer = Timer::instance();
@@ -469,27 +470,46 @@ void LogicChannel::writeParameterValue(uint8_t iIOIndex)
     int32_t lValueOrig = getInputValue(iIOIndex);
     uint16_t lParamDpt = (iIOIndex == 1) ? LOG_fE1Dpt : LOG_fE2Dpt;
     uint8_t lInputDpt = getByteParam(lParamDpt);
-    uint8_t lDpt = getByteParam(LOG_fODpt);
     int32_t lValue = (lInputDpt == VAL_DPT_9) ? lValueOrig / 10 : lValueOrig;
+    uint8_t lDpt = getByteParam(LOG_fODpt);
+    lValue = (lDpt == VAL_DPT_9) ? lValueOrig : lValue;
+    writeValue(lValue, lInputDpt);
+}
+
+void LogicChannel::writeFunctionValue(uint16_t iParamIndex)
+{
+    uint8_t lFunction = getByteParam(iParamIndex);
+    int32_t lE1 = getInputValue(BIT_EXT_INPUT_1);
+    int32_t lE2 = getInputValue(BIT_EXT_INPUT_2);
+    uint8_t lDpt = getByteParam(LOG_fODpt);
+    int32_t lValue = LogicFunction::callFunction(lFunction, lE1, lE2, &lDpt);
+    writeValue(lValue, lDpt);
+}
+
+void LogicChannel::writeValue(uint32_t iValue, uint8_t iDpt)
+{
+    uint8_t lDpt = getByteParam(LOG_fODpt);
+    bool lValueBool;
+    uint8_t lValueByte;
+    uint16_t lValueWord;
+    float lValueFloat;
+    char lValueStr[15];
     switch (lDpt)
     {
-        uint8_t lValueByte;
-        uint16_t lValueWord;
         case VAL_DPT_1:
-            bool lValueBool;
-            lValueBool = lValue != 0;
+            lValueBool = iValue != 0;
             knxWriteBool(IO_Output, lValueBool);
             break;
         case VAL_DPT_2:
-            lValueByte = abs(lValue);
+            lValueByte = abs(iValue);
             lValueByte &= 3;
             knxWriteRawInt(IO_Output, lValueByte);
             break;
         case VAL_DPT_5:
         case VAL_DPT_5001:
-            lValue = abs(lValue);
+            iValue = abs(iValue);
         case VAL_DPT_6:
-            lValueByte = lValue;
+            lValueByte = iValue;
             knxWriteInt(IO_Output, lValueByte);
             break;
             // lValueByte = lValue;
@@ -499,35 +519,26 @@ void LogicChannel::writeParameterValue(uint8_t iIOIndex)
             // knxWrite(0, lValueByte);
             // break;
         case VAL_DPT_7:
-            lValue = abs(lValue);
+            iValue = abs(iValue);
         case VAL_DPT_8:
-            lValueWord = lValue;
+            lValueWord = iValue;
             knxWriteInt(IO_Output, lValueWord);
             break;
         case VAL_DPT_9:
-            float lValueFloat;
-            if (lInputDpt == VAL_DPT_9)
-            {
-                lValueFloat = lValueOrig / 100.0;
-            }
-            else
-            {
-                lValueFloat = lValue;
-            }
+            lValueFloat = iValue / 100.0;
             knxWriteFloat(IO_Output, lValueFloat);
             break;
         case VAL_DPT_16:
-            char lValueStr[15];
-            sprintf(lValueStr, "%ld", lValue);
+            sprintf(lValueStr, "%ld", iValue);
             knxWriteString(IO_Output, lValueStr);
             break;
         case VAL_DPT_17:
-            lValueByte = abs(lValue);
+            lValueByte = abs(iValue);
             lValueByte &= 0x3F;
             knxWriteInt(IO_Output, lValueByte);
             break;
         case VAL_DPT_232:
-            knxWriteInt(IO_Output, lValue);
+            knxWriteInt(IO_Output, iValue);
             break;
         default:
             break;
@@ -1576,6 +1587,9 @@ void LogicChannel::processOutput(bool iValue)
             case VAL_Out_ValE2:
                 writeParameterValue(IO_Input2);
                 break;
+            case VAL_Out_Function:
+                writeFunctionValue(LOG_fOOnFunction);
+                break;
             case VAL_Out_ReadRequest:
                 knxRead(IO_Output);
                 break;
@@ -1606,6 +1620,9 @@ void LogicChannel::processOutput(bool iValue)
                 break;
             case VAL_Out_ValE2:
                 writeParameterValue(IO_Input2);
+                break;
+            case VAL_Out_Function:
+                writeFunctionValue(LOG_fOOffFunction);
                 break;
             case VAL_Out_ReadRequest:
                 knxRead(IO_Output);
