@@ -1,37 +1,38 @@
+#include "KnxHelper.h"
 #include "LogicFunction.h"
 
 // native functions, implemented as a simple example how to use user functions
-uint32_t LogicFunction::nativeAdd(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::nativeAdd(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return E1 + E2;
 }
 
-uint32_t LogicFunction::nativeSubtract(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::nativeSubtract(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return E1 - E2;
 }
 
-uint32_t LogicFunction::nativeMultiply(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::nativeMultiply(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return E1 * E2;
 }
 
-uint32_t LogicFunction::nativeDivide(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::nativeDivide(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return E1 / E2;
 }
 
-uint32_t LogicFunction::nativeAverage(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::nativeAverage(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return (E1 + E2) / 2;
 }
 
-uint32_t LogicFunction::nativeMinimum(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::nativeMinimum(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return (E1 < E2) ? E1 : E2;
 }
 
-uint32_t LogicFunction::nativeMaximum(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::nativeMaximum(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return (E1 > E2) ? E1 : E2;
 }
@@ -42,7 +43,7 @@ LogicFunction::LogicFunction(){};
 
 LogicFunction::~LogicFunction(){};
 
-uint32_t (*LogicFunction::nativeFunction[NUM_NATIVE_FUNCTIONS])(uint8_t, uint32_t, uint8_t, uint32_t, uint8_t *){
+float (*LogicFunction::nativeFunction[NUM_NATIVE_FUNCTIONS])(uint8_t, float, uint8_t, float, uint8_t *){
     nativeAdd,
     nativeSubtract,
     nativeMultiply,
@@ -51,7 +52,7 @@ uint32_t (*LogicFunction::nativeFunction[NUM_NATIVE_FUNCTIONS])(uint8_t, uint32_
     nativeMinimum,
     nativeMaximum};
 
-uint32_t (*LogicFunction::userFunction[30])(uint8_t, uint32_t, uint8_t, uint32_t, uint8_t *){
+float (*LogicFunction::userFunction[30])(uint8_t, float, uint8_t, float, uint8_t *){
     userFunction01,
     userFunction02,
     userFunction03,
@@ -86,13 +87,23 @@ uint32_t (*LogicFunction::userFunction[30])(uint8_t, uint32_t, uint8_t, uint32_t
 // dispatcher
 uint32_t LogicFunction::callFunction(uint8_t iId, uint8_t iDptE1, uint32_t iE1, uint8_t iDptE2, uint32_t iE2, uint8_t *cDptOut)
 {
+    // DPT9 is transported as int with factor 100, we transform here the base
+    float lE1 = (float)iE1;
+    float lE2 = (float)iE2;
+    if (iDptE1 == VAL_DPT_9)
+        lE1 /= 100.0;
+    if (iDptE2 == VAL_DPT_9)
+        lE2 /= 100.0;
+    float lResult = 0.0;
     if (iId > 0 && iId <= NUM_NATIVE_FUNCTIONS)
     {
-        return nativeFunction[iId - 1](iDptE1, iE1, iDptE2, iE2, cDptOut);
+        lResult = nativeFunction[iId - 1](iDptE1, iE1, iDptE2, iE2, cDptOut);
     }
     else if (iId > 200 && iId <= 230)
     {
-        return userFunction[iId - 201](iDptE1, iE1, iDptE2, iE2, cDptOut);
+        lResult = userFunction[iId - 201](iDptE1, iE1, iDptE2, iE2, cDptOut);
     }
-    return 0;
+    if (*cDptOut == VAL_DPT_9)
+        lResult *= 100.0;
+    return (uint32_t)lResult;
 }

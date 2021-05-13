@@ -54,6 +54,13 @@ rmware 2.1.0, Applikation 2.0 - 2.3
 
 * FIX: Bei Zeitschaltuhren hat die Kombination "Feiertage wie Sonntage behandeln" und "Im Urlaub nicht schalten" nicht funktioniert.
 
+12.05.2021: Firmware 3.2.0, Applikation 3.2
+
+* Feature: Einfache Formeln in einer Logik (+, -, *, /, min, max und avg mit 2 Eingängen)
+* Feature: Es können jetzt bis zu 30 Benutzerfunktionen im Coding definiert und in der ETS Applikation ausgewählt werden
+* Feature: Eingangs-Konverter können jetzt für DPT5, DPT5.001, DPT6, DPT7 und DPT8 auch mit mehreren Einzelwerten definiert werden (ähnlich wie die bisherige Definition von Szenen-Convertern)
+* Eingänge können jetzt auch einen DPT-Gerechten konstanten Wert enthalten, der dann in Formeln weiter verarbeitet oder direkt am Ausgang genutzt werden kann
+
 <div style="page-break-after: always;"></div>
 
 ## Allgemeine Parameter
@@ -747,6 +754,12 @@ Mit "anderer" Eingang ist foglendes gemeint:
 Der Differenzeingang muss nicht vom gleichen DPT sein, er wird generisch in eine Zahl konvertiert. Allerdings kann das zu unerwarteten Ergebnissen führen. Empfohlen wird bei Differenzkonvertern der gleiche DPT.
 
 Wird ein Differenzeingang genutzt, sollte dieser nicht auch noch als "normal aktiv" oder "invertiert aktiv" bei einer logischen Operation genutzt werden, obwohl das grundsätzlich möglich ist. Dann würde der Differenzeingang auch einen Konverter anbieten und entsprechend ein EIN- oder AUS-Signal für die logische Operation erzeugen. Dies ist ausdrücklich nicht empfohlen und auch bisher nicht getestet. Ob man die Komplexität eines solchen Aufbaus noch durchblicken kann, ist auch zu bezweifeln.
+
+### Ganzzahlbasierte DPT
+
+Alle DPT, die ganze Zahlen repräsentieren (das sind DPT 5.xxx, 5.001, 6.xxx, 7.xxx, 8.xxx), können mittels eines weiteren Einzelwert-Konverters in ein binäres Signal umgewandelt werden. Er ist gleich für alle DPT, die einzugebenden Zahlen müssen nur innerhalb der Wertebereiche des jeweiligen DPT liegen.
+
+
 
 ## Kanalausgänge verbinden
 

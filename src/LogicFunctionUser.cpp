@@ -1,124 +1,124 @@
 #include "LogicFunction.h"
 
 // user functions, may be implemented by Enduser
-uint32_t LogicFunction::userFunction01(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction01(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
-    return 0;
+    return E1; // just an expample, result is first parameter value
 }
 
-uint32_t LogicFunction::userFunction02(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction02(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
+{
+    return E2; // just an expample, result is second parameter value
+}
+float LogicFunction::userFunction03(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
-uint32_t LogicFunction::userFunction03(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction04(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
-uint32_t LogicFunction::userFunction04(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction05(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
-uint32_t LogicFunction::userFunction05(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction06(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
-uint32_t LogicFunction::userFunction06(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction07(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
-uint32_t LogicFunction::userFunction07(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction08(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
-uint32_t LogicFunction::userFunction08(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction09(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
-uint32_t LogicFunction::userFunction09(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction10(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
-uint32_t LogicFunction::userFunction10(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction11(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
-uint32_t LogicFunction::userFunction11(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction12(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
-uint32_t LogicFunction::userFunction12(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction13(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
-uint32_t LogicFunction::userFunction13(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction14(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
-uint32_t LogicFunction::userFunction14(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction15(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
-uint32_t LogicFunction::userFunction15(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction16(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
-uint32_t LogicFunction::userFunction16(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction17(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
-uint32_t LogicFunction::userFunction17(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction18(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
-uint32_t LogicFunction::userFunction18(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction19(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
-uint32_t LogicFunction::userFunction19(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction20(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
-uint32_t LogicFunction::userFunction20(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction21(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
-uint32_t LogicFunction::userFunction21(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction22(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
-uint32_t LogicFunction::userFunction22(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction23(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
-uint32_t LogicFunction::userFunction23(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction24(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
-uint32_t LogicFunction::userFunction24(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction25(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
-uint32_t LogicFunction::userFunction25(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction26(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
-uint32_t LogicFunction::userFunction26(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction27(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
-uint32_t LogicFunction::userFunction27(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction28(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
-uint32_t LogicFunction::userFunction28(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction29(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
-uint32_t LogicFunction::userFunction29(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
-{
-    return 0;
-}
-uint32_t LogicFunction::userFunction30(uint8_t DptE1, uint32_t E1, uint8_t DptE2, uint32_t E2, uint8_t *DptOut)
+float LogicFunction::userFunction30(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return 0;
 }
