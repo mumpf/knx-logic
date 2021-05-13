@@ -31,8 +31,10 @@
     </Parameter>
     <Union SizeInBit="8">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="9" BitOffset="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%008" Name="f%C%E1"        ParameterType="M-00FA_A-0001-01-0000_PT-InputEnable" Offset="0" BitOffset="4" Text="Eingang 1" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%093" Name="f%C%E1Convert" ParameterType="M-00FA_A-0001-01-0000_PT-InputConv"   Offset="0" BitOffset="0" Text="Wert für Eingang 1 wird ermittelt durch" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%008" Name="f%C%E1"               ParameterType="M-00FA_A-0001-01-0000_PT-InputEnable"      Offset="0" BitOffset="4" Text="Eingang 1" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%093" Name="f%C%E1Convert"        ParameterType="M-00FA_A-0001-01-0000_PT-InputConv"        Offset="0" BitOffset="0" Text="Wert für Eingang 1 wird ermittelt durch" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%369" Name="f%C%E1ConvertFloat"   ParameterType="M-00FA_A-0001-01-0000_PT-InputConvFloat"   Offset="0" BitOffset="0" Text="Wert für Eingang 1 wird ermittelt durch" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%370" Name="f%C%E1ConvertSpecial" ParameterType="M-00FA_A-0001-01-0000_PT-InputConvSpecial" Offset="0" BitOffset="0" Text="Wert für Eingang 1 wird ermittelt durch" Value="4" />
     </Union>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%009" Name="f%C%E1Dpt" ParameterType="M-00FA_A-0001-01-0000_PT-InputDpt" Text="DPT für Eingang 1" Value="0">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="10" BitOffset="0" />
@@ -51,8 +53,10 @@
     </Union>
     <Union SizeInBit="8">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="16" BitOffset="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%028" Name="f%C%E2"        ParameterType="M-00FA_A-0001-01-0000_PT-InputEnable" Offset="0" BitOffset="4" Text="Eingang 2" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%094" Name="f%C%E2Convert" ParameterType="M-00FA_A-0001-01-0000_PT-InputConv"   Offset="0" BitOffset="0" Text="Wert für Eingang 2 wird ermittelt durch" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%028" Name="f%C%E2"               ParameterType="M-00FA_A-0001-01-0000_PT-InputEnable"      Offset="0" BitOffset="4" Text="Eingang 2" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%094" Name="f%C%E2Convert"        ParameterType="M-00FA_A-0001-01-0000_PT-InputConv"        Offset="0" BitOffset="0" Text="Wert für Eingang 2 wird ermittelt durch" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%371" Name="f%C%E2ConvertFloat"   ParameterType="M-00FA_A-0001-01-0000_PT-InputConvFloat"   Offset="0" BitOffset="0" Text="Wert für Eingang 2 wird ermittelt durch" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%372" Name="f%C%E2ConvertSpecial" ParameterType="M-00FA_A-0001-01-0000_PT-InputConvSpecial" Offset="0" BitOffset="0" Text="Wert für Eingang 2 wird ermittelt durch" Value="4" />
     </Union>
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%029" Name="f%C%E2Dpt" ParameterType="M-00FA_A-0001-01-0000_PT-InputDpt" Text="DPT für Eingang 2" Value="0">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="17" BitOffset="0" />
@@ -67,7 +71,7 @@
     </Union>
     <Union SizeInBit="32">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="19" BitOffset="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%047" Name="f%C%E2Repeat" ParameterType="M-00FA_A-0001-01-0000_PT-DelaySeconds" Offset="0" BitOffset="0" Text="Eingang 2 wird alle n Sekunden gelesen (0 = nicht zyklisch lesen)" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%047" Name="f%C%E2Repeat" ParameterType="M-00FA_A-0001-01-0000_PT-DelaySeconds" Offset="0" BitOffset="0" Text="Eingang 2 wird alle n Sekunden gelesen (0 = nicht zyklisch lesen)" SuffixText="Sekunden" Value="0" />
       <!-- Timer setup -->
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%171" Name="f%C%Td1DuskDawn" ParameterType="M-00FA_A-0001-01-0000_PT-DuskDawn" Offset="0" BitOffset="0" Text="Zeitbezug" Value="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%179" Name="f%C%Td2DuskDawn" ParameterType="M-00FA_A-0001-01-0000_PT-DuskDawn" Offset="0" BitOffset="4" Text="Zeitbezug" Value="0" />
@@ -81,63 +85,151 @@
     <!-- Parameter for input E1 and E2 -->
     <Union SizeInBit="128">
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="23" BitOffset="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%115" Name="f%C%E1LowDelta"    ParameterType="M-00FA_A-0001-01-0000_PT-Delta"        Offset="0"  BitOffset="0" Text="Von-Wert" Value="-10" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%116" Name="f%C%E1HighDelta"   ParameterType="M-00FA_A-0001-01-0000_PT-Delta"        Offset="4"  BitOffset="0" Text="Bis-Wert" Value="10" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%010" Name="f%C%E1LowDpt2"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"    Offset="0"  BitOffset="0" Text="Eingang 1 ist EIN, wenn Wert gleich" Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%098" Name="f%C%E1Low1Dpt2"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"    Offset="1"  BitOffset="0" Text="... oder wenn Wert gleich " Value="4" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%099" Name="f%C%E1Low2Dpt2"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"    Offset="2"  BitOffset="0" Text="... oder wenn Wert gleich " Value="4" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%100" Name="f%C%E1Low3Dpt2"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"    Offset="3"  BitOffset="0" Text="... oder wenn Wert gleich " Value="4" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%011" Name="f%C%E1LowDpt5"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"    Offset="0"  BitOffset="0" Text="Von-Wert" Value="128" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%012" Name="f%C%E1HighDpt5"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"    Offset="4"  BitOffset="0" Text="Bis-Wert" Value="255" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%013" Name="f%C%E1LowDpt5001"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001" Offset="0"  BitOffset="0" Text="Von-Wert" Value="50" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%014" Name="f%C%E1HighDpt5001" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001" Offset="4"  BitOffset="0" Text="Bisrt" Value="100" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%015" Name="f%C%E1LowDpt6"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"    Offset="0"  BitOffset="0" Text="Von-Wert" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%016" Name="f%C%E1HighDpt6"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"    Offset="4"  BitOffset="0" Text="Bis-Wert" Value="127" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%017" Name="f%C%E1LowDpt7"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7"    Offset="0"  BitOffset="0" Text="Von-Wert" Value="32768" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%018" Name="f%C%E1HighDpt7"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7"    Offset="4"  BitOffset="0" Text="Bis-Wert" Value="65535" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%019" Name="f%C%E1LowDpt8"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8"    Offset="0"  BitOffset="0" Text="Von-Wert" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%020" Name="f%C%E1HighDpt8"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8"    Offset="4"  BitOffset="0" Text="Bis-Wert" Value="32767" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%021" Name="f%C%E1LowDpt9"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9"    Offset="0"  BitOffset="0" Text="Von-Wert" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%022" Name="f%C%E1HighDpt9"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9"    Offset="4"  BitOffset="0" Text="Bis-Wert" Value="670760" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%023" Name="f%C%E1Low0Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="0"  BitOffset="0" Text="Eingang 1 ist EIN bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%101" Name="f%C%E1Low1Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="1"  BitOffset="0" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%102" Name="f%C%E1Low2Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="2"  BitOffset="0" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%103" Name="f%C%E1Low3Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="3"  BitOffset="0" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%104" Name="f%C%E1Low4Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="4"  BitOffset="0" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%105" Name="f%C%E1Low5Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="5"  BitOffset="0" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%106" Name="f%C%E1Low6Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="6"  BitOffset="0" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%107" Name="f%C%E1Low7Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="7"  BitOffset="0" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%024" Name="f%C%E1LowDptRGB"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB"     Offset="0"  BitOffset="0" Text="Von-Wert" Value="8388608" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%025" Name="f%C%E1HighDptRGB"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB"     Offset="4"  BitOffset="0" Text="Bis-Wert" Value="16777216" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%115" Name="f%C%E1LowDelta"     ParameterType="M-00FA_A-0001-01-0000_PT-Delta"             Offset="0"  BitOffset="0" Text="Von-Wert" Value="-10" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%116" Name="f%C%E1HighDelta"    ParameterType="M-00FA_A-0001-01-0000_PT-Delta"             Offset="4"  BitOffset="0" Text="Bis-Wert" Value="10" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%281" Name="f%C%E1Low0Valid"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"          Offset="7"  BitOffset="0" Text="Nächste Zeile auswerten?" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%282" Name="f%C%E1Low1Valid"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"          Offset="7"  BitOffset="1" Text="Nächste Zeile auswerten?" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%283" Name="f%C%E1Low2Valid"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"          Offset="7"  BitOffset="2" Text="Nächste Zeile auswerten?" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%284" Name="f%C%E1Low3Valid"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"          Offset="7"  BitOffset="3" Text="Nächste Zeile auswerten?" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%285" Name="f%C%E1Low4Valid"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"          Offset="7"  BitOffset="4" Text="Nächste Zeile auswerten?" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%286" Name="f%C%E1Low5Valid"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"          Offset="7"  BitOffset="5" Text="Nächste Zeile auswerten?" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%287" Name="f%C%E1Low6Valid"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"          Offset="7"  BitOffset="6" Text="Nächste Zeile auswerten?" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%288" Name="f%C%E1Low7Valid"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"          Offset="7"  BitOffset="7" Text="Nächste Zeile auswerten?" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%010" Name="f%C%E1LowDpt2"      ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"         Offset="0"  BitOffset="0" Text="Eingang 1 ist EIN, wenn Wert gleich" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%098" Name="f%C%E1Low1Dpt2"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"         Offset="1"  BitOffset="0" Text="... oder wenn Wert gleich " Value="4" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%099" Name="f%C%E1Low2Dpt2"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"         Offset="2"  BitOffset="0" Text="... oder wenn Wert gleich " Value="4" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%100" Name="f%C%E1Low3Dpt2"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"         Offset="3"  BitOffset="0" Text="... oder wenn Wert gleich " Value="4" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%289" Name="f%C%E1LowDpt2Fix"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2Out"      Offset="0"  BitOffset="0" Text="Eingang 1 ist konstant" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%011" Name="f%C%E1LowDpt5"      ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"         Offset="0"  BitOffset="0" Text="Von-Wert" Value="128" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%012" Name="f%C%E1HighDpt5"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"         Offset="4"  BitOffset="0" Text="Bis-Wert" Value="255" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%290" Name="f%C%E1Low0Dpt5In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"         Offset="0"  BitOffset="0" Text="Eingang 1 ist EIN bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%291" Name="f%C%E1Low1Dpt5In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"         Offset="1"  BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%292" Name="f%C%E1Low2Dpt5In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"         Offset="2"  BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%293" Name="f%C%E1Low3Dpt5In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"         Offset="3"  BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%294" Name="f%C%E1Low4Dpt5In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"         Offset="4"  BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%295" Name="f%C%E1Low5Dpt5In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"         Offset="5"  BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%296" Name="f%C%E1Low6Dpt5In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"         Offset="6"  BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%297" Name="f%C%E1LowDpt5Fix"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"         Offset="0"  BitOffset="0" Text="Eingang 1 ist konstant" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%013" Name="f%C%E1LowDpt5001"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001"      Offset="0"  BitOffset="0" Text="Von-Wert" Value="50" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%014" Name="f%C%E1HighDpt5001"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001"      Offset="4"  BitOffset="0" Text="Bisrt" Value="100" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%298" Name="f%C%E1Low0Dpt5xIn"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001"      Offset="0"  BitOffset="0" Text="Eingang 1 ist EIN bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%299" Name="f%C%E1Low1Dpt5xIn"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001"      Offset="1"  BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%300" Name="f%C%E1Low2Dpt5xIn"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001"      Offset="2"  BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%301" Name="f%C%E1Low3Dpt5xIn"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001"      Offset="3"  BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%302" Name="f%C%E1Low4Dpt5xIn"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001"      Offset="4"  BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%303" Name="f%C%E1Low5Dpt5xIn"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001"      Offset="5"  BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%304" Name="f%C%E1Low6Dpt5xIn"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001"      Offset="6"  BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%305" Name="f%C%E1LowDpt5xFix"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001"      Offset="0"  BitOffset="0" Text="Eingang 1 ist konstant" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%015" Name="f%C%E1LowDpt6"      ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"         Offset="0"  BitOffset="0" Text="Von-Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%016" Name="f%C%E1HighDpt6"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"         Offset="4"  BitOffset="0" Text="Bis-Wert" Value="127" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%306" Name="f%C%E1Low0Dpt6In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"         Offset="0"  BitOffset="0" Text="Eingang 1 ist EIN bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%307" Name="f%C%E1Low1Dpt6In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"         Offset="1"  BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%308" Name="f%C%E1Low2Dpt6In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"         Offset="2"  BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%309" Name="f%C%E1Low3Dpt6In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"         Offset="3"  BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%310" Name="f%C%E1Low4Dpt6In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"         Offset="4"  BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%311" Name="f%C%E1Low5Dpt6In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"         Offset="5"  BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%312" Name="f%C%E1Low6Dpt6In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"         Offset="6"  BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%313" Name="f%C%E1LowDpt6Fix"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"         Offset="0"  BitOffset="0" Text="Eingang 1 ist konstant" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%017" Name="f%C%E1LowDpt7"      ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7"         Offset="0"  BitOffset="0" Text="Von-Wert" Value="32768" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%018" Name="f%C%E1HighDpt7"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7"         Offset="4"  BitOffset="0" Text="Bis-Wert" Value="65535" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%314" Name="f%C%E1Low0Dpt7In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7"         Offset="0"  BitOffset="0" Text="Eingang 1 ist EIN bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%315" Name="f%C%E1Low1Dpt7In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7"         Offset="2"  BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%316" Name="f%C%E1Low2Dpt7In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7"         Offset="4"  BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%317" Name="f%C%E1LowDpt7Fix"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7"         Offset="0"  BitOffset="0" Text="Eingang 1 ist konstant" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%019" Name="f%C%E1LowDpt8"      ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8"         Offset="0"  BitOffset="0" Text="Von-Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%020" Name="f%C%E1HighDpt8"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8"         Offset="4"  BitOffset="0" Text="Bis-Wert" Value="32767" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%318" Name="f%C%E1Low0Dpt8In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8"         Offset="0"  BitOffset="0" Text="Eingang 1 ist EIN bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%319" Name="f%C%E1Low1Dpt8In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8"         Offset="2"  BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%320" Name="f%C%E1Low2Dpt8In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8"         Offset="4"  BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%321" Name="f%C%E1LowDpt8Fix"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8"         Offset="0"  BitOffset="0" Text="Eingang 1 ist konstant" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%021" Name="f%C%E1LowDpt9"      ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9"         Offset="0"  BitOffset="0" Text="Von-Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%022" Name="f%C%E1HighDpt9"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9"         Offset="4"  BitOffset="0" Text="Bis-Wert" Value="670760" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%322" Name="f%C%E1LowDpt9Fix"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9"         Offset="0"  BitOffset="0" Text="Eingang 1 ist konstant" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%023" Name="f%C%E1Low0Dpt17"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn"      Offset="0"  BitOffset="0" Text="Eingang 1 ist EIN bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%101" Name="f%C%E1Low1Dpt17"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn"      Offset="1"  BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%102" Name="f%C%E1Low2Dpt17"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn"      Offset="2"  BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%103" Name="f%C%E1Low3Dpt17"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn"      Offset="3"  BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%104" Name="f%C%E1Low4Dpt17"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn"      Offset="4"  BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%105" Name="f%C%E1Low5Dpt17"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn"      Offset="5"  BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%106" Name="f%C%E1Low6Dpt17"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn"      Offset="6"  BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%107" Name="f%C%E1Low7Dpt17"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn"      Offset="7"  BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%323" Name="f%C%E1LowDpt17Fix"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneOut"     Offset="0"  BitOffset="0" Text="Eingang 1 ist konstant" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%024" Name="f%C%E1LowDptRGB"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB"          Offset="0"  BitOffset="0" Text="Von-Wert" Value="8388608" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%025" Name="f%C%E1HighDptRGB"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB"          Offset="4"  BitOffset="0" Text="Bis-Wert" Value="16777216" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%324" Name="f%C%E1LowDptRGBFix" ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB"          Offset="0"  BitOffset="0" Text="Eingang 1 ist konstant" Value="0" />
 
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%142" Name="f%C%E2LowDelta"    ParameterType="M-00FA_A-0001-01-0000_PT-Delta"        Offset="8"  BitOffset="0" Text="Von-Wert" Value="-10" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%143" Name="f%C%E2HighDelta"   ParameterType="M-00FA_A-0001-01-0000_PT-Delta"        Offset="12" BitOffset="0" Text="Bis-Wert" Value="10" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%030" Name="f%C%E2Low0Dpt2"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"    Offset="8"  BitOffset="0" Text="Eingang 2 ist EIN, wenn Wert gleich " Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%095" Name="f%C%E2Low1Dpt2"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"    Offset="9"  BitOffset="0" Text="... oder wenn Wert gleich " Value="4" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%096" Name="f%C%E2Low2Dpt2"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"    Offset="10" BitOffset="0" Text="... oder wenn Wert gleich " Value="4" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%097" Name="f%C%E2Low3Dpt2"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"    Offset="11" BitOffset="0" Text="... oder wenn Wert gleich " Value="4" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%031" Name="f%C%E2LowDpt5"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"    Offset="8"  BitOffset="0" Text="Von-Wert" Value="128" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%032" Name="f%C%E2HighDpt5"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"    Offset="12" BitOffset="0" Text="Bis-Wert" Value="255" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%033" Name="f%C%E2LowDpt5001"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001" Offset="8"  BitOffset="0" Text="Von-Wert" Value="50" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%034" Name="f%C%E2HighDpt5001" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001" Offset="12" BitOffset="0" Text="Bis-Wert" Value="100" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%035" Name="f%C%E2LowDpt6"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"    Offset="8"  BitOffset="0" Text="Von-Wert" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%036" Name="f%C%E2HighDpt6"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"    Offset="12" BitOffset="0" Text="Bis-Wert" Value="127" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%037" Name="f%C%E2LowDpt7"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7"    Offset="8"  BitOffset="0" Text="Von-Wert" Value="32768" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%038" Name="f%C%E2HighDpt7"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7"    Offset="12" BitOffset="0" Text="Bis-Wert" Value="65535" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%039" Name="f%C%E2LowDpt8"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8"    Offset="8"  BitOffset="0" Text="Von-Wert" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%040" Name="f%C%E2HighDpt8"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8"    Offset="12" BitOffset="0" Text="Bis-Wert" Value="32767" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%041" Name="f%C%E2LowDpt9"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9"    Offset="8"  BitOffset="0" Text="Von-Wert" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%042" Name="f%C%E2HighDpt9"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9"    Offset="12" BitOffset="0" Text="Bis-Wert" Value="670760" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%043" Name="f%C%E2Low0Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="8"  BitOffset="0" Text="Eingang 2 ist EIN bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%108" Name="f%C%E2Low1Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="9"  BitOffset="0" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%109" Name="f%C%E2Low2Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="10" BitOffset="0" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%110" Name="f%C%E2Low3Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="11" BitOffset="0" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%111" Name="f%C%E2Low4Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="12" BitOffset="0" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%112" Name="f%C%E2Low5Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="13" BitOffset="0" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%113" Name="f%C%E2Low6Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="14" BitOffset="0" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%114" Name="f%C%E2Low7Dpt17"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn" Offset="15" BitOffset="0" Text="... oder bei Szene" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%044" Name="f%C%E2LowDptRGB"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB"     Offset="8"  BitOffset="0" Text="Von-Wert" Value="8388608" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%045" Name="f%C%E2HighDptRGB"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB"     Offset="12" BitOffset="0" Text="Bis-Wert" Value="16777216" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%142" Name="f%C%E2LowDelta"     ParameterType="M-00FA_A-0001-01-0000_PT-Delta"             Offset="8"  BitOffset="0" Text="Von-Wert" Value="-10" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%143" Name="f%C%E2HighDelta"    ParameterType="M-00FA_A-0001-01-0000_PT-Delta"             Offset="12" BitOffset="0" Text="Bis-Wert" Value="10" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%325" Name="f%C%E2Low0Valid"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"          Offset="15" BitOffset="0" Text="Nächste Zeile auswerten?" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%326" Name="f%C%E2Low1Valid"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"          Offset="15" BitOffset="1" Text="Nächste Zeile auswerten?" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%327" Name="f%C%E2Low2Valid"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"          Offset="15" BitOffset="2" Text="Nächste Zeile auswerten?" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%328" Name="f%C%E2Low3Valid"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"          Offset="15" BitOffset="3" Text="Nächste Zeile auswerten?" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%329" Name="f%C%E2Low4Valid"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"          Offset="15" BitOffset="4" Text="Nächste Zeile auswerten?" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%330" Name="f%C%E2Low5Valid"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"          Offset="15" BitOffset="5" Text="Nächste Zeile auswerten?" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%331" Name="f%C%E2Low6Valid"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"          Offset="15" BitOffset="6" Text="Nächste Zeile auswerten?" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%332" Name="f%C%E2Low7Valid"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"          Offset="15" BitOffset="7" Text="Nächste Zeile auswerten?" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%030" Name="f%C%E2Low0Dpt2"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"         Offset="8"  BitOffset="0" Text="Eingang 2 ist EIN, wenn Wert gleich " Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%095" Name="f%C%E2Low1Dpt2"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"         Offset="9"  BitOffset="0" Text="... oder wenn Wert gleich " Value="4" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%096" Name="f%C%E2Low2Dpt2"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"         Offset="10" BitOffset="0" Text="... oder wenn Wert gleich " Value="4" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%097" Name="f%C%E2Low3Dpt2"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"         Offset="11" BitOffset="0" Text="... oder wenn Wert gleich " Value="4" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%333" Name="f%C%E2LowDpt2Fix"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2Out"      Offset="8"  BitOffset="0" Text="Eingang 2 ist konstant" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%031" Name="f%C%E2LowDpt5"      ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"         Offset="8"  BitOffset="0" Text="Von-Wert" Value="128" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%032" Name="f%C%E2HighDpt5"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"         Offset="12" BitOffset="0" Text="Bis-Wert" Value="255" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%334" Name="f%C%E2Low0Dpt5In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"         Offset="8"  BitOffset="0" Text="Eingang 2 ist EIN bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%335" Name="f%C%E2Low1Dpt5In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"         Offset="9"  BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%336" Name="f%C%E2Low2Dpt5In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"         Offset="10" BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%337" Name="f%C%E2Low3Dpt5In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"         Offset="11" BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%338" Name="f%C%E2Low4Dpt5In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"         Offset="12" BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%339" Name="f%C%E2Low5Dpt5In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"         Offset="13" BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%340" Name="f%C%E2Low6Dpt5In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"         Offset="14" BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%341" Name="f%C%E2LowDpt5Fix"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"         Offset="8"  BitOffset="0" Text="Eingang 2 ist konstant" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%033" Name="f%C%E2LowDpt5001"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001"      Offset="8"  BitOffset="0" Text="Von-Wert" Value="50" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%034" Name="f%C%E2HighDpt5001"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001"      Offset="12" BitOffset="0" Text="Bis-Wert" Value="100" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%342" Name="f%C%E2Low0Dpt5xIn"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001"      Offset="8"  BitOffset="0" Text="Eingang 2 ist EIN bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%343" Name="f%C%E2Low1Dpt5xIn"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001"      Offset="9"  BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%344" Name="f%C%E2Low2Dpt5xIn"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001"      Offset="10" BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%345" Name="f%C%E2Low3Dpt5xIn"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001"      Offset="11" BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%346" Name="f%C%E2Low4Dpt5xIn"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001"      Offset="12" BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%347" Name="f%C%E2Low5Dpt5xIn"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001"      Offset="13" BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%348" Name="f%C%E2Low6Dpt5xIn"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001"      Offset="14" BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%349" Name="f%C%E2LowDpt5xFix"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001"      Offset="8"  BitOffset="0" Text="Eingang 2 ist konstant" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%035" Name="f%C%E2LowDpt6"      ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"         Offset="8"  BitOffset="0" Text="Von-Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%036" Name="f%C%E2HighDpt6"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"         Offset="12" BitOffset="0" Text="Bis-Wert" Value="127" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%350" Name="f%C%E2Low0Dpt6In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"         Offset="8"  BitOffset="0" Text="Eingang 2 ist EIN bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%351" Name="f%C%E2Low1Dpt6In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"         Offset="9"  BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%352" Name="f%C%E2Low2Dpt6In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"         Offset="10" BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%353" Name="f%C%E2Low3Dpt6In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"         Offset="11" BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%354" Name="f%C%E2Low4Dpt6In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"         Offset="12" BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%355" Name="f%C%E2Low5Dpt6In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"         Offset="13" BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%356" Name="f%C%E2Low6Dpt6In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"         Offset="14" BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%357" Name="f%C%E2LowDpt6Fix"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"         Offset="8"  BitOffset="0" Text="Eingang 2 ist konstant" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%037" Name="f%C%E2LowDpt7"      ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7"         Offset="8"  BitOffset="0" Text="Von-Wert" Value="32768" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%038" Name="f%C%E2HighDpt7"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7"         Offset="12" BitOffset="0" Text="Bis-Wert" Value="65535" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%358" Name="f%C%E2Low0Dpt7In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7"         Offset="8"  BitOffset="0" Text="Eingang 2 ist EIN bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%359" Name="f%C%E2Low1Dpt7In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7"         Offset="10" BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%360" Name="f%C%E2Low2Dpt7In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7"         Offset="12" BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%361" Name="f%C%E2LowDpt7Fix"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt7"         Offset="8"  BitOffset="0" Text="Eingang 2 ist konstant" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%039" Name="f%C%E2LowDpt8"      ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8"         Offset="8"  BitOffset="0" Text="Von-Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%040" Name="f%C%E2HighDpt8"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8"         Offset="12" BitOffset="0" Text="Bis-Wert" Value="32767" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%362" Name="f%C%E2Low0Dpt8In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8"         Offset="8"  BitOffset="0" Text="Eingang 2 ist EIN bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%363" Name="f%C%E2Low1Dpt8In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8"         Offset="10" BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%364" Name="f%C%E2Low2Dpt8In"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8"         Offset="12" BitOffset="0" Text="... oder bei Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%365" Name="f%C%E2LowDpt8Fix"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt8"         Offset="8"  BitOffset="0" Text="Eingang 2 ist konstant" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%041" Name="f%C%E2LowDpt9"      ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9"         Offset="8"  BitOffset="0" Text="Von-Wert" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%042" Name="f%C%E2HighDpt9"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9"         Offset="12" BitOffset="0" Text="Bis-Wert" Value="670760" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%366" Name="f%C%E2LowDpt9Fix"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9"         Offset="8"  BitOffset="0" Text="Eingang 2 ist konstant" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%043" Name="f%C%E2Low0Dpt17"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn"      Offset="8"  BitOffset="0" Text="Eingang 2 ist EIN bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%108" Name="f%C%E2Low1Dpt17"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn"      Offset="9"  BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%109" Name="f%C%E2Low2Dpt17"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn"      Offset="10" BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%110" Name="f%C%E2Low3Dpt17"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn"      Offset="11" BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%111" Name="f%C%E2Low4Dpt17"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn"      Offset="12" BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%112" Name="f%C%E2Low5Dpt17"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn"      Offset="13" BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%113" Name="f%C%E2Low6Dpt17"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn"      Offset="14" BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%114" Name="f%C%E2Low7Dpt17"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneIn"      Offset="15" BitOffset="0" Text="... oder bei Szene" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%367" Name="f%C%E2LowDpt17Fix"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueSceneOut"     Offset="8"  BitOffset="0" Text="Eingang 2 ist konstant" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%044" Name="f%C%E2LowDptRGB"    ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB"          Offset="8"  BitOffset="0" Text="Von-Wert" Value="8388608" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%045" Name="f%C%E2HighDptRGB"   ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB"          Offset="12" BitOffset="0" Text="Bis-Wert" Value="16777216" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%368" Name="f%C%E2LowDptRGBFix" ParameterType="M-00FA_A-0001-01-0000_PT-ValueRGB"          Offset="8"  BitOffset="0" Text="Eingang 2 ist konstant" Value="0" />
     </Union>
     <!-- Timer name -->
     <Parameter Id="M-00FA_A-0001-01-0000_P-%C%275" Name="f%C%TimerName" ParameterType="M-00FA_A-0001-01-0000_PT-Text40Byte" Text="Beschreibung der Zeitschaltuhr" Value="" />
@@ -299,7 +391,7 @@
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="71" BitOffset="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%140" Name="f%C%OOnTone"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueBuzzer"   Offset="0" BitOffset="0" Text="    Wert für EIN senden als" Value="1" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%066" Name="f%C%OOnDpt1"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt1"     Offset="0" BitOffset="0" Text="    Wert für EIN senden als" Value="1" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%067" Name="f%C%OOnDpt2"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"     Offset="0" BitOffset="0" Text="    Wert für EIN senden als" Value="1" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%067" Name="f%C%OOnDpt2"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2Out"  Offset="0" BitOffset="0" Text="    Wert für EIN senden als" Value="1" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%068" Name="f%C%OOnDpt5"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"     Offset="0" BitOffset="0" Text="    Wert für EIN senden als " Value="1" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%069" Name="f%C%OOnDpt5001"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001"  Offset="0" BitOffset="0" Text="    Wert für EIN senden als" Value="100" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%070" Name="f%C%OOnDpt6"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"     Offset="0" BitOffset="0" Text="    Wert für EIN senden als" Value="1" />
@@ -325,7 +417,7 @@
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="86" BitOffset="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%141" Name="f%C%OOffTone"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueBuzzer"   Offset="0" BitOffset="0" Text="    Wert für AUS senden als" Value="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%078" Name="f%C%OOffDpt1"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt1"     Offset="0" BitOffset="0" Text="    Wert für AUS senden als" Value="0" />
-      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%079" Name="f%C%OOffDpt2"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2"     Offset="0" BitOffset="0" Text="    Wert für AUS senden als" Value="0" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%079" Name="f%C%OOffDpt2"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt2Out"  Offset="0" BitOffset="0" Text="    Wert für AUS senden als" Value="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%080" Name="f%C%OOffDpt5"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5"     Offset="0" BitOffset="0" Text="    Wert für AUS senden als" Value="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%081" Name="f%C%OOffDpt5001"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt5001"  Offset="0" BitOffset="0" Text="    Wert für AUS senden als" Value="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%082" Name="f%C%OOffDpt6"     ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt6"     Offset="0" BitOffset="0" Text="    Wert für AUS senden als" Value="0" />
@@ -677,6 +769,98 @@
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%278_R-%C%2781" RefId="M-00FA_A-0001-01-0000_P-%C%278" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%279_R-%C%2791" RefId="M-00FA_A-0001-01-0000_UP-%C%279" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%280_R-%C%2801" RefId="M-00FA_A-0001-01-0000_UP-%C%280" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%281_R-%C%2811" RefId="M-00FA_A-0001-01-0000_UP-%C%281" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%282_R-%C%2821" RefId="M-00FA_A-0001-01-0000_UP-%C%282" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%283_R-%C%2831" RefId="M-00FA_A-0001-01-0000_UP-%C%283" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%284_R-%C%2841" RefId="M-00FA_A-0001-01-0000_UP-%C%284" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%285_R-%C%2851" RefId="M-00FA_A-0001-01-0000_UP-%C%285" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%286_R-%C%2861" RefId="M-00FA_A-0001-01-0000_UP-%C%286" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%287_R-%C%2871" RefId="M-00FA_A-0001-01-0000_UP-%C%287" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%288_R-%C%2881" RefId="M-00FA_A-0001-01-0000_UP-%C%288" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%289_R-%C%2891" RefId="M-00FA_A-0001-01-0000_UP-%C%289" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%290_R-%C%2901" RefId="M-00FA_A-0001-01-0000_UP-%C%290" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%291_R-%C%2911" RefId="M-00FA_A-0001-01-0000_UP-%C%291" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%292_R-%C%2921" RefId="M-00FA_A-0001-01-0000_UP-%C%292" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%293_R-%C%2931" RefId="M-00FA_A-0001-01-0000_UP-%C%293" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%294_R-%C%2941" RefId="M-00FA_A-0001-01-0000_UP-%C%294" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%295_R-%C%2951" RefId="M-00FA_A-0001-01-0000_UP-%C%295" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%296_R-%C%2961" RefId="M-00FA_A-0001-01-0000_UP-%C%296" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%297_R-%C%2971" RefId="M-00FA_A-0001-01-0000_UP-%C%297" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%298_R-%C%2981" RefId="M-00FA_A-0001-01-0000_UP-%C%298" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%299_R-%C%2991" RefId="M-00FA_A-0001-01-0000_UP-%C%299" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%300_R-%C%3001" RefId="M-00FA_A-0001-01-0000_UP-%C%300" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%301_R-%C%3011" RefId="M-00FA_A-0001-01-0000_UP-%C%301" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%302_R-%C%3021" RefId="M-00FA_A-0001-01-0000_UP-%C%302" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%303_R-%C%3031" RefId="M-00FA_A-0001-01-0000_UP-%C%303" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%304_R-%C%3041" RefId="M-00FA_A-0001-01-0000_UP-%C%304" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%305_R-%C%3051" RefId="M-00FA_A-0001-01-0000_UP-%C%305" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%306_R-%C%3061" RefId="M-00FA_A-0001-01-0000_UP-%C%306" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%307_R-%C%3071" RefId="M-00FA_A-0001-01-0000_UP-%C%307" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%308_R-%C%3081" RefId="M-00FA_A-0001-01-0000_UP-%C%308" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%309_R-%C%3091" RefId="M-00FA_A-0001-01-0000_UP-%C%309" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%310_R-%C%3101" RefId="M-00FA_A-0001-01-0000_UP-%C%310" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%311_R-%C%3111" RefId="M-00FA_A-0001-01-0000_UP-%C%311" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%312_R-%C%3121" RefId="M-00FA_A-0001-01-0000_UP-%C%312" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%313_R-%C%3131" RefId="M-00FA_A-0001-01-0000_UP-%C%313" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%314_R-%C%3141" RefId="M-00FA_A-0001-01-0000_UP-%C%314" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%315_R-%C%3151" RefId="M-00FA_A-0001-01-0000_UP-%C%315" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%316_R-%C%3161" RefId="M-00FA_A-0001-01-0000_UP-%C%316" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%317_R-%C%3171" RefId="M-00FA_A-0001-01-0000_UP-%C%317" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%318_R-%C%3181" RefId="M-00FA_A-0001-01-0000_UP-%C%318" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%319_R-%C%3191" RefId="M-00FA_A-0001-01-0000_UP-%C%319" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%320_R-%C%3201" RefId="M-00FA_A-0001-01-0000_UP-%C%320" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%321_R-%C%3211" RefId="M-00FA_A-0001-01-0000_UP-%C%321" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%322_R-%C%3221" RefId="M-00FA_A-0001-01-0000_UP-%C%322" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%323_R-%C%3231" RefId="M-00FA_A-0001-01-0000_UP-%C%323" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%324_R-%C%3241" RefId="M-00FA_A-0001-01-0000_UP-%C%324" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%325_R-%C%3251" RefId="M-00FA_A-0001-01-0000_UP-%C%325" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%326_R-%C%3261" RefId="M-00FA_A-0001-01-0000_UP-%C%326" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%327_R-%C%3271" RefId="M-00FA_A-0001-01-0000_UP-%C%327" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%328_R-%C%3281" RefId="M-00FA_A-0001-01-0000_UP-%C%328" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%329_R-%C%3291" RefId="M-00FA_A-0001-01-0000_UP-%C%329" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%330_R-%C%3301" RefId="M-00FA_A-0001-01-0000_UP-%C%330" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%331_R-%C%3311" RefId="M-00FA_A-0001-01-0000_UP-%C%331" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%332_R-%C%3321" RefId="M-00FA_A-0001-01-0000_UP-%C%332" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%333_R-%C%3331" RefId="M-00FA_A-0001-01-0000_UP-%C%333" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%334_R-%C%3341" RefId="M-00FA_A-0001-01-0000_UP-%C%334" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%335_R-%C%3351" RefId="M-00FA_A-0001-01-0000_UP-%C%335" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%336_R-%C%3361" RefId="M-00FA_A-0001-01-0000_UP-%C%336" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%337_R-%C%3371" RefId="M-00FA_A-0001-01-0000_UP-%C%337" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%338_R-%C%3381" RefId="M-00FA_A-0001-01-0000_UP-%C%338" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%339_R-%C%3391" RefId="M-00FA_A-0001-01-0000_UP-%C%339" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%340_R-%C%3401" RefId="M-00FA_A-0001-01-0000_UP-%C%340" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%341_R-%C%3411" RefId="M-00FA_A-0001-01-0000_UP-%C%341" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%342_R-%C%3421" RefId="M-00FA_A-0001-01-0000_UP-%C%342" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%343_R-%C%3431" RefId="M-00FA_A-0001-01-0000_UP-%C%343" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%344_R-%C%3441" RefId="M-00FA_A-0001-01-0000_UP-%C%344" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%345_R-%C%3451" RefId="M-00FA_A-0001-01-0000_UP-%C%345" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%346_R-%C%3461" RefId="M-00FA_A-0001-01-0000_UP-%C%346" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%347_R-%C%3471" RefId="M-00FA_A-0001-01-0000_UP-%C%347" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%348_R-%C%3481" RefId="M-00FA_A-0001-01-0000_UP-%C%348" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%349_R-%C%3491" RefId="M-00FA_A-0001-01-0000_UP-%C%349" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%350_R-%C%3501" RefId="M-00FA_A-0001-01-0000_UP-%C%350" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%351_R-%C%3511" RefId="M-00FA_A-0001-01-0000_UP-%C%351" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%352_R-%C%3521" RefId="M-00FA_A-0001-01-0000_UP-%C%352" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%353_R-%C%3531" RefId="M-00FA_A-0001-01-0000_UP-%C%353" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%354_R-%C%3541" RefId="M-00FA_A-0001-01-0000_UP-%C%354" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%355_R-%C%3551" RefId="M-00FA_A-0001-01-0000_UP-%C%355" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%356_R-%C%3561" RefId="M-00FA_A-0001-01-0000_UP-%C%356" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%357_R-%C%3571" RefId="M-00FA_A-0001-01-0000_UP-%C%357" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%358_R-%C%3581" RefId="M-00FA_A-0001-01-0000_UP-%C%358" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%359_R-%C%3591" RefId="M-00FA_A-0001-01-0000_UP-%C%359" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%360_R-%C%3601" RefId="M-00FA_A-0001-01-0000_UP-%C%360" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%361_R-%C%3611" RefId="M-00FA_A-0001-01-0000_UP-%C%361" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%362_R-%C%3621" RefId="M-00FA_A-0001-01-0000_UP-%C%362" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%363_R-%C%3631" RefId="M-00FA_A-0001-01-0000_UP-%C%363" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%364_R-%C%3641" RefId="M-00FA_A-0001-01-0000_UP-%C%364" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%365_R-%C%3651" RefId="M-00FA_A-0001-01-0000_UP-%C%365" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%366_R-%C%3661" RefId="M-00FA_A-0001-01-0000_UP-%C%366" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%367_R-%C%3671" RefId="M-00FA_A-0001-01-0000_UP-%C%367" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%368_R-%C%3681" RefId="M-00FA_A-0001-01-0000_UP-%C%368" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%369_R-%C%3691" RefId="M-00FA_A-0001-01-0000_UP-%C%369" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%370_R-%C%3701" RefId="M-00FA_A-0001-01-0000_UP-%C%370" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%371_R-%C%3711" RefId="M-00FA_A-0001-01-0000_UP-%C%371" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%372_R-%C%3721" RefId="M-00FA_A-0001-01-0000_UP-%C%372" />
   </ParameterRefs>
   <ComObjectTable>
     <ComObject Id="M-00FA_A-0001-01-0000_O-%K0%" Name="KOf%C%E1" Text="Eingang 1" Number="%K0%" FunctionText="Logik %C%, Eingang 1" ObjectSize="1 Bit" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled"  ReadOnInitFlag="Disabled" />
@@ -861,9 +1045,21 @@
                     <!-- E1 dpt -->
                     <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%009_R-%C%0091" />
                     <choose ParamRefId="M-00FA_A-0001-01-0000_P-%C%009_R-%C%0091">
-                      <when test="2 3 4 5 6 7 10">
+                      <when test="1 9">
+                        <!-- E1 Konverter special -->
+                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%370_R-%C%3701" />
+                        <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%093_R-%C%0931" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%370_R-%C%3701" />
+                      </when>
+                      <when test="7 10">
+                        <!-- E1 Konverter float -->
+                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%369_R-%C%3691" />
+                        <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%093_R-%C%0931" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%369_R-%C%3691" />
+                      </when>
+                      <when test="2 3 4 5 6">
                         <!-- E1 Konverter -->
                         <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%093_R-%C%0931" />
+                      </when>
+                      <when test="!=0">
                         <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%093_R-%C%0931">
                           <when test="0">
                             <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Das Wertintervall liefert EIN, wenn Eingang 1 zwischen Von-Wert und Bis-Wert liegt. Formal:" />
@@ -881,6 +1077,14 @@
                             <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Die Differenzhysterese sendet AUS, wenn (Eingang 1 - Eingang 2) unter den Ausschalt-Wert sinkt, sie sendet EIN, wenn (Eingang 1 - Eingang 2) über den Einschalt-Wert steigt. Formal:" />
                             <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="AUS: (Eingang 1 - Eingang 2) &lt;= Ausschalt-Wert; EIN: (Eingang 1 - Eingang 2) &gt;= Einschalt-Wert" />
                           </when>
+                          <when test="4">
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Die Einzelwerte liefern EIN, wenn Eingang 1 gleich einem der angegebenen Einzelwerte ist. Sie liefern AUS, wenn Eingang 1 keinem der angegebenen Werte gleicht." />
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="EIN: Eingang 1 IN (Wert1, Wert2, ..., WertN); AUS sonst" />
+                          </when>
+                          <when test="5">
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Die konstante Belegung ist für Formeln gedacht. Das Eingangs-KO ist nicht aktiv, es wird der hier angegebene Wert für dieses KO angenommen. Der Wert für die Logik ist immer EIN." />
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="EIN: für jeglichen angegebenen konstanten Wert" />
+                          </when>
                         </choose>
                       </when>
                       <when test="0">
@@ -889,170 +1093,300 @@
                       </when>
                       <when test="1">
                         <!-- DPT2 -->
-                        <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%02" />
-                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%010_R-%C%0101" />
-                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%098_R-%C%0981" />
-                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%099_R-%C%0991" />
-                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%100_R-%C%1001" />
+                        <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%370_R-%C%3701">
+                          <when test="4">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%02" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%010_R-%C%0101" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%098_R-%C%0981" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%099_R-%C%0991" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%100_R-%C%1001" />
+                          </when>
+                          <when test="5">
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%289_R-%C%2891" />
+                          </when>
+                        </choose>
                       </when>
                       <when test="2">
                         <!-- DPT5 -->
-                        <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%03" />
                         <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%093_R-%C%0931">
                           <when test="0">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%03" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%011_R-%C%0111" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%012_R-%C%0121" />
                           </when>
                           <when test="1">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%03" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%115_R-%C%1151" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%116_R-%C%1161" />
                           </when>
                           <when test="2">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%03" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%011_R-%C%0112" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%012_R-%C%0122" />
                           </when>
                           <when test="3">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%03" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%115_R-%C%1152" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%116_R-%C%1162" />
+                          </when>
+                          <when test="4">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%03" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%281_R-%C%2811" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%290_R-%C%2901" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%282_R-%C%2821" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%291_R-%C%2911" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%283_R-%C%2831" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%292_R-%C%2921" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%284_R-%C%2841" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%293_R-%C%2931" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%285_R-%C%2851" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%294_R-%C%2941" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%286_R-%C%2861" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%295_R-%C%2951" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%287_R-%C%2871" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%296_R-%C%2961" />
+                          </when>
+                          <when test="5">
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%297_R-%C%2971" />
                           </when>
                         </choose>
                       </when>
                       <when test="3">
                         <!-- DPT5.001 -->
-                        <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%04" />
                         <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%093_R-%C%0931">
                           <when test="0">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%04" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%013_R-%C%0131" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%014_R-%C%0141" />
                           </when>
                           <when test="1">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%04" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%115_R-%C%1151" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%116_R-%C%1161" />
                           </when>
                           <when test="2">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%04" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%013_R-%C%0132" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%014_R-%C%0142" />
                           </when>
                           <when test="3">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%04" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%115_R-%C%1152" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%116_R-%C%1162" />
+                          </when>
+                          <when test="4">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%04" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%281_R-%C%2811" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%298_R-%C%2981" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%282_R-%C%2821" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%299_R-%C%2991" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%283_R-%C%2831" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%300_R-%C%3001" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%284_R-%C%2841" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%301_R-%C%3011" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%285_R-%C%2851" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%302_R-%C%3021" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%286_R-%C%2861" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%303_R-%C%3031" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%287_R-%C%2871" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%304_R-%C%3041" />
+                          </when>
+                          <when test="5">
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%305_R-%C%3051" />
                           </when>
                         </choose>
                       </when>
                       <when test="4">
-                        <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%05" />
+                        <!-- DPT6 -->
                         <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%093_R-%C%0931">
                           <when test="0">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%05" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%015_R-%C%0151" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%016_R-%C%0161" />
                           </when>
                           <when test="1">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%05" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%115_R-%C%1151" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%116_R-%C%1161" />
                           </when>
                           <when test="2">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%05" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%015_R-%C%0152" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%016_R-%C%0162" />
                           </when>
                           <when test="3">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%05" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%115_R-%C%1152" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%116_R-%C%1162" />
+                          </when>
+                          <when test="4">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%05" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%281_R-%C%2811" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%306_R-%C%3061" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%282_R-%C%2821" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%307_R-%C%3071" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%283_R-%C%2831" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%308_R-%C%3081" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%284_R-%C%2841" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%309_R-%C%3091" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%285_R-%C%2851" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%310_R-%C%3101" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%286_R-%C%2861" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%311_R-%C%3111" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%287_R-%C%2871" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%312_R-%C%3121" />
+                          </when>
+                          <when test="5">
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%313_R-%C%3131" />
                           </when>
                         </choose>
                       </when>
                       <when test="5">
-                        <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%06" />
+                        <!-- DPT7 -->
                         <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%093_R-%C%0931">
                           <when test="0">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%06" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%017_R-%C%0171" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%018_R-%C%0181" />
                           </when>
                           <when test="1">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%06" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%115_R-%C%1151" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%116_R-%C%1161" />
                           </when>
                           <when test="2">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%06" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%017_R-%C%0172" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%018_R-%C%0182" />
                           </when>
                           <when test="3">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%06" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%115_R-%C%1152" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%116_R-%C%1162" />
+                          </when>
+                          <when test="4">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%06" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%281_R-%C%2811" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%314_R-%C%3141" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%282_R-%C%2821" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%315_R-%C%3151" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%283_R-%C%2831" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%316_R-%C%3161" />
+                          </when>
+                          <when test="5">
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%317_R-%C%3171" />
                           </when>
                         </choose>
                       </when>
                       <when test="6">
-                        <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%07" />
+                        <!-- DPT8 -->
                         <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%093_R-%C%0931">
                           <when test="0">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%07" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%019_R-%C%0191" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%020_R-%C%0201" />
                           </when>
                           <when test="1">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%07" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%115_R-%C%1151" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%116_R-%C%1161" />
                           </when>
                           <when test="2">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%07" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%019_R-%C%0192" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%020_R-%C%0202" />
                           </when>
                           <when test="3">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%07" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%115_R-%C%1152" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%116_R-%C%1162" />
+                          </when>
+                          <when test="4">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%07" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%281_R-%C%2811" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%318_R-%C%3181" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%282_R-%C%2821" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%319_R-%C%3191" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%283_R-%C%2831" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%320_R-%C%3201" />
+                          </when>
+                          <when test="5">
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%321_R-%C%3211" />
                           </when>
                         </choose>
                       </when>
                       <when test="7">
-                        <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%08" />
+                        <!-- DPT9 -->
                         <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%093_R-%C%0931">
                           <when test="0">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%08" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%021_R-%C%0211" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%022_R-%C%0221" />
                           </when>
                           <when test="1">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%08" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%115_R-%C%1151" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%116_R-%C%1161" />
                           </when>
                           <when test="2">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%08" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%021_R-%C%0212" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%022_R-%C%0222" />
                           </when>
                           <when test="3">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%08" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%115_R-%C%1152" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%116_R-%C%1162" />
+                          </when>
+                          <when test="5">
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%322_R-%C%3221" />
                           </when>
                         </choose>
                       </when>
                       <when test="9">
-                        <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%09" />
-                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%023_R-%C%0231" />
-                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%101_R-%C%1011" />
-                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%102_R-%C%1021" />
-                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%103_R-%C%1031" />
-                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%104_R-%C%1041" />
-                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%105_R-%C%1051" />
-                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%106_R-%C%1061" />
-                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%107_R-%C%1071" />
-
+                        <!-- DPT17 -->
+                        <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%370_R-%C%3701">
+                          <when test="4">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%09" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%023_R-%C%0231" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%101_R-%C%1011" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%102_R-%C%1021" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%103_R-%C%1031" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%104_R-%C%1041" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%105_R-%C%1051" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%106_R-%C%1061" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%107_R-%C%1071" />
+                          </when>
+                          <when test="5">
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%323_R-%C%3231" />
+                          </when>
+                        </choose>
                       </when>
                       <when test="10">
-                        <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%10" />
+                        <!-- DPT232 -->
                         <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%093_R-%C%0931">
                           <when test="0">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%10" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%024_R-%C%0241" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%025_R-%C%0251" />
                           </when>
                           <when test="1">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%10" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%115_R-%C%1151" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%116_R-%C%1161" />
                           </when>
                           <when test="2">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%10" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%024_R-%C%0242" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%025_R-%C%0252" />
                           </when>
                           <when test="3">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%10" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%115_R-%C%1152" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%116_R-%C%1162" />
+                          </when>
+                          <when test="5">
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%324_R-%C%3241" />
                           </when>
                         </choose>
                       </when>
@@ -1158,17 +1492,29 @@
                   </when>
                 </choose>
                 <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%028_R-%C%0281">
-                  <when test="2">
+                  <when test="2" >
                     <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Hinweis: Egal wie der Eingangswert bestimmt wird (Vorbelegung, Bus, Intervall, Hysterese, ...), invertiert wird immer erst direkt bevor die Logik ausgeführt wird! Will man also beim invertierten Eingang eine Vorbelegung haben, wird auch diese invertiert!" UIHint="Information" />
                     <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="" UIHint="HorizontalRuler" />
                   </when>
-                  <when test="!=0">
+                  <when test="!=0" >
                     <!-- E2 dpt -->
                     <ParameterRefRef RefId="M-00FA_A-0001-01-0000_P-%C%029_R-%C%0291" />
                     <choose ParamRefId="M-00FA_A-0001-01-0000_P-%C%029_R-%C%0291">
-                      <!-- E2 Konverter -->
-                      <when test="2 3 4 5 6 7 10">
+                      <when test="1 9">
+                        <!-- E2 Konverter special -->
+                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%372_R-%C%3721" />
+                        <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%094_R-%C%0941" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%372_R-%C%3721" />
+                      </when>
+                      <when test="7 10">
+                        <!-- E2 Konverter float -->
+                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%371_R-%C%3711" />
+                        <Assign TargetParamRefRef="M-00FA_A-0001-01-0000_UP-%C%094_R-%C%0941" SourceParamRefRef="M-00FA_A-0001-01-0000_UP-%C%371_R-%C%3711" />
+                      </when>
+                      <when test="2 3 4 5 6">
+                        <!-- E2 Konverter -->
                         <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%094_R-%C%0941" />
+                      </when>
+                      <when test="!=0">
                         <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%094_R-%C%0941">
                           <when test="0">
                             <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Das Wertintervall liefert EIN, wenn Eingang 2 zwischen Von-Wert und Bis-Wert liegt. Formal:" />
@@ -1186,6 +1532,14 @@
                             <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Die Differenzhysterese sendet AUS, wenn (Eingang 2 - Eingang 1) unter den Ausschalt-Wert sinkt, sie sendet EIN, wenn (Eingang 2 - Eingang 1) über den Einschalt-Wert steigt. Formal:" />
                             <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="AUS: (Eingang 2 - Eingang 1) &lt;= Ausschalt-Wert; EIN: (Eingang 2 - Eingang 1) &gt;= Einschalt-Wert" />
                           </when>
+                          <when test="4">
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Die Einzelwerte liefern EIN, wenn Eingang 2 gleich einem der angegebenen Einzelwerte ist. Sie liefern AUS, wenn Eingang 2 keinem der angegebenen Werte gleicht." />
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="EIN: Eingang 2 IN (Wert1, Wert2, ..., WertN); AUS sonst" />
+                          </when>
+                          <when test="5">
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Die konstante Belegung ist für Formeln gedacht. Das Eingangs-KO ist nicht aktiv, es wird der hier angegebene Wert für dieses KO angenommen. Der Wert für die Logik ist immer EIN." />
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="EIN: für jeglichen angegebenen konstanten Wert" />
+                          </when>
                         </choose>
                       </when>
                       <when test="0">
@@ -1194,170 +1548,300 @@
                       </when>
                       <when test="1">
                         <!-- DPT2 -->
-                        <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%02" />
-                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%030_R-%C%0301" />
-                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%095_R-%C%0951" />
-                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%096_R-%C%0961" />
-                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%097_R-%C%0971" />
+                        <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%372_R-%C%3721">
+                          <when test="4">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%02" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%030_R-%C%0301" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%095_R-%C%0951" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%096_R-%C%0961" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%097_R-%C%0971" />
+                          </when>
+                          <when test="5">
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%333_R-%C%3331" />
+                          </when>
+                        </choose>
                       </when>
                       <when test="2">
                         <!-- DPT5 -->
-                        <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%03" />
                         <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%094_R-%C%0941">
                           <when test="0">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%03" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%031_R-%C%0311" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%032_R-%C%0321" />
                           </when>
                           <when test="1">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%03" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%142_R-%C%1421" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%143_R-%C%1431" />
                           </when>
                           <when test="2">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%03" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%031_R-%C%0312" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%032_R-%C%0322" />
                           </when>
                           <when test="3">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%03" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%142_R-%C%1422" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%143_R-%C%1432" />
+                          </when>
+                          <when test="4">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%03" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%325_R-%C%3251" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%334_R-%C%3341" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%326_R-%C%3261" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%335_R-%C%3351" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%327_R-%C%3271" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%336_R-%C%3361" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%328_R-%C%3281" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%337_R-%C%3371" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%329_R-%C%3291" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%338_R-%C%3381" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%330_R-%C%3301" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%339_R-%C%3391" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%331_R-%C%3311" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%340_R-%C%3401" />
+                          </when>
+                          <when test="5">
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%341_R-%C%3411" />
                           </when>
                         </choose>
                       </when>
                       <when test="3">
                         <!-- DPT5.001 -->
-                        <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%04" />
                         <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%094_R-%C%0941">
                           <when test="0">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%04" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%033_R-%C%0331" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%034_R-%C%0341" />
                           </when>
                           <when test="1">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%04" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%142_R-%C%1421" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%143_R-%C%1431" />
                           </when>
                           <when test="2">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%04" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%033_R-%C%0332" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%034_R-%C%0342" />
                           </when>
                           <when test="3">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%04" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%142_R-%C%1422" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%143_R-%C%1432" />
+                          </when>
+                          <when test="4">
+  	                        <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%04" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%325_R-%C%3251" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%342_R-%C%3421" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%326_R-%C%3261" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%343_R-%C%3431" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%327_R-%C%3271" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%344_R-%C%3441" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%328_R-%C%3281" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%345_R-%C%3451" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%329_R-%C%3291" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%346_R-%C%3461" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%330_R-%C%3301" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%347_R-%C%3471" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%331_R-%C%3311" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%348_R-%C%3481" />
+                          </when>
+                          <when test="5">
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%349_R-%C%3491" />
                           </when>
                         </choose>
                       </when>
                       <when test="4">
-                        <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%05" />
+                        <!-- DPT6 -->
                         <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%094_R-%C%0941">
                           <when test="0">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%05" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%035_R-%C%0351" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%036_R-%C%0361" />
                           </when>
                           <when test="1">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%05" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%142_R-%C%1421" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%143_R-%C%1431" />
                           </when>
                           <when test="2">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%05" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%035_R-%C%0352" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%036_R-%C%0362" />
                           </when>
                           <when test="3">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%05" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%142_R-%C%1422" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%143_R-%C%1432" />
+                          </when>
+                          <when test="4">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%05" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%325_R-%C%3251" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%350_R-%C%3501" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%326_R-%C%3261" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%351_R-%C%3511" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%327_R-%C%3271" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%352_R-%C%3521" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%328_R-%C%3281" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%353_R-%C%3531" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%329_R-%C%3291" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%354_R-%C%3541" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%330_R-%C%3301" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%355_R-%C%3551" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%331_R-%C%3311" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%356_R-%C%3561" />
+                          </when>
+                          <when test="5">
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%357_R-%C%3571" />
                           </when>
                         </choose>
                       </when>
                       <when test="5">
-                        <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%06" />
+                        <!-- DPT7 -->
                         <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%094_R-%C%0941">
                           <when test="0">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%06" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%037_R-%C%0371" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%038_R-%C%0381" />
                           </when>
                           <when test="1">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%06" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%142_R-%C%1421" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%143_R-%C%1431" />
                           </when>
                           <when test="2">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%06" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%037_R-%C%0372" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%038_R-%C%0382" />
                           </when>
                           <when test="3">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%06" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%142_R-%C%1422" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%143_R-%C%1432" />
+                          </when>
+                          <when test="4">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%06" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%325_R-%C%3251" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%358_R-%C%3581" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%326_R-%C%3261" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%359_R-%C%3591" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%327_R-%C%3271" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%360_R-%C%3601" />
+                          </when>
+                          <when test="5">
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%361_R-%C%3611" />
                           </when>
                         </choose>
                       </when>
                       <when test="6">
-                        <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%07" />
+                        <!-- DPT8 -->
                         <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%094_R-%C%0941">
                           <when test="0">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%07" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%039_R-%C%0391" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%040_R-%C%0401" />
                           </when>
                           <when test="1">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%07" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%142_R-%C%1421" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%143_R-%C%1431" />
                           </when>
                           <when test="2">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%07" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%039_R-%C%0392" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%040_R-%C%0402" />
                           </when>
                           <when test="3">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%07" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%142_R-%C%1422" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%143_R-%C%1432" />
+                          </when>
+                          <when test="4">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%07" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%325_R-%C%3251" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%362_R-%C%3621" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%326_R-%C%3261" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%363_R-%C%3631" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%327_R-%C%3271" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%364_R-%C%3641" />
+                          </when>
+                          <when test="5">
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%365_R-%C%3651" />
                           </when>
                         </choose>
                       </when>
                       <when test="7">
-                        <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%08" />
+                        <!-- DPT9 -->
                         <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%094_R-%C%0941">
                           <when test="0">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%08" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%041_R-%C%0411" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%042_R-%C%0421" />
                           </when>
                           <when test="1">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%08" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%142_R-%C%1421" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%143_R-%C%1431" />
                           </when>
                           <when test="2">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%08" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%041_R-%C%0412" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%042_R-%C%0422" />
                           </when>
                           <when test="3">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%08" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%142_R-%C%1422" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%143_R-%C%1432" />
+                          </when>
+                          <when test="5">
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%366_R-%C%3661" />
                           </when>
                         </choose>
                       </when>
                       <when test="9">
-                        <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%09" />
-                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%043_R-%C%0431" />
-                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%108_R-%C%1081" />
-                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%109_R-%C%1091" />
-                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%110_R-%C%1101" />
-                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%111_R-%C%1111" />
-                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%112_R-%C%1121" />
-                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%113_R-%C%1131" />
-                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%114_R-%C%1141" />
-
+                        <!-- DPT17 -->
+                        <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%372_R-%C%3721">
+                          <when test="4">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%09" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%043_R-%C%0431" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%108_R-%C%1081" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%109_R-%C%1091" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%110_R-%C%1101" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%111_R-%C%1111" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%112_R-%C%1121" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%113_R-%C%1131" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%114_R-%C%1141" />
+                          </when>
+                          <when test="5">
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%367_R-%C%3671" />
+                          </when>
+                        </choose>
                       </when>
                       <when test="10">
-                        <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%10" />
+                        <!-- DPT232 -->
                         <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%094_R-%C%0941">
                           <when test="0">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%10" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%044_R-%C%0441" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%045_R-%C%0451" />
                           </when>
                           <when test="1">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%10" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%142_R-%C%1421" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%143_R-%C%1431" />
                           </when>
                           <when test="2">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%10" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%044_R-%C%0442" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%045_R-%C%0452" />
                           </when>
                           <when test="3">
+                            <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%10" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%142_R-%C%1422" />
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%143_R-%C%1432" />
+                          </when>
+                          <when test="5">
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%368_R-%C%3681" />
                           </when>
                         </choose>
                       </when>
@@ -2082,7 +2566,7 @@
               <when test="1">
                 <!-- Create ComObjects for On-Value -->
                 <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%136_R-%C%1361">
-                  <when test="1 2 3 4">
+                  <when test="1 2 3 4 8">
                     <choose ParamRefId="M-00FA_A-0001-01-0000_P-%C%064_R-%C%0641">
                       <when test="0">
                         <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%01" />
@@ -2122,7 +2606,7 @@
                 </choose>
                 <!-- Create ComObjects for Off-Value -->
                 <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%139_R-%C%1391">
-                  <when test="1 2 3 4">
+                  <when test="1 2 3 4 8">
                     <choose ParamRefId="M-00FA_A-0001-01-0000_P-%C%064_R-%C%0641">
                       <when test="0">
                         <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K2%_R-%K2%01" />

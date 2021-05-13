@@ -56,6 +56,8 @@
 #define VAL_InputConvert_DeltaInterval 1
 #define VAL_InputConvert_Hysterese 2
 #define VAL_InputConvert_DeltaHysterese 3
+#define VAL_InputConvert_Values 4
+#define VAL_InputConvert_Constant 5
 
 // enum logical function
 #define VAL_Logic_And 1
@@ -264,6 +266,7 @@ class LogicChannel
     void processRepeatInput2();
     void stopRepeatInput(uint8_t iIOIndex);
     void startConvert(uint8_t iIOIndex);
+    bool checkConvertValues(uint16_t iParamValues, uint8_t iValueSize, int32_t iValue);
     void processConvertInput(uint8_t iIOIndex);
     void startLogic(uint8_t iIOIndex, bool iValue);
     void processLogic();

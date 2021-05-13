@@ -98,6 +98,23 @@
                   <Enumeration Text="Differenzintervall" Value="1" Id="M-00FA_A-0001-01-0000_PT-InputConv_EN-1" />
                   <Enumeration Text="Hysterese" Value="2" Id="M-00FA_A-0001-01-0000_PT-InputConv_EN-2" />
                   <Enumeration Text="Differenzhysterese" Value="3" Id="M-00FA_A-0001-01-0000_PT-InputConv_EN-3" />
+                  <Enumeration Text="Einzelwerte" Value="4" Id="M-00FA_A-0001-01-0000_PT-InputConv_EN-4" />
+                  <Enumeration Text="Kontante (für Formeln)" Value="5" Id="M-00FA_A-0001-01-0000_PT-InputConv_EN-5" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-InputConvFloat" Name="InputConvFloat">
+                <TypeRestriction Base="Value" SizeInBit="4">
+                  <Enumeration Text="Wertintervall" Value="0" Id="M-00FA_A-0001-01-0000_PT-InputConvFloat_EN-0" />
+                  <Enumeration Text="Differenzintervall" Value="1" Id="M-00FA_A-0001-01-0000_PT-InputConvFloat_EN-1" />
+                  <Enumeration Text="Hysterese" Value="2" Id="M-00FA_A-0001-01-0000_PT-InputConvFloat_EN-2" />
+                  <Enumeration Text="Differenzhysterese" Value="3" Id="M-00FA_A-0001-01-0000_PT-InputConvFloat_EN-3" />
+                  <Enumeration Text="Kontante (für Formeln)" Value="5" Id="M-00FA_A-0001-01-0000_PT-InputConvFloat_EN-5" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-InputConvSpecial" Name="InputConvSpecial">
+                <TypeRestriction Base="Value" SizeInBit="4">
+                  <Enumeration Text="Einzelwerte" Value="4" Id="M-00FA_A-0001-01-0000_PT-InputConvSpecial_EN-4" />
+                  <Enumeration Text="Kontante (für Formeln)" Value="5" Id="M-00FA_A-0001-01-0000_PT-InputConvSpecial_EN-5" />
                 </TypeRestriction>
               </ParameterType>
               <!-- Input- und Output-DPT haben die selben Werte für Value!!!! -->
@@ -151,6 +168,14 @@
                   <Enumeration Text="normal EIN (01)" Value="1" Id="M-00FA_A-0001-01-0000_PT-ValueDpt2_EN-1" />
                   <Enumeration Text="priorität AUS (10)" Value="2" Id="M-00FA_A-0001-01-0000_PT-ValueDpt2_EN-2" />
                   <Enumeration Text="priorität EIN (11)" Value="3" Id="M-00FA_A-0001-01-0000_PT-ValueDpt2_EN-3" />
+                </TypeRestriction>
+              </ParameterType>
+              <ParameterType Id="M-00FA_A-0001-01-0000_PT-ValueDpt2Out" Name="ValueDpt2Out">
+                <TypeRestriction Base="Value" SizeInBit="8">
+                  <Enumeration Text="normal AUS (00)" Value="0"    Id="M-00FA_A-0001-01-0000_PT-ValueDpt2Out_EN-0" />
+                  <Enumeration Text="normal EIN (01)" Value="1"    Id="M-00FA_A-0001-01-0000_PT-ValueDpt2Out_EN-1" />
+                  <Enumeration Text="priorität AUS (10)" Value="2" Id="M-00FA_A-0001-01-0000_PT-ValueDpt2Out_EN-2" />
+                  <Enumeration Text="priorität EIN (11)" Value="3" Id="M-00FA_A-0001-01-0000_PT-ValueDpt2Out_EN-3" />
                 </TypeRestriction>
               </ParameterType>
               <ParameterType Id="M-00FA_A-0001-01-0000_PT-ValueDpt5" Name="ValueDpt5">
