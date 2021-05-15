@@ -1,6 +1,8 @@
 #include "LogicFunction.h"
+#include "KnxHelper.h"
 
 // user functions, may be implemented by Enduser
+// for DPT-Check you can use constants beginning with VAL_DPT_*
 float LogicFunction::userFunction01(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
 {
     return E1; // just an expample, result is first parameter value
