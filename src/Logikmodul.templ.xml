@@ -1062,28 +1062,29 @@
                       <when test="!=0">
                         <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%093_R-%C%0931">
                           <when test="0">
-                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Das Wertintervall liefert EIN, wenn Eingang 1 zwischen Von-Wert und Bis-Wert liegt. Formal:" />
-                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="EIN: Von-Wert &lt;= Eingang 1 &lt;= Bis-Wert; AUS sonst" />
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Das Wertintervall liefert EIN, wenn Eingang 1 zwischen Von-Wert und Bis-Wert liegt." />
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Formal: EIN bie Von-Wert &lt;= Eingang 1 &lt;= Bis-Wert; AUS sonst" />
                           </when>
                           <when test="1">
-                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Das Differenzintervall liefert EIN, wenn (Eingang 1 - Eingang 2) zwischen Von-Wert und Bis-Wert liegt. Formal:" />
-                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="EIN: Von-Wert &lt;= (Eingang 1 - Eingang 2) &lt;= Bis-Wert; AUS sonst" />
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Das Differenzintervall liefert EIN, wenn (Eingang 1 - Eingang 2) zwischen Von-Wert und Bis-Wert liegt." />
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Formal: EIN bei Von-Wert &lt;= (Eingang 1 - Eingang 2) &lt;= Bis-Wert; AUS sonst" />
                           </when>
                           <when test="2">
-                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Die Hysterese sendet AUS, wenn Eingang 1 unter den Ausschalt-Wert sinkt, sie sendet EIN, wenn Eingang 1 über den Einschat-Wert steigt. Formal:" />
-                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="AUS: Eingang 1 &lt;= Ausschalt-Wert; EIN: Eingang 1 &gt;= Einschalt-Wert" />
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Die Hysterese sendet AUS, wenn Eingang 1 unter den Ausschalt-Wert sinkt, sie sendet EIN, wenn Eingang 1 über den Einschat-Wert steigt." />
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Formal: AUS bei Eingang 1 &lt;= Ausschalt-Wert; EIN bei Eingang 1 &gt;= Einschalt-Wert" />
                           </when>
                           <when test="3">
-                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Die Differenzhysterese sendet AUS, wenn (Eingang 1 - Eingang 2) unter den Ausschalt-Wert sinkt, sie sendet EIN, wenn (Eingang 1 - Eingang 2) über den Einschalt-Wert steigt. Formal:" />
-                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="AUS: (Eingang 1 - Eingang 2) &lt;= Ausschalt-Wert; EIN: (Eingang 1 - Eingang 2) &gt;= Einschalt-Wert" />
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Die Differenzhysterese sendet AUS, wenn (Eingang 1 - Eingang 2) unter den Ausschalt-Wert sinkt, sie sendet EIN, wenn (Eingang 1 - Eingang 2) über den Einschalt-Wert steigt." />
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Formal: AUS bei (Eingang 1 - Eingang 2) &lt;= Ausschalt-Wert; EIN bei (Eingang 1 - Eingang 2) &gt;= Einschalt-Wert" />
                           </when>
                           <when test="4">
                             <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Die Einzelwerte liefern EIN, wenn Eingang 1 gleich einem der angegebenen Einzelwerte ist. Sie liefern AUS, wenn Eingang 1 keinem der angegebenen Werte gleicht." />
-                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="EIN: Eingang 1 IN (Wert1, Wert2, ..., WertN); AUS sonst" />
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Formal: EIN bei Eingang 1 IN (Wert1, Wert2, ..., WertN); AUS sonst" />
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Es werden nur die Zeilen ausgewertet, die auch einen Haken gesetzt haben." />
                           </when>
                           <when test="5">
                             <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Die konstante Belegung ist für Formeln gedacht. Das Eingangs-KO ist nicht aktiv, es wird der hier angegebene Wert für dieses KO angenommen. Der Wert für die Logik ist immer EIN." />
-                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="EIN: für jeglichen angegebenen konstanten Wert" />
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Formal: EIN für jeglichen angegebenen konstanten Wert" />
                           </when>
                         </choose>
                       </when>
@@ -1131,20 +1132,43 @@
                           </when>
                           <when test="4">
                             <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%03" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%281_R-%C%2811" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%290_R-%C%2901" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%282_R-%C%2821" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%291_R-%C%2911" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%283_R-%C%2831" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%292_R-%C%2921" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%284_R-%C%2841" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%293_R-%C%2931" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%285_R-%C%2851" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%294_R-%C%2941" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%286_R-%C%2861" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%295_R-%C%2951" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%287_R-%C%2871" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%296_R-%C%2961" />
+                            <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-nnn" Name="DPT5%C%001" Inline="true" Layout="Grid">
+                              <Rows>
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-1" Name="Row1" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-2" Name="Row2" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-3" Name="Row3" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-4" Name="Row4" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-5" Name="Row5" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-6" Name="Row6" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-7" Name="Row7" />
+                              </Rows>
+                              <Columns>
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-1" Name="Col1" Width="45%" />
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-2" Name="Col2" Width="30%" />
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-3" Name="Col3" Width="10%" />
+                              </Columns>
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Eingang ist EIN bei Wert" Cell="1,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="2,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="3,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="4,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="5,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="6,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="7,1" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%290_R-%C%2901" Cell="1,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%291_R-%C%2911" Cell="2,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%292_R-%C%2921" Cell="3,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%293_R-%C%2931" Cell="4,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%294_R-%C%2941" Cell="5,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%295_R-%C%2951" Cell="6,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%296_R-%C%2961" Cell="7,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%281_R-%C%2811" Cell="1,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%282_R-%C%2821" Cell="2,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%283_R-%C%2831" Cell="3,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%284_R-%C%2841" Cell="4,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%285_R-%C%2851" Cell="5,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%286_R-%C%2861" Cell="6,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%287_R-%C%2871" Cell="7,3" />
+                            </ParameterBlock>
                           </when>
                           <when test="5">
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%297_R-%C%2971" />
@@ -1176,20 +1200,43 @@
                           </when>
                           <when test="4">
                             <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%04" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%281_R-%C%2811" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%298_R-%C%2981" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%282_R-%C%2821" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%299_R-%C%2991" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%283_R-%C%2831" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%300_R-%C%3001" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%284_R-%C%2841" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%301_R-%C%3011" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%285_R-%C%2851" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%302_R-%C%3021" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%286_R-%C%2861" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%303_R-%C%3031" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%287_R-%C%2871" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%304_R-%C%3041" />
+                            <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-nnn" Name="DPT5x%C%001" Inline="true" Layout="Grid">
+                              <Rows>
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-1" Name="Row1" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-2" Name="Row2" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-3" Name="Row3" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-4" Name="Row4" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-5" Name="Row5" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-6" Name="Row6" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-7" Name="Row7" />
+                              </Rows>
+                              <Columns>
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-1" Name="Col1" Width="45%" />
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-2" Name="Col2" Width="30%" />
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-3" Name="Col3" Width="10%" />
+                              </Columns>
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Eingang ist EIN bei Wert" Cell="1,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="2,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="3,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="4,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="5,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="6,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="7,1" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%298_R-%C%2981" Cell="1,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%299_R-%C%2991" Cell="2,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%300_R-%C%3001" Cell="3,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%301_R-%C%3011" Cell="4,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%302_R-%C%3021" Cell="5,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%303_R-%C%3031" Cell="6,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%304_R-%C%3041" Cell="7,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%281_R-%C%2811" Cell="1,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%282_R-%C%2821" Cell="2,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%283_R-%C%2831" Cell="3,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%284_R-%C%2841" Cell="4,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%285_R-%C%2851" Cell="5,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%286_R-%C%2861" Cell="6,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%287_R-%C%2871" Cell="7,3" />
+                            </ParameterBlock>
                           </when>
                           <when test="5">
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%305_R-%C%3051" />
@@ -1221,20 +1268,43 @@
                           </when>
                           <when test="4">
                             <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%05" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%281_R-%C%2811" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%306_R-%C%3061" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%282_R-%C%2821" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%307_R-%C%3071" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%283_R-%C%2831" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%308_R-%C%3081" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%284_R-%C%2841" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%309_R-%C%3091" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%285_R-%C%2851" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%310_R-%C%3101" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%286_R-%C%2861" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%311_R-%C%3111" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%287_R-%C%2871" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%312_R-%C%3121" />
+                            <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-nnn" Name="DPT6%C%001" Inline="true" Layout="Grid">
+                              <Rows>
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-1" Name="Row1" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-2" Name="Row2" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-3" Name="Row3" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-4" Name="Row4" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-5" Name="Row5" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-6" Name="Row6" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-7" Name="Row7" />
+                              </Rows>
+                              <Columns>
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-1" Name="Col1" Width="45%" />
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-2" Name="Col2" Width="30%" />
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-3" Name="Col3" Width="10%" />
+                              </Columns>
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Eingang ist EIN bei Wert" Cell="1,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="2,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="3,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="4,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="5,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="6,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="7,1" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%306_R-%C%3061" Cell="1,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%307_R-%C%3071" Cell="2,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%308_R-%C%3081" Cell="3,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%309_R-%C%3091" Cell="4,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%310_R-%C%3101" Cell="5,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%311_R-%C%3111" Cell="6,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%312_R-%C%3121" Cell="7,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%281_R-%C%2811" Cell="1,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%282_R-%C%2821" Cell="2,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%283_R-%C%2831" Cell="3,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%284_R-%C%2841" Cell="4,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%285_R-%C%2851" Cell="5,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%286_R-%C%2861" Cell="6,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%287_R-%C%2871" Cell="7,3" />
+                            </ParameterBlock>
                           </when>
                           <when test="5">
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%313_R-%C%3131" />
@@ -1266,12 +1336,27 @@
                           </when>
                           <when test="4">
                             <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%06" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%281_R-%C%2811" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%314_R-%C%3141" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%282_R-%C%2821" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%315_R-%C%3151" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%283_R-%C%2831" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%316_R-%C%3161" />
+                            <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-nnn" Name="DPT7%C%001" Inline="true" Layout="Grid">
+                              <Rows>
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-1" Name="Row1" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-2" Name="Row2" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-3" Name="Row3" />
+                              </Rows>
+                              <Columns>
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-1" Name="Col1" Width="45%" />
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-2" Name="Col2" Width="30%" />
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-3" Name="Col3" Width="10%" />
+                              </Columns>
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Eingang ist EIN bei Wert" Cell="1,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="2,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="3,1" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%314_R-%C%3141" Cell="1,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%315_R-%C%3151" Cell="2,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%316_R-%C%3161" Cell="3,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%281_R-%C%2811" Cell="1,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%282_R-%C%2821" Cell="2,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%283_R-%C%2831" Cell="3,3" />
+                            </ParameterBlock>
                           </when>
                           <when test="5">
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%317_R-%C%3171" />
@@ -1303,12 +1388,27 @@
                           </when>
                           <when test="4">
                             <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%07" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%281_R-%C%2811" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%318_R-%C%3181" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%282_R-%C%2821" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%319_R-%C%3191" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%283_R-%C%2831" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%320_R-%C%3201" />
+                            <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-nnn" Name="DPT8%C%001" Inline="true" Layout="Grid">
+                              <Rows>
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-1" Name="Row1" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-2" Name="Row2" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-3" Name="Row3" />
+                              </Rows>
+                              <Columns>
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-1" Name="Col1" Width="45%" />
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-2" Name="Col2" Width="30%" />
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-3" Name="Col3" Width="10%" />
+                              </Columns>
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Eingang ist EIN bei Wert" Cell="1,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="2,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="3,1" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%318_R-%C%3181" Cell="1,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%319_R-%C%3191" Cell="2,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%320_R-%C%3201" Cell="3,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%281_R-%C%2811" Cell="1,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%282_R-%C%2821" Cell="2,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%283_R-%C%2831" Cell="3,3" />
+                            </ParameterBlock>
                           </when>
                           <when test="5">
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%321_R-%C%3211" />
@@ -1391,21 +1491,25 @@
                         </choose>
                       </when>
                     </choose>
-                    <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="" UIHint="HorizontalRuler" />
-                    <choose ParamRefId="M-00FA_A-0001-01-0000_UP-7_R-71">
-                      <when test="1">
-                        <choose ParamRefId="M-00FA_A-0001-01-0000_UP-8_R-81">
+                    <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%093_R-%C%0931">
+                      <when test="!=5">
+                        <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                        <choose ParamRefId="M-00FA_A-0001-01-0000_UP-7_R-71">
                           <when test="1">
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%130_R-%C%1301" />
+                            <choose ParamRefId="M-00FA_A-0001-01-0000_UP-8_R-81">
+                              <when test="1">
+                                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%130_R-%C%1301" />
+                              </when>
+                            </choose>
                           </when>
                         </choose>
-                      </when>
-                    </choose>
-                    <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%026_R-%C%0261" />
-                    <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%027_R-%C%0271" />
-                    <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%027_R-%C%0271">
-                      <when test=">0">
-                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%164_R-%C%1641" />
+                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%026_R-%C%0261" />
+                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%027_R-%C%0271" />
+                        <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%027_R-%C%0271">
+                          <when test=">0">
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%164_R-%C%1641" />
+                          </when>
+                        </choose>
                       </when>
                     </choose>
                   </when>
@@ -1517,28 +1621,29 @@
                       <when test="!=0">
                         <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%094_R-%C%0941">
                           <when test="0">
-                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Das Wertintervall liefert EIN, wenn Eingang 2 zwischen Von-Wert und Bis-Wert liegt. Formal:" />
-                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="EIN: Von-Wert &lt;= Eingang 2 &lt;= Bis-Wert; AUS sonst" />
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Das Wertintervall liefert EIN, wenn Eingang 2 zwischen Von-Wert und Bis-Wert liegt." />
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Formal: EIN bie Von-Wert &lt;= Eingang 2 &lt;= Bis-Wert; AUS sonst" />
                           </when>
                           <when test="1">
-                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Das Differenzintervall liefert EIN, wenn (Eingang 2 - Eingang 1) zwischen Von-Wert und Bis-Wert liegt. Formal:" />
-                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="EIN: Von-Wert &lt;= (Eingang 2 - Eingang 1) &lt;= Bis-Wert; AUS sonst" />
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Das Differenzintervall liefert EIN, wenn (Eingang 2 - Eingang 1) zwischen Von-Wert und Bis-Wert liegt." />
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Formal: EIN bei Von-Wert &lt;= (Eingang 2 - Eingang 1) &lt;= Bis-Wert; AUS sonst" />
                           </when>
                           <when test="2">
-                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Die Hysterese sendet AUS, wenn Eingang 2 unter den Ausschalt-Wert sinkt, sie sendet EIN, wenn Eingang 2 über den Einschat-Wert steigt. Formal:" />
-                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="AUS: Eingang 2 &lt;= Ausschalt-Wert; EIN: Eingang 2 &gt;= Einschalt-Wert" />
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Die Hysterese sendet AUS, wenn Eingang 2 unter den Ausschalt-Wert sinkt, sie sendet EIN, wenn Eingang 2 über den Einschat-Wert steigt." />
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Formal: AUS bei Eingang 2 &lt;= Ausschalt-Wert; EIN bei Eingang 2 &gt;= Einschalt-Wert" />
                           </when>
                           <when test="3">
-                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Die Differenzhysterese sendet AUS, wenn (Eingang 2 - Eingang 1) unter den Ausschalt-Wert sinkt, sie sendet EIN, wenn (Eingang 2 - Eingang 1) über den Einschalt-Wert steigt. Formal:" />
-                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="AUS: (Eingang 2 - Eingang 1) &lt;= Ausschalt-Wert; EIN: (Eingang 2 - Eingang 1) &gt;= Einschalt-Wert" />
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Die Differenzhysterese sendet AUS, wenn (Eingang 2 - Eingang 1) unter den Ausschalt-Wert sinkt, sie sendet EIN, wenn (Eingang 2 - Eingang 1) über den Einschalt-Wert steigt." />
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Formal: AUS bei (Eingang 2 - Eingang 1) &lt;= Ausschalt-Wert; EIN bei (Eingang 2 - Eingang 1) &gt;= Einschalt-Wert" />
                           </when>
                           <when test="4">
                             <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Die Einzelwerte liefern EIN, wenn Eingang 2 gleich einem der angegebenen Einzelwerte ist. Sie liefern AUS, wenn Eingang 2 keinem der angegebenen Werte gleicht." />
-                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="EIN: Eingang 2 IN (Wert1, Wert2, ..., WertN); AUS sonst" />
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Formal: EIN bei Eingang 2 IN (Wert1, Wert2, ..., WertN); AUS sonst" />
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Es werden nur die Zeilen ausgewertet, die auch einen Haken gesetzt haben." />
                           </when>
                           <when test="5">
                             <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Die konstante Belegung ist für Formeln gedacht. Das Eingangs-KO ist nicht aktiv, es wird der hier angegebene Wert für dieses KO angenommen. Der Wert für die Logik ist immer EIN." />
-                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="EIN: für jeglichen angegebenen konstanten Wert" />
+                            <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Formal: EIN für jeglichen angegebenen konstanten Wert" />
                           </when>
                         </choose>
                       </when>
@@ -1586,20 +1691,43 @@
                           </when>
                           <when test="4">
                             <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%03" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%325_R-%C%3251" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%334_R-%C%3341" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%326_R-%C%3261" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%335_R-%C%3351" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%327_R-%C%3271" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%336_R-%C%3361" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%328_R-%C%3281" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%337_R-%C%3371" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%329_R-%C%3291" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%338_R-%C%3381" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%330_R-%C%3301" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%339_R-%C%3391" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%331_R-%C%3311" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%340_R-%C%3401" />
+                            <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-nnn" Name="DPT5%C%002" Inline="true" Layout="Grid">
+                              <Rows>
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-1" Name="Row1" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-2" Name="Row2" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-3" Name="Row3" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-4" Name="Row4" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-5" Name="Row5" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-6" Name="Row6" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-7" Name="Row7" />
+                              </Rows>
+                              <Columns>
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-1" Name="Col1" Width="45%" />
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-2" Name="Col2" Width="30%" />
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-3" Name="Col3" Width="10%" />
+                              </Columns>
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Eingang ist EIN bei Wert" Cell="1,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="2,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="3,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="4,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="5,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="6,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="7,1" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%334_R-%C%3341" Cell="1,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%335_R-%C%3351" Cell="2,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%336_R-%C%3361" Cell="3,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%337_R-%C%3371" Cell="4,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%338_R-%C%3381" Cell="5,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%339_R-%C%3391" Cell="6,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%340_R-%C%3401" Cell="7,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%325_R-%C%3251" Cell="1,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%326_R-%C%3261" Cell="2,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%327_R-%C%3271" Cell="3,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%328_R-%C%3281" Cell="4,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%329_R-%C%3291" Cell="5,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%330_R-%C%3301" Cell="6,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%331_R-%C%3311" Cell="7,3" />
+                            </ParameterBlock>
                           </when>
                           <when test="5">
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%341_R-%C%3411" />
@@ -1631,20 +1759,43 @@
                           </when>
                           <when test="4">
   	                        <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%04" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%325_R-%C%3251" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%342_R-%C%3421" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%326_R-%C%3261" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%343_R-%C%3431" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%327_R-%C%3271" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%344_R-%C%3441" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%328_R-%C%3281" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%345_R-%C%3451" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%329_R-%C%3291" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%346_R-%C%3461" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%330_R-%C%3301" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%347_R-%C%3471" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%331_R-%C%3311" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%348_R-%C%3481" />
+                            <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-nnn" Name="DPT5x%C%002" Inline="true" Layout="Grid">
+                              <Rows>
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-1" Name="Row1" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-2" Name="Row2" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-3" Name="Row3" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-4" Name="Row4" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-5" Name="Row5" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-6" Name="Row6" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-7" Name="Row7" />
+                              </Rows>
+                              <Columns>
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-1" Name="Col1" Width="45%" />
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-2" Name="Col2" Width="30%" />
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-3" Name="Col3" Width="10%" />
+                              </Columns>
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Eingang ist EIN bei Wert" Cell="1,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="2,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="3,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="4,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="5,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="6,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="7,1" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%342_R-%C%3421" Cell="1,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%343_R-%C%3431" Cell="2,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%344_R-%C%3441" Cell="3,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%345_R-%C%3451" Cell="4,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%346_R-%C%3461" Cell="5,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%347_R-%C%3471" Cell="6,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%348_R-%C%3481" Cell="7,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%325_R-%C%3251" Cell="1,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%326_R-%C%3261" Cell="2,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%327_R-%C%3271" Cell="3,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%328_R-%C%3281" Cell="4,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%329_R-%C%3291" Cell="5,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%330_R-%C%3301" Cell="6,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%331_R-%C%3311" Cell="7,3" />
+                            </ParameterBlock>
                           </when>
                           <when test="5">
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%349_R-%C%3491" />
@@ -1676,20 +1827,43 @@
                           </when>
                           <when test="4">
                             <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%05" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%325_R-%C%3251" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%350_R-%C%3501" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%326_R-%C%3261" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%351_R-%C%3511" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%327_R-%C%3271" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%352_R-%C%3521" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%328_R-%C%3281" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%353_R-%C%3531" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%329_R-%C%3291" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%354_R-%C%3541" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%330_R-%C%3301" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%355_R-%C%3551" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%331_R-%C%3311" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%356_R-%C%3561" />
+                            <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-nnn" Name="DPT6%C%002" Inline="true" Layout="Grid">
+                              <Rows>
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-1" Name="Row1" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-2" Name="Row2" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-3" Name="Row3" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-4" Name="Row4" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-5" Name="Row5" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-6" Name="Row6" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-7" Name="Row7" />
+                              </Rows>
+                              <Columns>
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-1" Name="Col1" Width="45%" />
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-2" Name="Col2" Width="30%" />
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-3" Name="Col3" Width="10%" />
+                              </Columns>
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Eingang ist EIN bei Wert" Cell="1,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="2,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="3,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="4,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="5,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="6,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="7,1" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%350_R-%C%3501" Cell="1,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%351_R-%C%3511" Cell="2,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%352_R-%C%3521" Cell="3,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%353_R-%C%3531" Cell="4,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%354_R-%C%3541" Cell="5,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%355_R-%C%3551" Cell="6,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%356_R-%C%3561" Cell="7,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%325_R-%C%3251" Cell="1,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%326_R-%C%3261" Cell="2,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%327_R-%C%3271" Cell="3,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%328_R-%C%3281" Cell="4,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%329_R-%C%3291" Cell="5,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%330_R-%C%3301" Cell="6,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%331_R-%C%3311" Cell="7,3" />
+                            </ParameterBlock>
                           </when>
                           <when test="5">
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%357_R-%C%3571" />
@@ -1721,12 +1895,27 @@
                           </when>
                           <when test="4">
                             <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%06" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%325_R-%C%3251" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%358_R-%C%3581" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%326_R-%C%3261" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%359_R-%C%3591" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%327_R-%C%3271" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%360_R-%C%3601" />
+                            <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-nnn" Name="DPT7%C%002" Inline="true" Layout="Grid">
+                              <Rows>
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-1" Name="Row1" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-2" Name="Row2" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-3" Name="Row3" />
+                              </Rows>
+                              <Columns>
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-1" Name="Col1" Width="45%" />
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-2" Name="Col2" Width="30%" />
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-3" Name="Col3" Width="10%" />
+                              </Columns>
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Eingang ist EIN bei Wert" Cell="1,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="2,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="3,1" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%358_R-%C%3581" Cell="1,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%359_R-%C%3591" Cell="2,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%360_R-%C%3601" Cell="3,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%325_R-%C%3251" Cell="1,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%326_R-%C%3261" Cell="2,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%327_R-%C%3271" Cell="3,3" />
+                            </ParameterBlock>
                           </when>
                           <when test="5">
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%361_R-%C%3611" />
@@ -1758,12 +1947,27 @@
                           </when>
                           <when test="4">
                             <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%07" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%325_R-%C%3251" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%362_R-%C%3621" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%326_R-%C%3261" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%363_R-%C%3631" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%327_R-%C%3271" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%364_R-%C%3641" />
+                            <ParameterBlock Id="M-00FA_A-0001-01-0000_PB-nnn" Name="DPT8%C%002" Inline="true" Layout="Grid">
+                              <Rows>
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-1" Name="Row1" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-2" Name="Row2" />
+                                <Row Id="M-00FA_A-0001-01-0000_PB-nnn_R-3" Name="Row3" />
+                              </Rows>
+                              <Columns>
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-1" Name="Col1" Width="45%" />
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-2" Name="Col2" Width="30%" />
+                                <Column Id="M-00FA_A-0001-01-0000_PB-nnn_C-3" Name="Col3" Width="10%" />
+                              </Columns>
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="Eingang ist EIN bei Wert" Cell="1,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="2,1" />
+                              <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="    ... oder bei Wert" Cell="3,1" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%362_R-%C%3621" Cell="1,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%363_R-%C%3631" Cell="2,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%364_R-%C%3641" Cell="3,2" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%325_R-%C%3251" Cell="1,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%326_R-%C%3261" Cell="2,3" />
+                              <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%327_R-%C%3271" Cell="3,3" />
+                            </ParameterBlock>
                           </when>
                           <when test="5">
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%365_R-%C%3651" />
@@ -1846,21 +2050,25 @@
                         </choose>
                       </when>
                     </choose>
-                    <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="" UIHint="HorizontalRuler" />
-                    <choose ParamRefId="M-00FA_A-0001-01-0000_UP-7_R-71">
-                      <when test="1">
-                        <choose ParamRefId="M-00FA_A-0001-01-0000_UP-8_R-81">
+                    <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%094_R-%C%0941">
+                      <when test="!=5">
+                        <ParameterSeparator Id="M-00FA_A-0001-01-0000_PS-nnn" Text="" UIHint="HorizontalRuler" />
+                        <choose ParamRefId="M-00FA_A-0001-01-0000_UP-7_R-71">
                           <when test="1">
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%131_R-%C%1311" />
+                            <choose ParamRefId="M-00FA_A-0001-01-0000_UP-8_R-81">
+                              <when test="1">
+                                <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%131_R-%C%1311" />
+                              </when>
+                            </choose>
                           </when>
                         </choose>
-                      </when>
-                    </choose>
-                    <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%046_R-%C%0461" />
-                    <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%047_R-%C%0471" />
-                    <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%047_R-%C%0471">
-                      <when test=">0">
-                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%165_R-%C%1651" />
+                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%046_R-%C%0461" />
+                        <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%047_R-%C%0471" />
+                        <choose ParamRefId="M-00FA_A-0001-01-0000_UP-%C%047_R-%C%0471">
+                          <when test=">0">
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%165_R-%C%1651" />
+                          </when>
+                        </choose>
                       </when>
                     </choose>
                   </when>
