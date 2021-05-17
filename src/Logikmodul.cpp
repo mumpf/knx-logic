@@ -3,7 +3,7 @@
 #include "Logic.h"
 
 const uint8_t cFirmwareMajor = 3;    // 0-31
-const uint8_t cFirmwareMinor = 1;    // 0-31
+const uint8_t cFirmwareMinor = 3;    // 0-31
 const uint8_t cFirmwareRevision = 0; // 0-63
 
 struct sRuntimeInfo
