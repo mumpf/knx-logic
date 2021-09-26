@@ -262,7 +262,30 @@ void LogicChannel::setRGBColor(uint16_t iParamIndex)
         uint8_t lRed = lRGBColor >> 24;
         uint8_t lGreen = lRGBColor >> 16;
         uint8_t lBlue = lRGBColor >> 8;
-        PCA9632_SetColor(lRed, lGreen, lBlue);
+        // we have to map colors to correct pins
+        uint8_t lLedMapping = (knx.paramByte(LOG_LedMapping) & LOG_LedMappingMask) >> LOG_LedMappingShift;
+        switch (lLedMapping)
+        {
+            case 2: // R, B, G
+                PCA9632_SetColor(lRed, lBlue, lGreen);
+                break;
+            case 3: // G, R, B
+                PCA9632_SetColor(lGreen, lRed, lBlue);
+                break;
+            case 4: // G, B, R
+                PCA9632_SetColor(lGreen, lBlue, lRed);
+                break;
+            case 5: // B, G, R
+                PCA9632_SetColor(lBlue, lGreen, lRed);
+                break;
+            case 6: // B, R, G
+                PCA9632_SetColor(lBlue, lRed, lGreen);
+                break;
+
+            default: // R, G, B
+                PCA9632_SetColor(lRed, lGreen, lBlue);
+                break;
+        }
     } else {
         // in case of lock we turn off led
         PCA9632_SetColor(0, 0, 0);

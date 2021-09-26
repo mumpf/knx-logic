@@ -136,9 +136,12 @@
 #define LOG_BuzzerSilent              23      // uint16_t
 #define LOG_BuzzerNormal              25      // uint16_t
 #define LOG_BuzzerLoud                27      // uint16_t
+#define LOG_LedMapping                29      // 3 Bits, Bit 7-5
+#define     LOG_LedMappingMask 0xE0
+#define     LOG_LedMappingShift 5
 
 // Parameter per channel
-#define LOG_ParamBlockOffset 29
+#define LOG_ParamBlockOffset 30
 #define LOG_ParamBlockSize 100
 #define LOG_fChannelDelay              0      // int32_t
 #define LOG_fLogic                     4      // 8 Bits, Bit 7-0
