@@ -103,7 +103,7 @@ uint32_t LogicFunction::callFunction(uint8_t iId, uint8_t iDptE1, uint32_t iE1, 
     {
         lResult = userFunction[iId - 201](iDptE1, iE1, iDptE2, iE2, cDptOut);
     }
-    if (*cDptOut == VAL_DPT_9)
-        lResult *= 100.0;
+    // if (*cDptOut == VAL_DPT_9)
+    //     lResult *= 100.0;
     return (uint32_t)lResult;
 }
