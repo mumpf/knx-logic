@@ -18,3 +18,13 @@
 #define VAL_DPT_11 12   // Date
 
 Dpt &getDPT(uint8_t iDptIndex);
+
+#define VAL_TIMEBASE_SECONDS 0x0000
+#define VAL_TIMEBASE_MINUTES 0x4000
+#define VAL_TIMEBASE_HOURS 0x8000
+#define VAL_TIMEBASE_TENTH_SECONDS 0xC000
+
+#define VAL_TIME_MASK 0x3FFF
+#define VAL_TIMEBASE_MASK 0xC000
+
+uint32_t getDelayPattern(uint16_t iParamIndex, bool iAsSeconds = false);
