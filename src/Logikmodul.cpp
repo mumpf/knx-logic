@@ -1,3 +1,4 @@
+#ifdef LOGICMODULE
 #include "Helper.h"
 #include "Hardware.h"
 #include "Logic.h"
@@ -81,3 +82,4 @@ void appSetup(bool iSaveSupported)
         gLogic.setup(iSaveSupported);
     }
 }
+#endif
