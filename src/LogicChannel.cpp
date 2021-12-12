@@ -1748,6 +1748,7 @@ bool LogicChannel::checkDpt(uint8_t iIOIndex, uint8_t iDpt)
 
 bool LogicChannel::readOneInputFromEEPROM(uint8_t iIOIndex)
 {
+#ifdef I2C_EEPROM_DEVICE_ADDRESSS
     EepromManager *lEEPROM = sLogic->getEEPROM();
     // first check, if EEPROM contains valid values
     if (!lEEPROM->isValid())
@@ -1768,10 +1769,14 @@ bool LogicChannel::readOneInputFromEEPROM(uint8_t iIOIndex)
     while (Wire.available() && lIndex < 4)
         lKo->valueRef()[lIndex++] = Wire.read();
     return true;
+#else
+    return false;
+#endif
 }
 
 void LogicChannel::writeSingleDptToEEPROM(uint8_t iIOIndex)
 {
+#ifdef I2C_EEPROM_DEVICE_ADDRESSS
     uint8_t lDpt = 0xFF;
     if (isInputActive(iIOIndex))
     {
@@ -1784,6 +1789,7 @@ void LogicChannel::writeSingleDptToEEPROM(uint8_t iIOIndex)
         }
     }
     Wire.write(lDpt);
+#endif
 }
 
 // retutns true, if any DPT from EEPROM does not fit to according input DPT.

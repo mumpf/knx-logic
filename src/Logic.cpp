@@ -144,6 +144,7 @@ void Logic::processReadRequests() {
 // For inputs, which are not set as "store in memory", we write a dpt 0xFF
 void Logic::writeAllDptToEEPROM()
 {
+#ifdef I2C_EEPROM_DEVICE_ADDRESSS
     if (mLastWriteToEEPROM > 0 && delayCheck(mLastWriteToEEPROM, 10000))
     {
         println("writeAllDptToEEPROM called repeatedly within 10 seconds, skipped!");
@@ -165,10 +166,13 @@ void Logic::writeAllDptToEEPROM()
             mEEPROM->endPage();
     }
     mEEPROM->endPage();
+#endif
 }
 
 void Logic::writeAllInputsToEEPROM()
 {
+#ifdef I2C_EEPROM_DEVICE_ADDRESSS
+
     if (mLastWriteToEEPROM > 0 && delayCheck(mLastWriteToEEPROM, 10000))
     {
         println("writeAllInputsToEEPROM called repeatedly within 10 seconds, skipped!");
@@ -199,14 +203,19 @@ void Logic::writeAllInputsToEEPROM()
     // as a last step we write magic number back
     // this is also the ACK, that writing was successfull
     mEEPROM->endWriteSession();
+#endif
 }
 
 void Logic::writeAllInputsToEEPROMFacade() {
+#ifdef I2C_EEPROM_DEVICE_ADDRESSS
     uint32_t lTime = millis();
     writeAllInputsToEEPROM(); 
     lTime = millis() - lTime;
     print("WriteAllInputsToEEPROM took: ");
     println(lTime);
+#else
+    print("No write to EEPROM, not available!");
+#endif
 }
 
 // on input level, all dpt > 1 values are converted to bool by the according converter
