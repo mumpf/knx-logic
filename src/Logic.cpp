@@ -571,8 +571,8 @@ void Logic::sendHoliday() {
     if (sTimer.holidayChanged())
     {
         // write the newly calculated holiday information into KO (can be read externally)
-        knx.getGroupObject(LOG_KoHoliday1).valueNoSend(sTimer.isHolidayToday(), getDPT(VAL_DPT_1));
-        knx.getGroupObject(LOG_KoHoliday2).valueNoSend(sTimer.isHolidayTomorrow(), getDPT(VAL_DPT_1));
+        knx.getGroupObject(LOG_KoHoliday1).valueNoSend(sTimer.holidayToday(), getDPT(VAL_DPT_5));
+        knx.getGroupObject(LOG_KoHoliday2).valueNoSend(sTimer.holidayTomorrow(), getDPT(VAL_DPT_5));
         sTimer.clearHolidayChanged();
         if (knx.paramByte(LOG_HolidaySend & LOG_HolidaySendMask)) {
             // and send it, if requested by application setting

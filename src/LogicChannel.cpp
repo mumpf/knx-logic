@@ -335,14 +335,9 @@ int32_t LogicChannel::getParamForDelta(uint8_t iDpt, uint16_t iParamIndex)
 {
 
     int32_t lValue;
+    lValue = (int32_t)getIntParam(iParamIndex);
     if (iDpt == VAL_DPT_9)
-    {
-        lValue = getFloatParam(iParamIndex) * 100.0;
-    }
-    else
-    {
-        lValue = (int32_t)getIntParam(iParamIndex);
-    }
+        lValue *= 100;
     return lValue;
 }
 
@@ -2015,18 +2010,18 @@ void LogicChannel::processTimerInput()
     // holiday
     uint8_t lHolidaySetting = (getByteParam(LOG_fTHoliday) & LOG_fTHolidayMask) >> LOG_fTHolidayShift;
     if (lEvaluate) {
-        if (lHolidaySetting == VAL_Tim_Special_No && sTimer.isHolidayToday())
+        if (lHolidaySetting == VAL_Tim_Special_No && (sTimer.holidayToday() > 0))
             lEvaluate = false;
         if (lHolidaySetting == VAL_Tim_Special_Skip || lHolidaySetting == VAL_Tim_Special_Sunday)
             lEvaluate = true;
         if (lHolidaySetting == VAL_Tim_Special_Only)
-            lEvaluate = sTimer.isHolidayToday();
+            lEvaluate = (sTimer.holidayToday() > 0);
     }
 
     if (lEvaluate)
     {
 
-        bool lHandleAsSunday = (lHolidaySetting == VAL_Tim_Special_Sunday && sTimer.isHolidayToday()) ||
+        bool lHandleAsSunday = (lHolidaySetting == VAL_Tim_Special_Sunday && (sTimer.holidayToday() > 0)) ||
                                (lVacationSetting == VAL_Tim_Special_Sunday && lIsVacation);
 
         // loop through all timer
@@ -2280,16 +2275,16 @@ void LogicChannel::processTimerRestoreState(TimerRestore &iTimer)
 
     // holiday
     uint8_t lHolidaySetting = (getByteParam(LOG_fTHoliday) & LOG_fTHolidayMask) >> LOG_fTHolidayShift;
-    if (lHolidaySetting == VAL_Tim_Special_No && iTimer.isHolidayToday())
+    if (lHolidaySetting == VAL_Tim_Special_No && (iTimer.holidayToday() >0))
         lEvaluate = false;
     if (lHolidaySetting == VAL_Tim_Special_Skip || lHolidaySetting == VAL_Tim_Special_Sunday)
         lEvaluate = true;
     if (lHolidaySetting == VAL_Tim_Special_Only)
-        lEvaluate = iTimer.isHolidayToday();
+        lEvaluate = (iTimer.holidayToday() > 0);
     if (!lEvaluate)
         return;
 
-    bool lHandleAsSunday = (lHolidaySetting == VAL_Tim_Special_Sunday && iTimer.isHolidayToday());
+    bool lHandleAsSunday = (lHolidaySetting == VAL_Tim_Special_Sunday && (iTimer.holidayToday() >0));
 
     // loop through all timer
     uint32_t lTimerFunctions = getIntParam(LOG_fTd1DuskDawn);

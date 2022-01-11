@@ -66,6 +66,12 @@ rmware 2.1.0, Applikation 2.0 - 2.3
 * Kapitel "Einzelwert-Konverter" ergänzt.
 * Kapitel "Konstanten" ergänzt.
 
+11.01.2022: Firmware 3.5.0, Applikation 3.5
+
+* Feature: Es wird nicht nur ausgegeben, ob "Heute" bzw. "Morgen" ein Feiertag ist (DPT1), sondern welcher Feiertag es ist (DPT5)
+* Kapitel "Feiertage auf dem Bus verfügbar machen" um das neue Feature ergänzt
+* **Inkompatible Änderung** KO 5 und KO 6 sind jetzt DPT5.010 statt DPT1.001. **Vor einem Upgrade** müssen alle mit diesen KO verknüpften GA entfernt werden.
+
 <div style="page-break-after: always;"></div>
 
 ## Allgemeine Parameter
@@ -217,12 +223,12 @@ Für die Zeitschaltuhren wird vom Modul eine Berechnung der Feiertage vorgenomme
 
 #### Feiertage auf dem Bus verfügbar machen?
 
-Ein "Ja" bei dieser Einstellung schaltet 2 Kommunikationsobjekte frei.
+Ein "Ja" bei dieser Einstellung schaltet 2 Kommunikationsobjekte frei. Über diese Kommunikationsobjekte wird die Nummer eines Feiertags gesendet. Jede gesendete Nummer entspricht genau einem Feiertag, die Nummern entsprechen den in der Liste von Feiertagseinstellungen (siehe vorheriges Bild).
 
-* KO 5 (Feiertag heute) wird "EIN", wenn der aktuelle Tag ein Feiertag ist,
-* KO 6 (Feiertag morgen) wird "EIN", wenn der nächste Tag ein Feiertag ist.
+* KO 5 (Feiertag heute) sendet, wenn der aktuelle Tag ein Feiertag ist,
+* KO 6 (Feiertag morgen) sendet, wenn der nächste Tag ein Feiertag ist.
 
-Beide Kommunikationsobjekte (5 und 6) werden immer kurz nach Mitternacht (aber nicht exakt um Mitternacht) neu berechnet.
+Beide Kommunikationsobjekte (5 und 6) werden immer kurz nach Mitternacht (aber nicht exakt um Mitternacht) neu berechnet. Sie senden eine 0, wenn kein Feiertag ist und sich der Wert geändert hat.
 
 #### Nach Neuberechnung Feiertagsinfo senden?
 
@@ -1737,9 +1743,8 @@ KO | Name | DPT | Bedeutung
 2 | Uhrzeit | 10.001 | Eingnang zum empfangen der Uhrzeit
 3 | Datum | 11.001 | Eingang zum empfangen des Datums
 4 | Urlaub | 1.001 | Eingang: Information über Urlaub
-5 | Feiertag heute | 1.001 | Ausgang: Information, dass der aktuelle Tag ein Feiertag ist
-6 | Feiertag
-morgen | 1.001 | Ausgang: Information, dass der morgige Tag ein Feiertag ist
+5 | Feiertag heute | 5.010 | Ausgang: Nummer des Feiertages, falls der aktuelle Tag ein Feiertag ist, sonst 0
+6 | Feiertag morgen | 5.010 | Ausgang: Nummer des Feiertages, falls der morgige Tag ein Feiertag ist, sonst 0
 7 | Diagnoseobjekt | 16.001 | Ein-/Ausgang für Diagnoseinformationen
 8 | LED sperren | 1.001 | Eingang: LED global sperren (kein Licht)
 9 | Buzzer sperren | 1.001 | Eingang: Buzzer global sperren (kein Ton)
@@ -1758,3 +1763,4 @@ n für Kanal 1 ist von dem Gerät abhängig, auf dem die Applikation Logik läuf
 * Für das Logikmodul ist n=20, somit ist das letzte belegte KO 259.
 * Für das Sensormodul ist n=125, somit ist das letzte belegte KO 364.
 * Für das Wiregateway ist n=150, somit ist das letzte belegte KO 389.
+* Für das Enocean-Gateway ist n=320, somit ist das letzte belegte KO 469 (50 Logikkanäle).
