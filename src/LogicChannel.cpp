@@ -335,9 +335,14 @@ int32_t LogicChannel::getParamForDelta(uint8_t iDpt, uint16_t iParamIndex)
 {
 
     int32_t lValue;
-    lValue = (int32_t)getIntParam(iParamIndex);
     if (iDpt == VAL_DPT_9)
-        lValue *= 100;
+    {
+        lValue = getFloatParam(iParamIndex) * 100.0;
+    }
+    else
+    {
+        lValue = (int32_t)getIntParam(iParamIndex);
+    }
     return lValue;
 }
 

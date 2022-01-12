@@ -87,6 +87,8 @@
       <Memory CodeSegment="M-00FA_A-0001-01-0000_RS-04-00000" Offset="23" BitOffset="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%115" Name="f%C%E1LowDelta"     ParameterType="M-00FA_A-0001-01-0000_PT-Delta"             Offset="0"  BitOffset="0" Text="Von-Wert" Value="-10" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%116" Name="f%C%E1HighDelta"    ParameterType="M-00FA_A-0001-01-0000_PT-Delta"             Offset="4"  BitOffset="0" Text="Bis-Wert" Value="10" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%373" Name="f%C%E1LowDeltaFloat"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9"       Offset="0"  BitOffset="0" Text="Von-Wert" Value="-10" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%374" Name="f%C%E1HighDeltaFloat" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9"       Offset="4"  BitOffset="0" Text="Bis-Wert" Value="10" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%281" Name="f%C%E1Low0Valid"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"          Offset="7"  BitOffset="0" Text="Nächste Zeile auswerten?" Value="1" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%282" Name="f%C%E1Low1Valid"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"          Offset="7"  BitOffset="1" Text="Nächste Zeile auswerten?" Value="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%283" Name="f%C%E1Low2Valid"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"          Offset="7"  BitOffset="2" Text="Nächste Zeile auswerten?" Value="0" />
@@ -160,6 +162,8 @@
 
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%142" Name="f%C%E2LowDelta"     ParameterType="M-00FA_A-0001-01-0000_PT-Delta"             Offset="8"  BitOffset="0" Text="Von-Wert" Value="-10" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%143" Name="f%C%E2HighDelta"    ParameterType="M-00FA_A-0001-01-0000_PT-Delta"             Offset="12" BitOffset="0" Text="Bis-Wert" Value="10" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%375" Name="f%C%E2LowDeltaFloat"  ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9"       Offset="8"  BitOffset="0" Text="Von-Wert" Value="-10" />
+      <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%376" Name="f%C%E2HighDeltaFloat" ParameterType="M-00FA_A-0001-01-0000_PT-ValueDpt9"       Offset="12" BitOffset="0" Text="Bis-Wert" Value="10" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%325" Name="f%C%E2Low0Valid"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"          Offset="15" BitOffset="0" Text="Nächste Zeile auswerten?" Value="1" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%326" Name="f%C%E2Low1Valid"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"          Offset="15" BitOffset="1" Text="Nächste Zeile auswerten?" Value="0" />
       <Parameter Id="M-00FA_A-0001-01-0000_UP-%C%327" Name="f%C%E2Low2Valid"    ParameterType="M-00FA_A-0001-01-0000_PT-CheckBox"          Offset="15" BitOffset="2" Text="Nächste Zeile auswerten?" Value="0" />
@@ -635,9 +639,9 @@
     <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%139_R-%C%1391" RefId="M-00FA_A-0001-01-0000_UP-%C%139" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%140_R-%C%1401" RefId="M-00FA_A-0001-01-0000_UP-%C%140" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%141_R-%C%1411" RefId="M-00FA_A-0001-01-0000_UP-%C%141" />
-    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%142_R-%C%1421" RefId="M-00FA_A-0001-01-0000_UP-%C%142" Text="Von-Wert" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%142_R-%C%1421" RefId="M-00FA_A-0001-01-0000_UP-%C%142" Text="Von-Wert"       />
     <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%142_R-%C%1422" RefId="M-00FA_A-0001-01-0000_UP-%C%142" Text="Ausschalt-Wert" />
-    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%143_R-%C%1431" RefId="M-00FA_A-0001-01-0000_UP-%C%143" Text="Bis-Wert" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%143_R-%C%1431" RefId="M-00FA_A-0001-01-0000_UP-%C%143" Text="Bis-Wert"       />
     <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%143_R-%C%1432" RefId="M-00FA_A-0001-01-0000_UP-%C%143" Text="Einschalt-Wert" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%144_R-%C%1441" RefId="M-00FA_A-0001-01-0000_P-%C%144" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_P-%C%145_R-%C%1451" RefId="M-00FA_A-0001-01-0000_P-%C%145" />
@@ -861,6 +865,14 @@
     <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%370_R-%C%3701" RefId="M-00FA_A-0001-01-0000_UP-%C%370" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%371_R-%C%3711" RefId="M-00FA_A-0001-01-0000_UP-%C%371" />
     <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%372_R-%C%3721" RefId="M-00FA_A-0001-01-0000_UP-%C%372" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%373_R-%C%3731" RefId="M-00FA_A-0001-01-0000_UP-%C%373" Text="Von-Wert" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%373_R-%C%3732" RefId="M-00FA_A-0001-01-0000_UP-%C%373" Text="Ausschalt-Wert" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%374_R-%C%3741" RefId="M-00FA_A-0001-01-0000_UP-%C%374" Text="Bis-Wert" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%374_R-%C%3742" RefId="M-00FA_A-0001-01-0000_UP-%C%374" Text="Einschalt-Wert" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%375_R-%C%3751" RefId="M-00FA_A-0001-01-0000_UP-%C%375" Text="Von-Wert" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%375_R-%C%3752" RefId="M-00FA_A-0001-01-0000_UP-%C%375" Text="Ausschalt-Wert" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%376_R-%C%3761" RefId="M-00FA_A-0001-01-0000_UP-%C%376" Text="Bis-Wert" />
+    <ParameterRef Id="M-00FA_A-0001-01-0000_UP-%C%376_R-%C%3762" RefId="M-00FA_A-0001-01-0000_UP-%C%376" Text="Einschalt-Wert" />
   </ParameterRefs>
   <ComObjectTable>
     <ComObject Id="M-00FA_A-0001-01-0000_O-%K0%" Name="KOf%C%E1" Text="Eingang 1" Number="%K0%" FunctionText="Logik %C%, Eingang 1" ObjectSize="1 Bit" ReadFlag="Disabled" WriteFlag="Enabled"  CommunicationFlag="Enabled" TransmitFlag="Disabled" UpdateFlag="Enabled"  ReadOnInitFlag="Disabled" />
@@ -1429,8 +1441,8 @@
                           </when>
                           <when test="1">
                             <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%08" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%115_R-%C%1151" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%116_R-%C%1161" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%373_R-%C%3731" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%374_R-%C%3741" />
                           </when>
                           <when test="2">
                             <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%08" />
@@ -1439,8 +1451,8 @@
                           </when>
                           <when test="3">
                             <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K0%_R-%K0%08" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%115_R-%C%1152" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%116_R-%C%1162" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%373_R-%C%3732" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%374_R-%C%3742" />
                           </when>
                           <when test="5">
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%322_R-%C%3221" />
@@ -1992,8 +2004,8 @@
                           </when>
                           <when test="1">
                             <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%08" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%142_R-%C%1421" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%143_R-%C%1431" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%375_R-%C%3751" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%376_R-%C%3761" />
                           </when>
                           <when test="2">
                             <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%08" />
@@ -2002,8 +2014,8 @@
                           </when>
                           <when test="3">
                             <ComObjectRefRef RefId="M-00FA_A-0001-01-0000_O-%K1%_R-%K1%08" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%142_R-%C%1422" />
-                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%143_R-%C%1432" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%375_R-%C%3752" />
+                            <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%376_R-%C%3762" />
                           </when>
                           <when test="5">
                             <ParameterRefRef RefId="M-00FA_A-0001-01-0000_UP-%C%366_R-%C%3661" />

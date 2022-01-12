@@ -66,11 +66,13 @@ rmware 2.1.0, Applikation 2.0 - 2.3
 * Kapitel "Einzelwert-Konverter" ergänzt.
 * Kapitel "Konstanten" ergänzt.
 
-11.01.2022: Firmware 3.5.0, Applikation 3.5
+11.01.2022: Firmware 3.8.0, Applikation 3.8
 
 * Feature: Es wird nicht nur ausgegeben, ob "Heute" bzw. "Morgen" ein Feiertag ist (DPT1), sondern welcher Feiertag es ist (DPT5)
 * Kapitel "Feiertage auf dem Bus verfügbar machen" um das neue Feature ergänzt
 * **Inkompatible Änderung** KO 5 und KO 6 sind jetzt DPT5.010 statt DPT1.001. **Vor einem Upgrade** müssen alle mit diesen KO verknüpften GA entfernt werden.
+* Fix: Eingangskonverter "Differenzintervall" und "Differenzhysterese" für DPT9.x funktionierten nicht
+* **Inkompatible Änderung** Bei einem Update gehen die Parameter für Von-/Bis- bzw. Einschalt-/Ausschalt-Wert bei Eingangskonvertern "Differenzintervall" und "Differenzhysterese" für DPT9 verloren. Diese müssen nach einem Update manuell nachgetragen werden.
 
 <div style="page-break-after: always;"></div>
 
