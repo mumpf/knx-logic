@@ -3,20 +3,6 @@
     // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
-        // {
-        //     "label": "Build on Linux",
-        //     "type": "shell",
-        //     "command": "cmake",
-        //     "args": [
-        //         "--build",
-        //         "linux"
-        //     ],
-        //     "group": {
-        //         "kind": "build",
-        //         "isDefault": true
-        //     },
-        //     "problemMatcher": []
-        // },
         {
             "label": "Build PlatformIO",
             "type": "shell",
