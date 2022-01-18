@@ -68,6 +68,14 @@
             ],
             "problemMatcher": [],
             "group": "test"
+        },
+        {
+            "label": "MultiplyChannels-Release",
+            "type": "shell",
+            "command": "release\\BuildRelease.cmd",
+            "args": [],
+            "problemMatcher": [],
+            "group": "test"
         }
     ]
 }
