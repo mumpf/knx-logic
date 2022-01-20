@@ -3,6 +3,18 @@
 #include "Timer.h"
 #include "TimerRestore.h"
 
+// Watchdog reset causees
+#define WDT_RCAUSE_SYSTEM 6   // reset by system itself
+#define WDT_RCAUSE_WDT 5      // reset by watchdog
+#define WDT_RCAUSE_EXT 4      // reset by reset signal
+#define WDT_RCAUSE_POR 0      // power on reset
+
+typedef void (*loopCallback)(void *iThis);
+struct sLoopCallbackParams {
+    loopCallback callback;
+    void *instance;
+};
+
 class Logic
 {
   public:
@@ -16,6 +28,7 @@ class Logic
     static void onSafePinInterruptHandler();
     static char *initDiagnose(GroupObject &iKo);
     static char *getDiagnoseBuffer();
+    static void addLoopCallback(loopCallback iLoopCallback, void *iThis);
 
     // instance
     EepromManager *getEEPROM();
@@ -35,6 +48,8 @@ class Logic
     static Timer &sTimer;
     static TimerRestore &sTimerRestore;
     static char sDiagnoseBuffer[16];
+    static sLoopCallbackParams sLoopCallbacks[5];
+    static uint8_t sNumLoopCallbacks;
 
     LogicChannel *mChannel[LOG_ChannelsFirmware];
     uint8_t mNumChannels; // Number of channels defined in knxprod
@@ -63,4 +78,6 @@ class Logic
 
     void sendHoliday();
     void processTimerRestore();
+
+    void loopSubmodules();
 };

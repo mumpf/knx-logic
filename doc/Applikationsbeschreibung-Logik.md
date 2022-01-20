@@ -54,6 +54,26 @@ rmware 2.1.0, Applikation 2.0 - 2.3
 
 * FIX: Bei Zeitschaltuhren hat die Kombination "Feiertage wie Sonntage behandeln" und "Im Urlaub nicht schalten" nicht funktioniert.
 
+12.05.2021: Firmware 3.2.0, Applikation 3.2
+
+* Feature: Einfache Formeln in einer Logik (+, -, *, /, min, max und avg mit 2 Eingängen)
+* Feature: Es können jetzt bis zu 30 Benutzerfunktionen im Coding definiert und in der ETS Applikation ausgewählt werden
+* Feature: Eingangs-Konverter können jetzt für DPT5, DPT5.001, DPT6, DPT7 und DPT8 auch mit mehreren Einzelwerten definiert werden (ähnlich wie die bisherige Definition von Szenen-Convertern)
+* Eingänge können jetzt auch einen DPT-Gerechten konstanten Wert enthalten, der dann in Formeln weiter verarbeitet oder direkt am Ausgang genutzt werden kann^
+* Kapitel "Formeln" samt Unterkapiteln neu hinzugefügt.
+* Kapitel "Wert für EIN senden" um Formelaufrufe ergänzt.
+* Kapitel "Wert für AUS senden" um Formelaufrufe ergänzt.
+* Kapitel "Einzelwert-Konverter" ergänzt.
+* Kapitel "Konstanten" ergänzt.
+
+11.01.2022: Firmware 3.8.0, Applikation 3.8
+
+* Feature: Es wird nicht nur ausgegeben, ob "Heute" bzw. "Morgen" ein Feiertag ist (DPT1), sondern welcher Feiertag es ist (DPT5)
+* Kapitel "Feiertage auf dem Bus verfügbar machen" um das neue Feature ergänzt
+* **Inkompatible Änderung** KO 5 und KO 6 sind jetzt DPT5.010 statt DPT1.001. **Vor einem Upgrade** müssen alle mit diesen KO verknüpften GA entfernt werden.
+* Fix: Eingangskonverter "Differenzintervall" und "Differenzhysterese" für DPT9.x funktionierten nicht
+* **Inkompatible Änderung** Bei einem Update gehen die Parameter für Von-/Bis- bzw. Einschalt-/Ausschalt-Wert bei Eingangskonvertern "Differenzintervall" und "Differenzhysterese" für DPT9 verloren. Diese müssen nach einem Update manuell nachgetragen werden.
+
 <div style="page-break-after: always;"></div>
 
 ## Allgemeine Parameter
@@ -205,12 +225,12 @@ Für die Zeitschaltuhren wird vom Modul eine Berechnung der Feiertage vorgenomme
 
 #### Feiertage auf dem Bus verfügbar machen?
 
-Ein "Ja" bei dieser Einstellung schaltet 2 Kommunikationsobjekte frei.
+Ein "Ja" bei dieser Einstellung schaltet 2 Kommunikationsobjekte frei. Über diese Kommunikationsobjekte wird die Nummer eines Feiertags gesendet. Jede gesendete Nummer entspricht genau einem Feiertag, die Nummern entsprechen den in der Liste von Feiertagseinstellungen (siehe vorheriges Bild).
 
-* KO 5 (Feiertag heute) wird "EIN", wenn der aktuelle Tag ein Feiertag ist,
-* KO 6 (Feiertag morgen) wird "EIN", wenn der nächste Tag ein Feiertag ist.
+* KO 5 (Feiertag heute) sendet, wenn der aktuelle Tag ein Feiertag ist,
+* KO 6 (Feiertag morgen) sendet, wenn der nächste Tag ein Feiertag ist.
 
-Beide Kommunikationsobjekte (5 und 6) werden immer kurz nach Mitternacht (aber nicht exakt um Mitternacht) neu berechnet.
+Beide Kommunikationsobjekte (5 und 6) werden immer kurz nach Mitternacht (aber nicht exakt um Mitternacht) neu berechnet. Sie senden eine 0, wenn kein Feiertag ist und sich der Wert geändert hat.
 
 #### Nach Neuberechnung Feiertagsinfo senden?
 
@@ -748,6 +768,34 @@ Der Differenzeingang muss nicht vom gleichen DPT sein, er wird generisch in eine
 
 Wird ein Differenzeingang genutzt, sollte dieser nicht auch noch als "normal aktiv" oder "invertiert aktiv" bei einer logischen Operation genutzt werden, obwohl das grundsätzlich möglich ist. Dann würde der Differenzeingang auch einen Konverter anbieten und entsprechend ein EIN- oder AUS-Signal für die logische Operation erzeugen. Dies ist ausdrücklich nicht empfohlen und auch bisher nicht getestet. Ob man die Komplexität eines solchen Aufbaus noch durchblicken kann, ist auch zu bezweifeln.
 
+### Ganzzahlbasierte DPT
+
+Alle DPT, die ganze Zahlen repräsentieren (das sind DPT 5.xxx, 5.001, 6.xxx, 7.xxx, 8.xxx), können mittels eines weiteren Einzelwert-Konverters in ein binäres Signal umgewandelt werden. Er ist gleich für alle DPT, die einzugebenden Zahlen müssen nur innerhalb der Wertebereiche des jeweiligen DPT liegen.
+
+#### Einzelwert-Konverter
+
+![Einzelwerte](Einzelwerte.png)
+
+Der Einzelwert-Konverter prüft, ob der Eingang einem der angegebenen Werte entspricht. Wenn ja, liefert der Eingang ein EIN-Signal an die Logik. Wenn er keinem der Werte enspricht, liefert er ein AUS-Signal. Geprüft wird jedesmal, wenn das Eingangs-KO einen Wert empfängt. Je nach DPT des Eingangs können unterschiedlich viele Werte geprüft werden:
+
+* DPT5: 7 Werte
+* DPT5.001: 7 Werte
+* DPT6: 7 Werte
+* DPT7: 3 Werte
+* DPT8: 3 Werte
+
+Der Einzelwert-Konverter erpart einige ODER-Verknüpfungen und spart so Logikkanäle.
+
+### Konstanten
+
+Alle Eingänge können auch mit einem Konstanten Wert vorbelegt werden. Dies geschieht DPT gerecht, also passend zum Eingangs-DPT. Kontanten können in Formeln verwendet werden oder direkt von Ausgängen genutzt werden. Wobei man sowieso jeden Ausgang einen kontanten Wert senden lassen kann, insofern macht es keinen Sinn, konstante Eingänge für Ausgänge zu definieren.
+
+![Konstante](Konstante.png)
+
+Der Boolesche Wert einer Konstante ist immer EIN und kann in einer Logik normal genutzt werden. Natürlich ändert sich dieser Wert nie und kann auch keine Logik triggern.
+
+Wie die Konstanten der Eingänge in Formeln verwendet werden können, kann im Formel-Kapitel nachgelesen werden.
+
 ## Kanalausgänge verbinden
 
 ![Interne Eingänge](InternerEingang.png)
@@ -1239,6 +1287,12 @@ Bei einem EIN-Signal wird der Wert gesendet, der am Eingang 1 anliegt. Sollte de
 
 Bei einem EIN-Signal wird der Wert gesendet, der am Eingang 2 anliegt. Sollte der Wert nicht den passenden DPT haben, wird er generisch gewandelt.
 
+#### Ja - Wert einer Funktion
+
+Bei einem EIN-Signal wird ein berechneter Wert gesendet. In einem weiteren Feld kann die Funktion ausgewählt werden, die angewendet werden soll. Sollte der Wert nicht den passenden DPT haben, wird er generisch gewandelt.
+
+Im Kapitel Funktionen kann nachgelesen werden, wie Funtionen und Benutzerfunktionen verwendet werden können.
+
 #### Ja - ReadRequest senden
 
 Bei einem EIN-Signal wird kein Wert auf die GA am Ausgang gesendet sondern ein Lesetelegramm. Damit kann man für Geräte, die kein zyklisches Senden unterstützen, bei bedarf eine Abfrage eines Ausgangs erreichen.
@@ -1321,6 +1375,12 @@ Bei einem AUS-Signal wird der Wert gesendet, der am Eingang 1 anliegt. Sollte de
 
 Bei einem AUS-Signal wird der Wert gesendet, der am Eingang 2 anliegt. Sollte der Wert nicht den passenden DPT haben, wird er generisch gewandelt.
 
+#### Ja - Wert einer Funktion
+
+Bei einem AUS-Signal wird ein berechneter Wert gesendet. In einem weiteren Feld kann die Funktion ausgewählt werden, die angewendet werden soll. Sollte der Wert nicht den passenden DPT haben, wird er generisch gewandelt.
+
+Im Kapitel Funktionen kann nachgelesen werden, wie Funtionen und Benutzerfunktionen verwendet werden können.
+
 #### Ja - ReadRequest senden
 
 Bei einem AUS-Signal wird kein Wert auf die GA am Ausgang gesendet sondern ein Lesetelegramm. Damit kann man für Geräte, die kein zyklisches Senden unterstützen, bei bedarf eine Abfrage eines Ausgangs erreichen.
@@ -1383,7 +1443,163 @@ Wenn die Einstellung aktiviert ist, wird eine akkustische oder optische Ausgabe 
 
 So können bestimmte Töne oder RGB-Anzeigen als Alarm definiert werden. Alarme können nicht durch entsprechende Sperren abgeschaltet werden.
 
+## Formeln
+
+Das Logikmodul enthält eine Implementierung zur verwendung von einfachen (bzw. elementaren) Formeln. Formeln können immer die Werte von einem oder zwei Eingängen eines Logikkanals verrechnen. Wird ein Ausgang so definiert, dass er den Wert einer Formel senden soll, wird die dort ausgewählte Formelfunktion aufgerufen, die Berechnung anhand der beiden Eingangswerte durchgeführt und das Ergebnis an den Ausgang gesendet.
+
+### berechnungszeitpunkt
+
+Die Formelfunktionalität innerhalb des Logikmoduls ist eingebettet in die (boolesche) Logikfunktionalität. Man konnte schon immer bei einem Ausgang verschiedene konstante Werte für EIN oder AUS senden lassen (nicht nur DPT1) bzw. auswählen, dass man statt einem konstanten Wert den Wert vom Eingang 1 oder Eingang 2 senden lassen will. Formeln stellen eine konsequente Erweiterung dieses Konzeptes vor, indem sie erlauben, den Wert von Eingang 1 und Eingang 2 erst zu verrechnen und dann das Ergebnis zu senden.
+
+Somit wird der Berechnungszeitpunkt einer Formel durch die Logik eines Kanals bestimmt. Soll der Logikkanal ein EIN senden und am Ausgang ist eine Formel eingestellt, wird diese berechnet und deren Ergebnis gesendet.
+
+Somit muss man neben der eigentlichen Berechnung immer auch den logischen Anteil berücksichtigen, damit die Berechnung zum gewünschten Zeitpunkt erfolgt. Es ergeben sich folgende typische Fälle:
+
+#### Formel soll berechnet werden, sobald sich irgendein Eingangswert ändert
+
+In einem solchen Fall ist der Logische Anteil unwichtig, man muss nur erreichen, dass bei jeder Wertänderung am Eingang der Ausgang senden soll.
+
+Dazu wird eine ODER-Logik benutzt, die bei jedem Eingangssignal senden soll. Die Eingangskonverter beider Eingänge werden so eingestellt, dass sie immer zu einem EIN konvertieren. Der Ausgang sendet dann nichts bei einem AUS und die gewünschte Formel bei einem EIN.
+
+#### Formel soll nur berechnet werden, wenn sich ein Eingang ändert
+
+In einem solchen Fall darf der Logische Anteil auch nur bei einer Wertänderung an dem gewünschten Eingang getriggert werden. 
+
+Dazu wird wie zuvor eine ODER-Logik benutzt, die die sendet aber nur bei dem gewünschten Eingang. Der Rest ist wie beim vorherigen Punkt.
+
+#### Formel soll nur zu besimmten Zeitpunkten oder Ereignissen berechnet werden
+
+Hier muss die Logik des Formelkanals so aufgebaut werden, dass sie nur sendet, wenn das externe Triggersignal eingeht. 
+
+Dazu verwenden wir die selben Einstellungen wie im ersten Fall, nur nehmen wir eine UND-Logik und zusätzlich noch einen internen Eingang. Gesendet wird nur bei einem Signal auf dem internen Eingang.
+
+Jetzt nutzen wir einen weiteren Logikkanal, um das gewünschte Triggersignal auf den Ausgang zu bringen (das kann eine Zeitschaltuhr oder ein externes Signal sein). Den Ausgang der Hilfslogik verbinden wir mit dem internen Eingang der Formellogik.
+
+#### Formel soll nur für bestimmte Werte von einem (oder beiden) Eingängen rechnen, sonst soll immer 0 ausgegeben werden
+
+Wieder muss die Logik des Formelkanals so aufgebaut werden, dass sie nur im gewünschten Fall sendet. 
+
+Wir benutzen eine UND-Logik und senden nur bei Wertänderungen. Die Eingangskonverter beider Kanäle werden so eingestellt, dass sie bei gewünschten Werten ein EIN liefern, sonst AUS. Der Ausgang senden bei EIN das Formelergebnis, bei AUS konstant 0.
+
+### Standardformeln
+
+Das Logikmodul enthält wenige bereits implementierte Standardformeln. In Zukunft können noch weitere Standardformeln hinzukommen.
+
+![Standardformeln](Standardformeln.png)
+
+Man kann Eingänge auch auf einen konstanten Wert setzen, um anschließend mit diesem Wert zu rechnen. Will man z.B. nur 10% eines Wertes haben, kann man am Eingang 1 den entsprechenden Wert empfangen, den Eingang 2 kontant auf 10 setzen und dann Eingang 1 / Eingang 2 rechenen.
+
+Die Eingangswerte werden für Formeln immer in eine Fließkommazahl konvertiert, dann verrechnet und anschließend wird das (Fließkomma-)Ergebnis in den DPT des Ausgangs konvertiert.
+
+Es empfiehlt sich, die Ergebnisse einer Formel immer durch Tests zu überprüfen, da die Genauigkeit von Fließkommazahlen oberhalb vom Zahlenwert von ca. 500 nachlässt. Rechnet man aber im Bereich von einem Byte (0 bis 255 bzw. -128 bis 127), so ist die genauigkeit erwartungskonform.
+
+Will man in einer Formel das Ergebnis einer anderen Formel nutzen, so geht das nicht über interne Eingänge. Man muss passende Ausgänge mit den entsprechenden Eingängen über GA verbinden und dann normal rechnen lassen.
+
+#### Ausgang = Eingang 1 + Eingang 2
+
+Die Werte der beiden Eingänge werden summiert und als Ergebnis am Ausgang ausgegeben.
+
+Ist nur ein Eingang aktiv, ist der andere 0 und man bekommt den Wert des aktiven Eingangs.
+
+#### Ausgang = Eingang 1 - Eingang 2
+
+Der Wert von Eingang 2 wird vom Wert von Eingang 1 subtrahiert und als Ergebnis am Ausgang ausgegeben.
+
+Ist nur Eingang 1 aktiv, ist der andere 0 und man bekommt den Wert des aktiven Eingangs.
+
+Ist nur Eingang 2 aktiv, ist der andere 0 und man bekommt den negativen Wert des aktiven Eingangs.
+
+#### Ausgang = Eingang 1 * Eingang 2
+
+Die Werte der beiden Eingänge werden multipliziert und als Ergebnis am Ausgang ausgegeben.
+
+Ist nur ein Eingang aktiv, ist der andere 0 und man bekommt 0 als Ergebnis.
+
+#### Ausgang = Eingang 1 / Eingang 2
+
+Der Wert von Eingang 1 wird durch den Wert von Eingang 2 dividiert und als Ergebnis am Ausgang ausgegeben.
+
+Ist nur Eingang 1 aktiv, ist der andere 0 und man bekommt keinen Wert ausgegeben.
+
+Ist nur Eingang 2 aktiv, ist der andere 0 und man bekommt den  Wert 0 ausgegeben.
+
+#### Ausgang = (Eingang 1 + Eingang 2) / 2
+
+Es wird der Durchschnitt der Werte der beiden Eingänge gebildet und als Ergebnis am Ausgang ausgegeben.
+
+Ist nur ein Eingang aktiv, ist der andere 0 und man bekommt den halben Wert des aktiven Eingangs.
+
+#### Ausgang = Min(Eingang 1, Eingang 2)
+
+Die Werte der beiden Eingänge werden verglichen und der kleinere Wert wird als Ergebnis am Ausgang ausgegeben.
+
+Ist nur ein Eingang aktiv, ist der andere 0 und man bekommt 0, falls der aktive Eingang positiv ist. Falls der aktive Eingang negativ ist, bekommt man den Wert des aktiven Eingangs.
+
+#### Ausgang = Max(Eingang 1, Eingang 2)
+
+Die Werte der beiden Eingänge werden verglichen und der größere Wert wird als Ergebnis am Ausgang ausgegeben.
+
+Ist nur ein Eingang aktiv, ist der andere 0 und man bekommt 0, falls der aktive Eingang negativ ist. Falls der aktive Eingang positiv ist, bekommt man den Wert des aktiven Eingangs.
+
+### Benutzerfunktionen
+
+Die eingentliche Stärke des Formelansatzes liegt sicherlich nicht in den implementierten Standardfunktionen, sonden in den 30 zur Verfügung stehenden Benutzerfunktionen.
+
+Man kann direkt in der Firmware bis zu 30 eigene Funktionen definieren und die beliebigen Logikausgängen zuweisen. So kann man z.B. aus einer Entfernungsmessung, wohl wissend dass dies der Füllstand einer Zisterne ist, den Messwert direkt in Liter umrechnen, indem man im Coding der Firmware alle weiteren Parameter (Tankhöhe, Tankfläche usw.) in einer passenden Formel hinterlegt. Insofern dürften Benutzerfunktionen besonders im Zusammenhang mit dem Sensormodul genutzt weren.
+
+![Benutzerfunktion](Benutzerfunktion.png)
+
+Alle Benutzerfunktionen werden gleichartig aufgerufen, im Folgenden wird nur eine behandelt.
+
+#### Ausgang = Benutzerfunktion_xx(E1, E2)
+
+Sobald der Ausgang senden soll, ruft er die angegebene Benutzerfunktion mit den Werten der Eingänge 1 und 2 auf. Nachdem die Berechnung erfolgt ist, sendet der Ausgang den berechneten Wert.
+
+Nichtaktive Eingänge bekommen den Wert 0 beim Aufruf der Funktion.
+
+#### Definition einer Benutzerfunktion in der Firmware
+
+Eine Benutzerfunktion kann in der Firmware entsprechend programmiert werden. Dies erfolgt im Projekt knx-logic.
+
+In der Datei
+
+    src/LogicFunctionUser.cpp
+
+stehen bereits 30 Benutzerfunktionen bereit, die nur noch mit dem notwendigen Code gefüllt werden müssen.
+
+    // user functions, may be implemented by Enduser
+    // for DPT-Check you can use constants beginning with VAL_DPT_*
+    float LogicFunction::userFunction01(uint8_t DptE1, float E1, uint8_t DptE2, float E2, uint8_t *DptOut)
+    {
+        return E1; // just an expample, result is first parameter value
+    }
+
+In der Beispielimplementierung für die Benutzerfunktion_01 wird der Wert vom Eingang 1 zurückgegeben.
+
+Jeder Funktion stehen die Variablen E1 und E2 zur Verfügung, die die Werte der Eingänge 1 und 2 enthalten. Ferner stehen über die Variablen DptE1 und DptE2 die DPT der Eingänge E1 und E2 zur Verfügung. Die Werte können mittels Kontanten beginnend mit VAL_DPT_* abgefragt werden. Diese Konstanten sind folgendermaßen definiert:
+
+    // enum supported dpt
+    #define VAL_DPT_1 0
+    #define VAL_DPT_2 1
+    #define VAL_DPT_5 2
+    #define VAL_DPT_5001 3
+    #define VAL_DPT_6 4
+    #define VAL_DPT_7 5
+    #define VAL_DPT_8 6
+    #define VAL_DPT_9 7
+    #define VAL_DPT_16 8
+    #define VAL_DPT_17 9
+    #define VAL_DPT_232 10
+
+#### Beispiele von Benutzerfunktionen
+
+Derzeit gibt es noch keine Beispiele von Benutzerfunktionen. Es können aber Beispiele hier aufgenommen werden, wenn entsprechende User des knx-user-forum.de sich bereit erklären, dass diese veröffentlicht werden.
+
 ## Diagnoseobjekt
+
+Das Diagnoseobjekt dient primär zu Debug-Zwecken, kann aber auch vom Enduser genutzt werden, um bestimmte interne Zustände vom Logikmodul zu überprüfen. 
+
+Es funktioniert wie ein einfaches Terminal. Man sendet an das KO 7 ein Kommando (Groß-Kleinschreibung beachten) und erhält über das gleiche KO eine antwort. Im folgenden sind die Kommandos und die Antworten beschrieben.
 
 ### Kommando 't' - interne Zeit
 
@@ -1419,7 +1635,7 @@ ist. Die möglichen Werte a, b, c, d und q sind:
 
 * 0 für den logischen Wert AUS
 * 1 für den logischen Wert EIN
-* X für den Wert "undefiniert" bzw. "undefiniert"
+* X für den Wert "undefiniert" bzw. "înaktiv"
 
 ## DPT Konverter
 
@@ -1529,9 +1745,8 @@ KO | Name | DPT | Bedeutung
 2 | Uhrzeit | 10.001 | Eingnang zum empfangen der Uhrzeit
 3 | Datum | 11.001 | Eingang zum empfangen des Datums
 4 | Urlaub | 1.001 | Eingang: Information über Urlaub
-5 | Feiertag heute | 1.001 | Ausgang: Information, dass der aktuelle Tag ein Feiertag ist
-6 | Feiertag
-morgen | 1.001 | Ausgang: Information, dass der morgige Tag ein Feiertag ist
+5 | Feiertag heute | 5.010 | Ausgang: Nummer des Feiertages, falls der aktuelle Tag ein Feiertag ist, sonst 0
+6 | Feiertag morgen | 5.010 | Ausgang: Nummer des Feiertages, falls der morgige Tag ein Feiertag ist, sonst 0
 7 | Diagnoseobjekt | 16.001 | Ein-/Ausgang für Diagnoseinformationen
 8 | LED sperren | 1.001 | Eingang: LED global sperren (kein Licht)
 9 | Buzzer sperren | 1.001 | Eingang: Buzzer global sperren (kein Ton)
@@ -1550,3 +1765,4 @@ n für Kanal 1 ist von dem Gerät abhängig, auf dem die Applikation Logik läuf
 * Für das Logikmodul ist n=20, somit ist das letzte belegte KO 259.
 * Für das Sensormodul ist n=125, somit ist das letzte belegte KO 364.
 * Für das Wiregateway ist n=150, somit ist das letzte belegte KO 389.
+* Für das Enocean-Gateway ist n=320, somit ist das letzte belegte KO 469 (50 Logikkanäle).

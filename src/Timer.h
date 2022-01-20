@@ -51,8 +51,8 @@ class Timer
     eTimeValid mTimeValid = tmInvalid;
     uint32_t mTimeDelay = 0;
     bool mMinuteChanged = false;
-    bool mIsHolidayToday = false;
-    bool mIsHolidayTomorrow = false;
+    uint8_t mHolidayToday = 0;
+    uint8_t mHolidayTomorrow = 0;
     bool mHolidayChanged = false;
     sTime mSunrise;
     sTime mSunset;
@@ -111,8 +111,8 @@ class Timer
     void clearMinuteChanged(); //has to be cleared externally
     void setTimeFromBus(tm *iTime);
     void setDateFromBus(tm *iDate);
-    bool isHolidayToday();
-    bool isHolidayTomorrow();
+    uint8_t holidayToday();
+    uint8_t holidayTomorrow();
     bool holidayChanged();
     void clearHolidayChanged();
     eTimeValid isTimerValid();

@@ -9,40 +9,13 @@
 #include "KnxHelper.h"
 #include "EepromManager.h"
 #include "IncludeManager.h"
-
-// #define STR( x ) #x
-// #define XSTR( x ) STR( x )
-
-// #ifdef LOGICMODULE
-// #define MODULE "LOGICMODULE"
-// #include "Logikmodul.h"
-// #elif SENSORMODULE
-// #define MODULE "SENSORMODULE"
-// #include "../../knx-sensor/src/Sensormodul.h"
-// #elif PMMODULE
-// #define MODULE "PMMODULE"
-// #include "../../knx-pm/src/PMmodul.h"
-// #elif WIREGATEWAY
-// #define MODULE "WIREGATEWAY"
-// #include "../../knx-wire/src/WireGateway.h"
-// #elif TEST
-// #include "../../knx-test/src/Test.h"
-// #define MODULE "TEST"
-// #endif
-// #include "KnxHelper.h"
-// #include "EepromManager.h"
-
-// // this processes a warning during compilation!
-// // this warning is intended
-// // the output tells you, for which module the logic is compiled
-// // to be exact: which include with ets definitions is taken to compile the logic
-// #pragma message "Building Logic for " MODULE
+#include "Hardware.h"
 
 #define SAVE_BUFFER_START_PAGE 0 // All stored KO data begin at this page and takes 40 pages,
 #define SAVE_BUFFER_NUM_PAGES 41 // so next store should start at page 41
 
 // here we define, how many channels are compiled into firmware, has to be greater equal the number in knxprod
-#define LOG_ChannelsFirmware 80
+#define LOG_ChannelsFirmware COUNT_LOG_CHANNEL
 
 // enum input defaults
 #define VAL_InputDefault_Undefined 0
@@ -56,6 +29,8 @@
 #define VAL_InputConvert_DeltaInterval 1
 #define VAL_InputConvert_Hysterese 2
 #define VAL_InputConvert_DeltaHysterese 3
+#define VAL_InputConvert_Values 4
+#define VAL_InputConvert_Constant 5
 
 // enum logical function
 #define VAL_Logic_And 1
@@ -94,12 +69,19 @@
 #define VAL_Out_ResetDevice 5
 #define VAL_Out_Buzzer 6
 #define VAL_Out_RGBLed 7
+#define VAL_Out_Function 8
 
 // enum output filter
 #define VAL_AllowRepeat_All 0
 #define VAL_AllowRepeat_On 1
 #define VAL_AllowRepeat_Off 2
 #define VAL_AllowRepeat_None 3
+
+// enum for buzzer volume
+#define VAL_Buzzer_Off 0
+#define VAL_Buzzer_Silent 2
+#define VAL_Buzzer_Normal 3
+#define VAL_Buzzer_Loud 1
 
 // flags for in- and output
 #define BIT_EXT_INPUT_1 0x01
@@ -204,9 +186,7 @@
 #define VAL_Tim_YearTimerCount 4
 #define VAL_Tim_DayTimerCount 8
 
-#ifdef __linux__
-extern KnxFacade<LinuxPlatform, Bau57B0> knx;
-#endif
+// extern KnxFacade<LinuxPlatform, Bau57B0> knx;
 
 const uint32_t cTimeFactors[] = {100, 1000, 60000, 3600000};
 
@@ -246,6 +226,8 @@ class LogicChannel
     int32_t getInputValue(uint8_t iIOIndex);
     void writeConstantValue(uint16_t iParamIndex);
     void writeParameterValue(uint8_t iIOIndex);
+    void writeFunctionValue(uint16_t iParamIndex);
+    void writeValue(uint32_t iValue, uint8_t iDpt);
     void setRGBColor(uint16_t iParamIndex);
     void setBuzzer(uint16_t iParamIndex);
     
@@ -257,6 +239,7 @@ class LogicChannel
     void processRepeatInput2();
     void stopRepeatInput(uint8_t iIOIndex);
     void startConvert(uint8_t iIOIndex);
+    bool checkConvertValues(uint16_t iParamValues, uint8_t iValueSize, int32_t iValue);
     void processConvertInput(uint8_t iIOIndex);
     void startLogic(uint8_t iIOIndex, bool iValue);
     void processLogic();

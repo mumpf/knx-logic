@@ -3,6 +3,7 @@
 #include "Helper.h"
 #include "Hardware.h"
 #include "PCA9632.h"
+#include "LogicFunction.h"
 
 Logic *LogicChannel::sLogic = nullptr;
 Timer &LogicChannel::sTimer = Timer::instance();
@@ -244,8 +245,8 @@ void LogicChannel::knxRead(uint8_t iIOIndex)
 void LogicChannel::knxResetDevice(uint16_t iParamIndex)
 {
     uint16_t lAddress = getWordParam(iParamIndex);
-    uint8_t lHigh = lAddress >> 8;
 #if LOGIC_TRACE
+    uint8_t lHigh = lAddress >> 8;
     channelDebug("knxResetDevice with PA %d.%d.%d\n", lHigh >> 4, lHigh & 0xF, lAddress & 0xFF);
 #endif
     knx.restart(lAddress);
@@ -261,7 +262,30 @@ void LogicChannel::setRGBColor(uint16_t iParamIndex)
         uint8_t lRed = lRGBColor >> 24;
         uint8_t lGreen = lRGBColor >> 16;
         uint8_t lBlue = lRGBColor >> 8;
-        PCA9632_SetColor(lRed, lGreen, lBlue);
+        // we have to map colors to correct pins
+        uint8_t lLedMapping = (knx.paramByte(LOG_LedMapping) & LOG_LedMappingMask) >> LOG_LedMappingShift;
+        switch (lLedMapping)
+        {
+            case 2: // R, B, G
+                PCA9632_SetColor(lRed, lBlue, lGreen);
+                break;
+            case 3: // G, R, B
+                PCA9632_SetColor(lGreen, lRed, lBlue);
+                break;
+            case 4: // G, B, R
+                PCA9632_SetColor(lGreen, lBlue, lRed);
+                break;
+            case 5: // B, G, R
+                PCA9632_SetColor(lBlue, lGreen, lRed);
+                break;
+            case 6: // B, R, G
+                PCA9632_SetColor(lBlue, lRed, lGreen);
+                break;
+
+            default: // R, G, B
+                PCA9632_SetColor(lRed, lGreen, lBlue);
+                break;
+        }
     } else {
         // in case of lock we turn off led
         PCA9632_SetColor(0, 0, 0);
@@ -277,17 +301,17 @@ void LogicChannel::setBuzzer(uint16_t iParamIndex)
     if ((getByteParam(LOG_fAlarm) & LOG_fAlarmMask) || !knx.getGroupObject(LOG_KoBuzzerLock).value(getDPT(VAL_DPT_1))) {
         switch (getByteParam(iParamIndex))
         {
-            case 0:
+            case VAL_Buzzer_Off:
                 noTone(BUZZER_PIN);
                 break;
-            case 1:
-                tone(BUZZER_PIN, BUZZER_FREQ_LOUD);
+            case VAL_Buzzer_Loud:
+                tone(BUZZER_PIN, knx.paramWord(LOG_BuzzerLoud));
                 break;
-            case 2:
-                tone(BUZZER_PIN, BUZZER_FREQ_SILENT);
+            case VAL_Buzzer_Silent:
+                tone(BUZZER_PIN, knx.paramWord(LOG_BuzzerSilent));
                 break;
-            case 3:
-                tone(BUZZER_PIN, BUZZER_FREQ_NORMAL);
+            case VAL_Buzzer_Normal:
+                tone(BUZZER_PIN, knx.paramWord(LOG_BuzzerNormal));
                 break;
             default:
                 break;
@@ -369,38 +393,46 @@ int32_t LogicChannel::getParamByDpt(uint8_t iDpt, uint16_t iParamIndex)
 // DPT9 => transport as 1/100, means take int(float * 100)
 int32_t LogicChannel::getInputValue(uint8_t iIOIndex)
 {
-
     int32_t lValue = 0;
-    uint16_t lParamIndex = (iIOIndex == 1) ? LOG_fE1Dpt : LOG_fE2Dpt;
-    GroupObject *lKo = getKo(iIOIndex);
-    // based on dpt, we read the correct c type.
+    // check for constant
+    uint16_t lParamIndex = (iIOIndex == 1) ? LOG_fE1Convert : LOG_fE2Convert;
+    uint8_t lConvert = (getByteParam(lParamIndex) & LOG_fE1ConvertMask) >> LOG_fE1ConvertShift;
+    lParamIndex = (iIOIndex == 1) ? LOG_fE1Dpt : LOG_fE2Dpt;
     uint8_t lDpt = getByteParam(lParamIndex);
-    switch (lDpt)
-    {
-        case VAL_DPT_2:
-            lValue = lKo->valueRef()[0];
-            break;
-        case VAL_DPT_6:
-            lValue = (int8_t)lKo->value(getDPT(VAL_DPT_6));
-            break;
-        case VAL_DPT_8:
-            lValue = (int16_t)lKo->value(getDPT(VAL_DPT_8));
-            break;
+    if (lConvert == VAL_InputConvert_Constant) {
+        // input value is a constant stored in param memory
+        uint16_t lParamIndex = (iIOIndex == 1) ? LOG_fE1LowDelta : LOG_fE2LowDelta;
+        lValue = getParamByDpt(lDpt, lParamIndex);
+    } else {
+        GroupObject *lKo = getKo(iIOIndex);
+        // based on dpt, we read the correct c type.
+        switch (lDpt)
+        {
+            case VAL_DPT_2:
+                lValue = lKo->valueRef()[0];
+                break;
+            case VAL_DPT_6:
+                lValue = (int8_t)lKo->value(getDPT(VAL_DPT_6));
+                break;
+            case VAL_DPT_8:
+                lValue = (int16_t)lKo->value(getDPT(VAL_DPT_8));
+                break;
 
-        // case VAL_DPT_7:
-        //     lValue = lKo->valueRef()[0] + 256 * lKo->valueRef()[1];
-        //     break;
-        // case VAL_DPT_232:
-        //     lValue =
-        //         lKo->valueRef()[0] + 256 * lKo->valueRef()[1] + 65536 * lKo->valueRef()[2];
-        //     break;
-        case VAL_DPT_9:
-            lValue = ((double)lKo->value(getDPT(VAL_DPT_9)) * 100.0);
-            break;
-        // case VAL_DPT_17:
-        default:
-            lValue = (int32_t)lKo->value(getDPT(lDpt));
-            break;
+            // case VAL_DPT_7:
+            //     lValue = lKo->valueRef()[0] + 256 * lKo->valueRef()[1];
+            //     break;
+            // case VAL_DPT_232:
+            //     lValue =
+            //         lKo->valueRef()[0] + 256 * lKo->valueRef()[1] + 65536 * lKo->valueRef()[2];
+            //     break;
+            case VAL_DPT_9:
+                lValue = ((double)lKo->value(getDPT(VAL_DPT_9)) * 100.0);
+                break;
+            // case VAL_DPT_17:
+            default:
+                lValue = (int32_t)lKo->value(getDPT(lDpt));
+                break;
+        }
     }
     return lValue;
 }
@@ -469,27 +501,48 @@ void LogicChannel::writeParameterValue(uint8_t iIOIndex)
     int32_t lValueOrig = getInputValue(iIOIndex);
     uint16_t lParamDpt = (iIOIndex == 1) ? LOG_fE1Dpt : LOG_fE2Dpt;
     uint8_t lInputDpt = getByteParam(lParamDpt);
-    uint8_t lDpt = getByteParam(LOG_fODpt);
     int32_t lValue = (lInputDpt == VAL_DPT_9) ? lValueOrig / 10 : lValueOrig;
+    uint8_t lDpt = getByteParam(LOG_fODpt);
+    lValue = (lDpt == VAL_DPT_9) ? lValueOrig : lValue;
+    writeValue(lValue, lInputDpt);
+}
+
+void LogicChannel::writeFunctionValue(uint16_t iParamIndex)
+{
+    uint8_t lFunction = getByteParam(iParamIndex);
+    int32_t lE1 = getInputValue(BIT_EXT_INPUT_1);
+    int32_t lE2 = getInputValue(BIT_EXT_INPUT_2);
+    uint8_t lDptE1 = getByteParam(LOG_fE1Dpt);
+    uint8_t lDptE2 = getByteParam(LOG_fE2Dpt);
+    uint8_t lDptOut = getByteParam(LOG_fODpt);
+    int32_t lValue = LogicFunction::callFunction(lFunction, lDptE1, lE1, lDptE2, lE2, &lDptOut);
+    writeValue(lValue, lDptOut);
+}
+
+void LogicChannel::writeValue(uint32_t iValue, uint8_t iDpt)
+{
+    uint8_t lDpt = getByteParam(LOG_fODpt);
+    bool lValueBool;
+    uint8_t lValueByte;
+    uint16_t lValueWord;
+    float lValueFloat;
+    char lValueStr[15];
     switch (lDpt)
     {
-        uint8_t lValueByte;
-        uint16_t lValueWord;
         case VAL_DPT_1:
-            bool lValueBool;
-            lValueBool = lValue != 0;
+            lValueBool = iValue != 0;
             knxWriteBool(IO_Output, lValueBool);
             break;
         case VAL_DPT_2:
-            lValueByte = abs(lValue);
+            lValueByte = abs(iValue);
             lValueByte &= 3;
             knxWriteRawInt(IO_Output, lValueByte);
             break;
         case VAL_DPT_5:
         case VAL_DPT_5001:
-            lValue = abs(lValue);
+            iValue = abs(iValue);
         case VAL_DPT_6:
-            lValueByte = lValue;
+            lValueByte = iValue;
             knxWriteInt(IO_Output, lValueByte);
             break;
             // lValueByte = lValue;
@@ -499,35 +552,26 @@ void LogicChannel::writeParameterValue(uint8_t iIOIndex)
             // knxWrite(0, lValueByte);
             // break;
         case VAL_DPT_7:
-            lValue = abs(lValue);
+            iValue = abs(iValue);
         case VAL_DPT_8:
-            lValueWord = lValue;
+            lValueWord = iValue;
             knxWriteInt(IO_Output, lValueWord);
             break;
         case VAL_DPT_9:
-            float lValueFloat;
-            if (lInputDpt == VAL_DPT_9)
-            {
-                lValueFloat = lValueOrig / 100.0;
-            }
-            else
-            {
-                lValueFloat = lValue;
-            }
+            lValueFloat = iValue / 100.0;
             knxWriteFloat(IO_Output, lValueFloat);
             break;
         case VAL_DPT_16:
-            char lValueStr[15];
-            sprintf(lValueStr, "%ld", lValue);
+            sprintf(lValueStr, "%ld", iValue);
             knxWriteString(IO_Output, lValueStr);
             break;
         case VAL_DPT_17:
-            lValueByte = abs(lValue);
+            lValueByte = abs(iValue);
             lValueByte &= 0x3F;
             knxWriteInt(IO_Output, lValueByte);
             break;
         case VAL_DPT_232:
-            knxWriteInt(IO_Output, lValue);
+            knxWriteInt(IO_Output, iValue);
             break;
         default:
             break;
@@ -670,19 +714,49 @@ void LogicChannel::startConvert(uint8_t iIOIndex)
     }
 }
 
+bool LogicChannel::checkConvertValues(uint16_t iParamValues, uint8_t iDpt, int32_t iValue) {
+    bool lValueOut = false;
+    uint8_t lValueSize = 1;
+    uint8_t lNumValues = 1;
+    switch (iDpt)
+    {
+        case VAL_DPT_2:
+            lNumValues = 4;
+            break;
+        case VAL_DPT_5:
+        case VAL_DPT_5001:
+        case VAL_DPT_6:
+            lNumValues = 7;
+            break;
+        case VAL_DPT_7:
+        case VAL_DPT_8:
+            lNumValues = 3;
+            lValueSize = 2;
+            break;
+        case VAL_DPT_17:
+            lNumValues = 8;
+            break;
+        default:
+            break;
+    }
+    for (size_t lIndex = 0; lIndex < lNumValues && !lValueOut; lIndex++)
+    {
+        int32_t lValue = getParamByDpt(iDpt, iParamValues + lIndex * lValueSize);
+        lValueOut = (iValue == lValue);
+    }
+    return lValueOut;
+}
+
 void LogicChannel::processConvertInput(uint8_t iIOIndex)
 {
     uint16_t lParamBase = (iIOIndex == 1) ? LOG_fE1 : LOG_fE2;
     uint16_t lParamLow = (iIOIndex == 1) ? LOG_fE1LowDelta : LOG_fE2LowDelta;
     uint8_t lConvert = getByteParam(lParamBase) >> LOG_fE1ConvertShift;
-#if LOGIC_TRACE
-    uint8_t lDebugInput = (iIOIndex == 1) ? 1 : 2;
-#endif
     bool lValueOut = 0;
     // get input value
     int32_t lValue1In = getInputValue(iIOIndex);
     int32_t lValue2In = 0;
-    if (lConvert & 1)
+    if ((lConvert < VAL_InputConvert_Values) && (lConvert & 1))
     {
         // in case of delta conversion get the other input value
         lValue2In = getInputValue(3 - iIOIndex);
@@ -697,7 +771,7 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
 #if LOGIC_TRACE
             if (debugFilter())
             {
-                channelDebug("processConvertInput E%i DPT1: In=Out=%i\n", lDebugInput, lValueOut);
+                channelDebug("processConvertInput E%i DPT1: In=Out=%i\n", iIOIndex, lValueOut);
             }
 #endif
             break;
@@ -706,7 +780,7 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
             lUpperBound = 8; // we start with 2
             lValue1In += 1;
         case VAL_DPT_2:
-            // there might be 4 possible zwangsführung values to check
+            // there might be 4 possible "Zwangsführung" values to check
             if (lUpperBound == 0)
                 lUpperBound = 4; // we start with 2
             // scenes or zwngsführung have no intervals, but multiple single values
@@ -721,11 +795,11 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
             {
                 if (lDpt == VAL_DPT_17)
                 {
-                    channelDebug("processConvertInput E%i DPT17: In=%i, Out=%i\n", lDebugInput, lValue1In, lValueOut);
+                    channelDebug("processConvertInput E%i DPT17: In=%i, Out=%i\n", iIOIndex, lValue1In, lValueOut);
                 }
                 else
                 {
-                    channelDebug("processConvertInput E%i DPT2: In=%i, Out=%i\n", lDebugInput, lValue1In, lValueOut);
+                    channelDebug("processConvertInput E%i DPT2: In=%i, Out=%i\n", iIOIndex, lValue1In, lValueOut);
                 }
             }
 #endif
@@ -744,7 +818,7 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
 #if LOGIC_TRACE
                 if (debugFilter())
                 {
-                    channelDebug("processConvertInput E%i Interval: In=%i, Out=%i\n", lDebugInput, lValue1In, lValueOut);
+                    channelDebug("processConvertInput E%i Interval: In=%i, Out=%i\n", iIOIndex, lValue1In, lValueOut);
                 }
 #endif
                 break;
@@ -754,7 +828,7 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
 #if LOGIC_TRACE
                 if (debugFilter())
                 {
-                    channelDebug("processConvertInput E%i DeltaInterval: In1=%i, In2=%i, Delta=%i, Out=%i\n", lDebugInput, lValue1In, lValue2In, lValue1In - lValue2In, lValueOut);
+                    channelDebug("processConvertInput E%i DeltaInterval: In1=%i, In2=%i, Delta=%i, Out=%i\n", iIOIndex, lValue1In, lValue2In, lValue1In - lValue2In, lValueOut);
                 }
 #endif
                 break;
@@ -767,7 +841,7 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
 #if LOGIC_TRACE
                 if (debugFilter())
                 {
-                    channelDebug("processConvertInput E%i Hysterese: In=%i, Out=%i\n", lDebugInput, lValue1In, lValueOut);
+                    channelDebug("processConvertInput E%i Hysterese: In=%i, Out=%i\n", iIOIndex, lValue1In, lValueOut);
                 }
 #endif
                 break;
@@ -780,7 +854,25 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
 #if LOGIC_TRACE
                 if (debugFilter())
                 {
-                    channelDebug("processConvertInput E%i DeltaHysterese: In1=%i, In2=%i, Delta=%i, Out=%i\n", lDebugInput, lValue1In, lValue2In, lValue1In - lValue2In, lValueOut);
+                    channelDebug("processConvertInput E%i DeltaHysterese: In1=%i, In2=%i, Delta=%i, Out=%i\n", iIOIndex, lValue1In, lValue2In, lValue1In - lValue2In, lValueOut);
+                }
+#endif
+                break;
+            case VAL_InputConvert_Values:
+                lValueOut = checkConvertValues(lParamLow, lDpt, lValue1In);
+#if LOGIC_TRACE
+                if (debugFilter())
+                {
+                    channelDebug("processConvertInput E%i SingleValues: In=%i, Out=%i\n", iIOIndex, lValue1In, lValueOut);
+                }
+#endif
+                break;
+            case VAL_InputConvert_Constant:
+                lValueOut = true;
+#if LOGIC_TRACE
+                if (debugFilter())
+                {
+                    channelDebug("processConvertInput E%i Constant (%i): Out=%i\n", iIOIndex, lValue1In, lValueOut);
                 }
 #endif
                 break;
@@ -789,7 +881,7 @@ void LogicChannel::processConvertInput(uint8_t iIOIndex)
 #if LOGIC_TRACE
                 if (debugFilter())
                 {
-                    channelDebug("processConvertInput E%i: no Execution, wrong convert id\n", lDebugInput);
+                    channelDebug("processConvertInput E%i: no Execution, wrong convert id\n", iIOIndex);
                 }
 #endif
                 break;
@@ -1576,6 +1668,9 @@ void LogicChannel::processOutput(bool iValue)
             case VAL_Out_ValE2:
                 writeParameterValue(IO_Input2);
                 break;
+            case VAL_Out_Function:
+                writeFunctionValue(LOG_fOOnFunction);
+                break;
             case VAL_Out_ReadRequest:
                 knxRead(IO_Output);
                 break;
@@ -1606,6 +1701,9 @@ void LogicChannel::processOutput(bool iValue)
                 break;
             case VAL_Out_ValE2:
                 writeParameterValue(IO_Input2);
+                break;
+            case VAL_Out_Function:
+                writeFunctionValue(LOG_fOOffFunction);
                 break;
             case VAL_Out_ReadRequest:
                 knxRead(IO_Output);
@@ -1650,6 +1748,7 @@ bool LogicChannel::checkDpt(uint8_t iIOIndex, uint8_t iDpt)
 
 bool LogicChannel::readOneInputFromEEPROM(uint8_t iIOIndex)
 {
+#ifdef I2C_EEPROM_DEVICE_ADDRESSS
     EepromManager *lEEPROM = sLogic->getEEPROM();
     // first check, if EEPROM contains valid values
     if (!lEEPROM->isValid())
@@ -1670,10 +1769,14 @@ bool LogicChannel::readOneInputFromEEPROM(uint8_t iIOIndex)
     while (Wire.available() && lIndex < 4)
         lKo->valueRef()[lIndex++] = Wire.read();
     return true;
+#else
+    return false;
+#endif
 }
 
 void LogicChannel::writeSingleDptToEEPROM(uint8_t iIOIndex)
 {
+#ifdef I2C_EEPROM_DEVICE_ADDRESSS
     uint8_t lDpt = 0xFF;
     if (isInputActive(iIOIndex))
     {
@@ -1686,6 +1789,7 @@ void LogicChannel::writeSingleDptToEEPROM(uint8_t iIOIndex)
         }
     }
     Wire.write(lDpt);
+#endif
 }
 
 // retutns true, if any DPT from EEPROM does not fit to according input DPT.
@@ -1911,18 +2015,18 @@ void LogicChannel::processTimerInput()
     // holiday
     uint8_t lHolidaySetting = (getByteParam(LOG_fTHoliday) & LOG_fTHolidayMask) >> LOG_fTHolidayShift;
     if (lEvaluate) {
-        if (lHolidaySetting == VAL_Tim_Special_No && sTimer.isHolidayToday())
+        if (lHolidaySetting == VAL_Tim_Special_No && (sTimer.holidayToday() > 0))
             lEvaluate = false;
         if (lHolidaySetting == VAL_Tim_Special_Skip || lHolidaySetting == VAL_Tim_Special_Sunday)
             lEvaluate = true;
         if (lHolidaySetting == VAL_Tim_Special_Only)
-            lEvaluate = sTimer.isHolidayToday();
+            lEvaluate = (sTimer.holidayToday() > 0);
     }
 
     if (lEvaluate)
     {
 
-        bool lHandleAsSunday = (lHolidaySetting == VAL_Tim_Special_Sunday && sTimer.isHolidayToday()) ||
+        bool lHandleAsSunday = (lHolidaySetting == VAL_Tim_Special_Sunday && (sTimer.holidayToday() > 0)) ||
                                (lVacationSetting == VAL_Tim_Special_Sunday && lIsVacation);
 
         // loop through all timer
@@ -2176,16 +2280,16 @@ void LogicChannel::processTimerRestoreState(TimerRestore &iTimer)
 
     // holiday
     uint8_t lHolidaySetting = (getByteParam(LOG_fTHoliday) & LOG_fTHolidayMask) >> LOG_fTHolidayShift;
-    if (lHolidaySetting == VAL_Tim_Special_No && iTimer.isHolidayToday())
+    if (lHolidaySetting == VAL_Tim_Special_No && (iTimer.holidayToday() >0))
         lEvaluate = false;
     if (lHolidaySetting == VAL_Tim_Special_Skip || lHolidaySetting == VAL_Tim_Special_Sunday)
         lEvaluate = true;
     if (lHolidaySetting == VAL_Tim_Special_Only)
-        lEvaluate = iTimer.isHolidayToday();
+        lEvaluate = (iTimer.holidayToday() > 0);
     if (!lEvaluate)
         return;
 
-    bool lHandleAsSunday = (lHolidaySetting == VAL_Tim_Special_Sunday && iTimer.isHolidayToday());
+    bool lHandleAsSunday = (lHolidaySetting == VAL_Tim_Special_Sunday && (iTimer.holidayToday() >0));
 
     // loop through all timer
     uint32_t lTimerFunctions = getIntParam(LOG_fTd1DuskDawn);

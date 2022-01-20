@@ -4,12 +4,20 @@
 #include "Timer.h"
 #include "TimerRestore.h"
 #include "PCA9632.h"
+#ifdef WATCHDOG
+#include <Adafruit_SleepyDog.h>
+uint32_t gWatchdogDelay;
+uint8_t gWatchdogResetCause;
+#endif
+
 
 uint8_t Logic::sMagicWord[] = {0xAE, 0x49, 0xD2, 0x9F};
 Timer &Logic::sTimer = Timer::instance(); // singleton
 TimerRestore &Logic::sTimerRestore = TimerRestore::instance(); // singleton
 
 char Logic::sDiagnoseBuffer[16] = {0};
+sLoopCallbackParams Logic::sLoopCallbacks[5] = {nullptr};
+uint8_t Logic::sNumLoopCallbacks = 0;
 
 // callbacks have to be static members
 void Logic::onInputKoHandler(GroupObject &iKo) {
@@ -41,6 +49,13 @@ void Logic::onBeforeTableUnloadHandler(TableObject & iTableObject, LoadState & i
 void Logic::onSafePinInterruptHandler()
 {
     LogicChannel::sLogic->mSaveInterruptTimestamp = millis();
+}
+
+void Logic::addLoopCallback(loopCallback iLoopCallback, void *iThis) {
+    sLoopCallbackParams lParams;
+    lParams.callback = iLoopCallback;
+    lParams.instance = iThis;
+    Logic::sLoopCallbacks[sNumLoopCallbacks++] = lParams;
 }
 
 Logic::Logic()
@@ -129,6 +144,7 @@ void Logic::processReadRequests() {
 // For inputs, which are not set as "store in memory", we write a dpt 0xFF
 void Logic::writeAllDptToEEPROM()
 {
+#ifdef I2C_EEPROM_DEVICE_ADDRESSS
     if (mLastWriteToEEPROM > 0 && delayCheck(mLastWriteToEEPROM, 10000))
     {
         println("writeAllDptToEEPROM called repeatedly within 10 seconds, skipped!");
@@ -150,10 +166,13 @@ void Logic::writeAllDptToEEPROM()
             mEEPROM->endPage();
     }
     mEEPROM->endPage();
+#endif
 }
 
 void Logic::writeAllInputsToEEPROM()
 {
+#ifdef I2C_EEPROM_DEVICE_ADDRESSS
+
     if (mLastWriteToEEPROM > 0 && delayCheck(mLastWriteToEEPROM, 10000))
     {
         println("writeAllInputsToEEPROM called repeatedly within 10 seconds, skipped!");
@@ -184,17 +203,22 @@ void Logic::writeAllInputsToEEPROM()
     // as a last step we write magic number back
     // this is also the ACK, that writing was successfull
     mEEPROM->endWriteSession();
+#endif
 }
 
 void Logic::writeAllInputsToEEPROMFacade() {
+#ifdef I2C_EEPROM_DEVICE_ADDRESSS
     uint32_t lTime = millis();
     writeAllInputsToEEPROM(); 
     lTime = millis() - lTime;
     print("WriteAllInputsToEEPROM took: ");
     println(lTime);
+#else
+    print("No write to EEPROM, not available!");
+#endif
 }
 
-// on input level, all dpt>1 values are converted to bool by the according converter
+// on input level, all dpt > 1 values are converted to bool by the according converter
 void Logic::processInputKo(GroupObject &iKo)
 {
     if (iKo.asap() == LOG_KoTime) {
@@ -302,6 +326,39 @@ bool Logic::processDiagnoseCommand() {
             lResult = true;
             break;
         }
+        case 'w': {
+            // Watchdog information
+#ifdef WATCHDOG
+            if (((knx.paramByte(LOG_Watchdog) & LOG_WatchdogMask) >> LOG_WatchdogShift) == 0)
+            {
+                snprintf(sDiagnoseBuffer, 15, "WD not active");
+            }
+            else if (gWatchdogResetCause & WDT_RCAUSE_EXT)
+            {
+                snprintf(sDiagnoseBuffer, 15, "WD reset button");
+            }
+            else if (gWatchdogResetCause & WDT_RCAUSE_POR)
+            {
+                snprintf(sDiagnoseBuffer, 15, "WD bus reset");
+            }
+            else if (gWatchdogResetCause & WDT_RCAUSE_SYSTEM)
+            {
+                snprintf(sDiagnoseBuffer, 15, "WD ETS program");
+            }
+            else if (gWatchdogResetCause & WDT_RCAUSE_WDT)
+            {
+                snprintf(sDiagnoseBuffer, 15, "WD watchdog");
+            }
+            else
+            {
+                snprintf(sDiagnoseBuffer, 15, "WD unknown");
+            }
+#else
+            snprintf(sDiagnoseBuffer, 15, "WD no compile");
+#endif
+            lResult = true;
+            break;
+        }
         default:
             lResult = false;
             break;
@@ -370,14 +427,21 @@ void Logic::debug() {
     // Test i2c failure
     // we start an i2c read i.e. for EEPROM
     // prepareReadEEPROM(4711, 20);
-    // digitalWrite(LED_YELLOW_PIN, HIGH);
     // delay(10000);
-    // digitalWrite(LED_YELLOW_PIN, LOW);
 }
 
 void Logic::setup(bool iSaveSupported) {
     // Wire.end();   // seems to end hangs on I2C bus
     // Wire.begin(); // we use I2C in logic, so we setup the bus. It is not critical to setup it more than once
+#ifdef WATCHDOG
+    if ((knx.paramByte(LOG_Watchdog) & LOG_WatchdogMask) >> LOG_WatchdogShift) {
+        // used for Diagnose command
+        gWatchdogResetCause = Watchdog.resetCause();
+        // setup watchdog to prevent endless loops
+        int lWatchTime = Watchdog.enable(16384, false);
+        printDebug("Watchdog started with a watchtime of %i Seconds\n", lWatchTime / 1000);
+    }
+#endif
     if (knx.configured())
     {
         // setup channels, not possible in constructor, because knx is not configured there
@@ -385,8 +449,9 @@ void Logic::setup(bool iSaveSupported) {
         mNumChannels = knx.paramByte(LOG_NumChannels);
         if (LOG_ChannelsFirmware < mNumChannels)
         {
-            printDebug("FATAL: Firmware compiled for %d channels, but knxprod needs %d channels!\n", LOG_ChannelsFirmware, mNumChannels);
-            knx.platform().fatalError();
+            char lErrorText[80];
+            sprintf(lErrorText, "FATAL: Firmware compiled for %d channels, but knxprod needs %d channels!\n", LOG_ChannelsFirmware, mNumChannels);
+            fatalError(FATAL_LOG_WRONG_CHANNEL_COUNT, lErrorText);
         }
         for (uint8_t lIndex = 0; lIndex < mNumChannels; lIndex++)
         {
@@ -395,10 +460,8 @@ void Logic::setup(bool iSaveSupported) {
         // this should be changed if we ever use multiple instances of logic
         mEEPROM = new EepromManager(SAVE_BUFFER_START_PAGE, SAVE_BUFFER_NUM_PAGES, sMagicWord);
         // setup buzzer
-#ifndef __linux__
 #ifdef BUZZER_PIN
         pinMode(BUZZER_PIN, OUTPUT);
-#endif
 #endif
         // we set just a callback if it is not set from a potential caller
         if (GroupObject::classCallback() == 0) GroupObject::classCallback(Logic::onInputKoHandler);
@@ -435,12 +498,19 @@ void Logic::setup(bool iSaveSupported) {
 
 void Logic::loop()
 {
+#ifdef WATCHDOG
+    if (delayCheck(gWatchdogDelay, 1000) && ((knx.paramByte(LOG_Watchdog) & LOG_WatchdogMask) >> LOG_WatchdogShift))
+    {
+        Watchdog.reset();
+        gWatchdogDelay = millis();
+    }
+#endif
     if (!knx.configured())
         return;
 
     processInterrupt();
     sTimer.loop(); // clock and timer async methods
-    knx.loop();
+    loopSubmodules();
 
     // we loop on all channels and execute pipeline
     for (uint8_t lIndex = 0; lIndex < mNumChannels; lIndex++)
@@ -449,12 +519,12 @@ void Logic::loop()
         if (sTimer.minuteChanged())
             lChannel->startTimerInput();
         lChannel->loop();
-        knx.loop();
+        loopSubmodules();
     }
     if (sTimer.minuteChanged()) {
         sendHoliday();
         sTimer.clearMinuteChanged();
-        knx.loop();
+        loopSubmodules();
     }
     processTimerRestore();
 }
@@ -482,7 +552,7 @@ void Logic::processTimerRestore() {
             {
                 sTimerRestore.decreaseDay();
             }
-            knx.loop();
+            loopSubmodules();
         } else {
             // stop timer restore processing in logic...
             sTimerRestoreDelay = 0;
@@ -501,8 +571,8 @@ void Logic::sendHoliday() {
     if (sTimer.holidayChanged())
     {
         // write the newly calculated holiday information into KO (can be read externally)
-        knx.getGroupObject(LOG_KoHoliday1).valueNoSend(sTimer.isHolidayToday(), getDPT(VAL_DPT_1));
-        knx.getGroupObject(LOG_KoHoliday2).valueNoSend(sTimer.isHolidayTomorrow(), getDPT(VAL_DPT_1));
+        knx.getGroupObject(LOG_KoHoliday1).valueNoSend(sTimer.holidayToday(), getDPT(VAL_DPT_5));
+        knx.getGroupObject(LOG_KoHoliday2).valueNoSend(sTimer.holidayTomorrow(), getDPT(VAL_DPT_5));
         sTimer.clearHolidayChanged();
         if (knx.paramByte(LOG_HolidaySend & LOG_HolidaySendMask)) {
             // and send it, if requested by application setting
@@ -510,4 +580,20 @@ void Logic::sendHoliday() {
             knx.getGroupObject(LOG_KoHoliday2).objectWritten();
         }
     }
+}
+
+void Logic::loopSubmodules() {
+    static uint8_t sCount = 0;
+    uint8_t lCount = sCount / 2;
+    knx.loop();
+    // we call submodules half as often as knx.loop();
+    if (lCount * 2 == sCount && lCount < sNumLoopCallbacks) {
+        sLoopCallbacks[lCount].callback(sLoopCallbacks[lCount].instance);
+    }
+    sCount = (lCount < sNumLoopCallbacks) ? sCount + 1 : 0;
+    // for (uint8_t i = 0; i < sNumLoopCallbacks; i++)
+    // {
+    //     sLoopCallbacks[i].callback(sLoopCallbacks[i].instance);
+    //     knx.loop();
+    // }
 }
