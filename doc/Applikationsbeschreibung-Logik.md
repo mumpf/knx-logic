@@ -70,6 +70,7 @@ rmware 2.1.0, Applikation 2.0 - 2.3
 
 * Feature: Es wird nicht nur ausgegeben, ob "Heute" bzw. "Morgen" ein Feiertag ist (DPT1), sondern welcher Feiertag es ist (DPT5)
 * Kapitel "Feiertage auf dem Bus verfügbar machen" um das neue Feature ergänzt
+* Kapitel "Beispiele" mit einem Beispiel ergänzt, dass die frühere Funktionalität wieder herstellt.
 * **Inkompatible Änderung** KO 5 und KO 6 sind jetzt DPT5.010 statt DPT1.001. **Vor einem Upgrade** müssen alle mit diesen KO verknüpften GA entfernt werden.
 * Fix: Eingangskonverter "Differenzintervall" und "Differenzhysterese" für DPT9.x funktionierten nicht
 * **Inkompatible Änderung** Bei einem Update gehen die Parameter für Von-/Bis- bzw. Einschalt-/Ausschalt-Wert bei Eingangskonvertern "Differenzintervall" und "Differenzhysterese" für DPT9 verloren. Diese müssen nach einem Update manuell nachgetragen werden.
@@ -227,8 +228,8 @@ Für die Zeitschaltuhren wird vom Modul eine Berechnung der Feiertage vorgenomme
 
 Ein "Ja" bei dieser Einstellung schaltet 2 Kommunikationsobjekte frei. Über diese Kommunikationsobjekte wird die Nummer eines Feiertags gesendet. Jede gesendete Nummer entspricht genau einem Feiertag, die Nummern entsprechen den in der Liste von Feiertagseinstellungen (siehe vorheriges Bild).
 
-* KO 5 (Feiertag heute) sendet, wenn der aktuelle Tag ein Feiertag ist,
-* KO 6 (Feiertag morgen) sendet, wenn der nächste Tag ein Feiertag ist.
+* KO 5 (Welcher Feiertag ist heute?) sendet, wenn der aktuelle Tag ein Feiertag ist,
+* KO 6 (Welcher Feiertag ist morgen?) sendet, wenn der nächste Tag ein Feiertag ist.
 
 Beide Kommunikationsobjekte (5 und 6) werden immer kurz nach Mitternacht (aber nicht exakt um Mitternacht) neu berechnet. Sie senden eine 0, wenn kein Feiertag ist und sich der Wert geändert hat.
 
@@ -1593,7 +1594,32 @@ Jeder Funktion stehen die Variablen E1 und E2 zur Verfügung, die die Werte der 
 
 #### Beispiele von Benutzerfunktionen
 
-Derzeit gibt es noch keine Beispiele von Benutzerfunktionen. Es können aber Beispiele hier aufgenommen werden, wenn entsprechende User des knx-user-forum.de sich bereit erklären, dass diese veröffentlicht werden.
+**Wie bekommt man die frühere Funktion "Feiertag heute" (die ein Bool, also DPT1 ausgibt) wieder?**
+
+Folgende Definition eines Logikkanals macht das gewünschte:
+
+* Beschreibung des Kanals: Feiertag heute
+* Zeit bis der Kanal nach einem Neustart aktiv wird: 5
+* Logik-Operation: ODER
+* Eingang 1: normal aktiv
+* Logik sendet ihren Wert weiter: nur bei geändertem Ergebnis
+
+Eingang 1:
+
+* Beschreibung Eingang 1: Welcher Feiertag ist heute
+* DPT für Eingang 1: DPT 5.xxx (1-Byte-Wert)
+* Wert für Eingang 1 wird ermittelt durch: Wertintervall
+* Von-Wert: 1
+* Bis-Wert: 50
+* Falls Vorbelegung aus dem Speicher nicht möglich: Wert von Bus lesen
+
+Ausgang:
+
+* Beschreibung: Feiertag heute
+
+Auf diese Weise bekommt man die Funktionalität des früheren Logikmoduls wieder. Man muss den Eingang des Logikkanals mit der gleichen GA verbinden, die auch mit "Welcher Feiertag ist heute" verbunden ist.
+
+Anlog für "Feiertag morgen".
 
 ## Diagnoseobjekt
 
@@ -1745,8 +1771,8 @@ KO | Name | DPT | Bedeutung
 2 | Uhrzeit | 10.001 | Eingnang zum empfangen der Uhrzeit
 3 | Datum | 11.001 | Eingang zum empfangen des Datums
 4 | Urlaub | 1.001 | Eingang: Information über Urlaub
-5 | Feiertag heute | 5.010 | Ausgang: Nummer des Feiertages, falls der aktuelle Tag ein Feiertag ist, sonst 0
-6 | Feiertag morgen | 5.010 | Ausgang: Nummer des Feiertages, falls der morgige Tag ein Feiertag ist, sonst 0
+5 | Welcher Feiertag ist heute? | 5.010 | Ausgang: Nummer des Feiertages, falls der aktuelle Tag ein Feiertag ist, sonst 0
+6 | Welcher Feiertag ist morgen? | 5.010 | Ausgang: Nummer des Feiertages, falls der morgige Tag ein Feiertag ist, sonst 0
 7 | Diagnoseobjekt | 16.001 | Ein-/Ausgang für Diagnoseinformationen
 8 | LED sperren | 1.001 | Eingang: LED global sperren (kein Licht)
 9 | Buzzer sperren | 1.001 | Eingang: Buzzer global sperren (kein Ton)
